@@ -1,4 +1,4 @@
-# 🌎 babble
+# 🌎 Babble
 
 <div align="center">
   <img src="./front/public/readme/github_readme.png" />
@@ -26,7 +26,7 @@
 
 ## 🔫 3. Team Culture
 
-<details> 
+<details>
 <summary><b>🍚 Work Life Balance</b></summary>
 <div markdown="1">
 
@@ -42,7 +42,7 @@
 </div>
 </details>
 
-<details> 
+<details>
 <summary><b>🤔 Daily Scrum</b></summary>
 <div markdown="1">
 
@@ -61,7 +61,7 @@
 </div>
 </details>
 
-<details> 
+<details>
 <summary><b>❤️ Emotional Retrospective</b></summary>
 <div markdown="1">
 
@@ -71,7 +71,7 @@
 </div>
 </details>
 
-<details> 
+<details>
 <summary><b>📋 About Discussion</b></summary>
 <div markdown="1">
 
@@ -89,7 +89,7 @@
 </div>
 </details>
 
-<details> 
+<details>
 <summary><b>⏱️ Don't be Late!</b></summary>
 <div markdown="1">
 
@@ -107,7 +107,7 @@
 
 #### [Angular JS Git Commit Message Conventions](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit)
 
-<details> 
+<details>
 <summary><b>🪜 Items</b></summary>
 <div markdown="1">
 
