@@ -1,4 +1,4 @@
-import './index.scss';
+import '../global.scss';
 
 import React from 'react';
 
