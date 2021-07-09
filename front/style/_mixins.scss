@@ -1,0 +1,28 @@
+@import './variables';
+
+@function font-size($key) {
+  @if map-has-key($font-size, $key) {
+    @return map-get($font-size, $key);
+  }
+
+  @warn "Unknown `#{$key}` in $font-size!";
+  @return null;
+}
+
+@function avatar-size($key) {
+  @if map-has-key($avatar-size, $key) {
+    @return map-get($avatar-size, $key);
+  }
+
+  @warn "Unknown `#{$key}` in $avatar-size!";
+  @return null;
+}
+
+@function grey-scale($key) {
+  @if map-has-key($grey-scale, $key) {
+    @return map-get($grey-scale, $key);
+  }
+
+  @warn "Unknown `#{$key}` in $grey-scale!";
+  @return null;
+}

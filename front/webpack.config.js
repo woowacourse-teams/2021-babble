@@ -26,7 +26,7 @@ module.exports = (env) => {
           use: ['babel-loader'],
         },
         {
-          test: /\.(scss|sass)$/,
+          test: /\.(css|scss|sass)$/,
           use: ['style-loader', 'css-loader', 'sass-loader'],
         },
       ],
