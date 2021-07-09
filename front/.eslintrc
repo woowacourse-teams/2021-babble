@@ -1,0 +1,37 @@
+{
+  "env": {
+    "browser": true,
+    "es2020": true,
+    "node": true
+  },
+
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended"
+  ],
+
+  "settings": {
+    "react": {
+      "version": "latest"
+    }
+  },
+
+  "parser": "babel-eslint",
+
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+
+  "ignorePatterns": ["dist/", "node_modules/"],
+
+  "plugins": ["react", "prettier"],
+
+  "rules": {
+    "prettier/prettier": "error"
+  }
+}

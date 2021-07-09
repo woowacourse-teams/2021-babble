@@ -1,0 +1,5 @@
+{
+  "version": "0.1",
+  "language": "en",
+  "ignorePaths": ["node_modules/**", ".babelrc", "package.json", ".vscode/**"]
+}
