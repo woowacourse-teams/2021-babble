@@ -26,3 +26,12 @@
   @warn "Unknown `#{$key}` in $grey-scale!";
   @return null;
 }
+
+@function primary($key) {
+  @if map-has-key($primary, $key) {
+    @return map-get($primary, $key);
+  }
+
+  @warn "Unknown `#{$key}` in $primary!";
+  @return null;
+}

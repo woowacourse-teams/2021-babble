@@ -1,0 +1,26 @@
+@use '../../../style/variables' as v;
+@use '../../../style/mixins' as m;
+
+.tag-container {
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.2rem 0.8rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid m.primary(babble-pink);
+  border-radius: v.$border-radius;
+}
+
+.erasable {
+  padding: 0.2rem 0.8rem 0.2rem 1rem;
+
+  .tag-delete {
+    display: flex;
+    margin-left: 0.2rem;
+    cursor: pointer;
+
+    :hover {
+      color: m.primary(babble-pink);
+    }
+  }
+}
