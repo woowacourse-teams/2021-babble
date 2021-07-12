@@ -1,0 +1,27 @@
+@use '../../../style/variables' as v;
+@use '../../../style/mixins' as m;
+
+.round-button {
+  border-radius: 50rem;
+  font-weight: 600;
+}
+
+.angled-button {
+  font-weight: 600;
+}
+
+.colored {
+  background-color: m.primary(babble-pink);
+  color: m.grey-scale(0);
+}
+
+.plain {
+  background-color: m.grey-scale(0);
+  border: 1px solid m.primary(babble-pink);
+}
+
+.full {
+  width: 100%;
+  font-size: 1.6rem;
+  padding: 2rem 3rem;
+}
