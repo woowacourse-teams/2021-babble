@@ -3,7 +3,12 @@ import './Button.scss';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const AngledButton = ({ size, type = 'button', colored = false, children }) => {
+const AngledButton = ({
+  size = 'full',
+  type = 'button',
+  colored = true,
+  children,
+}) => {
   return (
     <button
       type={type}
