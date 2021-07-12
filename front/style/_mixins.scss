@@ -1,5 +1,14 @@
 @import './variables';
 
+@function border-radius($key) {
+  @if map-has-key($border-radius, $key) {
+    @return map-get($border-radius, $key);
+  }
+
+  @warn "Unknown `#{$key}` in $border-radius!";
+  @return null;
+}
+
 @function font-size($key) {
   @if map-has-key($font-size, $key) {
     @return map-get($font-size, $key);

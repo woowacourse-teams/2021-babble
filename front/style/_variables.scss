@@ -1,5 +1,9 @@
 $box-shadow: 0 0.08rem 0.5rem rgb(0 0 0 / 18%);
-$border-radius: 1rem;
+
+$border-radius: (
+  tag: 1rem,
+  speech-bubble: 0.5rem,
+);
 
 $font-size: (
   small: 1.25rem,
