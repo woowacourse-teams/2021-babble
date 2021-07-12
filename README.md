@@ -12,17 +12,71 @@
 
 ## 💚 2. About Us
 
-### Back-End
-
-- [루트](https://github.com/Junroot)
-- [와일더](https://github.com/lns13301)
-- [포츈](https://github.com/unluckyjung)
-- [현구막](https://github.com/Hyeon9mak)
-
-### Front-End
-
-- [그루밍](https://github.com/ddongule)
-- [피터](https://github.com/iborymagic)
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/Junroot">
+        <img src="https://avatars.githubusercontent.com/u/4648244?v=4" width="100px;" alt=""/>
+        <br />
+        <sub>
+          <b>[Back-End]</b> <br />
+          <b>루트(김준근)</b>
+        </sub>
+      </a><br />
+      <a href="https://github.com/woowacourse-teams/2021-babble/commits?author=Junroot" title="Code">👨‍💻</a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/lns13301">
+        <img src="https://avatars.githubusercontent.com/u/49058669?v=4" width="100px;" alt=""/><br />
+        <sub>
+          <b>[Back-End]</b> <br />
+          <b>와일더(강규한)</b>
+        </sub>
+      </a><br />
+      <a href="https://github.com/woowacourse-teams/2021-babble/commits?author=lns13301" title="Code">👨‍💻</a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/unluckyjung">
+        <img src="https://avatars.githubusercontent.com/u/43930419?v=4" width="100px;" alt=""/><br />
+        <sub>
+          <b>[Back-End]</b> <br />
+          <b>포츈(정윤성)</b>
+        </sub>
+      </a><br />
+      <a href="https://github.com/woowacourse-teams/2021-babble/commits?author=unluckyjung" title="Code">👨‍💻</a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/Hyeon9mak">
+        <img src="https://avatars.githubusercontent.com/u/37354145?v=4" width="100px;" alt=""/><br />
+        <sub>
+          <b>[Back-End]</b> <br />
+          <b>현구막(최현구)</b>
+        </sub>
+      </a><br />
+      <a href="https://github.com/woowacourse-teams/2021-babble/commits?author=Hyeon9mak" title="Code">👨‍💻</a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/ddongule">
+        <img src="https://avatars.githubusercontent.com/u/26598561?v=4" width="100px;" alt=""/><br />
+        <sub>
+          <b>[Front-End]</b> <br />
+          <b>그루밍(강민경)</b>
+        </sub>
+      </a><br />
+      <a href="https://github.com/woowacourse-teams/2021-babble/commits?author=ddongule" title="Code">👩‍💻</a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/iborymagic">
+        <img src="https://avatars.githubusercontent.com/u/42052110?v=4" width="100px;" alt=""/><br />
+        <sub>
+          <b>[Front-End]</b> <br />
+          <b>피터(안현철)</b>
+        </sub>
+      </a><br />
+      <a href="https://github.com/woowacourse-teams/2021-babble/commits?author=iborymagic" title="Code">👨‍💻</a>
+    </td>
+  </tr>
+</table>
 
 ## 🔫 3. Team Culture
 
