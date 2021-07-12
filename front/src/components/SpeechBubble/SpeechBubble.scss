@@ -1,0 +1,29 @@
+@use '../../../style/mixins' as m;
+
+.speech-bubble {
+  width: fit-content;
+
+  .text {
+    border-radius: m.border-radius(speech-bubble);
+    border: 1px solid m.grey-scale(6);
+    height: fit-content;
+    width: fit-content;
+    max-width: 25rem;
+    padding: 1rem 1.8rem;
+    font-size: 1.3rem;
+  }
+
+  .time {
+    display: inline-block;
+    margin-top: 0.3rem;
+    color: m.grey-scale(10);
+  }
+
+  &.mine {
+    text-align: right;
+
+    .text {
+      border: 1px solid m.primary(babble-pink);
+    }
+  }
+}
