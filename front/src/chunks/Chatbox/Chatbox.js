@@ -7,14 +7,14 @@ import React from 'react';
 const Chatbox = ({ roomNo, createdAt, children }) => {
   return (
     <main className='chatbox-container'>
-      <section className='chatbox-chattings'>
-        <article className='chatbox-room-info'>
+      <section className='chattings'>
+        <article className='chatting-room-info'>
           <span>{`${roomNo}번 방`}</span>
           <time>{createdAt.toLocaleString('ko-KR')}</time>
         </article>
-        <article className='chatbox-chatting-contents'>{children}</article>
+        <article className='chatting-contents'>{children}</article>
       </section>
-      <section className='chatbox-chatting-form'>
+      <section className='chatting-form'>
         <ChattingSection />
       </section>
     </main>
@@ -24,6 +24,7 @@ const Chatbox = ({ roomNo, createdAt, children }) => {
 Chatbox.propTypes = {
   roomNo: PropTypes.number,
   createdAt: PropTypes.instanceOf(Date),
+  children: PropTypes.node,
 };
 
 export default Chatbox;
