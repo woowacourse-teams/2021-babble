@@ -14,9 +14,9 @@ export default {
 
 const SpeechBubbleTemplate = (args) => <SpeechBubble {...args} />;
 
-export const DefaultTemplate = SpeechBubbleTemplate.bind({});
+export const Default = SpeechBubbleTemplate.bind({});
 
-DefaultTemplate.args = {
+Default.args = {
   time: '10:51AM',
   type: 'others',
   children: '안녕하세요~~ \n 같이 롤하실?~~~ ',
