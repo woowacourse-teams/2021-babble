@@ -13,7 +13,7 @@ const SpeechBubble = ({ time, type = 'others', children }) => {
 };
 
 SpeechBubble.propTypes = {
-  time: PropTypes.instanceOf(Date),
+  time: PropTypes.string,
   type: PropTypes.string,
   children: PropTypes.node,
 };

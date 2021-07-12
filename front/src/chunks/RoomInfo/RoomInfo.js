@@ -59,6 +59,7 @@ RoomInfo.propTypes = {
       avatar: PropTypes.string,
     })
   ),
+  tags: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default RoomInfo;

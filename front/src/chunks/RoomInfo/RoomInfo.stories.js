@@ -12,11 +12,11 @@ export const Default = RoomInfoTemplate.bind({});
 
 Default.args = {
   gameTitle: 'League of Legends',
-  host: { avatar: '', nickName: 'wilder' },
+  host: { nickName: 'wilder' },
   guests: [
-    { avatar: '', nickName: 'Hyeon9mak' },
-    { avatar: '', nickName: 'root' },
-    { avatar: '', nickName: 'fortune' },
+    { nickName: 'Hyeon9mak' },
+    { nickName: 'root' },
+    { nickName: 'fortune' },
   ],
   tags: [
     '실버',

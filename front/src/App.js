@@ -1,9 +1,10 @@
 import '../global.scss';
 
 import React from 'react';
+import RoomPage from './pages/RoomPage';
 
 const App = () => {
-  return <div className='app'>Babble</div>;
+  return <RoomPage />;
 };
 
 export default App;

@@ -9,8 +9,13 @@
     background-color: m.grey-scale(2);
     padding: 1.5rem;
     width: 100%;
+    height: 9rem;
     flex-basis: 85%;
     font-size: 1.3rem;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   button {

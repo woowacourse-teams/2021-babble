@@ -23,7 +23,7 @@ const Chatbox = ({ roomNo, createdAt, children }) => {
 
 Chatbox.propTypes = {
   roomNo: PropTypes.number,
-  createdAt: PropTypes.instanceOf(Date),
+  createdAt: PropTypes.string,
   children: PropTypes.node,
 };
 

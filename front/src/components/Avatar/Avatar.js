@@ -7,7 +7,7 @@ const Avatar = ({
   size = 'small',
   nickName,
   direction = 'vertical',
-  imageSrc,
+  imageSrc = 'https://i.pinimg.com/474x/1c/4b/f0/1c4bf0cdcc3102126b7caeb8749f5c55.jpg',
 }) => {
   return (
     <figure className={direction}>

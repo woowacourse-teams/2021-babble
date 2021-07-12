@@ -12,6 +12,11 @@ figure {
     border: 1px solid m.grey-scale(4);
     box-shadow: v.$box-shadow;
 
+    &.xsmall {
+      width: m.avatar-size(xsmall);
+      height: m.avatar-size(xsmall);
+    }
+
     &.small {
       width: m.avatar-size(small);
       height: m.avatar-size(small);

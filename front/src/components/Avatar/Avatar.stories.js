@@ -19,7 +19,7 @@ export const Vertical = AvatarTemplate.bind({});
 Vertical.args = {
   size: 'medium',
   imageSrc:
-    'https://mblogthumb-phinf.pstatic.net/20150427_261/ninevincent_1430122791768m7oO1_JPEG/kakao_1.jpg?type=w2',
+    'https://i.pinimg.com/474x/1c/4b/f0/1c4bf0cdcc3102126b7caeb8749f5c55.jpg',
   nickName: 'defaultUser 매맘밍뎅',
   direction: 'vertical',
 };
@@ -29,7 +29,7 @@ export const Horizontal = AvatarTemplate.bind({});
 Horizontal.args = {
   size: 'medium',
   imageSrc:
-    'https://mblogthumb-phinf.pstatic.net/20150427_261/ninevincent_1430122791768m7oO1_JPEG/kakao_1.jpg?type=w2',
+    'https://i.pinimg.com/474x/1c/4b/f0/1c4bf0cdcc3102126b7caeb8749f5c55.jpg',
   nickName: 'defaultUser',
   direction: 'horizontal',
 };

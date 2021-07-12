@@ -2,15 +2,17 @@
 
 .speech-bubble {
   width: fit-content;
+  background: white;
 
   .text {
     border-radius: m.border-radius(speech-bubble);
     border: 1px solid m.grey-scale(6);
     height: fit-content;
     width: fit-content;
-    max-width: 25rem;
-    padding: 1rem 1.8rem;
+    max-width: 30rem;
+    padding: 1.2rem 2rem;
     font-size: 1.3rem;
+    white-space: pre-wrap;
   }
 
   .time {
