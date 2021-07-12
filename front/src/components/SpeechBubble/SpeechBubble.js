@@ -6,7 +6,7 @@ import React from 'react';
 const SpeechBubble = ({ time, type = 'others', children }) => {
   return (
     <div className={`speech-bubble ${type}`}>
-      <div className='text'>{children}</div>
+      <pre className='text'>{children}</pre>
       <time className='time'>{time}</time>
     </div>
   );

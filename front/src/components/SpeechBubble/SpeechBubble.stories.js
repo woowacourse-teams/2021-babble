@@ -19,5 +19,5 @@ export const DefaultTemplate = SpeechBubbleTemplate.bind({});
 DefaultTemplate.args = {
   time: '10:51AM',
   type: 'others',
-  children: '안녕하세요~~ \n 같이 롤하실?~~~ ',
+  children: '안녕하세요~~ \n같이 롤하실?~~~ ',
 };
