@@ -10,7 +10,7 @@ const TagErasable = ({ children }) => {
     <Tag customClass='erasable'>
       {children}
       <a className='tag-delete'>
-        <IoCloseOutline size='13px' />
+        <IoCloseOutline size='18px' />
       </a>
     </Tag>
   );

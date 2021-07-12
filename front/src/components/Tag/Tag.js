@@ -3,7 +3,7 @@ import './Tag.scss';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const Tag = ({ customClass, children }) => {
+const Tag = ({ customClass = '', children }) => {
   return <span className={`tag-container ${customClass}`}>{children}</span>;
 };
 

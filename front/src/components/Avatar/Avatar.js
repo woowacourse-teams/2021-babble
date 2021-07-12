@@ -3,7 +3,12 @@ import './Avatar.scss';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const Avatar = ({ size, nickName, direction, imageSrc }) => {
+const Avatar = ({
+  size = 'small',
+  nickName,
+  direction = 'vertical',
+  imageSrc,
+}) => {
   return (
     <figure className={direction}>
       <img src={imageSrc} alt='Avatar Image' className={size} />

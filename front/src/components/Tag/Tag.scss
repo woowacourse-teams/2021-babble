@@ -4,19 +4,21 @@
 .tag-container {
   display: inline-flex;
   width: fit-content;
-  padding: 0.2rem 0.8rem;
+  padding: 0.5rem 1.2rem;
   align-items: center;
   justify-content: center;
+  font-size: m.font-size(small);
   border: 1px solid m.primary(babble-pink);
   border-radius: m.border-radius(tag);
+  user-select: none;
 }
 
 .erasable {
-  padding: 0.2rem 0.8rem 0.2rem 1rem;
+  padding: 0.4rem 0.8rem 0.4rem 1.2rem;
 
   .tag-delete {
     display: flex;
-    margin-left: 0.2rem;
+    margin-left: 0.4rem;
     cursor: pointer;
 
     :hover {

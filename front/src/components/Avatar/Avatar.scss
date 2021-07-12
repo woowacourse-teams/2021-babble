@@ -4,6 +4,8 @@
 figure {
   display: flex;
   user-select: none;
+  min-width: 8rem;
+  max-width: 10rem;
 
   img {
     border-radius: 50%;
@@ -12,14 +14,17 @@ figure {
 
     &.small {
       width: m.avatar-size(small);
+      height: m.avatar-size(small);
     }
 
     &.medium {
       width: m.avatar-size(medium);
+      height: m.avatar-size(medium);
     }
 
     &.large {
       width: m.avatar-size(large);
+      height: m.avatar-size(large);
     }
   }
 

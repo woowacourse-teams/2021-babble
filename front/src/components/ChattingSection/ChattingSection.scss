@@ -6,14 +6,14 @@
 
   .chat-area {
     resize: none;
-    background-color: m.grey-scale(0);
+    background-color: m.grey-scale(2);
     padding: 1.5rem;
     width: 100%;
-    flex-basis: 80%;
+    flex-basis: 85%;
     font-size: 1.3rem;
   }
 
   button {
-    flex-basis: 20%;
+    flex-basis: 15%;
   }
 }
