@@ -18,7 +18,7 @@ public class UserGroupController {
     }
 
     @MessageMapping("/rooms/{roomId}/users")
-    public void enter(@DestinationVariable Long roomId, final UserEnterRequest userEnterRequest) {
+    public void enter(@DestinationVariable final Long roomId, final UserEnterRequest userEnterRequest) {
         template.convertAndSend(String.format("/topic/rooms/%s/users", roomId),
                 chatService.sendEnterRoom(roomId, userEnterRequest.getUserId()));
     }
