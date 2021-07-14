@@ -14,7 +14,6 @@ public class GameService {
         this.gameRepository = gameRepository;
     }
 
-
     public Game findById(Long id) {
         return gameRepository.findById(id)
             .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 게임 Id 입니다."));

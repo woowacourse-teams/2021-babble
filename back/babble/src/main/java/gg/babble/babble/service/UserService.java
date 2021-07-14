@@ -16,6 +16,6 @@ public class UserService {
 
     public User findById(Long id) {
         return userRepository.findById(id)
-            .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 게임 Id 입니다."));
+            .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 유저 Id 입니다."));
     }
 }
