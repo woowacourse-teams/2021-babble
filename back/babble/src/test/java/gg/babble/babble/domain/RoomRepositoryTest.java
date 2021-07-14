@@ -33,17 +33,29 @@ public class RoomRepositoryTest {
     @DisplayName("생성한 방을 저장한다.")
     @Test
     void saveTest() {
+        Room room = saveRoom();
+        roomRepository.flush();
+
+        assertThat(roomRepository.existsById(room.getId())).isTrue();
+    }
+
+    private Room saveRoom() {
         Game game = gameService.findById(1L);
         User user = userService.findById(1L);
         List<Tag> tags = Arrays.asList(tagService.findById("실버"),
             tagService.findById("2시간"));
 
-        Room room = roomRepository.save(Room.builder()
+        return roomRepository.save(Room.builder()
                 .game(game)
                 .host(user)
                 .tags(tags).build());
-        roomRepository.flush();
+    }
 
-        assertThat(roomRepository.existsById(room.getId())).isTrue();
+    @DisplayName("방 생성 시각을 저장한다.")
+    @Test
+    void saveTimeOfRoomTest() {
+        Room room = saveRoom();
+
+        assertThat(room.getCreatedDate()).isNotNull();
     }
 }
