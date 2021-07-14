@@ -1,9 +1,6 @@
 package gg.babble.babble;
 
-import gg.babble.babble.domain.Game;
-import gg.babble.babble.domain.GameRepository;
-import gg.babble.babble.domain.User;
-import gg.babble.babble.domain.UserRepository;
+import gg.babble.babble.domain.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -12,10 +9,12 @@ public class DataLoader implements CommandLineRunner {
 
     private final GameRepository gameRepository;
     private final UserRepository userRepository;
+    private final TagRepository tagRepository;
 
-    public DataLoader(GameRepository gameRepository, UserRepository userRepository) {
+    public DataLoader(GameRepository gameRepository, UserRepository userRepository, TagRepository tagRepository) {
         this.gameRepository = gameRepository;
         this.userRepository = userRepository;
+        this.tagRepository = tagRepository;
     }
 
     @Override
@@ -49,6 +48,19 @@ public class DataLoader implements CommandLineRunner {
         userRepository.save(User.builder()
                 .id(3L)
                 .name("포비")
+                .build()
+        );
+
+        tagRepository.save(Tag.builder()
+                .name("실버")
+                .build()
+        );
+        tagRepository.save(Tag.builder()
+                .name("2시간")
+                .build()
+        );
+        tagRepository.save(Tag.builder()
+                .name("솔로랭크")
                 .build()
         );
     }
