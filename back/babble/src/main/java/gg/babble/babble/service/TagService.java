@@ -14,7 +14,6 @@ public class TagService {
         this.tagRepository = tagRepository;
     }
 
-
     public Tag findById(String name) {
         return tagRepository.findById(name)
                 .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 태그입니다."));
