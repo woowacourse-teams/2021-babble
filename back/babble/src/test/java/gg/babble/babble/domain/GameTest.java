@@ -21,9 +21,8 @@ public class GameTest {
     @ParameterizedTest
     @CsvSource({"1, League Of Legend", "2, Overwatch", "3, Apex Legend"})
     void dummyGameTest(Long id, String gameName) {
-        boolean exist = gameRepository.existsById(id);
-        assertThat(exist).isTrue();
         Optional<Game> game = gameRepository.findById(id);
+        assertThat(game.isPresent()).isTrue();
         assertThat(game.get().getName()).isEqualTo(gameName);
     }
 }
