@@ -17,7 +17,7 @@ public class Tag {
     @Id
     private String name;
 
-    public Tag(String name) {
+    private Tag(String name) {
         validate(name);
         this.name = name;
     }
