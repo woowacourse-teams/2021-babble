@@ -18,39 +18,49 @@ public class DataLoader implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
-        gameRepository.save(Game.builder()
-                .id(1L)
-                .name("League Of Legend")
-                .build()
-        );
-        gameRepository.save(Game.builder()
-                .id(2L)
-                .name("Overwatch")
-                .build()
-        );
-        gameRepository.save(Game.builder()
-                .id(3L)
-                .name("Apex Legend")
-                .build()
-        );
+    public void run(String... args) {
+        prepareDummyGames();
+        prepareDummyUsers();
+        prepareDummyTags();
+    }
 
-        userRepository.save(User.builder()
-                .id(1L)
-                .name("루트")
-                .build()
+    private void prepareDummyGames() {
+        gameRepository.save(Game.builder()
+            .id(1L)
+            .name("League Of Legend")
+            .build()
         );
-        userRepository.save(User.builder()
-                .id(2L)
-                .name("와일더")
-                .build()
+        gameRepository.save(Game.builder()
+            .id(2L)
+            .name("Overwatch")
+            .build()
         );
-        userRepository.save(User.builder()
-                .id(3L)
-                .name("포비")
-                .build()
+        gameRepository.save(Game.builder()
+            .id(3L)
+            .name("Apex Legend")
+            .build()
         );
+    }
 
+    private void prepareDummyUsers() {
+        userRepository.save(User.builder()
+            .id(1L)
+            .name("루트")
+            .build()
+        );
+        userRepository.save(User.builder()
+            .id(2L)
+            .name("와일더")
+            .build()
+        );
+        userRepository.save(User.builder()
+            .id(3L)
+            .name("포비")
+            .build()
+        );
+    }
+
+    private void prepareDummyTags() {
         tagRepository.save(Tag.builder()
                 .name("실버")
                 .build()
