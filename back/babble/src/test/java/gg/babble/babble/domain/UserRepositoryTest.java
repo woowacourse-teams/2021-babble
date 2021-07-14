@@ -19,7 +19,7 @@ public class UserRepositoryTest {
     @DisplayName("유저 더미 데이터를 확인한다.")
     @ParameterizedTest
     @CsvSource({"1, 루트", "2, 와일더", "3, 포비"})
-    void dummyGameTest(Long id, String name) {
+    void dummyUserTest(Long id, String name) {
         Optional<User> user = userRepository.findById(id);
         assertThat(user.isPresent()).isTrue();
         assertThat(user.get().getName()).isEqualTo(name);
