@@ -1,19 +1,30 @@
 package gg.babble.babble.domain;
 
-import lombok.AllArgsConstructor;
+import gg.babble.babble.exception.BabbleLengthException;
+import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
 @Builder
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class Tag {
+
     @Id
     private String name;
+
+    public Tag(String name) {
+        validate(name);
+        this.name = name;
+    }
+
+    private static void validate(String name) {
+        if (Objects.isNull(name) || name.length() < 1 || name.length() > 8) {
+            throw new BabbleLengthException("이름의 길이는 1자 이상 8자 이하입니다.");
+        }
+    }
 }
