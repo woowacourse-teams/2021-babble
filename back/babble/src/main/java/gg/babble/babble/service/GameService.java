@@ -1,7 +1,7 @@
 package gg.babble.babble.service;
 
 import gg.babble.babble.domain.Game;
-import gg.babble.babble.domain.GameRepository;
+import gg.babble.babble.domain.repository.GameRepository;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import org.springframework.stereotype.Service;
 
