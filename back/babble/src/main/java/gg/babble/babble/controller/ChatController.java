@@ -10,14 +10,16 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class ChatController {
     private final SimpMessagingTemplate template;
+    private final ChatService chatService;
 
-    public ChatController(final SimpMessagingTemplate template) {
+    public ChatController(final SimpMessagingTemplate template, final ChatService chatService) {
         this.template = template;
+        this.chatService = chatService;
     }
 
     @MessageMapping("/rooms/{roomId}/chat")
     public void chat(@DestinationVariable Long roomId, final MessageRequest messageRequest) {
         template.convertAndSend(String.format("/topic/rooms/%s/chat", roomId),
-                ChatService.sendChatMessage(messageRequest));
+                chatService.sendChatMessage(messageRequest));
     }
 }

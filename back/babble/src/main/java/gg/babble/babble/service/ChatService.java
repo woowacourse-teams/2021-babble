@@ -17,7 +17,7 @@ public class ChatService {
         }
     };
 
-    public static MessageResponse sendChatMessage(final MessageRequest messageRequest) {
+    public MessageResponse sendChatMessage(final MessageRequest messageRequest) {
         User user = DB.get(messageRequest.getUserId());
         String content = messageRequest.getContent();
 
