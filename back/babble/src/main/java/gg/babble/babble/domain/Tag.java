@@ -26,7 +26,7 @@ public class Tag {
     private Tag(String name, List<Room> rooms) {
         validate(name);
         this.name = name;
-        this.rooms = new ArrayList<>(rooms);
+        this.rooms = rooms;
     }
 
     private static void validate(String name) {

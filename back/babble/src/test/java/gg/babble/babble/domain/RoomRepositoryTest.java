@@ -7,6 +7,7 @@ import gg.babble.babble.service.TagService;
 import gg.babble.babble.service.UserService;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +31,6 @@ public class RoomRepositoryTest {
     @Autowired
     private TagService tagService;
 
-    @Autowired
-    private EntityManager entityManager;
-
     @DisplayName("생성한 방을 저장한다.")
     @Test
     void saveTest() {
@@ -45,7 +43,7 @@ public class RoomRepositoryTest {
                 .game(game)
                 .host(user)
                 .tags(tags).build());
-        entityManager.flush();
+        roomRepository.flush();
 
         assertThat(roomRepository.existsById(room.getId())).isTrue();
     }
