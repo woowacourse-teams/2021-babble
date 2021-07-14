@@ -14,11 +14,10 @@ public class TagServiceTest {
     @Autowired
     private TagService tagService;
 
-    @DisplayName("존재하지 않는 태그이면 예외 처리한다.")
+    @DisplayName("존재하지 않는 태그면 예외 처리한다.")
     @Test
     void tagNotFoundTest() {
         assertThatThrownBy(() -> tagService.findById("쏙옙뷁훑"))
             .isInstanceOf(BabbleNotFoundException.class);
     }
-
 }
