@@ -18,7 +18,7 @@
     - [x] 생성한 방을 DB에 저장한다.
         - [x] 생성된 시간을 저장한다.
 - [x] MariaDB 연결
-- Spring Rest Docs 구현
+- [x] Spring Rest Docs 구현
 
 ## 방 입장
 
