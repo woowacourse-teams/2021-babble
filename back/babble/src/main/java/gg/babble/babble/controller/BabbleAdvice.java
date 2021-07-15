@@ -2,6 +2,7 @@ package gg.babble.babble.controller;
 
 import gg.babble.babble.exception.BabbleException;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,8 +21,9 @@ public class BabbleAdvice {
         return ResponseEntity.badRequest().body(new ExceptionDto("unexpected runtime exception"));
     }
 
-    @NoArgsConstructor
+    @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     static class ExceptionDto {
         private String message;
     }
