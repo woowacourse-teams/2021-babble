@@ -3,11 +3,17 @@ package gg.babble.babble.domain;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import javax.persistence.*;
-
-import com.sun.istack.Nullable;
-import lombok.AllArgsConstructor;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -49,7 +55,8 @@ public class Room {
     private LocalDateTime createdDate;
 
     @Builder
-    public Room(Long id, @NonNull Game game, @NonNull User host, @NonNull List<Tag> tags, LocalDateTime createdDate) {
+    public Room(Long id, @NonNull Game game, @NonNull User host, @NonNull List<Tag> tags,
+        LocalDateTime createdDate) {
         this.id = id;
         this.game = game;
         this.host = host;
@@ -60,5 +67,17 @@ public class Room {
 
     public void join(User guest) {
         guests.add(guest);
+
+        if (guest.getRoom() != this) {
+            guest.join(this);
+        }
+    }
+
+    public void exit(User user) {
+        guests.remove(user);
+    }
+
+    public boolean hasNotUser(User user) {
+        return !guests.contains(user);
     }
 }

@@ -9,11 +9,10 @@ import gg.babble.babble.domain.repository.RoomRepository;
 import gg.babble.babble.domain.repository.TagRepository;
 import gg.babble.babble.domain.repository.UserRepository;
 import gg.babble.babble.exception.BabbleNotFoundException;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
-
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
 
 @Component
 public class DataLoader implements CommandLineRunner {
@@ -23,7 +22,8 @@ public class DataLoader implements CommandLineRunner {
     private final TagRepository tagRepository;
     private final RoomRepository roomRepository;
 
-    public DataLoader(GameRepository gameRepository, UserRepository userRepository, TagRepository tagRepository, RoomRepository roomRepository) {
+    public DataLoader(GameRepository gameRepository, UserRepository userRepository,
+        TagRepository tagRepository, RoomRepository roomRepository) {
         this.gameRepository = gameRepository;
         this.userRepository = userRepository;
         this.tagRepository = tagRepository;
@@ -92,14 +92,15 @@ public class DataLoader implements CommandLineRunner {
     private void prepareDummyRoom() {
         Game game = gameRepository.findById(1L).orElseThrow(BabbleNotFoundException::new);
         User user = userRepository.findById(1L).orElseThrow(BabbleNotFoundException::new);
-        List<Tag> tags = Arrays.asList(tagRepository.findById("실버").orElseThrow(BabbleNotFoundException::new),
+        List<Tag> tags = Arrays
+            .asList(tagRepository.findById("실버").orElseThrow(BabbleNotFoundException::new),
                 tagRepository.findById("2시간").orElseThrow(BabbleNotFoundException::new));
         Room room = Room.builder()
-                .id(1L)
-                .game(game)
-                .host(user)
-                .tags(tags)
-                .build();
+            .id(1L)
+            .game(game)
+            .host(user)
+            .tags(tags)
+            .build();
 
         roomRepository.save(room);
     }

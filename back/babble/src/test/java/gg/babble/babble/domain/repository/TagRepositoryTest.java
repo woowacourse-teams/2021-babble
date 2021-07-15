@@ -3,7 +3,6 @@ package gg.babble.babble.domain.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import gg.babble.babble.ApplicationTest;
-import gg.babble.babble.domain.repository.TagRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;

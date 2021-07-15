@@ -1,25 +1,25 @@
 package gg.babble.babble.domain.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.domain.Game;
 import gg.babble.babble.domain.Room;
 import gg.babble.babble.domain.Tag;
 import gg.babble.babble.domain.User;
-import gg.babble.babble.domain.repository.RoomRepository;
+import gg.babble.babble.exception.BabbleNotFoundException;
 import gg.babble.babble.service.GameService;
 import gg.babble.babble.service.TagService;
 import gg.babble.babble.service.UserService;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
+@Transactional
 public class RoomRepositoryTest extends ApplicationTest {
 
     @Autowired
@@ -35,7 +35,6 @@ public class RoomRepositoryTest extends ApplicationTest {
     private TagService tagService;
 
     @DisplayName("방 더미 데이터를 확인한다.")
-    @Transactional
     @Test
     void dummyGameTest() {
         Optional<Room> room = roomRepository.findById(1L);
@@ -95,5 +94,21 @@ public class RoomRepositoryTest extends ApplicationTest {
         Room room = saveRoom();
 
         assertThat(room.getCreatedDate()).isNotNull();
+    }
+
+    @DisplayName("방에 유저가 입장한다.")
+    @Test
+    void joinRoom() {
+        Room room = roomRepository.findById(1L).orElseThrow(BabbleNotFoundException::new);
+        User guest = User.builder()
+            .id(2L)
+            .name("손님")
+            .build();
+
+        room.join(guest);
+
+        assertThat(room.getGuests()).hasSize(1);
+        assertThat(room.getGuests()).contains(guest);
+        assertThat(guest.getRoom()).isEqualTo(room);
     }
 }
