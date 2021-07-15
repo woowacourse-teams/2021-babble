@@ -2,28 +2,18 @@ package gg.babble.babble.domain;
 
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleNotFoundException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @EntityListeners(AuditingEntityListener.class)
 @Getter
@@ -48,8 +38,8 @@ public class Room {
     @NonNull
     @ManyToMany
     @JoinTable(name = "room_tag",
-        joinColumns = @JoinColumn(name = "room_id"),
-        inverseJoinColumns = @JoinColumn(name = "tag_name"))
+            joinColumns = @JoinColumn(name = "room_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_name"))
     private List<Tag> tags;
 
     @OneToMany(mappedBy = "room")
@@ -63,7 +53,7 @@ public class Room {
 
     @Builder
     public Room(final Long id, @NonNull final Game game, @NonNull final User host, @NonNull final List<Tag> tags,
-        LocalDateTime createdDate) {
+                LocalDateTime createdDate) {
         this.id = id;
         this.game = game;
         this.host = host;

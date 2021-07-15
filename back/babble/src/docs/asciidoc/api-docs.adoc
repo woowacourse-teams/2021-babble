@@ -5,7 +5,7 @@ Wilder<gyuhanKang@gmail.com>
 :sectnums:
 
 [width="15%"]
-[cols="^,^", options="headers"]
+[cols="^,^",options="headers"]
 |===
 | Method | Content
 
@@ -25,22 +25,28 @@ Wilder<gyuhanKang@gmail.com>
 == 방 생성 API
 
 === HTTP Request
+
 include::{snippets}/create-room-test/http-request.adoc[]
 [width="40%"]
-[cols="^,^,^", options="headers"]
+[cols="^,^,^",options="headers"]
 include::{snippets}/create-room/request-fields.adoc[]
+
 === HTTP Response
+
 include::{snippets}/create-room-test/http-response.adoc[]
 [width="40%"]
-[cols="^,^,^", options="headers"]
+[cols="^,^,^",options="headers"]
 include::{snippets}/create-room/response-fields.adoc[]
 
 == 방 조회 API
 
 === HTTP Request
+
 include::{snippets}/read-room-test/http-request.adoc[]
+
 === HTTP Response
+
 include::{snippets}/read-room-test/http-response.adoc[]
 [width="40%"]
-[cols="^,^,^", options="headers"]
+[cols="^,^,^",options="headers"]
 include::{snippets}/read-room/response-fields.adoc[]

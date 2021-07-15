@@ -24,17 +24,17 @@ public class RoomResponseDto {
 
     public static RoomResponseDto from(final Room room) {
         return RoomResponseDto.builder()
-            .roomId(room.getId())
-            .createdDate(room.getCreatedDate().toString())
-            .game(GameResponseDto.from(room.getGame()))
-            .host(HostResponseDto.from(room.getHost()))
-            .tags(tagNames(room.getTags()))
-            .build();
+                .roomId(room.getId())
+                .createdDate(room.getCreatedDate().toString())
+                .game(GameResponseDto.from(room.getGame()))
+                .host(HostResponseDto.from(room.getHost()))
+                .tags(tagNames(room.getTags()))
+                .build();
     }
 
     private static List<String> tagNames(final List<Tag> tags) {
         return tags.stream()
-            .map(Tag::getName)
-            .collect(Collectors.toList());
+                .map(Tag::getName)
+                .collect(Collectors.toList());
     }
 }

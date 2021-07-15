@@ -19,12 +19,12 @@ public class TagService {
 
     public Tag findById(String name) {
         return tagRepository.findById(name)
-            .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 태그입니다."));
+                .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 태그입니다."));
     }
 
     public List<Tag> findById(List<String> names) {
         return names.stream().
-            map(this::findById)
-            .collect(Collectors.toList());
+                map(this::findById)
+                .collect(Collectors.toList());
     }
 }

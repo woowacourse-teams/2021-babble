@@ -17,8 +17,8 @@ public class HostResponseDto {
 
     public static HostResponseDto from(final User host) {
         return HostResponseDto.builder()
-            .id(host.getId())
-            .name(host.getName())
-            .build();
+                .id(host.getId())
+                .name(host.getName())
+                .build();
     }
 }
