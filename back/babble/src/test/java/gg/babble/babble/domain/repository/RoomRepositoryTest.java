@@ -7,6 +7,7 @@ import gg.babble.babble.domain.Game;
 import gg.babble.babble.domain.Room;
 import gg.babble.babble.domain.Tag;
 import gg.babble.babble.domain.User;
+import gg.babble.babble.exception.BabbleNotFoundException;
 import gg.babble.babble.service.GameService;
 import gg.babble.babble.service.TagService;
 import gg.babble.babble.service.UserService;
@@ -100,6 +101,7 @@ public class RoomRepositoryTest extends ApplicationTest {
         room.leave(room.getHost());
         roomRepository.flush();
 
-        assertThat(roomRepository.existsById(room.getId())).isFalse();
+        assertThat(roomRepository.findById(room.getId()).orElseThrow(BabbleNotFoundException::new)
+                .isDeleted()).isTrue();
     }
 }

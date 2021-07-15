@@ -1,5 +1,6 @@
 package gg.babble.babble.domain;
 
+import com.sun.istack.NotNull;
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import lombok.Builder;
@@ -13,6 +14,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @EntityListeners(AuditingEntityListener.class)
 @Getter
@@ -47,6 +49,9 @@ public class Room {
     @CreatedDate
     private LocalDateTime createdDate;
 
+    @Column(nullable = false)
+    private boolean isDeleted;
+
     @Builder
     public Room(Long id, @NonNull Game game, @NonNull User host, @NonNull List<Tag> tags,
         LocalDateTime createdDate) {
@@ -57,6 +62,7 @@ public class Room {
         this.createdDate = createdDate;
         this.guests = new ArrayList<>();
         host.join(this);
+        isDeleted = false;
     }
 
     public void join(User user) {
@@ -79,6 +85,7 @@ public class Room {
         if (host.equals(user)) {
             delegateHost();
         }
+
         guests.remove(user);
 
         if (user.hasRoom(this)) {
@@ -88,18 +95,30 @@ public class Room {
 
     private void delegateHost() {
         User hostToLeave = host;
+
+        if (guests.isEmpty()) {
+             host = null;
+             isDeleted = true;
+             return;
+        }
+
         host = guests.get(0);
         guests.remove(host);
+
         if (hostToLeave.hasRoom(this)) {
             hostToLeave.leave(this);
         }
     }
 
     public boolean hasUser(User user) {
-        return !hasNotUser(user);
+        return (Objects.nonNull(host) && host.equals(user)) || guests.contains(user);
     }
 
     public boolean hasNotUser(User user) {
-        return !(host.equals(user) || guests.contains(user));
+        return !hasUser(user);
+    }
+
+    public void delete() {
+        isDeleted = true;
     }
 }
