@@ -99,4 +99,27 @@ public class RoomTest {
         assertThatThrownBy(() -> room.leave(user))
             .isInstanceOf(BabbleNotFoundException.class);
     }
+
+    @DisplayName("호스트가 퇴장할 경우 가장 먼저 들어온 게스트가 호스트가 된다.")
+    @Test
+    void hostDelegate() {
+        User guest1 = User.builder()
+                .id(2L)
+                .name("게스트")
+                .build();
+        User guest2 = User.builder()
+                .id(3L)
+                .name("게스트")
+                .build();
+        User host = room.getHost();
+
+        room.join(guest1);
+        room.join(guest2);
+        room.leave(host);
+
+        assertThat(room.getGuests()).hasSize(1);
+        assertThat(room.getHost()).isEqualTo(guest1);
+        assertThat(host.getRoom()).isNull();
+        assertThat(guest1.getRoom()).isEqualTo(room);
+    }
 }

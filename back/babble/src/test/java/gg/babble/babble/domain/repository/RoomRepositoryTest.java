@@ -96,5 +96,4 @@ public class RoomRepositoryTest extends ApplicationTest {
 
         assertThat(room.getCreatedDate()).isNotNull();
     }
-
 }
