@@ -15,6 +15,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import gg.babble.babble.exception.BabbleNotFoundException;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -80,6 +82,10 @@ public class Room {
     }
 
     public void leave(User user) {
+        if (hasNotUser(user)) {
+            throw new BabbleNotFoundException("해당 방에 해당 유저가 존재하지 않습니다.");
+        }
+
         guests.remove(user);
 
         if (user.hasRoom(this)) {
