@@ -1,9 +1,7 @@
 package gg.babble.babble.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,4 +21,8 @@ public class User {
 
     @NonNull
     private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "room_id")
+    private Room room;
 }

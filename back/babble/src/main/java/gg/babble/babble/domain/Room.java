@@ -1,17 +1,12 @@
 package gg.babble.babble.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import java.util.Objects;
+import javax.persistence.*;
+
+import com.sun.istack.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,11 +15,9 @@ import lombok.NonNull;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-@Builder
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class Room {
 
@@ -49,6 +42,23 @@ public class Room {
         inverseJoinColumns = @JoinColumn(name = "tag_name"))
     private List<Tag> tags;
 
+    @OneToMany(mappedBy = "room")
+    private List<User> guests;
+
     @CreatedDate
     private LocalDateTime createdDate;
+
+    @Builder
+    public Room(Long id, @NonNull Game game, @NonNull User host, @NonNull List<Tag> tags, LocalDateTime createdDate) {
+        this.id = id;
+        this.game = game;
+        this.host = host;
+        this.tags = tags;
+        this.createdDate = createdDate;
+        this.guests = new ArrayList<>();
+    }
+
+    public void join(User guest) {
+        guests.add(guest);
+    }
 }
