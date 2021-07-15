@@ -437,7 +437,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
 </head>
-<body class="article">
+<body class="article toc2 toc-left">
 <div id="header">
 <h1>Babble API Docs</h1>
 <div class="details">
@@ -445,7 +445,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <span id="revnumber">version 0.0.1-SNAPSHOT,</span>
 <span id="revdate">15/07/2021</span>
 </div>
-<div id="toc" class="toc">
+<div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_방_생성_api">1. 방 생성 API</a>
@@ -466,33 +466,33 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="content">
 <div id="preamble">
 <div class="sectionbody">
-<table class="tableblock frame-all grid-all stretch">
+<table class="tableblock frame-all grid-all" style="width: 15%;">
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-top">Method</th>
-<th class="tableblock halign-left valign-top">Content</th>
+<th class="tableblock halign-center valign-top">Method</th>
+<th class="tableblock halign-center valign-top">Content</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>GET</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">읽기</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>GET</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">읽기</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>POST</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">추가</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>POST</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">추가</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>PUT</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">수정</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>PUT</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">수정</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>DELETE</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">삭제</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>DELETE</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">삭제</p></td>
 </tr>
 </tbody>
 </table>
@@ -518,7 +518,7 @@ Host: localhost:8080
 }</code></pre>
 </div>
 </div>
-<table class="tableblock frame-all grid-all stretch">
+<table class="tableblock frame-all grid-all" style="width: 40%;">
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -526,26 +526,26 @@ Host: localhost:8080
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-center valign-top">Path</th>
+<th class="tableblock halign-center valign-top">Type</th>
+<th class="tableblock halign-center valign-top">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>gameId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">게임 Id</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>gameId</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">게임 Id</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>hostId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">호스트 Id</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>hostId</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">호스트 Id</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>tags</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">태그 리스트</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>tags</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">태그 리스트</p></td>
 </tr>
 </tbody>
 </table>
@@ -561,7 +561,7 @@ Content-Length: 236
 
 {
   "roomId" : 5,
-  "createdDate" : "2021-07-16T04:32:32.160952",
+  "createdDate" : "2021-07-16T04:50:28.233557",
   "game" : {
     "id" : 1,
     "name" : "League Of Legend"
@@ -574,7 +574,7 @@ Content-Length: 236
 }</code></pre>
 </div>
 </div>
-<table class="tableblock frame-all grid-all stretch">
+<table class="tableblock frame-all grid-all" style="width: 40%;">
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -582,46 +582,46 @@ Content-Length: 236
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-center valign-top">Path</th>
+<th class="tableblock halign-center valign-top">Type</th>
+<th class="tableblock halign-center valign-top">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>roomId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">방 Id</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>roomId</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">방 Id</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>createdDate</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">방 생성 시각</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>createdDate</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">방 생성 시각</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>game.id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">게임 Id</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>game.id</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">게임 Id</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>game.name</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">게임 이름</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>game.name</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">게임 이름</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>host.id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">호스트 Id</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>host.id</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">호스트 Id</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>host.name</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">호스트 닉네임</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>host.name</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">호스트 닉네임</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>tags</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">태그 리스트</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>tags</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">태그 리스트</p></td>
 </tr>
 </tbody>
 </table>
@@ -651,7 +651,7 @@ Content-Length: 220
 
 {
   "roomId" : 1,
-  "createdDate" : "2021-07-16T04:32:31.196995",
+  "createdDate" : "2021-07-16T04:50:26.032303",
   "game" : {
     "id" : 1,
     "name" : "League Of Legend"
@@ -664,7 +664,7 @@ Content-Length: 220
 }</code></pre>
 </div>
 </div>
-<table class="tableblock frame-all grid-all stretch">
+<table class="tableblock frame-all grid-all" style="width: 40%;">
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -672,46 +672,46 @@ Content-Length: 220
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-center valign-top">Path</th>
+<th class="tableblock halign-center valign-top">Type</th>
+<th class="tableblock halign-center valign-top">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>roomId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">방 Id</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>roomId</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">방 Id</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>createdDate</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">방 생성 시각</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>createdDate</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">방 생성 시각</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>game.id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">게임 Id</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>game.id</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">게임 Id</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>game.name</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">게임 이름</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>game.name</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">게임 이름</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>host.id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">호스트 Id</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>host.id</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">호스트 Id</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>host.name</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">호스트 닉네임</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>host.name</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">호스트 닉네임</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>tags</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">태그 리스트</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>tags</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">태그 리스트</p></td>
 </tr>
 </tbody>
 </table>
@@ -722,7 +722,7 @@ Content-Length: 220
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2021-07-16 04:31:26 +0900
+Last updated 2021-07-16 04:49:57 +0900
 </div>
 </div>
 </body>
