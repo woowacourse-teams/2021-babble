@@ -6,6 +6,7 @@ import gg.babble.babble.domain.Room;
 import gg.babble.babble.domain.Tag;
 import gg.babble.babble.domain.User;
 import gg.babble.babble.domain.repository.RoomRepository;
+import gg.babble.babble.dto.RoomRequestDto;
 import gg.babble.babble.dto.RoomResponseDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

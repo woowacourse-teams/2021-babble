@@ -4,6 +4,7 @@ import gg.babble.babble.domain.Room;
 import gg.babble.babble.domain.repository.RoomRepository;
 import gg.babble.babble.dto.RoomRequestDto;
 import gg.babble.babble.dto.RoomResponseDto;
+import gg.babble.babble.exception.BabbleNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,5 +30,11 @@ public class RoomService {
             .tags(tagService.findById(roomRequestDto.getTags()))
             .build();
         return RoomResponseDto.from(roomRepository.save(room));
+    }
+
+    public RoomResponseDto findById(Long id) {
+        Room room = roomRepository.findById(id)
+            .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 방입니다."));
+        return RoomResponseDto.from(room);
     }
 }
