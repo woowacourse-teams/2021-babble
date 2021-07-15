@@ -1,0 +1,13 @@
+.linear-layout {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.col {
+  flex-direction: column;
+}
+
+.row {
+  flex-direction: row;
+}
