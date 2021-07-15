@@ -63,7 +63,7 @@ bootJar {
 task copyDocument(type: Copy) {
 	dependsOn bootJar
 
-	from file("build/asciidoc/html5/")
+	from file("build/docs/asciidoc/api-docs.html")
 	into file("src/main/resources/static/docs")
 }
 
