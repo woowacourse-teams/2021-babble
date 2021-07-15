@@ -87,29 +87,26 @@ public class ApiDocumentationIntegrationTest extends ApplicationTest {
 
     @Test
     public void readRoomTest() throws Exception {
-        mockMvc.perform(get("/api/rooms/1"))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.roomId").exists())
-                .andExpect(jsonPath("$.createdDate").exists())
-                .andExpect(jsonPath("$.game.id").value(1))
-                .andExpect(jsonPath("$.game.name").exists())
-                .andExpect(jsonPath("$.host.id").value(1))
-                .andExpect(jsonPath("$.host.name").exists())
-                .andExpect(jsonPath("$.tags").isArray())
-                .andExpect(jsonPath("$.tags", hasSize(3)))
-                .andExpect(jsonPath("$.tags", hasItem("실버")))
-                .andExpect(jsonPath("$.tags", hasItem("솔로랭크")))
-                .andExpect(jsonPath("$.tags", hasItem("2시간")))
-                .andDo(document("create-room",
-                        requestFields(fieldWithPath("gameId").description("게임 Id"),
-                                fieldWithPath("hostId").description("호스트 Id"),
-                                fieldWithPath("tags").description("태그 리스트")),
-                        responseFields(fieldWithPath("roomId").description("방 Id"),
-                                fieldWithPath("createdDate").description("방 생성 시각"),
-                                fieldWithPath("game.id").description("게임 Id"),
-                                fieldWithPath("game.name").description("게임 이름"),
-                                fieldWithPath("host.id").description("호스트 Id"),
-                                fieldWithPath("host.name").description("호스트 닉네임"),
-                                fieldWithPath("tags").description("태그 리스트"))));
+        mockMvc.perform(get("/api/rooms/1")
+            .accept(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.roomId").exists())
+            .andExpect(jsonPath("$.createdDate").exists())
+            .andExpect(jsonPath("$.game.id").value(1))
+            .andExpect(jsonPath("$.game.name").exists())
+            .andExpect(jsonPath("$.host.id").value(1))
+            .andExpect(jsonPath("$.host.name").exists())
+            .andExpect(jsonPath("$.tags").isArray())
+            .andExpect(jsonPath("$.tags", hasSize(2)))
+            .andExpect(jsonPath("$.tags", hasItem("실버")))
+            .andExpect(jsonPath("$.tags", hasItem("2시간")))
+            .andDo(document("read-room",
+                responseFields(fieldWithPath("roomId").description("방 Id"),
+                    fieldWithPath("createdDate").description("방 생성 시각"),
+                    fieldWithPath("game.id").description("게임 Id"),
+                    fieldWithPath("game.name").description("게임 이름"),
+                    fieldWithPath("host.id").description("호스트 Id"),
+                    fieldWithPath("host.name").description("호스트 닉네임"),
+                    fieldWithPath("tags").description("태그 리스트"))));
     }
 }
