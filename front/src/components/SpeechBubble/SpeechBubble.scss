@@ -1,31 +1,53 @@
 @use '../../../style/mixins' as m;
 
-.speech-bubble {
-  width: fit-content;
-  background: white;
+.speech-bubble-container {
+  margin-bottom: 1rem;
 
-  .text {
-    border-radius: m.border-radius(speech-bubble);
-    border: 1px solid m.grey-scale(6);
-    height: fit-content;
+  section {
+    &.row,
+    &.col {
+      align-items: flex-start;
+
+      span {
+        margin-bottom: 0.3rem;
+      }
+
+      img {
+        margin-right: 1rem;
+      }
+    }
+  }
+
+  .speech-bubble {
     width: fit-content;
-    max-width: 30rem;
-    padding: 1.2rem 2rem;
-    font-size: 1.3rem;
-    white-space: pre-wrap;
-  }
-
-  .time {
-    display: inline-block;
-    margin-top: 0.3rem;
-    color: m.grey-scale(10);
-  }
-
-  &.mine {
-    text-align: right;
+    background: white;
 
     .text {
-      border: 1px solid m.primary(babble-pink);
+      border-radius: m.border-radius(speech-bubble);
+      border: 1px solid m.grey-scale(6);
+      height: fit-content;
+      width: fit-content;
+      max-width: 30rem;
+      padding: 1.2rem 2rem;
+      font-size: 1.3rem;
+      white-space: pre-wrap;
+    }
+
+    .time {
+      display: inline-block;
+      margin-top: 0.3rem;
+      color: m.grey-scale(10);
+    }
+
+    &.mine {
+      .text {
+        border: 1px solid m.primary(babble-pink);
+      }
+
+      .time {
+        display: block;
+        text-align: right;
+      }
     }
   }
 }
