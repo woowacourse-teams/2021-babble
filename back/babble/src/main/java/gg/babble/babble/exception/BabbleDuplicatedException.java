@@ -5,7 +5,7 @@ public class BabbleDuplicatedException extends BabbleException {
     public BabbleDuplicatedException() {
     }
 
-    public BabbleDuplicatedException(String message) {
+    public BabbleDuplicatedException(final String message) {
         super(message);
     }
 }

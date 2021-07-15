@@ -6,7 +6,7 @@ public class BabbleLengthException extends BabbleException {
         super();
     }
 
-    public BabbleLengthException(String message) {
+    public BabbleLengthException(final String message) {
         super(message);
     }
 }

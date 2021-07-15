@@ -20,19 +20,19 @@ public class RoomController {
 
     private final RoomService roomService;
 
-    public RoomController(RoomService roomService) {
+    public RoomController(final RoomService roomService) {
         this.roomService = roomService;
     }
 
     @PostMapping
-    public ResponseEntity<RoomResponseDto> createRoom(@RequestBody RoomRequestDto roomRequestDto) {
+    public ResponseEntity<RoomResponseDto> createRoom(@RequestBody final RoomRequestDto roomRequestDto) {
         RoomResponseDto roomResponseDto = roomService.create(roomRequestDto);
         return ResponseEntity.created(URI.create("api/rooms/" + roomResponseDto.getRoomId()))
             .body(roomResponseDto);
     }
 
     @GetMapping("/{roomId}")
-    public ResponseEntity<RoomResponseDto> readRoom(@PathVariable Long roomId) {
+    public ResponseEntity<RoomResponseDto> readRoom(@PathVariable final Long roomId) {
         RoomResponseDto roomResponseDto = roomService.findById(roomId);
         return ResponseEntity.ok(roomResponseDto);
     }

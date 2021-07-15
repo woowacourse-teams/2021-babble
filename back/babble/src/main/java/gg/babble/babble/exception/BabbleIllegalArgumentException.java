@@ -5,7 +5,7 @@ public class BabbleIllegalArgumentException extends BabbleException {
     public BabbleIllegalArgumentException() {
     }
 
-    public BabbleIllegalArgumentException(String message) {
+    public BabbleIllegalArgumentException(final String message) {
         super(message);
     }
 }

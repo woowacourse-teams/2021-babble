@@ -6,7 +6,7 @@ public class BabbleNotFoundException extends BabbleException {
         super();
     }
 
-    public BabbleNotFoundException(String message) {
+    public BabbleNotFoundException(final String message) {
         super(message);
     }
 }

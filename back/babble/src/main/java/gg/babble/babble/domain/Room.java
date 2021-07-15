@@ -62,7 +62,7 @@ public class Room {
     private boolean isDeleted;
 
     @Builder
-    public Room(Long id, @NonNull Game game, @NonNull User host, @NonNull List<Tag> tags,
+    public Room(final Long id, @NonNull final Game game, @NonNull final User host, @NonNull final List<Tag> tags,
         LocalDateTime createdDate) {
         this.id = id;
         this.game = game;
@@ -74,7 +74,7 @@ public class Room {
         isDeleted = false;
     }
 
-    public void join(User user) {
+    public void join(final User user) {
         if (hasUser(user)) {
             throw new BabbleDuplicatedException("이미 해당 방에 참여 중입니다.");
         }
@@ -86,7 +86,7 @@ public class Room {
         }
     }
 
-    public void leave(User user) {
+    public void leave(final User user) {
         validateToLeave(user);
 
         if (isDeletable(user)) {
@@ -105,13 +105,13 @@ public class Room {
         isDeleted = true;
     }
 
-    private void delegateToLeave(User user) {
+    private void delegateToLeave(final User user) {
         if (user.hasRoom(this)) {
             user.leave(this);
         }
     }
 
-    private void validateToLeave(User user) {
+    private void validateToLeave(final User user) {
         if (hasNotUser(user)) {
             throw new BabbleNotFoundException("해당 방에 해당 유저가 존재하지 않습니다.");
         }
@@ -126,15 +126,15 @@ public class Room {
         delegateToLeave(hostToLeave);
     }
 
-    private boolean isDeletable(User user) {
+    private boolean isDeletable(final User user) {
         return host.equals(user) && guests.isEmpty();
     }
 
-    public boolean hasUser(User user) {
+    public boolean hasUser(final User user) {
         return (Objects.nonNull(host) && host.equals(user)) || guests.contains(user);
     }
 
-    public boolean hasNotUser(User user) {
+    public boolean hasNotUser(final User user) {
         return !hasUser(user);
     }
 }

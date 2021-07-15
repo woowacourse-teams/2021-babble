@@ -24,7 +24,7 @@ public class User {
     @JoinColumn(name = "room_id")
     private Room room;
 
-    public void join(Room room) {
+    public void join(final Room room) {
         if (Objects.nonNull(this.room)) {
             this.room.leave(this);
         }
@@ -36,7 +36,7 @@ public class User {
         }
     }
 
-    public void leave(Room room) {
+    public void leave(final Room room) {
         if (Objects.isNull(this.room) || !this.room.equals(room)) {
             throw new BabbleIllegalArgumentException("해당 방을 나갈 수 없습니다.");
         }
@@ -45,17 +45,17 @@ public class User {
         delegateToLeave(room);
     }
 
-    private void delegateToLeave(Room room) {
+    private void delegateToLeave(final Room room) {
         if (room.hasUser(this)) {
             room.leave(this);
         }
     }
 
-    public boolean hasRoom(Room room) {
+    public boolean hasRoom(final Room room) {
         return !hasNotRoom(room);
     }
 
-    public boolean hasNotRoom(Room room) {
+    public boolean hasNotRoom(final Room room) {
         return Objects.isNull(this.room) || !this.room.equals(room);
     }
 }

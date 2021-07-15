@@ -15,7 +15,7 @@ public class HostResponseDto {
     private Long id;
     private String name;
 
-    public static HostResponseDto from(User host) {
+    public static HostResponseDto from(final User host) {
         return HostResponseDto.builder()
             .id(host.getId())
             .name(host.getName())

@@ -16,7 +16,7 @@ public class TagRepositoryTest extends ApplicationTest {
     @DisplayName("태그 더미 데이터를 확인한다.")
     @ParameterizedTest
     @ValueSource(strings = {"실버", "2시간", "솔로랭크"})
-    void dummyGameTest(String tagName) {
+    void dummyGameTest(final String tagName) {
         assertThat(tagRepository.existsById(tagName)).isTrue();
     }
 }

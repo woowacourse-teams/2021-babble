@@ -23,7 +23,7 @@ public class DataLoader implements CommandLineRunner {
     private final TagRepository tagRepository;
     private final RoomRepository roomRepository;
 
-    public DataLoader(GameRepository gameRepository, UserRepository userRepository,
+    public DataLoader(final GameRepository gameRepository, final UserRepository userRepository,
         TagRepository tagRepository, RoomRepository roomRepository) {
         this.gameRepository = gameRepository;
         this.userRepository = userRepository;
@@ -32,7 +32,7 @@ public class DataLoader implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) {
+    public void run(final String... args) {
         prepareDummyGames();
         prepareDummyUsers();
         prepareDummyTags();

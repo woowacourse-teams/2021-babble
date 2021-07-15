@@ -18,7 +18,7 @@ public class GameRepositoryTest extends ApplicationTest {
     @DisplayName("게임 더미 데이터를 확인한다.")
     @ParameterizedTest
     @CsvSource({"1, League Of Legend", "2, Overwatch", "3, Apex Legend"})
-    void dummyGameTest(Long id, String gameName) {
+    void dummyGameTest(final Long id, final String gameName) {
         Optional<Game> game = gameRepository.findById(id);
         assertThat(game.isPresent()).isTrue();
         assertThat(game.get().getName()).isEqualTo(gameName);

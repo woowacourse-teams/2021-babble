@@ -23,13 +23,13 @@ public class Tag {
     @ManyToMany(mappedBy = "tags")
     private List<Room> rooms;
 
-    private Tag(String name, List<Room> rooms) {
+    private Tag(final String name, final List<Room> rooms) {
         validate(name);
         this.name = name;
         this.rooms = rooms;
     }
 
-    private static void validate(String name) {
+    private static void validate(final String name) {
         if (Objects.isNull(name) || name.length() < 1 || name.length() > 8) {
             throw new BabbleLengthException("이름의 길이는 1자 이상 8자 이하입니다.");
         }

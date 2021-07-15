@@ -22,7 +22,7 @@ public class RoomResponseDto {
     private HostResponseDto host;
     private List<String> tags;
 
-    public static RoomResponseDto from(Room room) {
+    public static RoomResponseDto from(final Room room) {
         return RoomResponseDto.builder()
             .roomId(room.getId())
             .createdDate(room.getCreatedDate().toString())
@@ -32,7 +32,7 @@ public class RoomResponseDto {
             .build();
     }
 
-    private static List<String> tagNames(List<Tag> tags) {
+    private static List<String> tagNames(final List<Tag> tags) {
         return tags.stream()
             .map(Tag::getName)
             .collect(Collectors.toList());

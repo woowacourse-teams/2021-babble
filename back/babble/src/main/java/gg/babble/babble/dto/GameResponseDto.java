@@ -15,7 +15,7 @@ public class GameResponseDto {
     private Long id;
     private String name;
 
-    public static GameResponseDto from(Game game) {
+    public static GameResponseDto from(final Game game) {
         return GameResponseDto.builder()
             .id(game.getId())
             .name(game.getName())
