@@ -143,5 +143,6 @@ public class RoomRepositoryTest extends ApplicationTest {
         room.join(guest2);
         room.leave(guest1);
         assertThat(room.getGuests()).hasSize(1);
+        assertThat(guest1.getRoom()).isNull();
     }
 }

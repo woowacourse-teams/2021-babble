@@ -79,8 +79,12 @@ public class Room {
         }
     }
 
-    public void exit(User user) {
+    public void leave(User user) {
         guests.remove(user);
+
+        if (user.hasRoom(this)) {
+            user.leave(this);
+        }
     }
 
     public boolean hasUser(User user) {

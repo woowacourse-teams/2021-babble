@@ -1,5 +1,6 @@
 package gg.babble.babble.domain;
 
+import gg.babble.babble.exception.BabbleIllegalArgumentException;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,7 +34,7 @@ public class User {
 
     public void join(Room room) {
         if (Objects.nonNull(this.room)) {
-            this.room.exit(this);
+            this.room.leave(this);
         }
 
         this.room = room;
@@ -41,6 +42,22 @@ public class User {
         if (room.hasNotUser(this)) {
             this.room.join(this);
         }
+    }
+
+    public void leave(Room room) {
+        if (Objects.isNull(this.room) || !this.room.equals(room)) {
+            throw new BabbleIllegalArgumentException("해당 방을 나갈 수 없습니다.");
+        }
+
+        this.room = null;
+
+        if (room.hasUser(this)) {
+            room.leave(this);
+        }
+    }
+
+    public boolean hasRoom(Room room) {
+        return !hasNotRoom(room);
     }
 
     public boolean hasNotRoom(Room room) {

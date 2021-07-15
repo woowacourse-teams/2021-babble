@@ -1,6 +1,6 @@
 package gg.babble.babble.exception;
 
-public class BabbleDuplicatedException extends BabbleException{
+public class BabbleDuplicatedException extends BabbleException {
 
     public BabbleDuplicatedException() {
     }
