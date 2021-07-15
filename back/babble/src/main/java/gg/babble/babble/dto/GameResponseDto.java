@@ -17,8 +17,8 @@ public class GameResponseDto {
 
     public static GameResponseDto from(Game game) {
         return GameResponseDto.builder()
-                .id(game.getId())
-                .name(game.getName())
-                .build();
+            .id(game.getId())
+            .name(game.getName())
+            .build();
     }
 }

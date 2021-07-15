@@ -16,7 +16,8 @@ public class DataLoader implements CommandLineRunner {
     private final UserRepository userRepository;
     private final TagRepository tagRepository;
 
-    public DataLoader(GameRepository gameRepository, UserRepository userRepository, TagRepository tagRepository) {
+    public DataLoader(GameRepository gameRepository, UserRepository userRepository,
+        TagRepository tagRepository) {
         this.gameRepository = gameRepository;
         this.userRepository = userRepository;
         this.tagRepository = tagRepository;
@@ -67,16 +68,16 @@ public class DataLoader implements CommandLineRunner {
 
     private void prepareDummyTags() {
         tagRepository.save(Tag.builder()
-                .name("실버")
-                .build()
+            .name("실버")
+            .build()
         );
         tagRepository.save(Tag.builder()
-                .name("2시간")
-                .build()
+            .name("2시간")
+            .build()
         );
         tagRepository.save(Tag.builder()
-                .name("솔로랭크")
-                .build()
+            .name("솔로랭크")
+            .build()
         );
     }
 }

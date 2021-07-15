@@ -2,13 +2,12 @@ package gg.babble.babble.dto;
 
 import gg.babble.babble.domain.Room;
 import gg.babble.babble.domain.Tag;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Builder
 @Getter
@@ -24,17 +23,17 @@ public class RoomResponseDto {
 
     public static RoomResponseDto from(Room room) {
         return RoomResponseDto.builder()
-                .roomId(room.getId())
-                .createdDate(room.getCreatedDate().toString())
-                .game(GameResponseDto.from(room.getGame()))
-                .host(HostResponseDto.from(room.getHost()))
-                .tags(tagNames(room.getTags()))
-                .build();
+            .roomId(room.getId())
+            .createdDate(room.getCreatedDate().toString())
+            .game(GameResponseDto.from(room.getGame()))
+            .host(HostResponseDto.from(room.getHost()))
+            .tags(tagNames(room.getTags()))
+            .build();
     }
 
     private static List<String> tagNames(List<Tag> tags) {
         return tags.stream()
-                .map(Tag::getName)
-                .collect(Collectors.toList());
+            .map(Tag::getName)
+            .collect(Collectors.toList());
     }
 }

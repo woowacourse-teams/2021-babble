@@ -25,6 +25,7 @@ public class BabbleAdvice {
     @AllArgsConstructor
     @NoArgsConstructor
     static class ExceptionDto {
+
         private String message;
     }
 }

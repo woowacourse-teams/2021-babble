@@ -1,18 +1,17 @@
 package gg.babble.babble.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.domain.repository.RoomRepository;
 import gg.babble.babble.service.GameService;
 import gg.babble.babble.service.TagService;
 import gg.babble.babble.service.UserService;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class RoomRepositoryTest extends ApplicationTest {
 
@@ -44,9 +43,9 @@ public class RoomRepositoryTest extends ApplicationTest {
             tagService.findById("2시간"));
 
         return roomRepository.save(Room.builder()
-                .game(game)
-                .host(user)
-                .tags(tags).build());
+            .game(game)
+            .host(user)
+            .tags(tags).build());
     }
 
     @DisplayName("방 생성 시각을 저장한다.")

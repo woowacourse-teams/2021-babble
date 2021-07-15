@@ -1,15 +1,14 @@
 package gg.babble.babble.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.domain.repository.GameRepository;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class GameRepositoryTest extends ApplicationTest {
 

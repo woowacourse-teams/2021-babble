@@ -9,12 +9,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class RoomService {
 
-    private RoomRepository roomRepository;
-    private GameService gameService;
-    private UserService userService;
-    private TagService tagService;
+    private final RoomRepository roomRepository;
+    private final GameService gameService;
+    private final UserService userService;
+    private final TagService tagService;
 
-    public RoomService(RoomRepository roomRepository, GameService gameService, UserService userService, TagService tagService) {
+    public RoomService(RoomRepository roomRepository, GameService gameService,
+        UserService userService, TagService tagService) {
         this.roomRepository = roomRepository;
         this.gameService = gameService;
         this.userService = userService;
@@ -23,10 +24,10 @@ public class RoomService {
 
     public RoomResponseDto create(RoomRequestDto roomRequestDto) {
         Room room = Room.builder()
-                .game(gameService.findById(roomRequestDto.getGameId()))
-                .host(userService.findById(roomRequestDto.getHostId()))
-                .tags(tagService.findById(roomRequestDto.getTags()))
-                .build();
+            .game(gameService.findById(roomRequestDto.getGameId()))
+            .host(userService.findById(roomRequestDto.getHostId()))
+            .tags(tagService.findById(roomRequestDto.getTags()))
+            .build();
         return RoomResponseDto.from(roomRepository.save(room));
     }
 }
