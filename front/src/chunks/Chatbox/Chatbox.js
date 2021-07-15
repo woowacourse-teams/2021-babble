@@ -1,6 +1,6 @@
 import './Chatbox.scss';
 
-import ChattingSection from '../../components/ChattingSection/ChattingSection';
+import ChattingArea from '../../components/ChattingArea/ChattingArea';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -15,7 +15,7 @@ const Chatbox = ({ roomNo, createdAt, children }) => {
         <article className='chatting-contents'>{children}</article>
       </section>
       <section className='chatting-form'>
-        <ChattingSection />
+        <ChattingArea />
       </section>
     </main>
   );
