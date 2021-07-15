@@ -125,4 +125,23 @@ public class RoomRepositoryTest extends ApplicationTest {
         room.join(guest);
         assertThatThrownBy(() -> room.join(guest)).isInstanceOf(BabbleDuplicatedException.class);
     }
+
+    @DisplayName("유저가 방에서 나간다.")
+    @Test
+    void leave() {
+        Room room = roomRepository.findById(1L).orElseThrow(BabbleNotFoundException::new);
+        User guest1 = User.builder()
+                .id(2L)
+                .name("손님")
+                .build();
+        User guest2 = User.builder()
+                .id(3L)
+                .name("손님")
+                .build();
+
+        room.join(guest1);
+        room.join(guest2);
+        room.leave(guest1);
+        assertThat(room.getGuests()).hasSize(1);
+    }
 }
