@@ -1,6 +1,7 @@
 package gg.babble.babble.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.domain.Game;
@@ -110,5 +111,18 @@ public class RoomRepositoryTest extends ApplicationTest {
         assertThat(room.getGuests()).hasSize(1);
         assertThat(room.getGuests()).contains(guest);
         assertThat(guest.getRoom()).isEqualTo(room);
+    }
+
+    @DisplayName("유저가 이미 방에 있을 때 다시 유저가 방 입장을 요청하면 예외가 발생한다.")
+    @Test
+    void alreadyJoin() {
+        Room room = roomRepository.findById(1L).orElseThrow(BabbleNotFoundException::new);
+        User guest = User.builder()
+                .id(2L)
+                .name("손님")
+                .build();
+
+        room.join(guest);
+        assertThatThrownBy(() -> room.join(guest)).isInstanceOf(BabbleDuplicatedException.class);
     }
 }
