@@ -2,6 +2,7 @@ package gg.babble.babble.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.domain.repository.RoomRepository;
 import gg.babble.babble.service.GameService;
 import gg.babble.babble.service.TagService;
@@ -17,8 +18,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Arrays;
 
-@SpringBootTest
-public class RoomRepositoryTest {
+public class RoomRepositoryTest extends ApplicationTest {
 
     @Autowired
     private RoomRepository roomRepository;

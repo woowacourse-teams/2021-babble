@@ -1,5 +1,6 @@
 package gg.babble.babble.service;
 
+import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,8 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@SpringBootTest
-public class UserServiceTest {
+public class UserServiceTest extends ApplicationTest {
 
     @Autowired
     private UserService userService;
