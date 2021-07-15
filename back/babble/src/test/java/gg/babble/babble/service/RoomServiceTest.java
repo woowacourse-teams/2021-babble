@@ -10,6 +10,8 @@ import gg.babble.babble.dto.RoomRequestDto;
 import gg.babble.babble.dto.RoomResponseDto;
 import java.time.LocalDateTime;
 import javax.transaction.Transactional;
+
+import gg.babble.babble.exception.BabbleNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RoomServiceTest extends ApplicationTest {
@@ -54,5 +57,12 @@ class RoomServiceTest extends ApplicationTest {
         RoomResponseDto roomResponseDto = roomService.findById(1L);
         assertThat(roomResponseDto).usingRecursiveComparison()
             .ignoringFields("rooms", "createdDate").isEqualTo(expected);
+    }
+
+    @DisplayName("방 Id가 없을 경우 예외를 던진다.")
+    @Test
+    void gameNotFoundTest() {
+        assertThatThrownBy(() -> roomService.findById(Long.MAX_VALUE))
+                .isInstanceOf(BabbleNotFoundException.class);
     }
 }
