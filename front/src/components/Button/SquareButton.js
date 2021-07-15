@@ -3,8 +3,8 @@ import './Button.scss';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const AngledButton = ({
-  size = 'full',
+const SquareButton = ({
+  size = 'medium',
   type = 'button',
   colored = true,
   children,
@@ -12,18 +12,18 @@ const AngledButton = ({
   return (
     <button
       type={type}
-      className={`angled-button ${size} ${colored ? 'colored' : 'plain'}`}
+      className={`square-button ${size} ${colored ? 'colored' : 'line'}`}
     >
       {children}
     </button>
   );
 };
 
-AngledButton.propTypes = {
+SquareButton.propTypes = {
   size: PropTypes.string,
   type: PropTypes.string,
   colored: PropTypes.bool,
   children: PropTypes.node,
 };
 
-export default AngledButton;
+export default SquareButton;

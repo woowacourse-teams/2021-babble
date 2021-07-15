@@ -3,11 +3,16 @@ import './Button.scss';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const RoundButton = ({ size, type = 'button', colored = false, children }) => {
+const RoundButton = ({
+  size = 'medium',
+  type = 'button',
+  colored = false,
+  children,
+}) => {
   return (
     <button
       type={type}
-      className={`round-button ${size} ${colored ? 'colored' : 'plain'}`}
+      className={`round-button ${size} ${colored ? 'colored' : 'line'}`}
     >
       {children}
     </button>
