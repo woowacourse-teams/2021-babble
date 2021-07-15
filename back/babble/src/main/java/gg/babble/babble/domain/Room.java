@@ -2,8 +2,12 @@ package gg.babble.babble.domain;
 
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import java.time.LocalDateTime;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
@@ -86,10 +90,22 @@ public class Room {
             throw new BabbleNotFoundException("해당 방에 해당 유저가 존재하지 않습니다.");
         }
 
+        if (host.equals(user)) {
+            delegateHost();
+        }
         guests.remove(user);
 
         if (user.hasRoom(this)) {
             user.leave(this);
+        }
+    }
+
+    private void delegateHost() {
+        User hostToLeave = host;
+        host = guests.get(0);
+        guests.remove(host);
+        if (hostToLeave.hasRoom(this)) {
+            hostToLeave.leave(this);
         }
     }
 
