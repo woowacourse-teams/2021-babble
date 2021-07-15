@@ -92,6 +92,6 @@ public class Room {
     }
 
     public boolean hasNotUser(User user) {
-        return !host.equals(user) && !guests.contains(user);
+        return !(host.equals(user) || guests.contains(user));
     }
 }

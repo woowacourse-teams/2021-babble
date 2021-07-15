@@ -123,6 +123,7 @@ public class RoomRepositoryTest extends ApplicationTest {
                 .build();
 
         room.join(guest);
+
         assertThatThrownBy(() -> room.join(guest)).isInstanceOf(BabbleDuplicatedException.class);
     }
 
@@ -142,6 +143,7 @@ public class RoomRepositoryTest extends ApplicationTest {
         room.join(guest1);
         room.join(guest2);
         room.leave(guest1);
+
         assertThat(room.getGuests()).hasSize(1);
         assertThat(guest1.getRoom()).isNull();
     }
