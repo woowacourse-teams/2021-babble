@@ -9,10 +9,11 @@ import gg.babble.babble.domain.repository.RoomRepository;
 import gg.babble.babble.domain.repository.TagRepository;
 import gg.babble.babble.domain.repository.UserRepository;
 import gg.babble.babble.exception.BabbleNotFoundException;
-import java.util.Arrays;
-import java.util.List;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 public class DataLoader implements CommandLineRunner {

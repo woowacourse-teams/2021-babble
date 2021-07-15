@@ -3,9 +3,10 @@ package gg.babble.babble.service;
 import gg.babble.babble.domain.Tag;
 import gg.babble.babble.domain.repository.TagRepository;
 import gg.babble.babble.exception.BabbleNotFoundException;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.stereotype.Service;
 
 @Service
 public class TagService {

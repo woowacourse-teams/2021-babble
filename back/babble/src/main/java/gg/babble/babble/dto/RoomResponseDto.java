@@ -2,12 +2,13 @@ package gg.babble.babble.dto;
 
 import gg.babble.babble.domain.Room;
 import gg.babble.babble.domain.Tag;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Builder
 @Getter

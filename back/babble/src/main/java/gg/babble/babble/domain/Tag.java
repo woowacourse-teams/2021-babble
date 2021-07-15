@@ -1,14 +1,15 @@
 package gg.babble.babble.domain;
 
 import gg.babble.babble.exception.BabbleLengthException;
-import java.util.List;
-import java.util.Objects;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import java.util.List;
+import java.util.Objects;
 
 @Builder
 @Getter
