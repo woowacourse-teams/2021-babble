@@ -9,6 +9,7 @@ import gg.babble.babble.service.TagService;
 import gg.babble.babble.service.UserService;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,29 @@ public class RoomRepositoryTest extends ApplicationTest {
 
     @Autowired
     private TagService tagService;
+
+    @DisplayName("방 더미 데이터를 확인한다.")
+    @Test
+    void dummyGameTest() {
+        Optional<Room> room = roomRepository.findById(1L);
+        assertThat(room.isPresent()).isTrue();
+        assertThat(room.get().getCreatedDate()).isNotNull();
+        assertThat(room.get().getGame())
+            .usingRecursiveComparison()
+            .isEqualTo(Game.builder()
+                .id(1L)
+                .name("League Of Legend")
+                .build());
+        assertThat(room.get().getHost())
+            .usingRecursiveComparison()
+            .isEqualTo(User.builder()
+                .id(1L)
+                .name("루트")
+                .build());
+        assertThat(room.get().getTags())
+            .usingRecursiveComparison()
+            .isEqualTo(Arrays.asList("실버", "2시간"));
+    }
 
     @DisplayName("생성한 방을 저장한다.")
     @Test
