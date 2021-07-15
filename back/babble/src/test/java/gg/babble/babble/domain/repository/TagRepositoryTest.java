@@ -1,4 +1,4 @@
-package gg.babble.babble.domain;
+package gg.babble.babble.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

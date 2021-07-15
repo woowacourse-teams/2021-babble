@@ -1,8 +1,9 @@
-package gg.babble.babble.domain;
+package gg.babble.babble.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import gg.babble.babble.ApplicationTest;
+import gg.babble.babble.domain.Game;
 import gg.babble.babble.domain.repository.GameRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
