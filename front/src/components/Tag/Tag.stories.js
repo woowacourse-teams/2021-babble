@@ -1,3 +1,4 @@
+import Caption2 from '../../core/Typography/Caption2';
 import React from 'react';
 import Tag from './Tag';
 import TagErasable from './TagErasable';
@@ -7,17 +8,19 @@ export default {
   component: [Tag, TagErasable],
 };
 
-const TagTemplate = (args) => <Tag {...args} />;
-const TagErasableTemplate = (args) => <TagErasable {...args} />;
+const TagTemplate = (args) => (
+  <>
+    <div style={{ margin: '1rem' }}>
+      <Tag {...args}>
+        <Caption2>실버</Caption2>
+      </Tag>
+    </div>
+    <div style={{ margin: '1rem' }}>
+      <TagErasable {...args}>
+        <Caption2>실버</Caption2>
+      </TagErasable>
+    </div>
+  </>
+);
 
 export const General = TagTemplate.bind({});
-
-General.args = {
-  children: '실버',
-};
-
-export const Erasable = TagErasableTemplate.bind({});
-
-Erasable.args = {
-  children: '실버',
-};

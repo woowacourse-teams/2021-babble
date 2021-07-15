@@ -9,9 +9,9 @@ const TagErasable = ({ children }) => {
   return (
     <Tag customClass='erasable'>
       {children}
-      <a className='tag-delete'>
+      <button className='tag-delete'>
         <IoCloseOutline size='18px' />
-      </a>
+      </button>
     </Tag>
   );
 };
