@@ -101,7 +101,9 @@ public class RoomRepositoryTest extends ApplicationTest {
         room.leave(room.getHost());
         roomRepository.flush();
 
-        assertThat(roomRepository.findById(room.getId()).orElseThrow(BabbleNotFoundException::new)
-                .isDeleted()).isTrue();
+        assertThat(roomRepository.findById(room.getId())
+            .orElseThrow(BabbleNotFoundException::new)
+            .isDeleted())
+            .isTrue();
     }
 }

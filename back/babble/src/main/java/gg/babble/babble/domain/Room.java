@@ -1,20 +1,29 @@
 package gg.babble.babble.domain;
 
-import com.sun.istack.NotNull;
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleNotFoundException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 @EntityListeners(AuditingEntityListener.class)
 @Getter
@@ -78,36 +87,47 @@ public class Room {
     }
 
     public void leave(User user) {
-        if (hasNotUser(user)) {
-            throw new BabbleNotFoundException("해당 방에 해당 유저가 존재하지 않습니다.");
-        }
+        validateToLeave(user);
 
+        if (isDeletable(user)) {
+            delete();
+            return;
+        }
         if (host.equals(user)) {
             delegateHost();
         }
 
         guests.remove(user);
+        delegateToLeave(user);
+    }
 
+    private void delete() {
+        isDeleted = true;
+    }
+
+    private void delegateToLeave(User user) {
         if (user.hasRoom(this)) {
             user.leave(this);
+        }
+    }
+
+    private void validateToLeave(User user) {
+        if (hasNotUser(user)) {
+            throw new BabbleNotFoundException("해당 방에 해당 유저가 존재하지 않습니다.");
         }
     }
 
     private void delegateHost() {
         User hostToLeave = host;
 
-        if (guests.isEmpty()) {
-             host = null;
-             isDeleted = true;
-             return;
-        }
-
         host = guests.get(0);
         guests.remove(host);
 
-        if (hostToLeave.hasRoom(this)) {
-            hostToLeave.leave(this);
-        }
+        delegateToLeave(hostToLeave);
+    }
+
+    private boolean isDeletable(User user) {
+        return host.equals(user) && guests.isEmpty();
     }
 
     public boolean hasUser(User user) {
@@ -116,9 +136,5 @@ public class Room {
 
     public boolean hasNotUser(User user) {
         return !hasUser(user);
-    }
-
-    public void delete() {
-        isDeleted = true;
     }
 }

@@ -37,8 +37,4 @@ public class RoomService {
             .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 방입니다."));
         return RoomResponseDto.from(room);
     }
-
-    public void deleteById(Long id) {
-        roomRepository.findById(id).orElseThrow(BabbleNotFoundException::new).delete();
-    }
 }

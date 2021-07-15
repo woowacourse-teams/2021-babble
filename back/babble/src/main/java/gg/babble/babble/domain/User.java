@@ -42,7 +42,10 @@ public class User {
         }
 
         this.room = null;
+        delegateToLeave(room);
+    }
 
+    private void delegateToLeave(Room room) {
         if (room.hasUser(this)) {
             room.leave(this);
         }
