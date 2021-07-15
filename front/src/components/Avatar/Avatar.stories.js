@@ -1,4 +1,7 @@
 import Avatar from './Avatar';
+import Body2 from '../../core/Typography/Body2';
+import Caption1 from '../../core/Typography/Caption1';
+import Caption2 from '../../core/Typography/Caption2';
 import React from 'react';
 
 export default {
@@ -12,24 +15,46 @@ export default {
   },
 };
 
-const AvatarTemplate = (args) => <Avatar {...args} />;
+const AvatarTemplate = (args) => (
+  <>
+    <div style={{ margin: '1rem' }}>
+      <Avatar size='small' {...args}>
+        <Caption2>defaultUser</Caption2>
+      </Avatar>
+    </div>
+    <div style={{ margin: '1rem' }}>
+      <Avatar size='medium' {...args}>
+        <Caption1>defaultUser</Caption1>
+      </Avatar>
+    </div>
+    <div style={{ margin: '1rem' }}>
+      <Avatar size='large' {...args}>
+        <Body2>defaultUser</Body2>
+      </Avatar>
+    </div>
+    <div style={{ margin: '1rem' }}>
+      <Avatar size='large' {...args}>
+        <Body2>defaultUser</Body2>
+        <span style={{ marginLeft: '1rem', color: '#ff005c' }}>
+          <Body2>HOST</Body2>
+        </span>
+      </Avatar>
+    </div>
+  </>
+);
 
-export const Vertical = AvatarTemplate.bind({});
+export const Column = AvatarTemplate.bind({});
 
-Vertical.args = {
-  size: 'medium',
+Column.args = {
   imageSrc:
     'https://i.pinimg.com/474x/1c/4b/f0/1c4bf0cdcc3102126b7caeb8749f5c55.jpg',
-  nickName: 'defaultUser 매맘밍뎅',
-  direction: 'vertical',
+  direction: 'col',
 };
 
-export const Horizontal = AvatarTemplate.bind({});
+export const Row = AvatarTemplate.bind({});
 
-Horizontal.args = {
-  size: 'medium',
+Row.args = {
   imageSrc:
     'https://i.pinimg.com/474x/1c/4b/f0/1c4bf0cdcc3102126b7caeb8749f5c55.jpg',
-  nickName: 'defaultUser',
-  direction: 'horizontal',
+  direction: 'row',
 };

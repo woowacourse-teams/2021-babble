@@ -1,27 +1,23 @@
 import './Avatar.scss';
 
+import AvatarImage from './AvatarImage';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const Avatar = ({
-  size = 'small',
-  nickName,
-  direction = 'vertical',
-  imageSrc = 'https://i.pinimg.com/474x/1c/4b/f0/1c4bf0cdcc3102126b7caeb8749f5c55.jpg',
-}) => {
+const Avatar = ({ size = 'small', direction = 'col', imageSrc, children }) => {
   return (
     <figure className={direction}>
-      <img src={imageSrc} alt='Avatar Image' className={size} />
-      <figcaption className={size}>{nickName}</figcaption>
+      <AvatarImage imageSrc={imageSrc} size={size} />
+      <figcaption className={size}>{children}</figcaption>
     </figure>
   );
 };
 
 Avatar.propTypes = {
   size: PropTypes.string,
-  nickName: PropTypes.string,
   direction: PropTypes.string,
   imageSrc: PropTypes.string,
+  children: PropTypes.node,
 };
 
 export default Avatar;
