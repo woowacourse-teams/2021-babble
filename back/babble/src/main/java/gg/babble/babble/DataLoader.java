@@ -1,13 +1,19 @@
 package gg.babble.babble;
 
 import gg.babble.babble.domain.Game;
+import gg.babble.babble.domain.Room;
 import gg.babble.babble.domain.Tag;
 import gg.babble.babble.domain.User;
 import gg.babble.babble.domain.repository.GameRepository;
+import gg.babble.babble.domain.repository.RoomRepository;
 import gg.babble.babble.domain.repository.TagRepository;
 import gg.babble.babble.domain.repository.UserRepository;
+import gg.babble.babble.exception.BabbleNotFoundException;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 public class DataLoader implements CommandLineRunner {
@@ -15,12 +21,13 @@ public class DataLoader implements CommandLineRunner {
     private final GameRepository gameRepository;
     private final UserRepository userRepository;
     private final TagRepository tagRepository;
+    private final RoomRepository roomRepository;
 
-    public DataLoader(GameRepository gameRepository, UserRepository userRepository,
-        TagRepository tagRepository) {
+    public DataLoader(GameRepository gameRepository, UserRepository userRepository, TagRepository tagRepository, RoomRepository roomRepository) {
         this.gameRepository = gameRepository;
         this.userRepository = userRepository;
         this.tagRepository = tagRepository;
+        this.roomRepository = roomRepository;
     }
 
     @Override
@@ -28,6 +35,7 @@ public class DataLoader implements CommandLineRunner {
         prepareDummyGames();
         prepareDummyUsers();
         prepareDummyTags();
+        prepareDummyRoom();
     }
 
     private void prepareDummyGames() {
@@ -79,5 +87,20 @@ public class DataLoader implements CommandLineRunner {
             .name("솔로랭크")
             .build()
         );
+    }
+
+    private void prepareDummyRoom() {
+        Game game = gameRepository.findById(1L).orElseThrow(BabbleNotFoundException::new);
+        User user = userRepository.findById(1L).orElseThrow(BabbleNotFoundException::new);
+        List<Tag> tags = Arrays.asList(tagRepository.findById("실버").orElseThrow(BabbleNotFoundException::new),
+                tagRepository.findById("2시간").orElseThrow(BabbleNotFoundException::new));
+        Room room = Room.builder()
+                .id(1L)
+                .game(game)
+                .host(user)
+                .tags(tags)
+                .build();
+
+        roomRepository.save(room);
     }
 }
