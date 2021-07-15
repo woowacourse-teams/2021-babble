@@ -1,22 +1,18 @@
 package gg.babble.babble.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.domain.Game;
 import gg.babble.babble.domain.Room;
 import gg.babble.babble.domain.Tag;
 import gg.babble.babble.domain.User;
-import gg.babble.babble.exception.BabbleDuplicatedException;
-import gg.babble.babble.exception.BabbleNotFoundException;
 import gg.babble.babble.service.GameService;
 import gg.babble.babble.service.TagService;
 import gg.babble.babble.service.UserService;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,5 +91,15 @@ public class RoomRepositoryTest extends ApplicationTest {
         Room room = saveRoom();
 
         assertThat(room.getCreatedDate()).isNotNull();
+    }
+
+    @DisplayName("방에 모든 유저가 나갈 경우 방을 삭제한다.")
+    @Test
+    void removeRoomWithoutUsers() {
+        Room room = saveRoom();
+        room.leave(room.getHost());
+        roomRepository.flush();
+
+        assertThat(roomRepository.existsById(room.getId())).isFalse();
     }
 }
