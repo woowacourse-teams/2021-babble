@@ -1,5 +1,6 @@
 package gg.babble.babble.domain;
 
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -31,7 +32,7 @@ public class User {
     private Room room;
 
     public void join(Room room) {
-        if (this.room != null) {
+        if (Objects.nonNull(this.room)) {
             this.room.exit(this);
         }
 
@@ -40,5 +41,9 @@ public class User {
         if (room.hasNotUser(this)) {
             this.room.join(this);
         }
+    }
+
+    public boolean hasNotRoom(Room room) {
+        return Objects.isNull(this.room) || !this.room.equals(room);
     }
 }

@@ -8,6 +8,7 @@ import gg.babble.babble.domain.Game;
 import gg.babble.babble.domain.Room;
 import gg.babble.babble.domain.Tag;
 import gg.babble.babble.domain.User;
+import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import gg.babble.babble.service.GameService;
 import gg.babble.babble.service.TagService;
@@ -20,7 +21,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
 public class RoomRepositoryTest extends ApplicationTest {
 
     @Autowired

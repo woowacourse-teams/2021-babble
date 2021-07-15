@@ -1,5 +1,6 @@
 package gg.babble.babble.domain;
 
+import gg.babble.babble.exception.BabbleDuplicatedException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,13 +64,18 @@ public class Room {
         this.tags = tags;
         this.createdDate = createdDate;
         this.guests = new ArrayList<>();
+        host.join(this);
     }
 
-    public void join(User guest) {
-        guests.add(guest);
+    public void join(User user) {
+        if (hasUser(user)) {
+            throw new BabbleDuplicatedException("이미 해당 방에 참여 중입니다.");
+        }
 
-        if (guest.getRoom() != this) {
-            guest.join(this);
+        guests.add(user);
+
+        if (user.hasNotRoom(this)) {
+            user.join(this);
         }
     }
 
@@ -77,7 +83,11 @@ public class Room {
         guests.remove(user);
     }
 
+    public boolean hasUser(User user) {
+        return !hasNotUser(user);
+    }
+
     public boolean hasNotUser(User user) {
-        return !guests.contains(user);
+        return !host.equals(user) && !guests.contains(user);
     }
 }
