@@ -15,7 +15,7 @@ public class UserServiceTest extends ApplicationTest {
 
     @DisplayName("유저 Id가 없을 경우 예외를 던진다.")
     @Test
-    void gameNotFoundTest() {
+    void userNotFoundTest() {
         assertThatThrownBy(() -> userService.findById(Long.MAX_VALUE))
             .isInstanceOf(BabbleNotFoundException.class);
     }

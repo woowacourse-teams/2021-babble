@@ -16,6 +16,7 @@ import gg.babble.babble.service.UserService;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,13 @@ public class RoomRepositoryTest extends ApplicationTest {
 
     @Autowired
     private TagService tagService;
+
+    private Room room;
+
+    @BeforeEach
+    void setUp() {
+        room = roomRepository.findById(1L).orElseThrow(BabbleNotFoundException::new);
+    }
 
     @DisplayName("방 더미 데이터를 확인한다.")
     @Test
@@ -100,7 +108,6 @@ public class RoomRepositoryTest extends ApplicationTest {
     @DisplayName("방에 유저가 입장한다.")
     @Test
     void joinRoom() {
-        Room room = roomRepository.findById(1L).orElseThrow(BabbleNotFoundException::new);
         User guest = User.builder()
             .id(2L)
             .name("손님")
@@ -116,7 +123,6 @@ public class RoomRepositoryTest extends ApplicationTest {
     @DisplayName("유저가 이미 방에 있을 때 다시 유저가 방 입장을 요청하면 예외가 발생한다.")
     @Test
     void alreadyJoin() {
-        Room room = roomRepository.findById(1L).orElseThrow(BabbleNotFoundException::new);
         User guest = User.builder()
                 .id(2L)
                 .name("손님")
@@ -130,7 +136,6 @@ public class RoomRepositoryTest extends ApplicationTest {
     @DisplayName("유저가 방에서 나간다.")
     @Test
     void leave() {
-        Room room = roomRepository.findById(1L).orElseThrow(BabbleNotFoundException::new);
         User guest1 = User.builder()
                 .id(2L)
                 .name("손님")
@@ -146,5 +151,14 @@ public class RoomRepositoryTest extends ApplicationTest {
 
         assertThat(room.getGuests()).hasSize(1);
         assertThat(guest1.getRoom()).isNull();
+    }
+
+    @DisplayName("존재하지 않는 유저가 방을 나갈 때 예외 처리한다.")
+    @Test
+    void leavingUserNotFoundInRoom() {
+        User user = userService.findById(2L);
+
+        assertThatThrownBy(() -> room.leave(user))
+            .isInstanceOf(BabbleNotFoundException.class);
     }
 }

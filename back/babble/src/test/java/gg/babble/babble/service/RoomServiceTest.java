@@ -56,7 +56,7 @@ class RoomServiceTest extends ApplicationTest {
 
     @DisplayName("방 Id가 없을 경우 예외를 던진다.")
     @Test
-    void gameNotFoundTest() {
+    void roomNotFoundTest() {
         assertThatThrownBy(() -> roomService.findById(Long.MAX_VALUE))
             .isInstanceOf(BabbleNotFoundException.class);
     }
