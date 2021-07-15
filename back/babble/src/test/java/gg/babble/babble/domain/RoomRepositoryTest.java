@@ -30,33 +30,38 @@ public class RoomRepositoryTest extends ApplicationTest {
     @Autowired
     private TagService tagService;
 
-    @Transactional
     @DisplayName("방 더미 데이터를 확인한다.")
+    @Transactional
     @Test
     void dummyGameTest() {
         Optional<Room> room = roomRepository.findById(1L);
 
-        Game game = Game.builder()
-                .id(1L)
-                .name("League Of Legend")
-                .build();
-        User host = User.builder()
-                .id(1L)
-                .name("루트")
-                .build();
-        List<Tag> tags = Arrays.asList(Tag.builder()
-                        .name("실버")
-                        .build(),
-                Tag.builder()
-                        .name("2시간")
-                        .build()
+        Game expectedGame = Game.builder()
+            .id(1L)
+            .name("League Of Legend")
+            .build();
+        User expectedHost = User.builder()
+            .id(1L)
+            .name("루트")
+            .build();
+
+        List<Tag> expectedTags = Arrays.asList(Tag.builder()
+                .name("실버")
+                .build(),
+            Tag.builder()
+                .name("2시간")
+                .build()
         );
 
         assertThat(room.isPresent()).isTrue();
         assertThat(room.get().getCreatedDate()).isNotNull();
-        assertThat(room.get().getGame()).usingRecursiveComparison().isEqualTo(game);
-        assertThat(room.get().getHost()).usingRecursiveComparison().isEqualTo(host);
-        assertThat(room.get().getTags()).usingRecursiveComparison().ignoringFields("rooms").isEqualTo(tags);
+        assertThat(room.get().getGame()).usingRecursiveComparison()
+            .isEqualTo(expectedGame);
+        assertThat(room.get().getHost()).usingRecursiveComparison()
+            .isEqualTo(expectedHost);
+        assertThat(room.get().getTags()).usingRecursiveComparison()
+            .ignoringFields("rooms")
+            .isEqualTo(expectedTags);
     }
 
     @DisplayName("생성한 방을 저장한다.")
