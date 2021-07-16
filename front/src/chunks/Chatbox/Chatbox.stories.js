@@ -2,9 +2,11 @@ import Chatbox from './Chatbox';
 import React from 'react';
 import SpeechBubble from '../../components/SpeechBubble/SpeechBubble';
 import SpeechBubbleWithAvatar from '../../components/SpeechBubble/SpeechBubbleWithAvatar';
+import { withA11y } from '@storybook/addon-a11y';
 
 export default {
   title: 'chunks/Chatbox',
+  decorators: [withA11y],
   component: Chatbox,
 };
 
@@ -36,5 +38,5 @@ export const Default = ChatboxTemplate.bind({});
 
 Default.args = {
   roomNo: 10,
-  createdAt: new Date(),
+  createdAt: '2021-07-05T00:00:00.000Z',
 };

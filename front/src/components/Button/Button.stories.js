@@ -14,10 +14,10 @@ const SquareButtonTemplate = () => (
   <>
     <div
       style={{
-        'display': 'flex',
-        'justify-content': 'space-around',
-        'align-items': 'center',
-        'width': '54rem',
+        display: 'flex',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        width: '54rem',
       }}
     >
       <SquareButton size='small'>
@@ -39,10 +39,10 @@ const SquareButtonTemplate = () => (
     <br />
     <div
       style={{
-        'display': 'flex',
-        'justify-content': 'space-around',
-        'align-items': 'center',
-        'width': '54rem',
+        display: 'flex',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        width: '54rem',
       }}
     >
       <SquareButton size='small' colored={false}>
@@ -68,10 +68,10 @@ const RoundButtonTemplate = () => (
   <>
     <div
       style={{
-        'display': 'flex',
-        'justify-content': 'space-around',
-        'align-items': 'center',
-        'width': '54rem',
+        display: 'flex',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        width: '54rem',
       }}
     >
       <RoundButton size='small' colored={true}>
@@ -93,10 +93,10 @@ const RoundButtonTemplate = () => (
     <br />
     <div
       style={{
-        'display': 'flex',
-        'justify-content': 'space-around',
-        'align-items': 'center',
-        'width': '54rem',
+        display: 'flex',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        width: '54rem',
       }}
     >
       <RoundButton size='small'>

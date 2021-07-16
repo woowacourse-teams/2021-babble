@@ -2,25 +2,7 @@
 @use '../../../style/mixins' as m;
 
 .tag-list-container {
-  & > section {
-    justify-content: space-between;
-
-    h5 {
-      margin-right: 2rem;
-    }
-  }
-
   & .tag-container {
     margin-right: 1rem;
-  }
-
-  .room-minimize,
-  .room-exit {
-    cursor: pointer;
-    margin-right: 0.5rem;
-
-    :hover {
-      color: m.primary(babble-pink);
-    }
   }
 }
