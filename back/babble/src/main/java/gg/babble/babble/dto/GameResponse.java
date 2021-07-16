@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GameResponseDto {
+public class GameResponse {
 
     private Long id;
     private String name;
 
-    public static GameResponseDto from(final Game game) {
-        return GameResponseDto.builder()
+    public static GameResponse from(final Game game) {
+        return GameResponse.builder()
                 .id(game.getId())
                 .name(game.getName())
                 .build();
