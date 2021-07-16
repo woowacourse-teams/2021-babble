@@ -1,10 +1,10 @@
 import '../global.scss';
 
 import React from 'react';
-import RoomPage from './pages/RoomPage';
+import RoomList from './pages/RoomList/RoomList';
 
 const App = () => {
-  return <RoomPage />;
+  return <RoomList />;
 };
 
 export default App;
