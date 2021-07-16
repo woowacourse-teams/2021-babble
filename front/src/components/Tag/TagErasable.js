@@ -1,5 +1,6 @@
 import './Tag.scss';
 
+import BadgeClickable from '../Badge/BadgeClickable';
 import { IoCloseOutline } from 'react-icons/io5';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -9,9 +10,10 @@ const TagErasable = ({ children }) => {
   return (
     <Tag customClass='erasable'>
       {children}
-      <button className='tag-delete'>
+
+      <BadgeClickable>
         <IoCloseOutline size='18px' />
-      </button>
+      </BadgeClickable>
     </Tag>
   );
 };

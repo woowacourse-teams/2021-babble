@@ -15,13 +15,7 @@
 .erasable {
   padding: 0.4rem 0.8rem 0.4rem 1.2rem;
 
-  .tag-delete {
-    display: flex;
-    margin-left: 0.4rem;
-    cursor: pointer;
-
-    :hover {
-      color: m.primary(babble-pink);
-    }
+  button:hover {
+    color: m.primary(babble-pink);
   }
 }
