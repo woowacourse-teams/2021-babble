@@ -25,7 +25,7 @@ const SpeechBubbleWithAvatar = ({
 };
 
 SpeechBubbleWithAvatar.propTypes = {
-  size: PropTypes.sting,
+  size: PropTypes.string,
   time: PropTypes.string,
   nickname: PropTypes.string,
   children: PropTypes.node,

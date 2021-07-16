@@ -1,6 +1,7 @@
 import React from 'react';
 import SpeechBubble from './SpeechBubble';
 import SpeechBubbleWithAvatar from './SpeechBubbleWithAvatar';
+import Subtitle3 from '../../core/Typography/Subtitle3';
 
 export default {
   title: 'components/SpeechBubble',
@@ -16,8 +17,16 @@ const SpeechBubbleTemplate = (args) => (
       'justify-content': 'space-around',
     }}
   >
-    <SpeechBubble {...args} />
-    <SpeechBubble type='mine' {...args} />
+    <div style={{ margin: '8rem 0 1rem 0' }}>
+      <Subtitle3>상대방의 채팅</Subtitle3>
+      <br />
+      <SpeechBubble {...args} />
+    </div>
+    <div style={{ marginBottom: '1rem' }}>
+      <Subtitle3>나의 채팅</Subtitle3>
+      <br />
+      <SpeechBubble type='mine' {...args} />
+    </div>
   </div>
 );
 

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 const LinearLayout = ({ direction = 'col', children }) => {
-  return <section className={`${direction} linear-layout`}>{children}</section>;
+  return <section className={`linear-layout ${direction}`}>{children}</section>;
 };
 
 LinearLayout.propTypes = {
