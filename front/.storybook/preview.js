@@ -1,6 +1,10 @@
 import '../global.scss';
 
+import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 import React from 'react';
+import { addParameters } from '@storybook/react';
+import { addons } from '@storybook/addons';
+import theme from './theme';
 
 export const decorators = [(Story) => <Story />];
 
@@ -13,3 +17,12 @@ export const parameters = {
     },
   },
 };
+
+addParameters({
+  viewport: {
+    defaultViewport: 'desktop',
+    viewports: INITIAL_VIEWPORTS,
+  },
+});
+
+addons.setConfig({ theme: theme });

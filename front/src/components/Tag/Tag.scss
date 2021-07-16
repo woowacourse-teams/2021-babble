@@ -1,0 +1,23 @@
+@use '../../../style/variables' as v;
+@use '../../../style/mixins' as m;
+
+.tag-container {
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.5rem 1.2rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid m.primary(babble-pink);
+  border-radius: m.border-radius(tag);
+  user-select: none;
+  white-space: pre;
+  word-break: keep-all;
+}
+
+.erasable {
+  padding: 0.4rem 0.8rem 0.4rem 1.2rem;
+
+  button:hover {
+    color: m.primary(babble-pink);
+  }
+}

@@ -1,0 +1,8 @@
+@use '../../../style/variables' as v;
+@use '../../../style/mixins' as m;
+
+.tag-list-container {
+  & .tag-container {
+    margin-right: 1rem;
+  }
+}

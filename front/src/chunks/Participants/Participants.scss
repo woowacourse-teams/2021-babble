@@ -1,0 +1,23 @@
+@use '../../../style/mixins' as m;
+
+.participants-container {
+  min-width: 13rem;
+  width: fit-content;
+  height: 100%;
+  text-align: center;
+
+  h5 {
+    padding: 0 0 2rem 0;
+  }
+
+  section {
+    align-items: flex-start;
+    padding: 0.5rem 0 1rem 0;
+
+    figure {
+      display: flex;
+      justify-content: flex-start;
+      margin-bottom: 0.5rem;
+    }
+  }
+}

@@ -1,0 +1,61 @@
+@use '../../../style/variables' as v;
+@use '../../../style/mixins' as m;
+
+.chatbox-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+  padding: 0.8rem;
+
+  .chattings {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+  }
+
+  .chatting-room-info {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0rem;
+    padding: 1rem 0 2.5rem 0;
+    color: m.grey-scale(8);
+    user-select: none;
+    z-index: m.z-index(layer-back-1);
+
+    span {
+      display: block;
+      font-size: 1.2rem;
+      font-weight: 400;
+      text-align: center;
+    }
+
+    time {
+      display: block;
+      font-size: 1rem;
+      font-weight: 400;
+      text-align: center;
+    }
+  }
+
+  .chatting-contents {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+
+    & > * {
+      margin-bottom: 2rem;
+    }
+  }
+
+  .chatting-form {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
+}
