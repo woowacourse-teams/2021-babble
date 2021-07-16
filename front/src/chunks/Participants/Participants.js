@@ -16,7 +16,7 @@ const Participants = ({ participants }) => {
           <Caption2>{participants.host.name}</Caption2>
         </Avatar>
 
-        {participants.guests.map(({ profileImg, name }, index) => (
+        {participants?.guests?.map(({ profileImg, name }, index) => (
           <Avatar direction='row' key={index} imageSrc={profileImg}>
             <Caption2>{name}</Caption2>
           </Avatar>
