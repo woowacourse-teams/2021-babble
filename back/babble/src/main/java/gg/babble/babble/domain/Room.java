@@ -30,7 +30,6 @@ public class Room {
     @JoinColumn(name = "game_id")
     private Game game;
 
-    @NonNull
     @OneToOne
     @JoinColumn(name = "user_id")
     private User host;
@@ -52,7 +51,7 @@ public class Room {
     private boolean isDeleted;
 
     @Builder
-    public Room(final Long id, @NonNull final Game game, @NonNull final User host, @NonNull final List<Tag> tags,
+    public Room(final Long id, @NonNull final Game game, final User host, @NonNull final List<Tag> tags,
                 LocalDateTime createdDate) {
         this.id = id;
         this.game = game;
@@ -60,7 +59,6 @@ public class Room {
         this.tags = tags;
         this.createdDate = createdDate;
         this.guests = new ArrayList<>();
-        host.join(this);
         isDeleted = false;
     }
 

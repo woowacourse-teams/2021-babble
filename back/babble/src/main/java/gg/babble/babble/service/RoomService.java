@@ -1,10 +1,15 @@
 package gg.babble.babble.service;
 
 import gg.babble.babble.domain.Room;
+import gg.babble.babble.domain.User;
 import gg.babble.babble.domain.repository.RoomRepository;
 import gg.babble.babble.dto.RoomRequestDto;
 import gg.babble.babble.dto.RoomResponseDto;
+import gg.babble.babble.dto.UserJoinResponse;
+import gg.babble.babble.dto.UserResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,7 +31,6 @@ public class RoomService {
     public RoomResponseDto create(RoomRequestDto roomRequestDto) {
         Room room = Room.builder()
                 .game(gameService.findById(roomRequestDto.getGameId()))
-                .host(userService.findById(roomRequestDto.getHostId()))
                 .tags(tagService.findById(roomRequestDto.getTags()))
                 .build();
         return RoomResponseDto.from(roomRepository.save(room));
