@@ -1,9 +1,9 @@
 package gg.babble.babble.service;
 
-import gg.babble.babble.domain.User;
+import gg.babble.babble.domain.tmp.User;
 import gg.babble.babble.dto.MessageRequest;
 import gg.babble.babble.dto.MessageResponse;
-import gg.babble.babble.dto.UserEnterResponse;
+import gg.babble.babble.dto.UserJoinResponse;
 import gg.babble.babble.dto.UserResponse;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +29,7 @@ public class ChatService {
         return MessageResponse.of(UserResponse.from(user), content);
     }
 
-    public UserEnterResponse sendEnterRoom(final Long roomId, final Long userId) {
+    public UserJoinResponse sendJoinRoom(final Long roomId, final Long userId) {
         User user = USER_DB.get(userId);
 
         if (Objects.isNull(ROOM_DB.get(roomId))) {
@@ -40,7 +40,7 @@ public class ChatService {
         users.add(user);
         ROOM_DB.put(roomId, users);
 
-        return UserEnterResponse.builder()
+        return UserJoinResponse.builder()
                 .host(getHost(users))
                 .guests(getGuests(users))
                 .build();
