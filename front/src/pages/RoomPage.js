@@ -1,24 +1,15 @@
 import './RoomPage.scss';
 
-import { guests, response } from '../../mockData';
-
 import Avatar from '../components/Avatar/Avatar';
 import Chatbox from '../chunks/Chatbox/Chatbox';
 import React from 'react';
-import RoomInfo from '../chunks/RoomInfo/RoomInfo';
 import SpeechBubble from '../components/SpeechBubble/SpeechBubble';
+import { response } from '../../mockData';
 
 const RoomPage = () => {
-  const { roomId, createdDate, gameName, host, tags } = response;
-  const guestsData = guests;
+  const { roomId, createdDate } = response;
   return (
     <main>
-      <RoomInfo
-        gameTitle={gameName}
-        host={host}
-        guests={guestsData}
-        tags={tags}
-      />
       <Chatbox roomNo={roomId} createdAt={createdDate}>
         <div
           style={{
