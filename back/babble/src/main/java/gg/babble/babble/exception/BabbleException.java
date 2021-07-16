@@ -5,7 +5,7 @@ public abstract class BabbleException extends RuntimeException {
     public BabbleException() {
     }
 
-    public BabbleException(String message) {
+    public BabbleException(final String message) {
         super(message);
     }
 }
