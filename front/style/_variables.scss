@@ -1,20 +1,21 @@
 $box-shadow: 0 0.08rem 0.5rem rgb(0 0 0 / 18%);
+$button-box-shadow: 1px 3px 10px rgba(255, 56, 82, 0.35);
 
 $border-radius: (
   tag: 50rem,
   speech-bubble: 0.5rem,
+  modal: 0.8rem,
+  modal-minimize: 0.8rem 0.8rem 0 0,
 );
 
-$font-size: (
-  xsmall: 0.9rem,
-  small: 1.25rem,
-  medium: 1.5rem,
-  large: 1.75rem,
+$button-padding: (
+  small: 1rem 1.8rem,
+  medium: 1.4rem 2.6rem,
+  large: 1.8rem 4rem,
 );
 
 $avatar-size: (
-  xsmall: 4rem,
-  small: 5rem,
+  small: 3.5rem,
   medium: 7rem,
   large: 12rem,
 );
@@ -38,7 +39,19 @@ $grey-scale: (
 );
 
 $primary: (
+  babble-pink-light: #ff3852,
   babble-pink: #ff005c,
   babble-pink-1: #eb0d5e,
   babble-pink-2: #c50048,
+  babble-pink-3: #b60043,
+);
+
+$shadow: (
+  primary-shadow-35: rgba(255, 56, 82, 0.35),
+  gray-shadow-1: rgba(63, 66, 71, 0.5),
+);
+
+$z-index: (
+  layer-back-1: -1,
+  layer-front-1: 1,
 );

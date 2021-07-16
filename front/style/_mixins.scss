@@ -9,12 +9,12 @@
   @return null;
 }
 
-@function font-size($key) {
-  @if map-has-key($font-size, $key) {
-    @return map-get($font-size, $key);
+@function button-padding($key) {
+  @if map-has-key($button-padding, $key) {
+    @return map-get($button-padding, $key);
   }
 
-  @warn "Unknown `#{$key}` in $font-size!";
+  @warn "Unknown `#{$key}` in $button-padding!";
   @return null;
 }
 
@@ -42,5 +42,23 @@
   }
 
   @warn "Unknown `#{$key}` in $primary!";
+  @return null;
+}
+
+@function shadow($key) {
+  @if map-has-key($shadow, $key) {
+    @return map-get($shadow, $key);
+  }
+
+  @warn "Unknown `#{$key}` in $shadow!";
+  @return null;
+}
+
+@function z-index($key) {
+  @if map-has-key($z-index, $key) {
+    @return map-get($z-index, $key);
+  }
+
+  @warn "Unknown `#{$key}` in $z-index!";
   @return null;
 }
