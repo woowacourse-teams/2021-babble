@@ -9,11 +9,16 @@ import gg.babble.babble.domain.repository.RoomRepository;
 import gg.babble.babble.domain.repository.TagRepository;
 import gg.babble.babble.domain.repository.UserRepository;
 import gg.babble.babble.exception.BabbleNotFoundException;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Arrays;
 import java.util.List;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
 
+@Profile("test")
+@Transactional
 @Component
 public class DataLoader implements CommandLineRunner {
 
@@ -89,6 +94,7 @@ public class DataLoader implements CommandLineRunner {
         );
     }
 
+
     private void prepareDummyRoom() {
         Game game = gameRepository.findById(1L).orElseThrow(BabbleNotFoundException::new);
         User user = userRepository.findById(1L).orElseThrow(BabbleNotFoundException::new);
@@ -102,8 +108,14 @@ public class DataLoader implements CommandLineRunner {
             .tags(tags)
             .build();
 
+        room.join(user);
         roomRepository.save(room);
 
-        room.join(user);
+        Room room2 = Room.builder()
+                .id(2L)
+                .game(game)
+                .tags(tags)
+                .build();
+        roomRepository.save(room2);
     }
 }
