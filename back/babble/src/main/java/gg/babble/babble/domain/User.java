@@ -25,7 +25,7 @@ public class User {
     private Room room;
 
     public void join(final Room room) {
-        if (Objects.nonNull(this.room)) {
+        if (Objects.nonNull(this.room) && !this.room.equals(room)) {
             this.room.leave(this);
         }
 

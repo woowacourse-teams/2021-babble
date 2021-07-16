@@ -2,18 +2,26 @@ package gg.babble.babble.domain;
 
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleNotFoundException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 @EntityListeners(AuditingEntityListener.class)
 @Getter
@@ -30,10 +38,6 @@ public class Room {
     @JoinColumn(name = "game_id")
     private Game game;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User host;
-
     @NonNull
     @ManyToMany
     @JoinTable(name = "room_tag",
@@ -42,7 +46,7 @@ public class Room {
     private List<Tag> tags;
 
     @OneToMany(mappedBy = "room")
-    private List<User> guests;
+    private final List<User> users = new ArrayList<>();
 
     @CreatedDate
     private LocalDateTime createdDate;
@@ -51,14 +55,11 @@ public class Room {
     private boolean isDeleted;
 
     @Builder
-    public Room(final Long id, @NonNull final Game game, final User host, @NonNull final List<Tag> tags,
-                LocalDateTime createdDate) {
+    public Room(final Long id, @NonNull final Game game, @NonNull final List<Tag> tags, LocalDateTime createdDate) {
         this.id = id;
         this.game = game;
-        this.host = host;
         this.tags = tags;
         this.createdDate = createdDate;
-        this.guests = new ArrayList<>();
         isDeleted = false;
     }
 
@@ -67,38 +68,21 @@ public class Room {
             throw new BabbleDuplicatedException("이미 해당 방에 참여 중입니다.");
         }
 
-        if (isEmptyHost()) {
-            host = user;
-        } else {
-            guests.add(user);
-        }
+        users.add(user);
 
         if (user.hasNotRoom(this)) {
             user.join(this);
         }
     }
 
-    private boolean isEmptyHost() {
-        return Objects.isNull(host);
-    }
-
     public void leave(final User user) {
         validateToLeave(user);
-
-        if (isDeletable(user)) {
-            delete();
-            return;
-        }
-        if (host.equals(user)) {
-            delegateHost();
-        }
-
-        guests.remove(user);
+        users.remove(user);
         delegateToLeave(user);
-    }
 
-    private void delete() {
-        isDeleted = true;
+        if (users.isEmpty()) {
+            isDeleted = true;
+        }
     }
 
     private void delegateToLeave(final User user) {
@@ -113,21 +97,16 @@ public class Room {
         }
     }
 
-    private void delegateHost() {
-        User hostToLeave = host;
-
-        host = guests.get(0);
-        guests.remove(host);
-
-        delegateToLeave(hostToLeave);
+    public User getHost() {
+        return users.get(0);
     }
 
-    private boolean isDeletable(final User user) {
-        return host.equals(user) && guests.isEmpty();
+    public List<User> getGuests() {
+        return users.subList(1, users.size());
     }
 
     public boolean hasUser(final User user) {
-        return (Objects.nonNull(host) && host.equals(user)) || guests.contains(user);
+        return users.contains(user);
     }
 
     public boolean hasNotUser(final User user) {

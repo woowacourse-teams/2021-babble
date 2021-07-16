@@ -1,23 +1,21 @@
 package gg.babble.babble.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.domain.Game;
 import gg.babble.babble.domain.Room;
 import gg.babble.babble.domain.Tag;
-import gg.babble.babble.domain.User;
 import gg.babble.babble.dto.RoomResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import javax.transaction.Transactional;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 class RoomServiceTest extends ApplicationTest {
 
@@ -38,14 +36,12 @@ class RoomServiceTest extends ApplicationTest {
     @Test
     void findTest() {
         Game game = gameService.findById(1L);
-        User user = userService.findById(1L);
         List<Tag> tags = Arrays.asList(tagService.findById("실버"),
                 tagService.findById("2시간"));
         RoomResponse expected = RoomResponse.from(Room.builder()
                 .id(1L)
                 .createdDate(LocalDateTime.now())
                 .game(game)
-                .host(user)
                 .tags(tags)
                 .build()
         );
