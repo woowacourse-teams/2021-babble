@@ -19,7 +19,6 @@ public class RoomResponseDto {
     private Long roomId;
     private String createdDate;
     private GameResponseDto game;
-    private HostResponseDto host;
     private List<String> tags;
 
     public static RoomResponseDto from(final Room room) {
@@ -27,7 +26,6 @@ public class RoomResponseDto {
                 .roomId(room.getId())
                 .createdDate(room.getCreatedDate().toString())
                 .game(GameResponseDto.from(room.getGame()))
-                .host(HostResponseDto.from(room.getHost()))
                 .tags(tagNames(room.getTags()))
                 .build();
     }
