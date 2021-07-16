@@ -10,6 +10,8 @@
   border: 1px solid m.primary(babble-pink);
   border-radius: m.border-radius(tag);
   user-select: none;
+  white-space: pre;
+  word-break: keep-all;
 }
 
 .erasable {
