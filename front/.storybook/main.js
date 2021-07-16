@@ -6,7 +6,7 @@ module.exports = {
     '@storybook/preset-scss',
     '@storybook/addon-viewport/register',
     '@storybook/addon-knobs/register',
-    '@storybook/addon-a11y/register',
+    '@storybook/addon-a11y',
   ],
   core: {
     builder: 'webpack5',
