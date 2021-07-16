@@ -1,7 +1,7 @@
 package gg.babble.babble.controller;
 
 import gg.babble.babble.dto.UserJoinRequest;
-import gg.babble.babble.service.ChatService;
+import gg.babble.babble.service.RoomService;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -10,24 +10,26 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 @Controller
-public class UserJoinController {
+public class UserListUpdateController {
     private final SimpMessagingTemplate template;
-    private final ChatService chatService;
+    private final RoomService roomService;
 
-    public UserJoinController(final SimpMessagingTemplate template, final ChatService chatService) {
+    public UserListUpdateController(final SimpMessagingTemplate template, final RoomService roomService) {
         this.template = template;
-        this.chatService = chatService;
+        this.roomService = roomService;
     }
 
     @MessageMapping("/rooms/{roomId}/users")
     public void join(@DestinationVariable final Long roomId, final UserJoinRequest userJoinRequest) {
         template.convertAndSend(String.format("/topic/rooms/%s/users", roomId),
-                chatService.sendJoinRoom(roomId, userJoinRequest.getUserId()));
+            roomService.sendJoinRoom(roomId, userJoinRequest));
     }
 
     @EventListener
-    public void onDisconnectEvent(final SessionDisconnectEvent event) {
-        String sessionId = event.getSessionId();
-        // xxService sessionId를 통해 userId를 얻고 여러 작업을 하게 수정
+    public void exit(final SessionDisconnectEvent event) {
+        template.convertAndSend(
+            String.format("/topic/rooms/%s/users", roomService.findRoomIdBySessionId(event.getSessionId())),
+            roomService.sendExitRoom(event.getSessionId())
+        );
     }
 }

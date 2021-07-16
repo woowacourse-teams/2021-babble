@@ -67,11 +67,19 @@ public class Room {
             throw new BabbleDuplicatedException("이미 해당 방에 참여 중입니다.");
         }
 
-        guests.add(user);
+        if (isEmptyHost()) {
+            host = user;
+        } else {
+            guests.add(user);
+        }
 
         if (user.hasNotRoom(this)) {
             user.join(this);
         }
+    }
+
+    private boolean isEmptyHost() {
+        return Objects.isNull(host);
     }
 
     public void leave(final User user) {
