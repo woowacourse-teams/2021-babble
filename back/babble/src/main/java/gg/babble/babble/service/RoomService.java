@@ -3,8 +3,8 @@ package gg.babble.babble.service;
 import gg.babble.babble.domain.Room;
 import gg.babble.babble.domain.User;
 import gg.babble.babble.domain.repository.RoomRepository;
-import gg.babble.babble.dto.RoomRequestDto;
-import gg.babble.babble.dto.RoomResponseDto;
+import gg.babble.babble.dto.RoomRequest;
+import gg.babble.babble.dto.RoomResponse;
 import gg.babble.babble.dto.UserJoinRequest;
 import gg.babble.babble.dto.UserListUpdateResponse;
 import gg.babble.babble.dto.UserResponse;
@@ -33,18 +33,18 @@ public class RoomService {
     }
 
     @Transactional
-    public RoomResponseDto create(final RoomRequestDto roomRequestDto) {
+    public RoomResponse create(final RoomRequest roomRequest) {
         Room room = Room.builder()
-                .game(gameService.findById(roomRequestDto.getGameId()))
-                .tags(tagService.findById(roomRequestDto.getTags()))
+                .game(gameService.findById(roomRequest.getGameId()))
+                .tags(tagService.findById(roomRequest.getTags()))
                 .build();
-        return RoomResponseDto.from(roomRepository.save(room));
+        return RoomResponse.from(roomRepository.save(room));
     }
 
-    public RoomResponseDto findById(final Long id) {
+    public RoomResponse findById(final Long id) {
         Room room = roomRepository.findById(id)
                 .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 방입니다."));
-        return RoomResponseDto.from(room);
+        return RoomResponse.from(room);
     }
 
     @Transactional

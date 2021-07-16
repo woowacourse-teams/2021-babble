@@ -14,18 +14,18 @@ import java.util.stream.Collectors;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoomResponseDto {
+public class RoomResponse {
 
     private Long roomId;
     private String createdDate;
-    private GameResponseDto game;
+    private GameResponse game;
     private List<String> tags;
 
-    public static RoomResponseDto from(final Room room) {
-        return RoomResponseDto.builder()
+    public static RoomResponse from(final Room room) {
+        return RoomResponse.builder()
                 .roomId(room.getId())
                 .createdDate(room.getCreatedDate().toString())
-                .game(GameResponseDto.from(room.getGame()))
+                .game(GameResponse.from(room.getGame()))
                 .tags(tagNames(room.getTags()))
                 .build();
     }

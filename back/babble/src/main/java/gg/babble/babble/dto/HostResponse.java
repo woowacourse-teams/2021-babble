@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class HostResponseDto {
+public class HostResponse {
 
     private Long id;
     private String name;
 
-    public static HostResponseDto from(final User host) {
-        return HostResponseDto.builder()
+    public static HostResponse from(final User host) {
+        return HostResponse.builder()
                 .id(host.getId())
                 .name(host.getName())
                 .build();

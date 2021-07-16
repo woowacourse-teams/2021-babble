@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoomRequestDto {
+public class RoomRequest {
 
     @NotNull(message = "게임 ID는 비어있을 수 없습니다.")
     @Positive(message = "게임 ID는 1보다 큰 수여야 합니다.")

@@ -9,7 +9,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserJoinResponse {
+public class UserListUpdateResponse {
     private UserResponse host;
     private List<UserResponse> guests;
 }

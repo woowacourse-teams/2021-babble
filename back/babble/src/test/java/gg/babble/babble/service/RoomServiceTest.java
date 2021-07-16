@@ -5,7 +5,7 @@ import gg.babble.babble.domain.Game;
 import gg.babble.babble.domain.Room;
 import gg.babble.babble.domain.Tag;
 import gg.babble.babble.domain.User;
-import gg.babble.babble.dto.RoomResponseDto;
+import gg.babble.babble.dto.RoomResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,7 +41,7 @@ class RoomServiceTest extends ApplicationTest {
         User user = userService.findById(1L);
         List<Tag> tags = Arrays.asList(tagService.findById("실버"),
                 tagService.findById("2시간"));
-        RoomResponseDto expected = RoomResponseDto.from(Room.builder()
+        RoomResponse expected = RoomResponse.from(Room.builder()
                 .id(1L)
                 .createdDate(LocalDateTime.now())
                 .game(game)
@@ -50,8 +50,8 @@ class RoomServiceTest extends ApplicationTest {
                 .build()
         );
 
-        RoomResponseDto roomResponseDto = roomService.findById(1L);
-        assertThat(roomResponseDto).usingRecursiveComparison()
+        RoomResponse roomResponse = roomService.findById(1L);
+        assertThat(roomResponse).usingRecursiveComparison()
                 .ignoringFields("rooms", "createdDate").isEqualTo(expected);
     }
 
