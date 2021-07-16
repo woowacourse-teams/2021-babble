@@ -32,14 +32,6 @@ const AvatarTemplate = (args) => (
         <Body2>defaultUser</Body2>
       </Avatar>
     </div>
-    <div style={{ margin: '1rem' }}>
-      <Avatar size='large' {...args}>
-        <Body2>defaultUser</Body2>
-        <span style={{ marginLeft: '1rem', color: '#ff005c' }}>
-          <Body2>HOST</Body2>
-        </span>
-      </Avatar>
-    </div>
   </>
 );
 

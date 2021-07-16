@@ -22,11 +22,11 @@ figure {
 
   &.row {
     flex-direction: row;
-    justify-content: center;
     align-items: center;
 
     figcaption {
       margin-left: 1rem;
+      display: flex;
     }
   }
 }
@@ -50,4 +50,9 @@ figure {
     width: m.avatar-size(large);
     height: m.avatar-size(large);
   }
+}
+
+.avatar-with-badge-container {
+  display: flex;
+  justify-content: space-between;
 }
