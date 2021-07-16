@@ -99,7 +99,7 @@ public class DataLoader implements CommandLineRunner {
         Room room = Room.builder()
                 .id(1L)
                 .game(game)
-                .host(user)
+//                .host(user)
                 .tags(tags)
                 .build();
 
