@@ -3,7 +3,7 @@
 .chatting-form {
   display: flex;
   width: 100%;
-  height: 9rem;
+  height: 6rem;
 
   .chat-area {
     resize: none;
@@ -22,6 +22,6 @@
   }
 
   button {
-    flex-basis: 15%;
+    flex-basis: 20%;
   }
 }
