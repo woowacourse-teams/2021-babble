@@ -39,7 +39,7 @@ public class DataLoader implements CommandLineRunner {
         prepareDummyGames();
         prepareDummyUsers();
         prepareDummyTags();
-//        prepareDummyRoom();
+        prepareDummyRoom();
     }
 
 
