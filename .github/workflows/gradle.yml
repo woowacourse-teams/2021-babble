@@ -22,15 +22,14 @@ jobs:
         java-version: '8'
         distribution: 'adopt'
         
-    - name: Grant execute permission for gradlew & build gradle project
-      run: |
-           cd ./back/babble
+    - name: gradlew 권한 변경 후 프로젝트 빌드 진행
+      working-directory: /back/babble
+      run: | 
            chmod +x gradlew
-           ./gradlew clean build
+           ./gradlew clean build -x test
            
-    - name: Delivery jar use SCP
-      run: |
-           cd ./back/babble
-           scp ./build/lib/babble-0.0.1-SNAPSHOT.jar was
+    - name: SCP 명령을 이용해 WAS 서버로 jar 파일 전송
+      working-directory: /back/babble
+      run: scp ./build/lib/babble-0.0.1-SNAPSHOT.jar was
 #            scp [업로드할 파일 이름] [ec2-user계정명]@[ec2 instance의 public DNS]:~/[경로]
 #     run: nohup java -jar -Dspring.profiles.active=prod ./build/libs/atdd-subway-fare-0.0.1-SNAPSHOT.jar 1> ./logs/error.log 2>&1 &
