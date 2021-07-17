@@ -12,9 +12,11 @@ const Participants = ({ participants }) => {
     <aside className='participants-container'>
       <Subtitle3>참가자</Subtitle3>
       <LinearLayout>
-        <Avatar direction='row' imageSrc={participants.host.profileImg}>
-          <Caption2>{participants.host.name}</Caption2>
-        </Avatar>
+        {participants?.host && (
+          <Avatar direction='row' imageSrc={participants?.host?.profileImg}>
+            <Caption2>{participants?.host?.name}</Caption2>
+          </Avatar>
+        )}
 
         {participants?.guests?.map(({ profileImg, name }, index) => (
           <Avatar direction='row' key={index} imageSrc={profileImg}>

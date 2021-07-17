@@ -10,7 +10,7 @@ const RoomPage = () => {
   const { roomId, createdDate } = response;
   return (
     <main>
-      <Chatbox roomNo={roomId} createdAt={createdDate}>
+      <Chatbox roomId={roomId} createdAt={createdDate}>
         <div
           style={{
             display: 'flex',

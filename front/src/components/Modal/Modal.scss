@@ -37,6 +37,10 @@
 
         button {
           margin-left: 0.5rem;
+
+          &:hover {
+            color: m.primary(babble-pink);
+          }
         }
 
         .tag-list-container {
@@ -100,12 +104,5 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 1rem;
-
-    .maximize,
-    .close {
-      &:hover {
-        ///
-      }
-    }
   }
 }
