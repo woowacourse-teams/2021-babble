@@ -7,14 +7,14 @@ const SquareButton = ({
   size = 'medium',
   type = 'button',
   colored = true,
-  onClick,
   children,
+  ...rest
 }) => {
   return (
     <button
       type={type}
       className={`square-button ${size} ${colored ? 'colored' : 'line'}`}
-      onClick={onClick}
+      {...rest}
     >
       {children}
     </button>
