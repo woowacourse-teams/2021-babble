@@ -4,12 +4,12 @@ import ChattingForm from '../../components/ChattingForm/ChattingForm';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const Chatbox = ({ roomNo, createdAt, children }) => {
+const Chatbox = ({ roomId, createdAt, children }) => {
   return (
     <main className='chatbox-container'>
       <section className='chattings'>
         <article className='chatting-room-info'>
-          <span>{`${roomNo}번 방`}</span>
+          <span>{`${roomId}번 방`}</span>
           <time>{createdAt.toLocaleString('ko-KR')}</time>
         </article>
         <article className='chatting-contents'>{children}</article>
@@ -22,7 +22,7 @@ const Chatbox = ({ roomNo, createdAt, children }) => {
 };
 
 Chatbox.propTypes = {
-  roomNo: PropTypes.number,
+  roomId: PropTypes.number,
   createdAt: PropTypes.string,
   children: PropTypes.node,
 };

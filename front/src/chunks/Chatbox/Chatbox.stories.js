@@ -37,6 +37,6 @@ const ChatboxTemplate = (args) => (
 export const Default = ChatboxTemplate.bind({});
 
 Default.args = {
-  roomNo: 10,
+  roomId: 10,
   createdAt: '2021-07-05T00:00:00.000Z',
 };
