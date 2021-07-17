@@ -32,7 +32,7 @@ jobs:
            
     - name: SCP 명령을 이용해 WAS 서버로 jar 파일 전송
       working-directory: ./back/babble
-      run: scp ./build/lib/babble-0.0.1-SNAPSHOT.jar was:~
+      run: scp ./build/libs/babble-0.0.1-SNAPSHOT.jar was:~
     
     - name: SSH 명령을 통해 WAS 서버 접속 후 도커로 jar 파일 실행
       run: |
