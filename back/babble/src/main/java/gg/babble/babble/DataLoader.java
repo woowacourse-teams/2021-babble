@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
 import java.util.List;
 
-@Profile("test")
+//@Profile("test")
 @Transactional
 @Component
 public class DataLoader implements CommandLineRunner {
@@ -40,8 +40,9 @@ public class DataLoader implements CommandLineRunner {
         prepareDummyGames();
         prepareDummyUsers();
         prepareDummyTags();
-        prepareDummyRoom();
+//        prepareDummyRoom();
     }
+
 
     private void prepareDummyGames() {
         gameRepository.save(Game.builder()
@@ -74,8 +75,23 @@ public class DataLoader implements CommandLineRunner {
         );
         userRepository.save(User.builder()
             .id(3L)
-            .name("포비")
+            .name("현구막")
             .build()
+        );
+        userRepository.save(User.builder()
+                .id(4L)
+                .name("포츈")
+                .build()
+        );
+        userRepository.save(User.builder()
+                .id(5L)
+                .name("그루밍")
+                .build()
+        );
+        userRepository.save(User.builder()
+                .id(6L)
+                .name("피터")
+                .build()
         );
     }
 
@@ -95,6 +111,7 @@ public class DataLoader implements CommandLineRunner {
     }
 
 
+    @Profile("test")
     private void prepareDummyRoom() {
         Game game = gameRepository.findById(1L).orElseThrow(BabbleNotFoundException::new);
         User user = userRepository.findById(1L).orElseThrow(BabbleNotFoundException::new);
