@@ -37,7 +37,6 @@ jobs:
     - name: SSH 명령을 통해 WAS 서버 접속 후 도커로 jar 파일 실행
       run: |
            ssh was
-           rm ./deploy/babble-0.0.1-SNAPSHOT.jar
            mv ./babble-0.0.1-SNAPSHOT.jar ./deploy
            sudo docker build -t babble/was ./deploy 
            sudo docker run -d -p 8080:8080 babble/was
