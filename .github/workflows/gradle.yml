@@ -24,13 +24,13 @@ jobs:
         
     - name: Grant execute permission for gradlew & build gradle project
       run: |
-           cd ./back
+           cd ./back/babble
            chmod +x gradlew
            ./gradlew clean build
            
     - name: Delivery jar use SCP
       run: |
-           cd ./back
+           cd ./back/babble
            scp ./build/lib/babble-0.0.1-SNAPSHOT.jar was
 #            scp [업로드할 파일 이름] [ec2-user계정명]@[ec2 instance의 public DNS]:~/[경로]
 #     run: nohup java -jar -Dspring.profiles.active=prod ./build/libs/atdd-subway-fare-0.0.1-SNAPSHOT.jar 1> ./logs/error.log 2>&1 &
