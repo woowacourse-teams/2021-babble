@@ -1,13 +1,20 @@
 import './Chatbox.scss';
 
+import React, { useEffect, useRef } from 'react';
+
 import ChattingForm from '../../components/ChattingForm/ChattingForm';
 import PropTypes from 'prop-types';
-import React from 'react';
 
-const Chatbox = ({ roomId, createdAt, children }) => {
+const Chatbox = ({ roomId, createdAt, onSubmit, children }) => {
+  const chattingsRef = useRef(null);
+
+  useEffect(() => {
+    chattingsRef.current.scrollTop = chattingsRef.current.scrollHeight;
+  }, [children]);
+
   return (
     <main className='chatbox-container'>
-      <section className='chattings'>
+      <section className='chattings' ref={chattingsRef}>
         <article className='chatting-room-info'>
           <span>{`${roomId}번 방`}</span>
           <time>{createdAt.toLocaleString('ko-KR')}</time>
@@ -15,7 +22,7 @@ const Chatbox = ({ roomId, createdAt, children }) => {
         <article className='chatting-contents'>{children}</article>
       </section>
       <section className='chatting-form'>
-        <ChattingForm />
+        <ChattingForm onSubmit={onSubmit} />
       </section>
     </main>
   );
@@ -24,6 +31,7 @@ const Chatbox = ({ roomId, createdAt, children }) => {
 Chatbox.propTypes = {
   roomId: PropTypes.number,
   createdAt: PropTypes.string,
+  onSubmit: PropTypes.func,
   children: PropTypes.node,
 };
 
