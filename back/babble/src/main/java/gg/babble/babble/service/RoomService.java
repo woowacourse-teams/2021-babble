@@ -3,16 +3,13 @@ package gg.babble.babble.service;
 import gg.babble.babble.domain.Room;
 import gg.babble.babble.domain.User;
 import gg.babble.babble.domain.repository.RoomRepository;
-import gg.babble.babble.dto.RoomRequest;
-import gg.babble.babble.dto.RoomResponse;
-import gg.babble.babble.dto.UserJoinRequest;
-import gg.babble.babble.dto.UserListUpdateResponse;
-import gg.babble.babble.dto.UserResponse;
+import gg.babble.babble.dto.*;
 import gg.babble.babble.exception.BabbleNotFoundException;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RoomService {
@@ -24,7 +21,7 @@ public class RoomService {
     private final SessionService sessionService;
 
     public RoomService(final RoomRepository roomRepository, final GameService gameService,
-        final UserService userService, final TagService tagService, final SessionService sessionService) {
+                       final UserService userService, final TagService tagService, final SessionService sessionService) {
         this.roomRepository = roomRepository;
         this.gameService = gameService;
         this.userService = userService;
@@ -51,23 +48,23 @@ public class RoomService {
     public UserListUpdateResponse sendJoinRoom(final Long roomId, final UserJoinRequest request) {
         User user = userService.findById(request.getUserId());
         Room room = roomRepository.findById(roomId)
-            .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 방 Id 입니다."));
+                .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 방 Id 입니다."));
 
         room.join(user);
 
         sessionService.create(room, request.getSessionId(), user);
 
         return UserListUpdateResponse.builder()
-            .host(UserResponse.from(room.getHost()))
-            .guests(getGuests(room))
-            .build();
+                .host(UserResponse.from(room.getHost()))
+                .guests(getGuests(room))
+                .build();
     }
 
     private List<UserResponse> getGuests(final Room room) {
         return room.getGuests()
-            .stream()
-            .map(UserResponse::from)
-            .collect(Collectors.toList());
+                .stream()
+                .map(UserResponse::from)
+                .collect(Collectors.toList());
     }
 
     public Long findRoomIdBySessionId(final String sessionId) {
@@ -84,9 +81,14 @@ public class RoomService {
 
         sessionService.delete(sessionId);
 
+
+        if (room.isEmpty()) {
+            return UserListUpdateResponse.builder().build();
+        }
+
         return UserListUpdateResponse.builder()
-            .host(UserResponse.from(room.getHost()))
-            .guests(getGuests(room))
-            .build();
+                .host(UserResponse.from(room.getHost()))
+                .guests(getGuests(room))
+                .build();
     }
 }

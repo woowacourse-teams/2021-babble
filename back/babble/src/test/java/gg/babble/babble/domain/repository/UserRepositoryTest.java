@@ -18,7 +18,7 @@ public class UserRepositoryTest extends ApplicationTest {
 
     @DisplayName("유저 더미 데이터를 확인한다.")
     @ParameterizedTest
-    @CsvSource({"1, 루트", "2, 와일더", "3, 포비"})
+    @CsvSource({"1, 루트", "2, 와일더", "3, 현구막"})
     void dummyUserTest(final Long id, final String name) {
         Optional<User> user = userRepository.findById(id);
         assertThat(user.isPresent()).isTrue();

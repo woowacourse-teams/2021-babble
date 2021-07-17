@@ -1,15 +1,16 @@
 package gg.babble.babble.domain;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleNotFoundException;
-import java.util.Arrays;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class RoomTest {
 
@@ -34,10 +35,10 @@ public class RoomTest {
                 Tag.builder().name("2시간").build());
 
         Room room = Room.builder()
-            .id(1L)
-            .game(game)
-            .tags(tags)
-            .build();
+                .id(1L)
+                .game(game)
+                .tags(tags)
+                .build();
 
         room.join(host);
 

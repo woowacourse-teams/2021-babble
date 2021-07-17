@@ -22,14 +22,14 @@ public class UserListUpdateController {
     @MessageMapping("/rooms/{roomId}/users")
     public void join(@DestinationVariable final Long roomId, final UserJoinRequest userJoinRequest) {
         template.convertAndSend(String.format("/topic/rooms/%s/users", roomId),
-            roomService.sendJoinRoom(roomId, userJoinRequest));
+                roomService.sendJoinRoom(roomId, userJoinRequest));
     }
 
     @EventListener
     public void exit(final SessionDisconnectEvent event) {
         template.convertAndSend(
-            String.format("/topic/rooms/%s/users", roomService.findRoomIdBySessionId(event.getSessionId())),
-            roomService.sendExitRoom(event.getSessionId())
+                String.format("/topic/rooms/%s/users", roomService.findRoomIdBySessionId(event.getSessionId())),
+                roomService.sendExitRoom(event.getSessionId())
         );
     }
 }
