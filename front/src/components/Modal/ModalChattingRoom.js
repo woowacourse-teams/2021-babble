@@ -40,6 +40,7 @@ const ModalChattingRoom = ({ tags, participants, roomId, createdAt }) => {
         `/topic/rooms/${roomId}/users`,
         (message) => {
           const users = JSON.parse(message.body);
+          console.log(users);
           open(
             <ModalChattingRoom
               tags={tags}
@@ -55,7 +56,7 @@ const ModalChattingRoom = ({ tags, participants, roomId, createdAt }) => {
       stompClient.current.send(
         `/ws/rooms/${roomId}/users`,
         {},
-        JSON.stringify({ userId, sessionId })
+        JSON.stringify({ userId: userId.current, sessionId })
       );
     });
 
