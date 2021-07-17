@@ -93,6 +93,10 @@ public class Room {
         return users.get(0);
     }
 
+    public boolean isEmpty() {
+        return users.isEmpty();
+    }
+
     public List<User> getGuests() {
         return users.subList(1, users.size());
     }
