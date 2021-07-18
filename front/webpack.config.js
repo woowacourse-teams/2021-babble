@@ -12,7 +12,7 @@ module.exports = (env, options) => {
     output: {
       path: path.join(__dirname, '/dist'),
       publicPath: '/',
-      filename: 'index.js',
+      filename: 'bundle.js',
     },
 
     module: {
@@ -55,9 +55,5 @@ module.exports = (env, options) => {
     ],
 
     target: 'web',
-
-    performance: {
-      hints: false,
-    },
   };
 };
