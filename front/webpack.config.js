@@ -5,12 +5,9 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const path = require('path');
 
-module.exports = (env) => {
-  const entryPath =
-    env.mode === 'production' ? './dist/index.js' : './index.js';
-
+module.exports = (env, options) => {
   return {
-    entry: entryPath,
+    entry: './index.js',
 
     output: {
       path: path.join(__dirname, '/dist'),
@@ -46,7 +43,7 @@ module.exports = (env) => {
       historyApiFallback: true,
     },
 
-    devtool: 'inline-source-map',
+    devtool: options.mode === 'production' ? false : 'inline-source-map',
 
     plugins: [
       new ErrorOverlayPlugin(),

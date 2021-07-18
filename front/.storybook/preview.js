@@ -3,8 +3,9 @@ import '../global.scss';
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 import React from 'react';
 import { addParameters } from '@storybook/react';
-import { addons } from '@storybook/addons';
-import theme from './theme';
+
+// import { addons } from '@storybook/addons';
+// import theme from './theme';
 
 export const decorators = [(Story) => <Story />];
 
@@ -25,4 +26,4 @@ addParameters({
   },
 });
 
-addons.setConfig({ theme: theme });
+// addons.setConfig({ theme: theme });
