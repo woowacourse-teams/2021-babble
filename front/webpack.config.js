@@ -55,5 +55,9 @@ module.exports = (env, options) => {
     ],
 
     target: 'web',
+
+    performance: {
+      hints: false,
+    },
   };
 };
