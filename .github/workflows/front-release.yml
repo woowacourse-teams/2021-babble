@@ -26,10 +26,14 @@ jobs:
 
       - name: Semantic Release 실행
         working-directory: ./front
+        uses: cycjimmy/semantic-release-action@v2
+        with:
+          extra_plugins: |
+            @semantic-release/git
+            @semantic-release/changelog
         env:
           GH_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.SEMANTIC_RELEASE_NPM_TOKEN }}
-        run: npx semantic-release
 
       - name: 배포
         working-directory: ./front
