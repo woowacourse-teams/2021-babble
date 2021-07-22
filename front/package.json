@@ -64,6 +64,7 @@
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/",
-    "pkgRoot": "dist"
+    "pkgRoot": "dist",
+    "access": "public"
   }
 }
