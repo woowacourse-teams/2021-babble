@@ -25,7 +25,13 @@ jobs:
         run: npm run prod
 
       - name: Semantic Release 실행
-        run: npx semantic-release
+        uses: cycjimmy/semantic-release-action@v2
+        id: semantic
+        with:
+          branch: release
+          extra_plugins: |
+            @semantic-release/git
+            @semantic-release/changelog
         env:
           GH_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.SEMANTIC_RELEASE_NPM_TOKEN }}
