@@ -17,7 +17,9 @@ const SpeechBubbleWithAvatar = ({
         <AvatarImage size={size} />
         <LinearLayout direction='col'>
           <Caption2>{nickname}</Caption2>
-          <SpeechBubble time={time}>{children}</SpeechBubble>
+          <SpeechBubble type='others' time={time}>
+            {children}
+          </SpeechBubble>
         </LinearLayout>
       </LinearLayout>
     </div>

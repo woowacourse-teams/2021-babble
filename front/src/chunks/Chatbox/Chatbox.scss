@@ -8,13 +8,18 @@
   height: 100%;
   justify-content: space-between;
   padding: 0.8rem;
+  position: relative;
 
   .chattings {
     display: flex;
-    position: relative;
     flex-direction: column;
+    overflow-y: auto;
     width: 100%;
     height: 100%;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   .chatting-room-info {
@@ -45,11 +50,22 @@
   .chatting-contents {
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
     height: 100%;
     width: 100%;
 
-    & > * {
-      margin-bottom: 2rem;
+    & > :first-child {
+      margin-top: auto;
+    }
+
+    .mine-container {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 1.5rem;
+
+      &:last-child {
+        padding-bottom: 1rem;
+      }
     }
   }
 
