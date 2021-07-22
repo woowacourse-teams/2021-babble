@@ -24,6 +24,12 @@ jobs:
         working-directory: ./front
         run: npm run prod
 
+      - name: Semantic Release 실행
+        run: npx semantic-release
+        env:
+          GH_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.SEMANTIC_RELEASE_NPM_TOKEN }}
+
       - name: 배포
         working-directory: ./front
         run: aws s3 sync ./dist s3://bucket-babble-front/
