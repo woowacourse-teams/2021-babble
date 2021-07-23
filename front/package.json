@@ -6,7 +6,8 @@
   "scripts": {
     "start": "webpack serve --mode development --env development",
     "prod": "webpack --mode production",
-    "build": "webpack --watch",
+    "build": "webpack",
+    "dev": "webpack --watch",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "semantic-release": "semantic-release"
