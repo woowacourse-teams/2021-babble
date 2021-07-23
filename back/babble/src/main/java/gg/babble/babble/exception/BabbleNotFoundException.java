@@ -1,5 +1,7 @@
 package gg.babble.babble.exception;
 
+import org.springframework.http.HttpStatus;
+
 public class BabbleNotFoundException extends BabbleException {
 
     public BabbleNotFoundException() {
@@ -8,6 +10,11 @@ public class BabbleNotFoundException extends BabbleException {
 
     public BabbleNotFoundException(final String message) {
         super(message);
+    }
+
+    @Override
+    public HttpStatus status() {
+        return HttpStatus.NOT_FOUND;
     }
 }
 

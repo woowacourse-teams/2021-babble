@@ -1,11 +1,15 @@
 package gg.babble.babble.exception;
 
-public class BabbleIllegalArgumentException extends BabbleException {
+import org.springframework.http.HttpStatus;
 
-    public BabbleIllegalArgumentException() {
-    }
+public class BabbleIllegalArgumentException extends BabbleException {
 
     public BabbleIllegalArgumentException(final String message) {
         super(message);
+    }
+
+    @Override
+    public HttpStatus status() {
+        return HttpStatus.BAD_REQUEST;
     }
 }

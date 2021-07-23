@@ -1,11 +1,15 @@
 package gg.babble.babble.exception;
 
-public class BabbleDuplicatedException extends BabbleException {
+import org.springframework.http.HttpStatus;
 
-    public BabbleDuplicatedException() {
-    }
+public class BabbleDuplicatedException extends BabbleException {
 
     public BabbleDuplicatedException(final String message) {
         super(message);
+    }
+
+    @Override
+    public HttpStatus status() {
+        return HttpStatus.CONFLICT;
     }
 }
