@@ -1,5 +1,5 @@
 {
-  "branches": ["release"],
+  "branch": "release",
   "repositoryUrl": "https://github.com/woowacourse-teams/2021-babble.git",
   "debug": "true",
   "plugins": [
