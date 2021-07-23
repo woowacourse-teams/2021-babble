@@ -1,6 +1,6 @@
 {
   "name": "babble",
-  "version": "0.0.0-development",
+  "version": "1.0.0",
   "description": "키워드(관심사) 기반 빠른 게임 팀 매칭 플랫폼 서비스",
   "main": "index.js",
   "scripts": {
@@ -67,5 +67,11 @@
     "registry": "https://npm.pkg.github.com/",
     "pkgRoot": "dist",
     "access": "public"
+  },
+  "releases": {
+    "branches": [
+      "release",
+      "feature/semantic-versioning"
+    ]
   }
 }
