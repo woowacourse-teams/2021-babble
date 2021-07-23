@@ -65,13 +65,12 @@
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/",
-    "pkgRoot": "dist",
-    "access": "public"
+    "pkgRoot": "dist"
   },
   "releases": {
     "branches": [
-      "release",
-      "feature/semantic-versioning"
+      "main",
+      "release"
     ]
   }
 }
