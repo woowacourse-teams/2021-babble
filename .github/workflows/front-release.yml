@@ -35,8 +35,9 @@ jobs:
           branches: |
             ['release']
         env:
-          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GH_TOKEN }}
-          NPM_TOKEN: ${{ secrets.SEMANTIC_RELEASE_NPM_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm install && NPM_TOKEN=$NPM_TOKEN GH_TOKEN=$GH_TOKEN npx semantic-release --no-ci
 
       - name: 배포
         working-directory: ./front
