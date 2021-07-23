@@ -25,6 +25,7 @@ jobs:
         run: npm run prod
         
       - name: Semantic Release 실행
+        working-directory: ./front
         id: semantic
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
