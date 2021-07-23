@@ -28,6 +28,8 @@ jobs:
         uses: go-semantic-release/action@v1
         with:
           github-token: ${{ secrets.SEMANTIC_RELEASE_GH_TOKEN }}
+          branches: |
+            ['release']
 
       - name: 배포
         working-directory: ./front
