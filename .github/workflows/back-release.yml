@@ -6,8 +6,8 @@ name: Backend test release CI with gradle
 on:
   push:
     branches: [ release ]
-    paths-ignore:
-      - "/front/**"
+    paths:
+      - "/back/**"
 
 jobs:
   build:

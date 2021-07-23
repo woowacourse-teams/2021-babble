@@ -3,6 +3,8 @@ name: Node.js Package
 on:
   push:
     branches: [release]
+    paths:
+      - "/front/**"
 
 jobs:
   build:
