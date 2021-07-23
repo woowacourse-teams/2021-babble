@@ -23,15 +23,22 @@ jobs:
       - name: 빌드
         working-directory: ./front
         run: npm run prod
-        
+
       - name: Semantic Release 실행
-        working-directory: ./front
+        uses: cycjimmy/semantic-release-action@v2
         id: semantic
+        with:
+          semantic_version: 16
+          extra_plugins: |
+            @semantic-release/changelog
+            @semantic-release/git
+          branches: |
+            ['release']
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm install && npm run semantic-release
-        
+        run: npm install && NPM_TOKEN=$NPM_TOKEN GH_TOKEN=$GH_TOKEN npx semantic-release --no-ci
+
       - name: 배포
         working-directory: ./front
         run: aws s3 sync ./dist s3://bucket-babble-front/
