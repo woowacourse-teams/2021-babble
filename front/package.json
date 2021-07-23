@@ -70,7 +70,6 @@
   },
   "releases": {
     "branches": [
-      "main",
       "release",
       "feature/semantic-versioning"
     ]
