@@ -5,7 +5,7 @@ name: Node.js Package
 
 on:
   push:
-    branches: [release]
+    branches: [main]
   paths:
     - "front/**"
 
@@ -25,6 +25,11 @@ jobs:
       - name: 빌드
         working-directory: ./front
         run: npm run prod
+
+      - name: Semantic Release 실행
+        uses: go-semantic-release/action@v1
+        with:
+          github-token: ${{ secrets.SEMANTIC_RELEASE_GH_TOKEN }}
 
       - name: 배포
         working-directory: ./front
