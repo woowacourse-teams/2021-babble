@@ -1,11 +1,13 @@
 # This workflow will build a Java project with Gradle
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
 
-name: Test release CI with gradle
+name: Backend test release CI with gradle
 
 on:
   push:
     branches: [ release ]
+    paths-ignore:
+      - "/front/**"
 
 jobs:
   build:
