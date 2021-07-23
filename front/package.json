@@ -1,6 +1,6 @@
 {
   "name": "babble",
-  "version": "1.0.0",
+  "version": "0.0.0-development",
   "description": "키워드(관심사) 기반 빠른 게임 팀 매칭 플랫폼 서비스",
   "main": "index.js",
   "scripts": {
