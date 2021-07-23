@@ -23,7 +23,7 @@ jobs:
       - name: 빌드
         working-directory: ./front
         run: npm run prod
-        
+
       - name: Semantic Release 실행
         uses: cycjimmy/semantic-release-action@v2
         id: semantic
@@ -32,11 +32,10 @@ jobs:
           extra_plugins: |
             @semantic-release/changelog
             @semantic-release/git
-            conventional-changelog-eslint
           branches: |
             ['release']
-        with:
-          github-token: ${{ secrets.SEMANTIC_RELEASE_GH_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GH_TOKEN }}
 
       - name: 배포
         working-directory: ./front
