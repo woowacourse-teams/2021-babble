@@ -30,7 +30,7 @@ const RoomList = () => {
         />
       );
     } catch (error) {
-      alert('방 생성에 실패했습니다!');
+      alert('방 생성을 하는 데 오류가 있습니다.');
     }
   };
 
