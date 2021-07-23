@@ -1,12 +1,11 @@
 {
-  "branches": ["release"],
+  "branches": ["release", "feature/semantic-versioning"],
   "repositoryUrl": "https://github.com/woowacourse-teams/2021-babble.git",
   "debug": "true",
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
     "@semantic-release/npm",
-    "@semantic-release/github",
     [
       "@semantic-release/changelog",
       {
