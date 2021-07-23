@@ -1,6 +1,6 @@
 {
   "name": "babble",
-  "version": "1.0.0",
+  "version": "0.0.0-development",
   "description": "키워드(관심사) 기반 빠른 게임 팀 매칭 플랫폼 서비스",
   "main": "index.js",
   "scripts": {
@@ -20,6 +20,7 @@
     "@babel/preset-react": "^7.14.5",
     "@semantic-release/changelog": "^5.0.1",
     "@semantic-release/git": "^9.0.0",
+    "@semantic-release/github": "^7.2.3",
     "@storybook/addon-a11y": "^6.3.4",
     "@storybook/addon-actions": "^6.3.4",
     "@storybook/addon-essentials": "^6.3.4",
@@ -64,6 +65,7 @@
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/",
-    "pkgRoot": "dist"
+    "pkgRoot": "dist",
+    "access": "public"
   }
 }
