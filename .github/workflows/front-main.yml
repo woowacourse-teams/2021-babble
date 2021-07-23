@@ -6,8 +6,8 @@ name: Node.js Package
 on:
   push:
     branches: [main]
-  paths:
-    - "front/**"
+    paths:
+      - "front/**"
 
 jobs:
   build:
