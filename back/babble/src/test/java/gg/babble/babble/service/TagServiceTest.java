@@ -2,6 +2,7 @@ package gg.babble.babble.service;
 
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.dto.TagResponse;
+import gg.babble.babble.exception.BabbleNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class TagServiceTest extends ApplicationTest {
 
@@ -37,12 +39,12 @@ public class TagServiceTest extends ApplicationTest {
 //        );
 //    }
 //
-//    @DisplayName("존재하지 않는 태그면 예외 처리한다.")
-//    @Test
-//    void tagNotFoundTest() {
-//        assertThatThrownBy(() -> tagService.findById("쏙옙뷁훑"))
-//                .isInstanceOf(BabbleNotFoundException.class);
-//    }
+    @DisplayName("존재하지 않는 태그면 예외 처리한다.")
+    @Test
+    void tagNotFoundTest() {
+        assertThatThrownBy(() -> tagService.findById("쏙옙뷁훑"))
+                .isInstanceOf(BabbleNotFoundException.class);
+    }
 
     @DisplayName("태그 전체를 불러오면, DB에 존재하는 모든 태그를 불러온다.")
     @Test
