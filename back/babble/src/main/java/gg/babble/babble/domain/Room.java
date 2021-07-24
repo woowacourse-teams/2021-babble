@@ -1,6 +1,7 @@
 package gg.babble.babble.domain;
 
 import gg.babble.babble.exception.BabbleDuplicatedException;
+import gg.babble.babble.exception.BabbleIllegalStatementException;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import lombok.Builder;
 import lombok.Getter;
@@ -90,6 +91,10 @@ public class Room {
     }
 
     public User getHost() {
+        if (isEmpty()) {
+            throw new BabbleIllegalStatementException("현재 방이 비어있습니다.");
+        }
+
         return users.get(0);
     }
 
@@ -98,6 +103,10 @@ public class Room {
     }
 
     public List<User> getGuests() {
+        if (isEmpty()) {
+            throw new BabbleIllegalStatementException("현재 방이 비어있습니다.");
+        }
+
         return users.subList(1, users.size());
     }
 

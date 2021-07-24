@@ -1,5 +1,6 @@
 package gg.babble.babble.domain;
 
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -22,4 +23,21 @@ public class RoomTag {
     @ManyToOne
     @JoinColumn(name = "tag_name")
     private Tag tag;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        RoomTag roomTag = (RoomTag) o;
+        return id.equals(roomTag.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

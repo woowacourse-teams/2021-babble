@@ -1,6 +1,7 @@
 package gg.babble.babble.domain;
 
 import gg.babble.babble.exception.BabbleDuplicatedException;
+import gg.babble.babble.exception.BabbleIllegalStatementException;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,34 +16,34 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class RoomTest {
 
     private Room room;
+    private Game game;
+    private List<Tag> tags;
 
     @BeforeEach
     void setUp() {
-        room = prepareRoom();
-    }
-
-    private Room prepareRoom() {
-        Game game = Game.builder()
-                .id(1L)
-                .name("게임")
-                .build();
         User host = User.builder()
-                .id(1L)
-                .name("방장")
-                .build();
-        List<Tag> tags = Arrays.asList(
-                Tag.builder().name("실버").build(),
-                Tag.builder().name("2시간").build());
+            .id(1L)
+            .name("방장")
+            .build();
+        game = Game.builder()
+            .id(1L)
+            .name("게임")
+            .build();
+        tags = Arrays.asList(
+            Tag.builder().name("실버").build(),
+            Tag.builder().name("2시간").build());
 
-        Room room = Room.builder()
-                .id(1L)
-                .game(game)
-                .tags(tags)
-                .build();
+        room = generateEmptyRoom();
 
         room.join(host);
+    }
 
-        return room;
+    private Room generateEmptyRoom() {
+        return Room.builder()
+            .id(1L)
+            .game(game)
+            .tags(tags)
+            .build();
     }
 
     @DisplayName("방에 유저가 입장한다.")
@@ -126,5 +127,38 @@ public class RoomTest {
         assertThat(room.getHost()).isEqualTo(guest1);
         assertThat(host.getRoom()).isNull();
         assertThat(guest1.getRoom()).isEqualTo(room);
+    }
+
+    @DisplayName("호스트를 조회한다.")
+    @Test
+    void getHost() {
+        assertThat(room.getHost()).isEqualTo(
+            User.builder()
+            .id(1L)
+            .name("방장")
+            .build()
+        );
+    }
+
+    @DisplayName("빈 방의 호스트를 조회하면 예외 처리한다.")
+    @Test
+    void getInvalidHost() {
+        Room emptyRoom = generateEmptyRoom();
+
+        assertThatThrownBy(emptyRoom::getHost).isInstanceOf(BabbleIllegalStatementException.class);
+    }
+
+    @DisplayName("게스트를 조회한다.")
+    @Test
+    void getGuests() {
+        assertThat(room.getGuests()).isEmpty();
+    }
+
+    @DisplayName("빈 방의 게스트를 조회하면 예외 처리한다.")
+    @Test
+    void getInvalidGuests() {
+        Room emptyRoom = generateEmptyRoom();
+
+        assertThatThrownBy(emptyRoom::getGuests).isInstanceOf(BabbleIllegalStatementException.class);
     }
 }
