@@ -9,6 +9,7 @@ import gg.babble.babble.exception.BabbleNotFoundException;
 import gg.babble.babble.service.GameService;
 import gg.babble.babble.service.TagService;
 import gg.babble.babble.service.UserService;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,40 +33,39 @@ public class RoomRepositoryTest extends ApplicationTest {
     @Autowired
     private TagService tagService;
 
-//    @DisplayName("방 더미 데이터를 확인한다.")
-//    @Test
-//    void dummyGameTest() {
-//        Optional<Room> room = roomRepository.findById(1L);
-//
-//        Game expectedGame = Game.builder()
-//                .id(1L)
-//                .name("League Of Legend")
-//                .build();
-//        User expectedHost = User.builder()
-//                .id(1L)
-//                .name("루트")
-//                .room(room.get())
-//                .build();
-//
-//        List<Tag> expectedTags = Arrays.asList(
-//                Tag.builder()
-//                        .name("실버")
-//                        .build(),
-//                Tag.builder()
-//                        .name("2시간")
-//                        .build()
-//        );
-//
-//        assertThat(room.isPresent()).isTrue();
-//        assertThat(room.get().getCreatedDate()).isNotNull();
-//        assertThat(room.get().getGame()).usingRecursiveComparison()
-//                .isEqualTo(expectedGame);
-//        assertThat(room.get().getHost()).usingRecursiveComparison()
-//                .isEqualTo(expectedHost);
-//        assertThat(room.get().getTags()).usingRecursiveComparison()
-//                .ignoringFields("rooms")
-//                .isEqualTo(expectedTags);
-//    }
+    @DisplayName("방 더미 데이터를 확인한다.")
+    @Test
+    void dummyGameTest() {
+        Optional<Room> room = roomRepository.findById(1L);
+
+        Game expectedGame = Game.builder()
+                .id(1L)
+                .name("League Of Legend")
+                .build();
+        User expectedHost = User.builder()
+                .id(1L)
+                .name("루트")
+                .room(room.orElseThrow(IllegalArgumentException::new))
+                .build();
+
+        List<Tag> expectedTags = Arrays.asList(
+                Tag.builder()
+                        .name("실버")
+                        .build(),
+                Tag.builder()
+                        .name("2시간")
+                        .build()
+        );
+
+        assertThat(room.get().getCreatedDate()).isNotNull();
+        assertThat(room.get().getGame()).usingRecursiveComparison()
+                .isEqualTo(expectedGame);
+        assertThat(room.get().getHost()).usingRecursiveComparison()
+                .isEqualTo(expectedHost);
+        assertThat(room.get().getTags()).usingRecursiveComparison()
+                .ignoringFields("rooms")
+                .isEqualTo(expectedTags);
+    }
 
     @DisplayName("생성한 방을 저장한다.")
     @Test

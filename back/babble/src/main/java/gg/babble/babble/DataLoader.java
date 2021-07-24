@@ -10,13 +10,14 @@ import gg.babble.babble.domain.repository.TagRepository;
 import gg.babble.babble.domain.repository.UserRepository;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
 
-//@Profile("test")
+@Profile("test")
 @Transactional
 @Component
 public class DataLoader implements CommandLineRunner {
