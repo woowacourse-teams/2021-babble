@@ -1,7 +1,8 @@
 package gg.babble.babble.domain;
 
+import gg.babble.babble.domain.user.User;
+import gg.babble.babble.domain.user.Users;
 import gg.babble.babble.exception.BabbleDuplicatedException;
-import gg.babble.babble.exception.BabbleIllegalStatementException;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +13,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @EntityListeners(AuditingEntityListener.class)
@@ -37,8 +37,8 @@ public class Room {
             inverseJoinColumns = @JoinColumn(name = "tag_name"))
     private List<Tag> tags;
 
-    @OneToMany(mappedBy = "room")
-    private final List<User> users = new ArrayList<>();
+    @Embedded
+    private Users users;
 
     @CreatedDate
     private LocalDateTime createdDate;
@@ -47,17 +47,18 @@ public class Room {
     private boolean isDeleted;
 
     @Builder
-    public Room(final Long id, @NonNull final Game game, @NonNull final List<Tag> tags, LocalDateTime createdDate) {
+    public Room(final Long id, @NonNull final Game game, @NonNull final List<Tag> tags, final LocalDateTime createdDate) {
         this.id = id;
         this.game = game;
         this.tags = tags;
+        this.users = new Users();
         this.createdDate = createdDate;
         isDeleted = false;
     }
 
     public void join(final User user) {
 
-        if (hasUser(user)) {
+        if (users.hasUser(user)) {
             throw new BabbleDuplicatedException("이미 해당 방에 참여 중입니다.");
         }
 
@@ -91,30 +92,22 @@ public class Room {
     }
 
     public User getHost() {
-        if (isEmpty()) {
-            throw new BabbleIllegalStatementException("현재 방이 비어있습니다.");
-        }
+        return users.first();
+    }
 
-        return users.get(0);
+    public List<User> getGuests() {
+        return users.tail();
     }
 
     public boolean isEmpty() {
         return users.isEmpty();
     }
 
-    public List<User> getGuests() {
-        if (isEmpty()) {
-            throw new BabbleIllegalStatementException("현재 방이 비어있습니다.");
-        }
-
-        return users.subList(1, users.size());
-    }
-
-    public boolean hasUser(final User user) {
-        return users.contains(user);
+    public boolean hasUser(User user) {
+        return users.hasUser(user);
     }
 
     public boolean hasNotUser(final User user) {
-        return !hasUser(user);
+        return !users.hasUser(user);
     }
 }

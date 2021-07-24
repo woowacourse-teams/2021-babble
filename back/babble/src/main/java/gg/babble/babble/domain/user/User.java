@@ -1,5 +1,6 @@
-package gg.babble.babble.domain;
+package gg.babble.babble.domain.user;
 
+import gg.babble.babble.domain.Room;
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
 import lombok.*;
 

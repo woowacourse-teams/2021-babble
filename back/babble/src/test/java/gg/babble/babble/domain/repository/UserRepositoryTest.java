@@ -1,7 +1,7 @@
 package gg.babble.babble.domain.repository;
 
 import gg.babble.babble.ApplicationTest;
-import gg.babble.babble.domain.User;
+import gg.babble.babble.domain.user.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;

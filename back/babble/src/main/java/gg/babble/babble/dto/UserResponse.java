@@ -1,6 +1,6 @@
 package gg.babble.babble.dto;
 
-import gg.babble.babble.domain.User;
+import gg.babble.babble.domain.user.User;
 import lombok.*;
 
 @Setter

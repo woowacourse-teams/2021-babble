@@ -3,7 +3,7 @@ package gg.babble.babble;
 import gg.babble.babble.domain.Game;
 import gg.babble.babble.domain.Room;
 import gg.babble.babble.domain.Tag;
-import gg.babble.babble.domain.User;
+import gg.babble.babble.domain.user.User;
 import gg.babble.babble.domain.repository.GameRepository;
 import gg.babble.babble.domain.repository.RoomRepository;
 import gg.babble.babble.domain.repository.TagRepository;
