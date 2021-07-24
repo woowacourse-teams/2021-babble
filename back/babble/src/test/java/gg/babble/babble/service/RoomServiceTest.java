@@ -2,8 +2,8 @@ package gg.babble.babble.service;
 
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.domain.Game;
-import gg.babble.babble.domain.Room;
-import gg.babble.babble.domain.Tag;
+import gg.babble.babble.domain.room.Room;
+import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.dto.RoomResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.time.LocalDateTime;
@@ -12,7 +12,6 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

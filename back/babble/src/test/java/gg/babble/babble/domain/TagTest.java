@@ -1,5 +1,6 @@
 package gg.babble.babble.domain;
 
+import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.exception.BabbleLengthException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

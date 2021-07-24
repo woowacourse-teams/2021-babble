@@ -1,5 +1,6 @@
 package gg.babble.babble.domain;
 
+import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.user.User;
 import java.util.Objects;
 import lombok.Builder;

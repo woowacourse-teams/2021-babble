@@ -4,9 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.domain.Game;
-import gg.babble.babble.domain.Room;
-import gg.babble.babble.domain.Tag;
-import gg.babble.babble.domain.TagRegistration;
+import gg.babble.babble.domain.room.Room;
+import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import gg.babble.babble.service.GameService;
@@ -15,7 +14,6 @@ import gg.babble.babble.service.UserService;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,24 +47,14 @@ public class RoomRepositoryTest extends ApplicationTest {
             .room(room.orElseThrow(IllegalArgumentException::new))
             .build();
 
-        List<Tag> expectedTags = Arrays.asList(
-            Tag.builder()
-                .name("실버")
-                .build(),
-            Tag.builder()
-                .name("2시간")
-                .build()
-        );
+        List<String> expectedTags = Arrays.asList("실버", "2시간");
 
         assertThat(room.get().getCreatedDate()).isNotNull();
         assertThat(room.get().getGame()).usingRecursiveComparison()
             .isEqualTo(expectedGame);
         assertThat(room.get().getHost()).usingRecursiveComparison()
             .isEqualTo(expectedHost);
-        assertThat(room.get().getTagRegistrations()
-            .stream()
-            .map(TagRegistration::getTag)
-            .collect(Collectors.toList()))
+        assertThat(room.get().getTagRegistrationsOfRoom().tagNames())
             .usingRecursiveComparison()
             .ignoringFields("tagRegistrations")
             .isEqualTo(expectedTags);

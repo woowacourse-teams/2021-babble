@@ -1,6 +1,6 @@
 package gg.babble.babble.service;
 
-import gg.babble.babble.domain.Tag;
+import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.repository.TagRepository;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import org.springframework.stereotype.Service;

@@ -1,16 +1,13 @@
-package gg.babble.babble.domain;
+package gg.babble.babble.domain.tag;
 
 import gg.babble.babble.exception.BabbleLengthException;
-import java.util.ArrayList;
-import javax.persistence.OneToMany;
+import javax.persistence.Embedded;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -21,14 +18,14 @@ public class Tag {
     @Id
     private String name;
 
-    @OneToMany(mappedBy = "tag")
-    private List<TagRegistration> tagRegistrations;
+    @Embedded
+    private TagRegistrationsOfTag tagRegistrations;
 
     @Builder
     private Tag(final String name) {
         validate(name);
         this.name = name;
-        this.tagRegistrations = new ArrayList<>();
+        this.tagRegistrations = new TagRegistrationsOfTag();
     }
 
     private static void validate(final String name) {

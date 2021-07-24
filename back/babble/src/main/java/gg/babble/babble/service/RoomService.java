@@ -1,6 +1,6 @@
 package gg.babble.babble.service;
 
-import gg.babble.babble.domain.Room;
+import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.user.User;
 import gg.babble.babble.domain.repository.RoomRepository;
 import gg.babble.babble.dto.*;

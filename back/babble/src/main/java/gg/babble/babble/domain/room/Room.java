@@ -1,14 +1,13 @@
-package gg.babble.babble.domain;
+package gg.babble.babble.domain.room;
 
+import gg.babble.babble.domain.Game;
+import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
 import gg.babble.babble.domain.user.Users;
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
 import gg.babble.babble.exception.BabbleNotFoundException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,9 +34,8 @@ public class Room {
     @JoinColumn(name = "game_id")
     private Game game;
 
-    @NonNull
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
-    private final List<TagRegistration> tagRegistrations = new ArrayList<>();
+    @Embedded
+    private TagRegistrationsOfRoom tagRegistrationsOfRoom;
 
     @Embedded
     private Users users;
@@ -53,7 +51,10 @@ public class Room {
         validate(tags);
         this.id = id;
         this.game = game;
-        this.tagRegistrations.addAll(tagRegistrationsFromTag(tags));
+        this.tagRegistrationsOfRoom = TagRegistrationsOfRoom.builder()
+            .room(this)
+            .tags(tags)
+            .build();
         this.users = new Users();
         this.createdDate = createdDate;
         isDeleted = false;
@@ -63,15 +64,6 @@ public class Room {
         if (Objects.isNull(tags) || tags.isEmpty()) {
             throw new BabbleIllegalArgumentException("방의 태그는 1개 이상이어야 합니다.");
         }
-    }
-
-    private List<TagRegistration> tagRegistrationsFromTag(List<Tag> tags) {
-        return tags.stream()
-            .map(tag -> TagRegistration.builder()
-                .room(this)
-                .tag(tag)
-                .build())
-            .collect(Collectors.toList());
     }
 
     public void join(final User user) {

@@ -1,8 +1,8 @@
 package gg.babble.babble;
 
 import gg.babble.babble.domain.Game;
-import gg.babble.babble.domain.Room;
-import gg.babble.babble.domain.Tag;
+import gg.babble.babble.domain.room.Room;
+import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
 import gg.babble.babble.domain.repository.GameRepository;
 import gg.babble.babble.domain.repository.RoomRepository;
