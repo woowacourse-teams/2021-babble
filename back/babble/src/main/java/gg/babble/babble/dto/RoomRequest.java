@@ -17,5 +17,5 @@ public class RoomRequest {
     @Positive(message = "게임 ID는 1보다 큰 수여야 합니다.")
     private Long gameId;
     @NotNull(message = "태그 목록은 Null 일 수 없습니다.")
-    private List<String> tags;
+    private List<TagRequest> tags;
 }

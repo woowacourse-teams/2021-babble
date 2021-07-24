@@ -19,7 +19,7 @@ public class RoomResponse {
     private Long roomId;
     private String createdDate;
     private GameResponse game;
-    private List<String> tags;
+    private List<TagResponse> tags;
 
     public static RoomResponse from(final Room room) {
         return RoomResponse.builder()
@@ -30,9 +30,11 @@ public class RoomResponse {
                 .build();
     }
 
-    private static List<String> tagNames(final List<Tag> tags) {
+    private static List<TagResponse> tagNames(final List<Tag> tags) {
         return tags.stream()
-                .map(Tag::getName)
+                .map(tag -> TagResponse.builder()
+                        .name(tag.getName())
+                        .build())
                 .collect(Collectors.toList());
     }
 }
