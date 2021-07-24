@@ -2,7 +2,7 @@ package gg.babble.babble.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class BabbleIllegalStatementException extends BabbleException{
+public class BabbleIllegalStatementException extends BabbleException {
 
     public BabbleIllegalStatementException(String message) {
         super(message);

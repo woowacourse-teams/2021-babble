@@ -1,7 +1,7 @@
 package gg.babble.babble.service;
 
-import gg.babble.babble.domain.user.User;
 import gg.babble.babble.domain.repository.UserRepository;
+import gg.babble.babble.domain.user.User;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +18,6 @@ public class UserService {
 
     public User findById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 유저 Id 입니다."));
+            .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 유저 Id 입니다."));
     }
 }

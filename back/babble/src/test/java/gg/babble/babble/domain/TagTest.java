@@ -1,12 +1,12 @@
 package gg.babble.babble.domain;
 
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.exception.BabbleLengthException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class TagTest {
 
@@ -15,11 +15,11 @@ class TagTest {
     void nameLengthTest() {
         assertThatCode(() -> {
             Tag.builder()
-                    .name("힝")
-                    .build();
+                .name("힝")
+                .build();
             Tag.builder()
-                    .name("태그길이여덟글자")
-                    .build();
+                .name("태그길이여덟글자")
+                .build();
         }).doesNotThrowAnyException();
     }
 
@@ -27,8 +27,8 @@ class TagTest {
     @Test
     void nameLengthLessTest() {
         assertThatThrownBy(() -> Tag.builder()
-                .name("")
-                .build()
+            .name("")
+            .build()
         ).isInstanceOf(BabbleLengthException.class);
     }
 
@@ -36,8 +36,8 @@ class TagTest {
     @Test
     void nameLengthOverTest() {
         assertThatThrownBy(() -> Tag.builder()
-                .name("태그길이가아홉글자")
-                .build()
+            .name("태그길이가아홉글자")
+            .build()
         ).isInstanceOf(BabbleLengthException.class);
     }
 }

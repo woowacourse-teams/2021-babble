@@ -17,8 +17,8 @@ public class HostResponse {
 
     public static HostResponse from(final User host) {
         return HostResponse.builder()
-                .id(host.getId())
-                .name(host.getName())
-                .build();
+            .id(host.getId())
+            .name(host.getName())
+            .build();
     }
 }

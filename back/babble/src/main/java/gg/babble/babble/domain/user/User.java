@@ -2,10 +2,19 @@ package gg.babble.babble.domain.user;
 
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
-import lombok.*;
-
-import javax.persistence.*;
 import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Builder
 @Getter

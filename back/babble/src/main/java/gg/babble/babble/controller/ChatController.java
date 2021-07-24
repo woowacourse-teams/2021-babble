@@ -21,6 +21,6 @@ public class ChatController {
     @MessageMapping("/rooms/{roomId}/chat")
     public void chat(@DestinationVariable final Long roomId, final MessageRequest messageRequest) {
         template.convertAndSend(String.format("/topic/rooms/%s/chat", roomId),
-                chatService.sendChatMessage(messageRequest));
+            chatService.sendChatMessage(messageRequest));
     }
 }

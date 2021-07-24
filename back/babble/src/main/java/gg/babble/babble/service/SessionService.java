@@ -1,9 +1,9 @@
 package gg.babble.babble.service;
 
-import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.Session;
-import gg.babble.babble.domain.user.User;
 import gg.babble.babble.domain.repository.SessionRepository;
+import gg.babble.babble.domain.room.Room;
+import gg.babble.babble.domain.user.User;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,10 +21,10 @@ public class SessionService {
     @Transactional
     public void create(final Room room, final String sessionId, final User user) {
         Session session = Session.builder()
-                .room(room)
-                .sessionId(sessionId)
-                .user(user)
-                .build();
+            .room(room)
+            .sessionId(sessionId)
+            .user(user)
+            .build();
 
         sessionRepository.save(session);
     }

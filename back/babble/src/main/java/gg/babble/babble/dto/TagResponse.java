@@ -1,6 +1,6 @@
 package gg.babble.babble.dto;
 
-import gg.babble.babble.domain.Game;
+import gg.babble.babble.domain.tag.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,15 +10,13 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GameResponse {
+public class TagResponse {
 
-    private Long id;
     private String name;
 
-    public static GameResponse from(final Game game) {
-        return GameResponse.builder()
-            .id(game.getId())
-            .name(game.getName())
+    public static TagResponse from(final Tag tag) {
+        return TagResponse.builder()
+            .name(tag.getName())
             .build();
     }
 }

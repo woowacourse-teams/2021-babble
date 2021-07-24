@@ -3,6 +3,14 @@ package gg.babble.babble.domain;
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.user.User;
 import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,8 +18,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import javax.persistence.*;
 
 @Builder
 @EntityListeners(AuditingEntityListener.class)

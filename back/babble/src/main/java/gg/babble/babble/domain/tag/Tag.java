@@ -1,15 +1,14 @@
 package gg.babble.babble.domain.tag;
 
 import gg.babble.babble.exception.BabbleLengthException;
+import java.util.Objects;
 import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.util.Objects;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

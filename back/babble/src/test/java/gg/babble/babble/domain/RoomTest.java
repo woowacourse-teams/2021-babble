@@ -1,20 +1,19 @@
 package gg.babble.babble.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleIllegalStatementException;
 import gg.babble.babble.exception.BabbleNotFoundException;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class RoomTest {
 
@@ -53,9 +52,9 @@ public class RoomTest {
     @Test
     void joinRoom() {
         User guest = User.builder()
-                .id(2L)
-                .name("손님")
-                .build();
+            .id(2L)
+            .name("손님")
+            .build();
 
         room.join(guest);
 
@@ -68,9 +67,9 @@ public class RoomTest {
     @Test
     void alreadyJoin() {
         User guest = User.builder()
-                .id(2L)
-                .name("손님")
-                .build();
+            .id(2L)
+            .name("손님")
+            .build();
 
         room.join(guest);
 
@@ -81,13 +80,13 @@ public class RoomTest {
     @Test
     void leave() {
         User guest1 = User.builder()
-                .id(2L)
-                .name("손님")
-                .build();
+            .id(2L)
+            .name("손님")
+            .build();
         User guest2 = User.builder()
-                .id(3L)
-                .name("손님")
-                .build();
+            .id(3L)
+            .name("손님")
+            .build();
 
         room.join(guest1);
         room.join(guest2);
@@ -101,25 +100,25 @@ public class RoomTest {
     @Test
     void leavingUserNotFoundInRoom() {
         User user = User.builder()
-                .id(2L)
-                .name("외부자")
-                .build();
+            .id(2L)
+            .name("외부자")
+            .build();
 
         assertThatThrownBy(() -> room.leave(user))
-                .isInstanceOf(BabbleNotFoundException.class);
+            .isInstanceOf(BabbleNotFoundException.class);
     }
 
     @DisplayName("호스트가 퇴장할 경우 가장 먼저 들어온 게스트가 호스트가 된다.")
     @Test
     void hostDelegate() {
         User guest1 = User.builder()
-                .id(2L)
-                .name("게스트")
-                .build();
+            .id(2L)
+            .name("게스트")
+            .build();
         User guest2 = User.builder()
-                .id(3L)
-                .name("게스트")
-                .build();
+            .id(3L)
+            .name("게스트")
+            .build();
         User host = room.getHost();
 
         room.join(guest1);
@@ -137,9 +136,9 @@ public class RoomTest {
     void getHost() {
         assertThat(room.getHost()).isEqualTo(
             User.builder()
-            .id(1L)
-            .name("방장")
-            .build()
+                .id(1L)
+                .name("방장")
+                .build()
         );
     }
 
@@ -162,6 +161,7 @@ public class RoomTest {
     void getInvalidGuests() {
         Room emptyRoom = generateEmptyRoom();
 
-        assertThatThrownBy(emptyRoom::getGuests).isInstanceOf(BabbleIllegalStatementException.class);
+        assertThatThrownBy(emptyRoom::getGuests)
+            .isInstanceOf(BabbleIllegalStatementException.class);
     }
 }

@@ -1,12 +1,11 @@
 package gg.babble.babble.dto;
 
+import java.util.List;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -17,5 +16,5 @@ public class RoomRequest {
     @Positive(message = "게임 ID는 1보다 큰 수여야 합니다.")
     private Long gameId;
     @NotNull(message = "태그 목록은 Null 일 수 없습니다.")
-    private List<String> tags;
+    private List<TagRequest> tags;
 }

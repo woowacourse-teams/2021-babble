@@ -1,5 +1,7 @@
 package gg.babble.babble.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import gg.babble.babble.AcceptanceTest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -8,8 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class WebSocketTest extends AcceptanceTest {
 
@@ -23,10 +23,10 @@ public class WebSocketTest extends AcceptanceTest {
     @Test
     void webSocketConnectTest() {
         ExtractableResponse<Response> response = RestAssured.given().log().all()
-                .when()
-                .get("/connection")
-                .then().log().all()
-                .extract();
+            .when()
+            .get("/connection")
+            .then().log().all()
+            .extract();
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());

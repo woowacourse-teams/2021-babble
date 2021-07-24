@@ -1,6 +1,10 @@
 package gg.babble.babble.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Setter
 @Getter
@@ -8,13 +12,14 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MessageResponse {
+
     private UserResponse user;
     private String content;
 
     public static MessageResponse of(final UserResponse userResponse, final String content) {
         return MessageResponse.builder()
-                .user(userResponse)
-                .content(content)
-                .build();
+            .user(userResponse)
+            .content(content)
+            .build();
     }
 }

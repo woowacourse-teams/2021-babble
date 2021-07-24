@@ -7,7 +7,18 @@ import gg.babble.babble.domain.user.Users;
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
 import gg.babble.babble.exception.BabbleNotFoundException;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,10 +26,6 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @EntityListeners(AuditingEntityListener.class)
 @Getter
@@ -48,7 +55,8 @@ public class Room {
     private boolean isDeleted;
 
     @Builder
-    public Room(final Long id, @NonNull final Game game, @NonNull final List<Tag> tags, final LocalDateTime createdDate) {
+    public Room(final Long id, @NonNull final Game game, @NonNull final List<Tag> tags,
+        final LocalDateTime createdDate) {
         validate(tags);
         this.id = id;
         this.game = game;
