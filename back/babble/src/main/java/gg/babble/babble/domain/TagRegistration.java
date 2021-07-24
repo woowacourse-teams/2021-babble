@@ -42,8 +42,8 @@ public class TagRegistration {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        TagRegistration tagRegistration = (TagRegistration) o;
-        return id.equals(tagRegistration.id);
+        TagRegistration that = (TagRegistration) o;
+        return Objects.equals(id, that.id);
     }
 
     @Override

@@ -36,7 +36,7 @@ public class Game {
             return false;
         }
         Game game = (Game) o;
-        return id.equals(game.id);
+        return Objects.equals(id, game.id);
     }
 
     @Override

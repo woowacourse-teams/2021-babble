@@ -44,7 +44,7 @@ public class Tag {
             return false;
         }
         Tag tag = (Tag) o;
-        return name.equals(tag.name);
+        return Objects.equals(name, tag.name);
     }
 
     @Override

@@ -47,7 +47,7 @@ public class Session {
             return false;
         }
         Session session = (Session) o;
-        return id.equals(session.id);
+        return Objects.equals(id, session.id);
     }
 
     @Override
