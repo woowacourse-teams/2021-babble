@@ -2,6 +2,7 @@ package gg.babble.babble.restdocs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gg.babble.babble.ApplicationTest;
+import gg.babble.babble.dto.TagRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,11 +19,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -50,7 +51,7 @@ public class ApiDocumentationIntegrationTest extends ApplicationTest {
     public void createRoomTest() throws Exception {
         Map<String, Object> body = new HashMap<>();
         body.put("gameId", 1L);
-        body.put("tags", Arrays.asList("실버", "2시간", "솔로랭크"));
+        body.put("tags", Arrays.asList(new TagRequest("실버"), new TagRequest("2시간"), new TagRequest("솔로랭크")));
         mockMvc.perform(post("/api/rooms")
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -62,37 +63,39 @@ public class ApiDocumentationIntegrationTest extends ApplicationTest {
                 .andExpect(jsonPath("$.game.name").exists())
                 .andExpect(jsonPath("$.tags").isArray())
                 .andExpect(jsonPath("$.tags", hasSize(3)))
-                .andExpect(jsonPath("$.tags", hasItem("실버")))
-                .andExpect(jsonPath("$.tags", hasItem("솔로랭크")))
-                .andExpect(jsonPath("$.tags", hasItem("2시간")))
+                .andExpect(jsonPath("$.tags[0].name").value("실버"))
+                .andExpect(jsonPath("$.tags[1].name").value("2시간"))
+                .andExpect(jsonPath("$.tags[2].name").value("솔로랭크"))
+
                 .andDo(document("create-room",
                         requestFields(fieldWithPath("gameId").description("게임 Id"),
-                                fieldWithPath("tags").description("태그 리스트")),
+                                fieldWithPath("tags[].name").description("태그 리스트")),
                         responseFields(fieldWithPath("roomId").description("방 Id"),
                                 fieldWithPath("createdDate").description("방 생성 시각"),
                                 fieldWithPath("game.id").description("게임 Id"),
                                 fieldWithPath("game.name").description("게임 이름"),
-                                fieldWithPath("tags").description("태그 리스트"))));
+                                fieldWithPath("tags[].name").description("태그 리스트"))));
     }
 
-//    @Test
-//    public void readRoomTest() throws Exception {
-//        mockMvc.perform(get("/api/rooms/1")
-//                .accept(MediaType.APPLICATION_JSON_VALUE))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.roomId").exists())
-//                .andExpect(jsonPath("$.createdDate").exists())
-//                .andExpect(jsonPath("$.game.id").value(1))
-//                .andExpect(jsonPath("$.game.name").exists())
-//                .andExpect(jsonPath("$.tags").isArray())
-//                .andExpect(jsonPath("$.tags", hasSize(2)))
-//                .andExpect(jsonPath("$.tags", hasItem("실버")))
-//                .andExpect(jsonPath("$.tags", hasItem("2시간")))
-//                .andDo(document("read-room",
-//                        responseFields(fieldWithPath("roomId").description("방 Id"),
-//                                fieldWithPath("createdDate").description("방 생성 시각"),
-//                                fieldWithPath("game.id").description("게임 Id"),
-//                                fieldWithPath("game.name").description("게임 이름"),
-//                                fieldWithPath("tags").description("태그 리스트"))));
-//    }
+    @Test
+    public void readRoomTest() throws Exception {
+        mockMvc.perform(get("/api/rooms/1")
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.roomId").exists())
+                .andExpect(jsonPath("$.createdDate").exists())
+                .andExpect(jsonPath("$.game.id").value(1))
+                .andExpect(jsonPath("$.game.name").exists())
+                .andExpect(jsonPath("$.tags").isArray())
+                .andExpect(jsonPath("$.tags", hasSize(2)))
+                .andExpect(jsonPath("$.tags[0].name").value("실버"))
+                .andExpect(jsonPath("$.tags[1].name").value("2시간"))
+
+                .andDo(document("read-room",
+                        responseFields(fieldWithPath("roomId").description("방 Id"),
+                                fieldWithPath("createdDate").description("방 생성 시각"),
+                                fieldWithPath("game.id").description("게임 Id"),
+                                fieldWithPath("game.name").description("게임 이름"),
+                                fieldWithPath("tags[].name").description("태그 리스트"))));
+    }
 }
