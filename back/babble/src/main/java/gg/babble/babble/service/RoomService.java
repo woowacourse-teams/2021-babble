@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional(readOnly = true)
 public class RoomService {
 
     private final RoomRepository roomRepository;
@@ -39,16 +40,18 @@ public class RoomService {
     }
 
     public RoomResponse findById(final Long id) {
-        Room room = roomRepository.findById(id)
-                .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 방입니다."));
-        return RoomResponse.from(room);
+        return RoomResponse.from(findRoomOrElseThrow(id));
+    }
+
+    private Room findRoomOrElseThrow(Long id) {
+        return roomRepository.findById(id)
+            .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 방 Id 입니다."));
     }
 
     @Transactional
     public UserListUpdateResponse sendJoinRoom(final Long roomId, final UserJoinRequest request) {
         User user = userService.findById(request.getUserId());
-        Room room = roomRepository.findById(roomId)
-                .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 방 Id 입니다."));
+        Room room = findRoomOrElseThrow(roomId);
 
         room.join(user);
 
@@ -78,9 +81,7 @@ public class RoomService {
         User user = sessionService.findUserBySessionId(sessionId);
 
         room.leave(user);
-
         sessionService.delete(sessionId);
-
 
         if (room.isEmpty()) {
             return UserListUpdateResponse.builder().build();

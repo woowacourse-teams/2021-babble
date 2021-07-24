@@ -4,8 +4,10 @@ import gg.babble.babble.domain.user.User;
 import gg.babble.babble.domain.repository.UserRepository;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional(readOnly = true)
 public class UserService {
 
     private final UserRepository userRepository;
