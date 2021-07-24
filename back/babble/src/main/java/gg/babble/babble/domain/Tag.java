@@ -1,6 +1,8 @@
 package gg.babble.babble.domain;
 
 import gg.babble.babble.exception.BabbleLengthException;
+import java.util.ArrayList;
+import javax.persistence.OneToMany;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +13,6 @@ import javax.persistence.ManyToMany;
 import java.util.List;
 import java.util.Objects;
 
-@Builder
 @Getter
 @NoArgsConstructor
 @Entity
@@ -20,13 +21,14 @@ public class Tag {
     @Id
     private String name;
 
-    @ManyToMany(mappedBy = "tags")
-    private List<Room> rooms;
+    @OneToMany(mappedBy = "tag")
+    private List<TagRegistration> tagRegistrations;
 
-    private Tag(final String name, final List<Room> rooms) {
+    @Builder
+    private Tag(final String name) {
         validate(name);
         this.name = name;
-        this.rooms = rooms;
+        this.tagRegistrations = new ArrayList<>();
     }
 
     private static void validate(final String name) {

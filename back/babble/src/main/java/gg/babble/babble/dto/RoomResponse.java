@@ -2,6 +2,7 @@ package gg.babble.babble.dto;
 
 import gg.babble.babble.domain.Room;
 import gg.babble.babble.domain.Tag;
+import gg.babble.babble.domain.TagRegistration;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,13 +27,13 @@ public class RoomResponse {
                 .roomId(room.getId())
                 .createdDate(room.getCreatedDate().toString())
                 .game(GameResponse.from(room.getGame()))
-                .tags(tagNames(room.getTags()))
+                .tags(tagNames(room.getTagRegistrations()))
                 .build();
     }
 
-    private static List<String> tagNames(final List<Tag> tags) {
-        return tags.stream()
-                .map(Tag::getName)
-                .collect(Collectors.toList());
+    private static List<String> tagNames(List<TagRegistration> tagRegistrations) {
+        return tagRegistrations.stream()
+            .map(tagRegistration -> tagRegistration.getTag().getName())
+            .collect(Collectors.toList());
     }
 }

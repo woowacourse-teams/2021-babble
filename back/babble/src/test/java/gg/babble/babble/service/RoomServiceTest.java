@@ -32,7 +32,6 @@ class RoomServiceTest extends ApplicationTest {
     private TagService tagService;
 
     @DisplayName("요청한 Id의 방 정보를 반환한다.")
-    @Transactional
     @Test
     void findTest() {
 

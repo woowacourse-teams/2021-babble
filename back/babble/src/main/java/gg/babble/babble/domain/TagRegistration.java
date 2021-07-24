@@ -2,24 +2,31 @@ package gg.babble.babble.domain;
 
 import java.util.Objects;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import lombok.NonNull;
 
+@Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "room_tag")
+@Table(name = "tag_registration")
 @Entity
-public class RoomTag {
+public class TagRegistration {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NonNull
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Room room;
 
+    @NonNull
     @ManyToOne
     @JoinColumn(name = "tag_name")
     private Tag tag;
@@ -32,8 +39,8 @@ public class RoomTag {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        RoomTag roomTag = (RoomTag) o;
-        return id.equals(roomTag.id);
+        TagRegistration tagRegistration = (TagRegistration) o;
+        return id.equals(tagRegistration.id);
     }
 
     @Override
