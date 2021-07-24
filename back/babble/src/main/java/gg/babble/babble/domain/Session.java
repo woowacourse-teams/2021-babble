@@ -3,6 +3,8 @@ package gg.babble.babble.domain;
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.user.User;
 import java.util.Objects;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,9 +13,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 
+@Builder
 @EntityListeners(AuditingEntityListener.class)
 @Getter
-@NoArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Session {
 
@@ -33,14 +37,6 @@ public class Session {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
-
-    @Builder
-    public Session(final Long id, @NonNull final String sessionId, @NonNull final Room room, @NonNull final User user) {
-        this.id = id;
-        this.sessionId = sessionId;
-        this.room = room;
-        this.user = user;
-    }
 
     @Override
     public boolean equals(Object o) {

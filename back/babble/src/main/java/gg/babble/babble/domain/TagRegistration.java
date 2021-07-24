@@ -3,6 +3,7 @@ package gg.babble.babble.domain;
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.tag.Tag;
 import java.util.Objects;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,8 +14,8 @@ import lombok.NonNull;
 
 @Getter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "tag_registration")
 @Entity
 public class TagRegistration {
@@ -50,3 +51,4 @@ public class TagRegistration {
         return Objects.hash(id);
     }
 }
+

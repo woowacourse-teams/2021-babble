@@ -11,6 +11,7 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 @Controller
 public class UserListUpdateController {
+
     private final SimpMessagingTemplate template;
     private final RoomService roomService;
 

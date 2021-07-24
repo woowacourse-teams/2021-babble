@@ -2,6 +2,7 @@ package gg.babble.babble.domain.tag;
 
 import gg.babble.babble.exception.BabbleLengthException;
 import javax.persistence.Embedded;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import javax.persistence.Id;
 import java.util.Objects;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Tag {
 

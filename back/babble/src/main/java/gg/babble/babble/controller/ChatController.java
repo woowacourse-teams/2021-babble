@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 public class ChatController {
+
     private final SimpMessagingTemplate template;
     private final ChatService chatService;
 
