@@ -23,12 +23,12 @@ public class Tag {
 
     @Builder
     private Tag(final String name) {
-        validate(name);
+        validateToConstruct(name);
         this.name = name;
         this.tagRegistrations = new TagRegistrationsOfTag();
     }
 
-    private static void validate(final String name) {
+    private static void validateToConstruct(final String name) {
         if (Objects.isNull(name) || name.length() < 1 || name.length() > 8) {
             throw new BabbleLengthException("이름의 길이는 1자 이상 8자 이하입니다.");
         }

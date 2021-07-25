@@ -57,7 +57,7 @@ public class Room {
     @Builder
     public Room(final Long id, @NonNull final Game game, @NonNull final List<Tag> tags,
         final LocalDateTime createdDate) {
-        validate(tags);
+        validateToConstruct(tags);
         this.id = id;
         this.game = game;
         this.tagRegistrationsOfRoom = TagRegistrationsOfRoom.builder()
@@ -69,7 +69,7 @@ public class Room {
         isDeleted = false;
     }
 
-    private void validate(List<Tag> tags) {
+    private static void validateToConstruct(List<Tag> tags) {
         if (Objects.isNull(tags) || tags.isEmpty()) {
             throw new BabbleIllegalArgumentException("방의 태그는 1개 이상이어야 합니다.");
         }
