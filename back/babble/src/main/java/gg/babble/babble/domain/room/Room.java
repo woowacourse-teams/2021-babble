@@ -111,7 +111,7 @@ public class Room {
     }
 
     public User getHost() {
-        return users.first();
+        return users.head();
     }
 
     public List<User> getGuests() {

@@ -20,6 +20,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class RoomRepositoryTest extends ApplicationTest {
 
+    private static final String LEAGUE_OF_LEGEND = "League Of Legend";
+    private static final String 루트 = "루트";
+    private static final String 실버 = "실버";
+    private static final String _2시간 = "2시간";
+
     @Autowired
     private RoomRepository roomRepository;
 
@@ -35,26 +40,26 @@ public class RoomRepositoryTest extends ApplicationTest {
     @DisplayName("방 더미 데이터를 확인한다.")
     @Test
     void dummyGameTest() {
-        Optional<Room> room = roomRepository.findById(1L);
+        Room room = roomRepository.findAll().get(0);
 
         Game expectedGame = Game.builder()
-            .id(1L)
-            .name("League Of Legend")
+            .name(LEAGUE_OF_LEGEND)
             .build();
         User expectedHost = User.builder()
-            .id(1L)
-            .name("루트")
-            .room(room.orElseThrow(IllegalArgumentException::new))
+            .name(루트)
+            .room(room)
             .build();
 
-        List<String> expectedTags = Arrays.asList("실버", "2시간");
+        List<String> expectedTags = Arrays.asList(실버, _2시간);
 
-        assertThat(room.get().getCreatedDate()).isNotNull();
-        assertThat(room.get().getGame()).usingRecursiveComparison()
+        assertThat(room.getCreatedDate()).isNotNull();
+        assertThat(room.getGame()).usingRecursiveComparison()
+            .ignoringFields("id")
             .isEqualTo(expectedGame);
-        assertThat(room.get().getHost()).usingRecursiveComparison()
+        assertThat(room.getHost()).usingRecursiveComparison()
+            .ignoringFields("id")
             .isEqualTo(expectedHost);
-        assertThat(room.get().getTagRegistrationsOfRoom().tagNames())
+        assertThat(room.getTagRegistrationsOfRoom().tagNames())
             .usingRecursiveComparison()
             .ignoringFields("tagRegistrations")
             .isEqualTo(expectedTags);
@@ -70,10 +75,10 @@ public class RoomRepositoryTest extends ApplicationTest {
     }
 
     private Room saveRoom() {
-        Game game = gameService.findById(1L);
-        User user = userService.findById(1L);
-        List<Tag> tags = Arrays.asList(tagService.findById("실버"),
-            tagService.findById("2시간"));
+        Game game = gameService.findByName(LEAGUE_OF_LEGEND).get(0);
+        User user = userService.findByName(루트).get(0);
+        List<Tag> tags = Arrays.asList(tagService.findById(실버),
+            tagService.findById(_2시간));
 
         Room room = roomRepository.save(Room.builder()
             .game(game)

@@ -21,7 +21,7 @@ public class Users {
     }
 
 
-    public User first() {
+    public User head() {
         if (users.isEmpty()) {
             throw new BabbleIllegalStatementException("유저가 존재하지 않습니다.");
         }

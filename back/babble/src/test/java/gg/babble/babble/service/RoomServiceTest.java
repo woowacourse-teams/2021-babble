@@ -18,6 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 class RoomServiceTest extends ApplicationTest {
 
+    private static final String LEAGUE_OF_LEGEND = "League Of Legend";
+    private static final String 실버 = "실버";
+    private static final String _2시간 = "2시간";
+
     @Autowired
     private RoomService roomService;
 
@@ -34,11 +38,10 @@ class RoomServiceTest extends ApplicationTest {
     @Test
     void findTest() {
 
-        Game game = gameService.findById(1L);
-        List<Tag> tags = Arrays.asList(tagService.findById("실버"),
-            tagService.findById("2시간"));
+        Game game = gameService.findByName(LEAGUE_OF_LEGEND).get(0);
+        List<Tag> tags = Arrays.asList(tagService.findById(실버),
+            tagService.findById(_2시간));
         RoomResponse expected = RoomResponse.from(Room.builder()
-            .id(1L)
             .createdDate(LocalDateTime.now())
             .game(game)
             .tags(tags)

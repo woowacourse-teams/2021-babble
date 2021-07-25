@@ -21,6 +21,20 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class DataLoader implements CommandLineRunner {
 
+    private static final int FIRST_DATA_INDEX = 0;
+    private static final String LEAGUE_OF_LEGEND = "League Of Legend";
+    private static final String OVERWATCH = "Overwatch";
+    private static final String APEX_LEGEND = "Apex Legend";
+    private static final String 루트 = "루트";
+    private static final String 와일더 = "와일더";
+    private static final String 현구막 = "현구막";
+    private static final String 포츈 = "포츈";
+    private static final String 그루밍 = "그루밍";
+    private static final String 피터 = "피터";
+    private static final String 실버 = "실버";
+    private static final String _2시간 = "2시간";
+    private static final String 솔로랭크 = "솔로랭크";
+
     private final GameRepository gameRepository;
     private final UserRepository userRepository;
     private final TagRepository tagRepository;
@@ -45,91 +59,74 @@ public class DataLoader implements CommandLineRunner {
 
     private void prepareDummyGames() {
         gameRepository.save(Game.builder()
-            .id(1L)
-            .name("League Of Legend")
+            .name(LEAGUE_OF_LEGEND)
             .build()
         );
         gameRepository.save(Game.builder()
-            .id(2L)
-            .name("Overwatch")
+            .name(OVERWATCH)
             .build()
         );
         gameRepository.save(Game.builder()
-            .id(3L)
-            .name("Apex Legend")
+            .name(APEX_LEGEND)
             .build()
         );
     }
 
     private void prepareDummyUsers() {
         userRepository.save(User.builder()
-            .id(1L)
-            .name("루트")
+            .name(루트)
             .build()
         );
         userRepository.save(User.builder()
-            .id(2L)
-            .name("와일더")
+            .name(와일더)
             .build()
         );
         userRepository.save(User.builder()
-            .id(3L)
-            .name("현구막")
+            .name(현구막)
             .build()
         );
         userRepository.save(User.builder()
-            .id(4L)
-            .name("포츈")
+            .name(포츈)
             .build()
         );
         userRepository.save(User.builder()
-            .id(5L)
-            .name("그루밍")
+            .name(그루밍)
             .build()
         );
         userRepository.save(User.builder()
-            .id(6L)
-            .name("피터")
+            .name(피터)
             .build()
         );
     }
 
     private void prepareDummyTags() {
         tagRepository.save(Tag.builder()
-            .name("실버")
+            .name(실버)
             .build()
         );
         tagRepository.save(Tag.builder()
-            .name("2시간")
+            .name(_2시간)
             .build()
         );
         tagRepository.save(Tag.builder()
-            .name("솔로랭크")
+            .name(솔로랭크)
             .build()
         );
     }
 
     private void prepareDummyRoom() {
-        Game game = gameRepository.findById(1L).orElseThrow(BabbleNotFoundException::new);
-        User user = userRepository.findById(1L).orElseThrow(BabbleNotFoundException::new);
+        Game game = gameRepository.findByName(LEAGUE_OF_LEGEND).get(FIRST_DATA_INDEX);
+        User user = userRepository.findByName(루트).get(FIRST_DATA_INDEX);
         List<Tag> tags = Arrays
-            .asList(tagRepository.findById("실버").orElseThrow(BabbleNotFoundException::new),
-                tagRepository.findById("2시간").orElseThrow(BabbleNotFoundException::new));
+            .asList(tagRepository.findById(실버).orElseThrow(BabbleNotFoundException::new),
+                tagRepository.findById(_2시간).orElseThrow(BabbleNotFoundException::new));
 
         Room room = Room.builder()
-            .id(1L)
             .game(game)
             .tags(tags)
             .build();
 
         room.join(user);
         roomRepository.save(room);
-
-        Room room2 = Room.builder()
-            .id(2L)
-            .game(game)
-            .tags(tags)
-            .build();
-        roomRepository.save(room2);
     }
 }
