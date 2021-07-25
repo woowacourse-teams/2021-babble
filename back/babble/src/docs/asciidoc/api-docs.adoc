@@ -50,3 +50,53 @@ include::{snippets}/read-room-test/http-response.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
 include::{snippets}/read-room/response-fields.adoc[]
+
+== 채팅방 입장 API
+
+=== HTTP Request
+
+include::{snippets}/../custom-snippets/chat-room-connect/http-request.adoc[]
+
+=== HTTP Response
+
+include::{snippets}/../custom-snippets/chat-room-connect/http-response.adoc[]
+
+== 채팅방 유저 목록 API
+
+=== HTTP Request
+
+include::{snippets}/../custom-snippets/user-list/http-request.adoc[]
+
+=== HTTP Response
+
+include::{snippets}/../custom-snippets/user-list/http-response.adoc[]
+
+== 채팅방 입장 정보 업데이트 API
+
+=== HTTP Request
+
+include::{snippets}/../custom-snippets/chat-room-update/http-request.adoc[]
+
+=== HTTP Response
+
+include::{snippets}/../custom-snippets/chat-room-update/http-response.adoc[]
+
+== 채팅 전송 API
+
+=== HTTP Request
+
+include::{snippets}/../custom-snippets/chat-send/http-request.adoc[]
+
+=== HTTP Response
+
+include::{snippets}/../custom-snippets/chat-send/http-response.adoc[]
+
+== 채팅 수신 API
+
+=== HTTP Request
+
+include::{snippets}/../custom-snippets/chat-receive/http-request.adoc[]
+
+=== HTTP Response
+
+include::{snippets}/../custom-snippets/chat-receive/http-response.adoc[]

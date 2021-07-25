@@ -460,6 +460,36 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_http_response_2">2.2. HTTP Response</a></li>
 </ul>
 </li>
+<li><a href="#_채팅방_입장_api">3. 채팅방 입장 API</a>
+<ul class="sectlevel2">
+<li><a href="#_http_request_3">3.1. HTTP Request</a></li>
+<li><a href="#_http_response_3">3.2. HTTP Response</a></li>
+</ul>
+</li>
+<li><a href="#_채팅방_유저_목록_api">4. 채팅방 유저 목록 API</a>
+<ul class="sectlevel2">
+<li><a href="#_http_request_4">4.1. HTTP Request</a></li>
+<li><a href="#_http_response_4">4.2. HTTP Response</a></li>
+</ul>
+</li>
+<li><a href="#_채팅방_입장_정보_업데이트_api">5. 채팅방 입장 정보 업데이트 API</a>
+<ul class="sectlevel2">
+<li><a href="#_http_request_5">5.1. HTTP Request</a></li>
+<li><a href="#_http_response_5">5.2. HTTP Response</a></li>
+</ul>
+</li>
+<li><a href="#_채팅_전송_api">6. 채팅 전송 API</a>
+<ul class="sectlevel2">
+<li><a href="#_http_request_6">6.1. HTTP Request</a></li>
+<li><a href="#_http_response_6">6.2. HTTP Response</a></li>
+</ul>
+</li>
+<li><a href="#_채팅_수신_api">7. 채팅 수신 API</a>
+<ul class="sectlevel2">
+<li><a href="#_http_request_7">7.1. HTTP Request</a></li>
+<li><a href="#_http_response_7">7.2. HTTP Response</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -560,11 +590,11 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Location: api/rooms/6
 Content-Type: application/json
-Content-Length: 236
+Content-Length: 239
 
 {
   "roomId" : 6,
-  "createdDate" : "2021-07-25T02:02:15.834",
+  "createdDate" : "2021-07-25T16:04:48.835318",
   "game" : {
     "id" : 1,
     "name" : "League Of Legend"
@@ -645,11 +675,11 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 201
+Content-Length: 204
 
 {
   "roomId" : 1,
-  "createdDate" : "2021-07-25T02:02:14.836",
+  "createdDate" : "2021-07-25T16:04:47.539820",
   "game" : {
     "id" : 1,
     "name" : "League Of Legend"
@@ -706,11 +736,201 @@ Content-Length: 201
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_채팅방_입장_api">3. 채팅방 입장 API</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_http_request_3">3.1. HTTP Request</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /connection HTTP/1.1</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_http_response_3">3.2. HTTP Response</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_채팅방_유저_목록_api">4. 채팅방 유저 목록 API</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_http_request_4">4.1. HTTP Request</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /topic/rooms/1/users HTTP/1.1</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_http_response_4">4.2. HTTP Response</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Location: /topic/rooms/1/users
+Content-Type: application/json
+Content-Length: 362
+
+{
+  "host" : {
+		"id": 1,
+		"nickname": "wilder",
+		"avatar" : https://d2bidcnq0n74fu.cloudfront.net/avatar-1.jpg
+	},
+  "guests": [
+		{
+			"id" : 2,
+			"nickname": "hyeon9mak",
+			"avatar" : https://d2bidcnq0n74fu.cloudfront.net/avatar-2.jpg
+		},
+		{
+			"id" : 3,
+			"nickname": "jason",
+			"avatar" : https://d2bidcnq0n74fu.cloudfront.net/avatar-3.jpg
+		}
+  ]
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_채팅방_입장_정보_업데이트_api">5. 채팅방 입장 정보 업데이트 API</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_http_request_5">5.1. HTTP Request</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /ws/rooms/1/users HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+Content-Length: 48
+Host: localhost:8080
+
+{
+    "userId": 1,
+    "sessionId": "35B1UD9A"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_http_response_5">5.2. HTTP Response</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Location: /ws/rooms/1/users
+Content-Type: application/json
+Content-Length: 48
+
+{
+    "userId": 1,
+    "sessionId": "35B1UD9A"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_채팅_전송_api">6. 채팅 전송 API</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_http_request_6">6.1. HTTP Request</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /ws/rooms/1/chat HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+Content-Length: 51
+Host: localhost:8080
+
+{
+    "userId": 1,
+    "content": "그루밍은 졸려"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_http_response_6">6.2. HTTP Response</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Location: /topic/rooms/1/chat
+Content-Type: application/json
+Content-Length: 144
+
+{
+		"user": {
+			"id": 1,
+			"nickname": "그루밍",
+			"avatar" : https://d2bidcnq0n74fu.cloudfront.net/1.jpg
+		},
+		"content": "그루밍은 졸려"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_채팅_수신_api">7. 채팅 수신 API</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_http_request_7">7.1. HTTP Request</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /topic/rooms/1/chat HTTP/1.1</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_http_response_7">7.2. HTTP Response</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Location: /topic/rooms/1/chat
+Content-Type: application/json
+Content-Length: 144
+
+{
+		"user": {
+			"id": 1,
+			"nickname": "그루밍",
+			"avatar" : https://d2bidcnq0n74fu.cloudfront.net/1.jpg
+		},
+		"content": "그루밍은 졸려"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2021-07-16 10:41:46 +0900
+Last updated 2021-07-25 16:04:20 +0900
 </div>
 </div>
 </body>

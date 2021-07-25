@@ -1,0 +1,31 @@
+Index: babble/src/test/java/gg/babble/babble/service/UserServiceTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/babble/src/test/java/gg/babble/babble/service/UserServiceTest.java b/babble/src/test/java/gg/babble/babble/service/UserServiceTest.java
+new file mode 100644
+--- /dev/null	(date 1626249055361)
++++ b/babble/src/test/java/gg/babble/babble/service/UserServiceTest.java	(date 1626249055361)
+@@ -0,0 +1,21 @@
++package gg.babble.babble.service;
++
++import gg.babble.babble.exception.BabbleNotFoundException;
++import org.junit.jupiter.api.DisplayName;
++import org.junit.jupiter.api.Test;
++import org.springframework.beans.factory.annotation.Autowired;
++
++import static org.assertj.core.api.Assertions.assertThatThrownBy;
++
++public class UserServiceTest {
++
++    @Autowired
++    private UserService userService;
++
++    @DisplayName("유저 Id가 없을 경우 예외를 던진다.")
++    @Test
++    void userNotFoundTest() {
++        assertThatThrownBy(() -> userService.findById(Long.MAX_VALUE))
++                .isInstanceOf(BabbleNotFoundException.class);
++    }
++}
