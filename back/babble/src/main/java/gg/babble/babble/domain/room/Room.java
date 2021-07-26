@@ -2,8 +2,8 @@ package gg.babble.babble.domain.room;
 
 import gg.babble.babble.domain.Game;
 import gg.babble.babble.domain.tag.Tag;
+import gg.babble.babble.domain.user.RoomUsers;
 import gg.babble.babble.domain.user.User;
-import gg.babble.babble.domain.user.Users;
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
 import gg.babble.babble.exception.BabbleNotFoundException;
@@ -46,7 +46,7 @@ public class Room {
     private TagRegistrationsOfRoom tagRegistrationsOfRoom;
 
     @Embedded
-    private Users users;
+    private RoomUsers users;
 
     @CreatedDate
     private LocalDateTime createdDate;
@@ -64,7 +64,7 @@ public class Room {
             .room(this)
             .tags(tags)
             .build();
-        this.users = new Users();
+        this.users = new RoomUsers();
         this.createdDate = createdDate;
         isDeleted = false;
     }
@@ -111,11 +111,11 @@ public class Room {
     }
 
     public User getHost() {
-        return users.head();
+        return users.host();
     }
 
     public List<User> getGuests() {
-        return users.tail();
+        return users.guests();
     }
 
     public boolean isEmpty() {

@@ -40,8 +40,8 @@ public class DataLoader implements CommandLineRunner {
     private final TagRepository tagRepository;
     private final RoomRepository roomRepository;
 
-    public DataLoader(final GameRepository gameRepository, final UserRepository userRepository,
-        final TagRepository tagRepository, final RoomRepository roomRepository) {
+    public DataLoader(final GameRepository gameRepository, final UserRepository userRepository, final TagRepository tagRepository,
+        final RoomRepository roomRepository) {
         this.gameRepository = gameRepository;
         this.userRepository = userRepository;
         this.tagRepository = tagRepository;

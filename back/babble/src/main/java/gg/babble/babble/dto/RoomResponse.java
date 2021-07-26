@@ -2,8 +2,6 @@ package gg.babble.babble.dto;
 
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.room.TagRegistrationsOfRoom;
-import gg.babble.babble.domain.tag.Tag;
-import gg.babble.babble.domain.tag.TagRegistrationsOfTag;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;

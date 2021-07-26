@@ -13,7 +13,6 @@ import gg.babble.babble.service.TagService;
 import gg.babble.babble.service.UserService;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

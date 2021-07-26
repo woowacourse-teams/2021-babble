@@ -7,7 +7,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.OneToMany;
 
 @Embeddable
-public class Users {
+public class RoomUsers {
 
     @OneToMany(mappedBy = "room")
     private final List<User> users = new ArrayList<>();
@@ -21,14 +21,14 @@ public class Users {
     }
 
 
-    public User head() {
+    public User host() {
         if (users.isEmpty()) {
             throw new BabbleIllegalStatementException("유저가 존재하지 않습니다.");
         }
         return users.get(0);
     }
 
-    public List<User> tail() {
+    public List<User> guests() {
         if (users.isEmpty()) {
             throw new BabbleIllegalStatementException("유저가 존재하지 않습니다.");
         }
