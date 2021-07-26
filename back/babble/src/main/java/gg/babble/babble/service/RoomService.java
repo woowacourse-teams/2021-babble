@@ -25,8 +25,8 @@ public class RoomService {
     private final SessionService sessionService;
 
     public RoomService(final RoomRepository roomRepository, final GameService gameService,
-        final UserService userService, final TagService tagService,
-        final SessionService sessionService) {
+                       final UserService userService, final TagService tagService,
+                       final SessionService sessionService) {
         this.roomRepository = roomRepository;
         this.gameService = gameService;
         this.userService = userService;
@@ -47,7 +47,7 @@ public class RoomService {
         return RoomResponse.from(findRoomOrElseThrow(id));
     }
 
-    private Room findRoomOrElseThrow(Long id) {
+    private Room findRoomOrElseThrow(final Long id) {
         return roomRepository.findById(id)
             .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 방 Id 입니다."));
     }

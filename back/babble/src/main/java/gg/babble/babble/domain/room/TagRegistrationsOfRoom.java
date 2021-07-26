@@ -18,11 +18,11 @@ public class TagRegistrationsOfRoom {
     private List<TagRegistration> tagRegistrations;
 
     @Builder
-    private TagRegistrationsOfRoom(Room room, List<Tag> tags) {
+    private TagRegistrationsOfRoom(final Room room, final List<Tag> tags) {
         this.tagRegistrations = tagRegistrationsFromTag(room, tags);
     }
 
-    private List<TagRegistration> tagRegistrationsFromTag(Room room, List<Tag> tags) {
+    private List<TagRegistration> tagRegistrationsFromTag(final Room room, final List<Tag> tags) {
         return tags.stream()
             .map(tag -> TagRegistration.builder()
                 .room(room)

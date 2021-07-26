@@ -42,7 +42,7 @@ public class ApiDocumentationIntegrationTest extends ApplicationTest {
 
     @BeforeEach
     public void setUp(WebApplicationContext webApplicationContext,
-        RestDocumentationContextProvider restDocumentation) {
+                      RestDocumentationContextProvider restDocumentation) {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
             .apply(documentationConfiguration(restDocumentation))
             .alwaysDo(document("{method-name}", preprocessRequest(prettyPrint()),

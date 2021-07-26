@@ -13,7 +13,7 @@ public class GameService {
 
     private final GameRepository gameRepository;
 
-    public GameService(GameRepository gameRepository) {
+    public GameService(final GameRepository gameRepository) {
         this.gameRepository = gameRepository;
     }
 

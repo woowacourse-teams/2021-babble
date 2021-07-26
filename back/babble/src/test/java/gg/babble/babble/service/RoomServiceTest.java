@@ -42,6 +42,7 @@ class RoomServiceTest extends ApplicationTest {
         List<Tag> tags = Arrays.asList(tagService.findById(실버),
             tagService.findById(_2시간));
         RoomResponse expected = RoomResponse.from(Room.builder()
+            .id(1L)
             .createdDate(LocalDateTime.now())
             .game(game)
             .tags(tags)

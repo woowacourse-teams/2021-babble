@@ -56,7 +56,7 @@ public class Room {
 
     @Builder
     public Room(final Long id, @NonNull final Game game, @NonNull final List<Tag> tags,
-        final LocalDateTime createdDate) {
+                final LocalDateTime createdDate) {
         validateToConstruct(tags);
         this.id = id;
         this.game = game;
@@ -69,7 +69,7 @@ public class Room {
         isDeleted = false;
     }
 
-    private static void validateToConstruct(List<Tag> tags) {
+    private static void validateToConstruct(final List<Tag> tags) {
         if (Objects.isNull(tags) || tags.isEmpty()) {
             throw new BabbleIllegalArgumentException("방의 태그는 1개 이상이어야 합니다.");
         }
@@ -122,7 +122,7 @@ public class Room {
         return users.isEmpty();
     }
 
-    public boolean hasUser(User user) {
+    public boolean hasUser(final User user) {
         return users.hasUser(user);
     }
 
@@ -131,7 +131,7 @@ public class Room {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }

@@ -12,14 +12,13 @@ public class RoomUsers {
     @OneToMany(mappedBy = "room")
     private final List<User> users = new ArrayList<>();
 
-    public void add(User user) {
+    public void add(final User user) {
         users.add(user);
     }
 
-    public void remove(User user) {
+    public void remove(final User user) {
         users.remove(user);
     }
-
 
     public User host() {
         if (users.isEmpty()) {

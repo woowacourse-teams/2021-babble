@@ -35,7 +35,7 @@ public class SessionService {
         return session.getRoom();
     }
 
-    private Session findSessionOrElseThrow(String sessionId) {
+    private Session findSessionOrElseThrow(final String sessionId) {
         return sessionRepository.findSessionBySessionId(sessionId)
             .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 세션 Id 입니다."));
     }

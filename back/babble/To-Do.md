@@ -7,5 +7,5 @@
 - [x] List로 작성된 필드 일급 컬렉션으로 변경하기 이슈
 - [x] `getHost()`, `getGuests()` 메서드 예외처리 이슈
 - [x] 서비스의 Transactional 어노테이션 위치 수정
-- final 붙이기
+- [x] final 붙이기
 - 빌더 패턴 제거

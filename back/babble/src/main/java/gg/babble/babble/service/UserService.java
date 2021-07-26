@@ -13,11 +13,11 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(final UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public User findById(Long id) {
+    public User findById(final Long id) {
         return userRepository.findById(id)
             .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 유저 Id 입니다."));
     }

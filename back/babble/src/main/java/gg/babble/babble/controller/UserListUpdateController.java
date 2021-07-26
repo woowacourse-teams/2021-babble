@@ -15,15 +15,14 @@ public class UserListUpdateController {
     private final SimpMessagingTemplate template;
     private final RoomService roomService;
 
-    public UserListUpdateController(final SimpMessagingTemplate template,
-        final RoomService roomService) {
+    public UserListUpdateController(final SimpMessagingTemplate template, final RoomService roomService) {
         this.template = template;
         this.roomService = roomService;
     }
 
     @MessageMapping("/rooms/{roomId}/users")
     public void join(@DestinationVariable final Long roomId,
-        final UserJoinRequest userJoinRequest) {
+                     final UserJoinRequest userJoinRequest) {
         template.convertAndSend(String.format("/topic/rooms/%s/users", roomId),
             roomService.sendJoinRoom(roomId, userJoinRequest));
     }
