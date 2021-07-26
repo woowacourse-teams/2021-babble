@@ -6,23 +6,28 @@ import Caption1 from '../../core/Typography/Caption1';
 import { FiSearch } from 'react-icons/fi';
 import PropTypes from 'prop-types';
 import getKorRegExp from './service/getKorRegExp';
+import useDebounce from '../../hooks/useDebounce';
 
 const SearchInput = ({
-  placeholder = '태그를 검색해주세요!',
+  placeholder = '태그를 검색해주세요.',
   autoCompleteKeywords,
 }) => {
   const [autoCompleteList, setAutoCompleteList] = useState([]);
+  const containerRef = useRef(null);
   const autoCompleteRef = useRef(null);
 
   const onFocusInput = (e) => {
+    containerRef.current.classList.add('focused');
     autoCompleteRef.current.classList.add('show');
   };
 
   const onBlurInput = (e) => {
+    containerRef.current.classList.remove('focused');
     autoCompleteRef.current.classList.remove('show');
   };
 
   const onSelectItem = (e) => {
+    containerRef.current.classList.remove('focused');
     autoCompleteRef.current.classList.remove('show');
   };
 
@@ -33,7 +38,7 @@ const SearchInput = ({
       ? autoCompleteKeywords.filter((autoCompleteKeyword) => {
           const keywordRegExp = getKorRegExp(inputValue, {
             initialSearch: true,
-            fuzzy: true,
+            ignoreSpace: true,
           });
           return autoCompleteKeyword.name.match(keywordRegExp);
         })
@@ -48,6 +53,7 @@ const SearchInput = ({
             autoCompleteKeyword.name.match(searchRegex)
           );
         });
+
     setAutoCompleteList(searchResults);
   };
 
@@ -56,11 +62,11 @@ const SearchInput = ({
   }, []);
 
   return (
-    <div className='search-input-container'>
+    <div className='input-container' ref={containerRef}>
       <FiSearch size='24px' />
       <input
         type='search'
-        className='search-input'
+        className='input-inner'
         placeholder={placeholder}
         onFocus={onFocusInput}
         onChange={onChangeInput}

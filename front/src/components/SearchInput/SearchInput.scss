@@ -1,7 +1,7 @@
 @use '../../../style/variables' as v;
 @use '../../../style/mixins' as m;
 
-.search-input-container {
+.input-container {
   display: flex;
   position: relative;
   justify-content: space-between;
@@ -15,11 +15,11 @@
     cursor: pointer;
   }
 
-  &:focus-within {
+  &.focused {
     border: 2px solid m.primary(babble-pink);
   }
 
-  .search-input {
+  .input-inner {
     width: 100%;
     font-size: 1.8rem;
     margin-left: 1rem;

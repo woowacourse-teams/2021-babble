@@ -1,30 +1,25 @@
 import DropdownInput from './DropdownInput';
 import React from 'react';
 import SearchInput from './SearchInput';
+import TextInput from './TextInput';
 
 export default {
   title: 'components/SearchInput',
-  component: [SearchInput, DropdownInput],
+  component: [SearchInput, DropdownInput, TextInput],
 };
 
-const DefaultTemplate = ({
-  placeholder,
-  autoCompleteKeywords,
-  dropdownKeywords,
-}) => (
+const DefaultTemplate = ({ autoCompleteKeywords, dropdownKeywords }) => (
   <div>
-    <SearchInput
-      placeholder={placeholder}
-      autoCompleteKeywords={autoCompleteKeywords}
-    />
+    <SearchInput autoCompleteKeywords={autoCompleteKeywords} />
     <br />
     <DropdownInput dropdownKeywords={dropdownKeywords} />
+    <br />
+    <TextInput />
   </div>
 );
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {
-  placeholder: '태그를 검색해주세요!',
   autoCompleteKeywords: [
     { name: 'League of Legends' },
     { name: 'Apex Legends' },
