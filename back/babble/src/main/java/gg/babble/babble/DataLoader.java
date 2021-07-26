@@ -58,60 +58,24 @@ public class DataLoader implements CommandLineRunner {
 
 
     private void prepareDummyGames() {
-        gameRepository.save(Game.builder()
-            .name(LEAGUE_OF_LEGEND)
-            .build()
-        );
-        gameRepository.save(Game.builder()
-            .name(OVERWATCH)
-            .build()
-        );
-        gameRepository.save(Game.builder()
-            .name(APEX_LEGEND)
-            .build()
-        );
+        gameRepository.save(new Game(LEAGUE_OF_LEGEND));
+        gameRepository.save(new Game(OVERWATCH));
+        gameRepository.save(new Game(APEX_LEGEND));
     }
 
     private void prepareDummyUsers() {
-        userRepository.save(User.builder()
-            .name(루트)
-            .build()
-        );
-        userRepository.save(User.builder()
-            .name(와일더)
-            .build()
-        );
-        userRepository.save(User.builder()
-            .name(현구막)
-            .build()
-        );
-        userRepository.save(User.builder()
-            .name(포츈)
-            .build()
-        );
-        userRepository.save(User.builder()
-            .name(그루밍)
-            .build()
-        );
-        userRepository.save(User.builder()
-            .name(피터)
-            .build()
-        );
+        userRepository.save(new User(루트));
+        userRepository.save(new User(와일더));
+        userRepository.save(new User(현구막));
+        userRepository.save(new User(포츈));
+        userRepository.save(new User(그루밍));
+        userRepository.save(new User(피터));
     }
 
     private void prepareDummyTags() {
-        tagRepository.save(Tag.builder()
-            .name(실버)
-            .build()
-        );
-        tagRepository.save(Tag.builder()
-            .name(_2시간)
-            .build()
-        );
-        tagRepository.save(Tag.builder()
-            .name(솔로랭크)
-            .build()
-        );
+        tagRepository.save(new Tag(실버));
+        tagRepository.save(new Tag(_2시간));
+        tagRepository.save(new Tag(솔로랭크));
     }
 
     private void prepareDummyRoom() {
@@ -121,10 +85,7 @@ public class DataLoader implements CommandLineRunner {
             .asList(tagRepository.findById(실버).orElseThrow(BabbleNotFoundException::new),
                 tagRepository.findById(_2시간).orElseThrow(BabbleNotFoundException::new));
 
-        Room room = Room.builder()
-            .game(game)
-            .tags(tags)
-            .build();
+        Room room = new Room(game, tags);
 
         room.join(user);
         roomRepository.save(room);

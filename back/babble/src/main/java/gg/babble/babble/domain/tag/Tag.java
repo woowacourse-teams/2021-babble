@@ -21,8 +21,7 @@ public class Tag {
     @Embedded
     private TagRegistrationsOfTag tagRegistrations;
 
-    @Builder
-    private Tag(final String name) {
+    public Tag(final String name) {
         validateToConstruct(name);
         this.name = name;
         this.tagRegistrations = new TagRegistrationsOfTag();

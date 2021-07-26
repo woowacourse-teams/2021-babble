@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Builder
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,9 +15,6 @@ public class HostResponse {
     private String name;
 
     public static HostResponse from(final User host) {
-        return HostResponse.builder()
-            .id(host.getId())
-            .name(host.getName())
-            .build();
+        return new HostResponse(host.getId(), host.getName());
     }
 }

@@ -18,7 +18,6 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 @Getter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "tag_registration")
@@ -38,6 +37,10 @@ public class TagRegistration {
     @ManyToOne
     @JoinColumn(name = "tag_name")
     private Tag tag;
+
+    public TagRegistration(@NonNull final Room room, @NonNull final Tag tag) {
+        this(null, room, tag);
+    }
 
     @Override
     public boolean equals(final Object o) {

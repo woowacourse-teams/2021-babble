@@ -11,7 +11,6 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserJoinRequest {

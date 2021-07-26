@@ -19,7 +19,6 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-@Builder
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @AllArgsConstructor
@@ -43,6 +42,10 @@ public class Session {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    public Session(@NonNull final String sessionId, @NonNull final Room room, @NonNull final User user) {
+        this(null, sessionId, room, user);
+    }
 
     @Override
     public boolean equals(final Object o) {

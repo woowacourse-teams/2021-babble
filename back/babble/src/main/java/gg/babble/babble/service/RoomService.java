@@ -24,8 +24,7 @@ public class RoomService {
     private final TagService tagService;
     private final SessionService sessionService;
 
-    public RoomService(final RoomRepository roomRepository, final GameService gameService,
-                       final UserService userService, final TagService tagService,
+    public RoomService(final RoomRepository roomRepository, final GameService gameService, final UserService userService, final TagService tagService,
                        final SessionService sessionService) {
         this.roomRepository = roomRepository;
         this.gameService = gameService;
@@ -36,10 +35,7 @@ public class RoomService {
 
     @Transactional
     public RoomResponse create(final RoomRequest roomRequest) {
-        Room room = Room.builder()
-            .game(gameService.findById(roomRequest.getGameId()))
-            .tags(tagService.findById(roomRequest.getTags()))
-            .build();
+        Room room = new Room(gameService.findById(roomRequest.getGameId()), tagService.findById(roomRequest.getTags()));
         return RoomResponse.from(roomRepository.save(room));
     }
 
@@ -61,10 +57,7 @@ public class RoomService {
 
         sessionService.create(room, request.getSessionId(), user);
 
-        return UserListUpdateResponse.builder()
-            .host(UserResponse.from(room.getHost()))
-            .guests(getGuests(room))
-            .build();
+        return new UserListUpdateResponse(UserResponse.from(room.getHost()), getGuests(room));
     }
 
     private List<UserResponse> getGuests(final Room room) {
@@ -88,12 +81,9 @@ public class RoomService {
         sessionService.delete(sessionId);
 
         if (room.isEmpty()) {
-            return UserListUpdateResponse.builder().build();
+            return new UserListUpdateResponse();
         }
 
-        return UserListUpdateResponse.builder()
-            .host(UserResponse.from(room.getHost()))
-            .guests(getGuests(room))
-            .build();
+        return new UserListUpdateResponse(UserResponse.from(room.getHost()), getGuests(room));
     }
 }

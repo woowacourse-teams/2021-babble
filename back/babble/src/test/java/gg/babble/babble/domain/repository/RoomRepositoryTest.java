@@ -41,13 +41,8 @@ public class RoomRepositoryTest extends ApplicationTest {
     void dummyGameTest() {
         Room room = roomRepository.findAll().get(0);
 
-        Game expectedGame = Game.builder()
-            .name(LEAGUE_OF_LEGEND)
-            .build();
-        User expectedHost = User.builder()
-            .name(루트)
-            .room(room)
-            .build();
+        Game expectedGame = new Game(LEAGUE_OF_LEGEND);
+        User expectedHost = new User(루트, room);
 
         List<String> expectedTags = Arrays.asList(실버, _2시간);
 
@@ -79,9 +74,7 @@ public class RoomRepositoryTest extends ApplicationTest {
         List<Tag> tags = Arrays.asList(tagService.findById(실버),
             tagService.findById(_2시간));
 
-        Room room = roomRepository.save(Room.builder()
-            .game(game)
-            .tags(tags).build());
+        Room room = roomRepository.save(new Room(game, tags));
 
         room.join(user);
 

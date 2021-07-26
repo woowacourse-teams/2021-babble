@@ -8,4 +8,4 @@
 - [x] `getHost()`, `getGuests()` 메서드 예외처리 이슈
 - [x] 서비스의 Transactional 어노테이션 위치 수정
 - [x] final 붙이기
-- 빌더 패턴 제거
+- [x] 빌더 패턴 제거

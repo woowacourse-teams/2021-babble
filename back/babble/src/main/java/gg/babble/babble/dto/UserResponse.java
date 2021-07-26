@@ -9,7 +9,6 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserResponse {
@@ -18,9 +17,6 @@ public class UserResponse {
     private String name;
 
     public static UserResponse from(final User user) {
-        return UserResponse.builder()
-            .id(user.getId())
-            .name(user.getName())
-            .build();
+        return new UserResponse(user.getId(), user.getName());
     }
 }

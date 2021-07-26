@@ -20,11 +20,7 @@ public class SessionService {
 
     @Transactional
     public void create(final Room room, final String sessionId, final User user) {
-        Session session = Session.builder()
-            .room(room)
-            .sessionId(sessionId)
-            .user(user)
-            .build();
+        Session session = new Session(sessionId, room, user);
 
         sessionRepository.save(session);
     }

@@ -20,7 +20,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -54,19 +53,17 @@ public class Room {
     @Column(nullable = false)
     private boolean isDeleted;
 
-    @Builder
-    public Room(final Long id, @NonNull final Game game, @NonNull final List<Tag> tags,
-                final LocalDateTime createdDate) {
+    public Room(final Long id, @NonNull final Game game, @NonNull final List<Tag> tags) {
         validateToConstruct(tags);
         this.id = id;
         this.game = game;
-        this.tagRegistrationsOfRoom = TagRegistrationsOfRoom.builder()
-            .room(this)
-            .tags(tags)
-            .build();
         this.users = new RoomUsers();
-        this.createdDate = createdDate;
-        isDeleted = false;
+        this.isDeleted = false;
+        this.tagRegistrationsOfRoom = new TagRegistrationsOfRoom(this, tags);
+    }
+
+    public Room(@NonNull final Game game, @NonNull final List<Tag> tags) {
+        this(null, game, tags);
     }
 
     private static void validateToConstruct(final List<Tag> tags) {

@@ -27,15 +27,9 @@ public class TagControllerTest extends AcceptanceTest {
     void webSocketConnectTest() {
         //given
         List<TagResponse> expectedTagResponses = Arrays.asList(
-            TagResponse.builder()
-                .name("2시간")
-                .build(),
-            TagResponse.builder()
-                .name("솔로랭크")
-                .build(),
-            TagResponse.builder()
-                .name("실버")
-                .build()
+            new TagResponse("2시간"),
+            new TagResponse("솔로랭크"),
+            new TagResponse("실버")
         );
 
         //when

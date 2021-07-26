@@ -12,7 +12,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.NonNull;
 
-@Builder
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -25,6 +24,10 @@ public class Game {
 
     @NonNull
     private String name;
+
+    public Game(@NonNull final String name) {
+        this(null, name);
+    }
 
     @Override
     public boolean equals(final Object o) {

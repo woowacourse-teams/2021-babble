@@ -17,17 +17,13 @@ public class TagRegistrationsOfRoom {
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
     private List<TagRegistration> tagRegistrations;
 
-    @Builder
-    private TagRegistrationsOfRoom(final Room room, final List<Tag> tags) {
+    public TagRegistrationsOfRoom(final Room room, final List<Tag> tags) {
         this.tagRegistrations = tagRegistrationsFromTag(room, tags);
     }
 
     private List<TagRegistration> tagRegistrationsFromTag(final Room room, final List<Tag> tags) {
         return tags.stream()
-            .map(tag -> TagRegistration.builder()
-                .room(room)
-                .tag(tag)
-                .build())
+            .map(tag -> new TagRegistration(room, tag))
             .collect(Collectors.toList());
     }
 

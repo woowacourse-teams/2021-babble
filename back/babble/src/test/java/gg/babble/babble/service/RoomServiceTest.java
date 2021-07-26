@@ -5,13 +5,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.domain.Game;
-import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.tag.Tag;
+import gg.babble.babble.dto.GameResponse;
 import gg.babble.babble.dto.RoomResponse;
+import gg.babble.babble.dto.TagResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,13 +42,11 @@ class RoomServiceTest extends ApplicationTest {
         Game game = gameService.findByName(LEAGUE_OF_LEGEND).get(0);
         List<Tag> tags = Arrays.asList(tagService.findById(실버),
             tagService.findById(_2시간));
-        RoomResponse expected = RoomResponse.from(Room.builder()
-            .id(1L)
-            .createdDate(LocalDateTime.now())
-            .game(game)
-            .tags(tags)
-            .build()
-        );
+        RoomResponse expected = RoomResponse.builder()
+            .roomId(1L)
+            .game(new GameResponse(game.getId(), game.getName()))
+            .tags(tags.stream().map(tag -> new TagResponse(tag.getName())).collect(Collectors.toList()))
+            .build();
 
         RoomResponse roomResponse = roomService.findById(1L);
         assertThat(roomResponse).usingRecursiveComparison()
