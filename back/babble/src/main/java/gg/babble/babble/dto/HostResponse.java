@@ -2,7 +2,6 @@ package gg.babble.babble.dto;
 
 import gg.babble.babble.domain.user.User;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

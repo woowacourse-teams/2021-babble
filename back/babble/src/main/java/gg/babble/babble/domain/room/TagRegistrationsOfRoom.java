@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.OneToMany;
-import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
