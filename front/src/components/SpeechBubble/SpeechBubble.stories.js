@@ -11,10 +11,10 @@ export default {
 const SpeechBubbleTemplate = (args) => (
   <div
     style={{
-      'height': '20rem',
-      'display': 'flex',
-      'flex-direction': 'column',
-      'justify-content': 'space-around',
+      height: '20rem',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-around',
     }}
   >
     <div style={{ margin: '8rem 0 1rem 0' }}>
