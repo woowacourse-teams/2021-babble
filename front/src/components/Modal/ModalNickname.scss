@@ -1,0 +1,41 @@
+@use '../../../style/mixins' as m;
+@use '../../../style/variables' as v;
+
+.nickname-container {
+  position: relative;
+  width: 48rem;
+  height: 24rem;
+  background-color: m.grey-scale(white);
+  border-radius: m.border-radius(modal);
+  padding: 3rem;
+  justify-content: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: v.$box-shadow;
+
+  .control-bar {
+    position: absolute;
+    cursor: pointer;
+    top: 1.5rem;
+    right: 1.5rem;
+  }
+
+  .control-inputs {
+    text-align: center;
+    margin-bottom: 3rem;
+
+    .subtitle3 {
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  .control-buttons {
+    display: flex;
+
+    & > button:not(:last-child) {
+      margin-right: 1rem;
+    }
+  }
+}
