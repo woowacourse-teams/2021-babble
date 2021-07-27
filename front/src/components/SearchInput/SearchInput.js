@@ -12,6 +12,7 @@ const SearchInput = ({
   placeholder = '태그를 검색해주세요.',
   autoCompleteKeywords,
 }) => {
+  const { debounce } = useDebounce(500);
   const [autoCompleteList, setAutoCompleteList] = useState([]);
   const containerRef = useRef(null);
   const autoCompleteRef = useRef(null);
@@ -57,6 +58,10 @@ const SearchInput = ({
     setAutoCompleteList(searchResults);
   };
 
+  const onChangeInputDebounced = (e) => {
+    debounce(() => onChangeInput(e));
+  };
+
   useEffect(() => {
     setAutoCompleteList(autoCompleteKeywords);
   }, []);
@@ -70,7 +75,7 @@ const SearchInput = ({
         placeholder={placeholder}
         onFocus={onFocusInput}
         onBlur={onBlurInput}
-        onChange={onChangeInput}
+        onChange={onChangeInputDebounced}
       />
       <ul className='keyword-list-container' ref={autoCompleteRef}>
         {autoCompleteList.length ? (
