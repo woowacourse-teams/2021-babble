@@ -18,6 +18,8 @@ public class RoomResponse {
     private Long roomId;
     private String createdDate;
     private GameResponse game;
+    private UserResponse host;
+    private HeadCountResponse headCount;
     private List<TagResponse> tags;
 
     public static RoomResponse from(final Room room) {
@@ -25,6 +27,8 @@ public class RoomResponse {
             .roomId(room.getId())
             .createdDate(room.getCreatedDate().toString())
             .game(GameResponse.from(room.getGame()))
+            .host(UserResponse.from(room.getHost()))
+            .headCount(HeadCountResponse.from(room))
             .tags(tagResponses(room.getTagRegistrationsOfRoom()))
             .build();
     }

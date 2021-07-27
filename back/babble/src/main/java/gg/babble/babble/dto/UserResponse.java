@@ -13,9 +13,10 @@ import lombok.Setter;
 public class UserResponse {
 
     private Long id;
-    private String name;
+    private String nickname;
+    private String avatar;
 
     public static UserResponse from(final User user) {
-        return new UserResponse(user.getId(), user.getName());
+        return new UserResponse(user.getId(), user.getNickname(), user.getAvatar());
     }
 }

@@ -47,23 +47,27 @@ public class Room {
     @Embedded
     private RoomUsers users;
 
+    @Embedded
+    private MaxHeadCount maxHeadCount;
+
     @CreatedDate
     private LocalDateTime createdDate;
 
     @Column(nullable = false)
     private boolean isDeleted;
 
-    public Room(@NonNull final Game game, @NonNull final List<Tag> tags) {
-        this(null, game, tags);
+    public Room(@NonNull final Game game, @NonNull final List<Tag> tags, final MaxHeadCount maxHeadCount) {
+        this(null, game, tags, maxHeadCount);
     }
 
-    public Room(final Long id, @NonNull final Game game, @NonNull final List<Tag> tags) {
+    public Room(final Long id, @NonNull final Game game, @NonNull final List<Tag> tags, final MaxHeadCount maxHeadCount) {
         validateToConstruct(tags);
         this.id = id;
         this.game = game;
         this.users = new RoomUsers();
         this.isDeleted = false;
         this.tagRegistrationsOfRoom = new TagRegistrationsOfRoom(this, tags);
+        this.maxHeadCount = maxHeadCount;
     }
 
     private static void validateToConstruct(final List<Tag> tags) {
@@ -105,6 +109,14 @@ public class Room {
         if (hasNotUser(user)) {
             throw new BabbleNotFoundException("해당 방에 해당 유저가 존재하지 않습니다.");
         }
+    }
+
+    public int currentHeadCount() {
+        return users.headCount();
+    }
+
+    public int maxHeadCount() {
+        return maxHeadCount.getValue();
     }
 
     public User getHost() {

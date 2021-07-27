@@ -16,7 +16,6 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class User {
@@ -26,22 +25,31 @@ public class User {
     private Long id;
 
     @NonNull
-    private String name;
+    private String nickname;
+
+    @NonNull
+    private final String avatar = "URL";
 
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Room room;
 
-    public User(@NonNull final String name) {
-        this(null, name);
+    public User(@NonNull final String nickname) {
+        this(null, nickname);
     }
 
-    public User(final Long id, @NonNull final String name) {
-        this(id, name, null);
+    public User(final Long id, @NonNull final String nickname) {
+        this(id, nickname, null);
     }
 
-    public User(@NonNull final String name, final Room room) {
-        this(null, name, room);
+    public User(@NonNull final String nickname, final Room room) {
+        this(null, nickname, room);
+    }
+
+    public User(final Long id, @NonNull final String nickname, final Room room) {
+        this.id = id;
+        this.nickname = nickname;
+        this.room = room;
     }
 
     public void join(final Room room) {

@@ -23,6 +23,6 @@ public class UserService {
     }
 
     public List<User> findByName(final String name) {
-        return userRepository.findByName(name);
+        return userRepository.findByNickname(name);
     }
 }

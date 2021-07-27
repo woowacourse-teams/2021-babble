@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.domain.Game;
+import gg.babble.babble.domain.room.MaxHeadCount;
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
@@ -74,7 +75,7 @@ public class RoomRepositoryTest extends ApplicationTest {
         List<Tag> tags = Arrays.asList(tagService.findById(실버),
             tagService.findById(_2시간));
 
-        Room room = roomRepository.save(new Room(game, tags));
+        Room room = roomRepository.save(new Room(game, tags, new MaxHeadCount(4)));
 
         room.join(user);
 

@@ -1,6 +1,7 @@
 package gg.babble.babble.service;
 
 import gg.babble.babble.domain.repository.RoomRepository;
+import gg.babble.babble.domain.room.MaxHeadCount;
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.user.User;
 import gg.babble.babble.dto.RoomRequest;
@@ -35,7 +36,8 @@ public class RoomService {
 
     @Transactional
     public RoomResponse create(final RoomRequest roomRequest) {
-        Room room = new Room(gameService.findById(roomRequest.getGameId()), tagService.findById(roomRequest.getTags()));
+        Room room = new Room(gameService.findById(roomRequest.getGameId()), tagService.findById(roomRequest.getTags()),
+            new MaxHeadCount(roomRequest.getMaxHeadCount()));
         return RoomResponse.from(roomRepository.save(room));
     }
 

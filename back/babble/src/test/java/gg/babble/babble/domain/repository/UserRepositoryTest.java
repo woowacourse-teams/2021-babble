@@ -19,7 +19,7 @@ public class UserRepositoryTest extends ApplicationTest {
     @ParameterizedTest
     @ValueSource(strings = {"루트", "와일더", "현구막"})
     void dummyUserTest(final String name) {
-        List<User> users = userRepository.findByName(name);
+        List<User> users = userRepository.findByNickname(name);
         assertThat(users).isNotEmpty();
     }
 }

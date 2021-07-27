@@ -5,6 +5,7 @@ import gg.babble.babble.domain.repository.GameRepository;
 import gg.babble.babble.domain.repository.RoomRepository;
 import gg.babble.babble.domain.repository.TagRepository;
 import gg.babble.babble.domain.repository.UserRepository;
+import gg.babble.babble.domain.room.MaxHeadCount;
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
@@ -80,12 +81,12 @@ public class DataLoader implements CommandLineRunner {
 
     private void prepareDummyRoom() {
         Game game = gameRepository.findByName(LEAGUE_OF_LEGEND).get(FIRST_DATA_INDEX);
-        User user = userRepository.findByName(루트).get(FIRST_DATA_INDEX);
+        User user = userRepository.findByNickname(루트).get(FIRST_DATA_INDEX);
         List<Tag> tags = Arrays
             .asList(tagRepository.findById(실버).orElseThrow(BabbleNotFoundException::new),
                 tagRepository.findById(_2시간).orElseThrow(BabbleNotFoundException::new));
 
-        Room room = new Room(game, tags);
+        Room room = new Room(game, tags, new MaxHeadCount(4));
 
         room.join(user);
         roomRepository.save(room);
