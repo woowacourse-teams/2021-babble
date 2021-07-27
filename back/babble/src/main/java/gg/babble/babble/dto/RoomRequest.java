@@ -1,6 +1,7 @@
 package gg.babble.babble.dto;
 
 import java.util.List;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -19,5 +20,6 @@ public class RoomRequest {
     @NotNull(message = "태그 목록은 Null 일 수 없습니다.")
     private List<TagRequest> tags;
     @Min(value = 2, message = "방 최대 참가 인원 최소 2인 이상이어야 합니다.")
+    @Max(value = 20, message = "방 최대 참가 인원 최대 20인 이하여야 합니다.")
     private int maxHeadCount;
 }
