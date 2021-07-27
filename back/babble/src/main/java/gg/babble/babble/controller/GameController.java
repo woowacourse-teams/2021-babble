@@ -2,6 +2,7 @@ package gg.babble.babble.controller;
 
 import gg.babble.babble.dto.GameImageResponse;
 import gg.babble.babble.service.GameService;
+import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,5 +22,10 @@ public class GameController {
     @GetMapping(value = "/{gameId}/images")
     public ResponseEntity<GameImageResponse> findGameImage(@PathVariable final Long gameId) {
         return ResponseEntity.ok(gameService.findGameImageById(gameId));
+    }
+
+    @GetMapping(value = "/images")
+    public ResponseEntity<List<GameImageResponse>> findAllGameImages() {
+        return ResponseEntity.ok(gameService.findAllGameImages());
     }
 }

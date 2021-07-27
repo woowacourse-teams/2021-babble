@@ -6,6 +6,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.dto.GameImageResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +34,20 @@ class GameServiceTest extends ApplicationTest {
         // then
         assertThat(gameService.findGameImageById(1L)).usingRecursiveComparison()
             .isEqualTo(expectedResponse);
+    }
+
+    @DisplayName("전체 게임 이미지 목록을 반환한다.")
+    @Test
+    void gameImages() {
+        // given
+        List<GameImageResponse> expectedResponses = Arrays.asList(
+            new GameImageResponse(1L, LEAGUE_OF_LEGENDS_URL),
+            new GameImageResponse(2L, "https://static-cdn.jtvnw.net/ttv-static/404_boxart-1080x1436.jpg"),
+            new GameImageResponse(3L, "https://static-cdn.jtvnw.net/ttv-static/404_boxart-1080x1436.jpg")
+        );
+
+        // then
+        assertThat(gameService.findAllGameImages()).usingRecursiveComparison()
+            .isEqualTo(expectedResponses);
     }
 }

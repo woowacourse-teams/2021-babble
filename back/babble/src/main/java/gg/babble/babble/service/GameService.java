@@ -5,6 +5,7 @@ import gg.babble.babble.domain.repository.GameRepository;
 import gg.babble.babble.dto.GameImageResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +29,13 @@ public class GameService {
     }
 
     public GameImageResponse findGameImageById(final Long gameId) {
-        Game game = findById(gameId);
-        return new GameImageResponse(game.getId(), game.getImage());
+        return GameImageResponse.from(findById(gameId));
+    }
+
+    public List<GameImageResponse> findAllGameImages() {
+        return gameRepository.findAll()
+            .stream()
+            .map(GameImageResponse::from)
+            .collect(Collectors.toList());
     }
 }

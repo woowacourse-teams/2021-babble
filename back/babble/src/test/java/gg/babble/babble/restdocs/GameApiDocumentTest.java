@@ -1,6 +1,5 @@
 package gg.babble.babble.restdocs;
 
-import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -51,6 +50,26 @@ public class GameApiDocumentTest extends ApplicationTest {
             .andDo(document("read-game-image",
                 responseFields(fieldWithPath("gameId").description("게임 Id"),
                     fieldWithPath("image").description("이미지 URL"))
+                )
+            );
+    }
+
+    @DisplayName("전체 게임 이미지 목록 조회")
+    @Test
+    void findGameImages() throws Exception {
+        mockMvc.perform(get("/api/games/images")
+            .accept(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].gameId").value(1L))
+            .andExpect(jsonPath("$[0].image").value("https://static-cdn.jtvnw.net/ttv-boxart/League%20of%20Legends-1080x1436.jpg"))
+            .andExpect(jsonPath("$[1].gameId").value(2L))
+            .andExpect(jsonPath("$[1].image").value("https://static-cdn.jtvnw.net/ttv-static/404_boxart-1080x1436.jpg"))
+            .andExpect(jsonPath("$[2].gameId").value(3L))
+            .andExpect(jsonPath("$[2].image").value("https://static-cdn.jtvnw.net/ttv-static/404_boxart-1080x1436.jpg"))
+
+            .andDo(document("read-game-image",
+                responseFields(fieldWithPath("[].gameId").description("게임 Id"),
+                    fieldWithPath("[].image").description("이미지 URL"))
                 )
             );
     }
