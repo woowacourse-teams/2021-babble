@@ -1,4 +1,4 @@
-import { FINALES, INITIALS, MEDIALS } from './constant';
+import { BASE, FINALES, INITIALS, MEDIALS } from './constant';
 
 function getPhonemes(char) {
   let initial = '';

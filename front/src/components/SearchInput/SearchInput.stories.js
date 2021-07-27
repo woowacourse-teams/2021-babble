@@ -1,16 +1,25 @@
+import DropdownInput from './DropdownInput';
 import React from 'react';
-import SearchBar from './SearchBar';
+import SearchInput from './SearchInput';
+import TextInput from './TextInput';
 
 export default {
-  title: 'components/SearchBar',
-  component: SearchBar,
+  title: 'components/SearchInput',
+  component: [SearchInput, DropdownInput, TextInput],
 };
 
-const SearchBarTemplate = (args) => <SearchBar {...args} />;
+const DefaultTemplate = ({ autoCompleteKeywords, dropdownKeywords }) => (
+  <div>
+    <SearchInput autoCompleteKeywords={autoCompleteKeywords} />
+    <br />
+    <DropdownInput dropdownKeywords={dropdownKeywords} />
+    <br />
+    <TextInput />
+  </div>
+);
 
-export const Default = SearchBarTemplate.bind({});
+export const Default = DefaultTemplate.bind({});
 Default.args = {
-  placeholder: '태그를 검색해주세요!',
   autoCompleteKeywords: [
     { name: 'League of Legends' },
     { name: 'Apex Legends' },
@@ -31,5 +40,8 @@ Default.args = {
     { name: '크레이지 아케이드' },
     { name: '2시간' },
     { name: '크로스파이어' },
+  ],
+  dropdownKeywords: [
+    2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
   ],
 };

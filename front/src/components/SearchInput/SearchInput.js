@@ -1,4 +1,4 @@
-import './SearchBar.scss';
+import './SearchInput.scss';
 
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -6,19 +6,28 @@ import Caption1 from '../../core/Typography/Caption1';
 import { FiSearch } from 'react-icons/fi';
 import PropTypes from 'prop-types';
 import getKorRegExp from './service/getKorRegExp';
+import useDebounce from '../../hooks/useDebounce';
 
-const SearchBar = ({
-  placeholder = '태그를 검색해주세요!',
+const SearchInput = ({
+  placeholder = '태그를 검색해주세요.',
   autoCompleteKeywords,
 }) => {
   const [autoCompleteList, setAutoCompleteList] = useState([]);
+  const containerRef = useRef(null);
   const autoCompleteRef = useRef(null);
 
   const onFocusInput = (e) => {
+    containerRef.current.classList.add('focused');
     autoCompleteRef.current.classList.add('show');
   };
 
   const onBlurInput = (e) => {
+    containerRef.current.classList.remove('focused');
+    autoCompleteRef.current.classList.remove('show');
+  };
+
+  const onSelectItem = (e) => {
+    containerRef.current.classList.remove('focused');
     autoCompleteRef.current.classList.remove('show');
   };
 
@@ -29,7 +38,7 @@ const SearchBar = ({
       ? autoCompleteKeywords.filter((autoCompleteKeyword) => {
           const keywordRegExp = getKorRegExp(inputValue, {
             initialSearch: true,
-            fuzzy: true,
+            ignoreSpace: true,
           });
           return autoCompleteKeyword.name.match(keywordRegExp);
         })
@@ -44,6 +53,7 @@ const SearchBar = ({
             autoCompleteKeyword.name.match(searchRegex)
           );
         });
+
     setAutoCompleteList(searchResults);
   };
 
@@ -52,21 +62,25 @@ const SearchBar = ({
   }, []);
 
   return (
-    <div className='searchbar-container'>
+    <div className='input-container' ref={containerRef}>
       <FiSearch size='24px' />
       <input
         type='search'
-        className='searchbar'
+        className='input-inner'
         placeholder={placeholder}
         onFocus={onFocusInput}
         onBlur={onBlurInput}
         onChange={onChangeInput}
       />
-      <ul className='auto-complete-container' ref={autoCompleteRef}>
+      <ul className='keyword-list-container' ref={autoCompleteRef}>
         {autoCompleteList.length ? (
           autoCompleteList.map((autoCompleteItem, index) => (
             <li key={index}>
-              <button type='button' className='auto-complete-button'>
+              <button
+                type='button'
+                className='keyword-button'
+                onMouseDown={onSelectItem}
+              >
                 {autoCompleteItem?.name}
               </button>
             </li>
@@ -81,11 +95,11 @@ const SearchBar = ({
   );
 };
 
-SearchBar.propTypes = {
+SearchInput.propTypes = {
   placeholder: PropTypes.string,
   autoCompleteKeywords: PropTypes.arrayOf(
     PropTypes.shape({ name: PropTypes.string })
   ),
 };
 
-export default SearchBar;
+export default SearchInput;
