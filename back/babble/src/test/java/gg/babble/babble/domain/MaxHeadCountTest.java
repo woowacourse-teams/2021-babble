@@ -21,8 +21,8 @@ public class MaxHeadCountTest {
         assertThatCode(() -> new MaxHeadCount(value)).doesNotThrowAnyException();
     }
 
-    @Test
     @DisplayName("최대 참가 인원이 2미만 또는 20초과이면 예외 처리한다.")
+    @Test
     void constructMaxHeadCountExceptionTest() {
         assertThatThrownBy(() -> new MaxHeadCount(1)).isInstanceOf(BabbleIllegalArgumentException.class);
         assertThatThrownBy(() -> new MaxHeadCount(21)).isInstanceOf(BabbleIllegalArgumentException.class);
