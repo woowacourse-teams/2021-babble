@@ -34,6 +34,10 @@ public class RoomUsers {
         return users.subList(1, users.size());
     }
 
+    public int headCount() {
+        return users.size();
+    }
+
     public boolean isEmpty() {
         return users.isEmpty();
     }

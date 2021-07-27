@@ -1,10 +1,12 @@
 package gg.babble.babble.service;
 
 import gg.babble.babble.domain.repository.RoomRepository;
+import gg.babble.babble.domain.room.MaxHeadCount;
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.user.User;
+import gg.babble.babble.dto.CreatedRoomResponse;
+import gg.babble.babble.dto.FoundRoomResponse;
 import gg.babble.babble.dto.RoomRequest;
-import gg.babble.babble.dto.RoomResponse;
 import gg.babble.babble.dto.UserJoinRequest;
 import gg.babble.babble.dto.UserListUpdateResponse;
 import gg.babble.babble.dto.UserResponse;
@@ -34,13 +36,14 @@ public class RoomService {
     }
 
     @Transactional
-    public RoomResponse create(final RoomRequest roomRequest) {
-        Room room = new Room(gameService.findById(roomRequest.getGameId()), tagService.findById(roomRequest.getTags()));
-        return RoomResponse.from(roomRepository.save(room));
+    public CreatedRoomResponse create(final RoomRequest request) {
+        Room room = new Room(gameService.findById(request.getGameId()), tagService.findById(request.getTags()),
+            new MaxHeadCount(request.getMaxHeadCount()));
+        return CreatedRoomResponse.from(roomRepository.save(room));
     }
 
-    public RoomResponse findById(final Long id) {
-        return RoomResponse.from(findRoomOrElseThrow(id));
+    public FoundRoomResponse findById(final Long id) {
+        return FoundRoomResponse.from(findRoomOrElseThrow(id));
     }
 
     private Room findRoomOrElseThrow(final Long id) {
@@ -81,7 +84,7 @@ public class RoomService {
         sessionService.delete(sessionId);
 
         if (room.isEmpty()) {
-            return new UserListUpdateResponse();
+            return UserListUpdateResponse.empty();
         }
 
         return new UserListUpdateResponse(UserResponse.from(room.getHost()), getGuests(room));

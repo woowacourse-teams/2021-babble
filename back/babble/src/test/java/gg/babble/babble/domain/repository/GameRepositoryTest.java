@@ -17,7 +17,7 @@ public class GameRepositoryTest extends ApplicationTest {
 
     @DisplayName("게임 더미 데이터를 확인한다.")
     @ParameterizedTest
-    @ValueSource(strings = {"League Of Legend", "Overwatch", "Apex Legend"})
+    @ValueSource(strings = {"League Of Legends", "Overwatch", "Apex Legend"})
     void dummyGameTest(final String gameName) {
         List<Game> game = gameRepository.findByName(gameName);
         assertThat(game).isNotEmpty();

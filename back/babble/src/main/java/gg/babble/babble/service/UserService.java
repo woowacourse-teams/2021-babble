@@ -22,7 +22,7 @@ public class UserService {
             .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 유저 Id 입니다."));
     }
 
-    public List<User> findByName(final String name) {
-        return userRepository.findByName(name);
+    public List<User> findByNickname(final String name) {
+        return userRepository.findByNickname(name);
     }
 }

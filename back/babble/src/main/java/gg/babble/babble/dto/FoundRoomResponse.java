@@ -7,29 +7,31 @@ import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Builder
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
-public class RoomResponse {
+public class FoundRoomResponse {
 
-    private Long roomId;
-    private String createdDate;
-    private GameResponse game;
-    private List<TagResponse> tags;
+    private final Long roomId;
+    private final String createdDate;
+    private final GameResponse game;
+    private final UserResponse host;
+    private final HeadCountResponse headCount;
+    private final List<TagResponse> tags;
 
-    public static RoomResponse from(final Room room) {
-        return RoomResponse.builder()
+    public static FoundRoomResponse from(final Room room) {
+        return FoundRoomResponse.builder()
             .roomId(room.getId())
             .createdDate(room.getCreatedDate().toString())
             .game(GameResponse.from(room.getGame()))
+            .host(UserResponse.from(room.getHost()))
+            .headCount(HeadCountResponse.from(room))
             .tags(tagResponses(room.getTagRegistrationsOfRoom()))
             .build();
     }
 
-    private static List<TagResponse> tagResponses(TagRegistrationsOfRoom tagRegistrations) {
+    private static List<TagResponse> tagResponses(final TagRegistrationsOfRoom tagRegistrations) {
         return tagRegistrations.tagNames()
             .stream()
             .map(TagResponse::new)
