@@ -8,7 +8,7 @@ const Avatar = ({ size = 'small', direction = 'col', imageSrc, children }) => {
   return (
     <figure className={direction}>
       <AvatarImage imageSrc={imageSrc} size={size} />
-      <figcaption className={size}>{children}</figcaption>
+      <figcaption>{children}</figcaption>
     </figure>
   );
 };
