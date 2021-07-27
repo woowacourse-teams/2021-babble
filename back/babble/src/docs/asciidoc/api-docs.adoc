@@ -100,3 +100,18 @@ include::{snippets}/../custom-snippets/chat-receive/socket-request.adoc[]
 === HTTP Response
 
 include::{snippets}/../custom-snippets/chat-receive/socket-response.adoc[]
+
+
+== 태그 전체 수신 API
+
+=== HTTP Request
+
+include::{snippets}/tags-get-test/http-request.adoc[]
+
+=== HTTP Response
+
+include::{snippets}/tags-get-test/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/tags-get/response-fields.adoc[]
+
