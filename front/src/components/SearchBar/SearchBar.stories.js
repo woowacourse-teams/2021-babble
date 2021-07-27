@@ -28,5 +28,8 @@ Default.args = {
     { name: 'Dead by Daylight' },
     { name: 'Escape from Tarkov' },
     { name: 'Teamfight Tactics' },
+    { name: '크레이지 아케이드' },
+    { name: '2시간' },
+    { name: '크로스파이어' },
   ],
 };

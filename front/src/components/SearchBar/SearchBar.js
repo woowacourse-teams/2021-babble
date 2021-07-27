@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Caption1 from '../../core/Typography/Caption1';
 import { FiSearch } from 'react-icons/fi';
 import PropTypes from 'prop-types';
+import getKorRegExp from './service/getKorRegExp';
 
 const SearchBar = ({
   placeholder = '태그를 검색해주세요!',
@@ -22,11 +23,27 @@ const SearchBar = ({
   };
 
   const onChangeInput = (e) => {
-    const searchRegex = new RegExp(e.target.value, 'gi');
-    const searchResults = autoCompleteKeywords.filter((autoCompleteKeyword) => {
-      const keywordsWithoutSpace = autoCompleteKeyword.name.replace(/\s/g, '');
-      return keywordsWithoutSpace.match(searchRegex);
-    });
+    const inputValue = e.target.value;
+
+    const searchResults = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]+/g.test(inputValue)
+      ? autoCompleteKeywords.filter((autoCompleteKeyword) => {
+          const keywordRegExp = getKorRegExp(inputValue, {
+            initialSearch: true,
+            fuzzy: true,
+          });
+          return autoCompleteKeyword.name.match(keywordRegExp);
+        })
+      : autoCompleteKeywords.filter((autoCompleteKeyword) => {
+          const searchRegex = new RegExp(inputValue, 'gi');
+          const keywordWithoutSpace = autoCompleteKeyword.name.replace(
+            /\s/g,
+            ''
+          );
+          return (
+            keywordWithoutSpace.match(searchRegex) ||
+            autoCompleteKeyword.name.match(searchRegex)
+          );
+        });
     setAutoCompleteList(searchResults);
   };
 
