@@ -37,3 +37,37 @@
     }
   }
 }
+
+.modal-minimized-container {
+  width: 22rem;
+  height: 4rem;
+  position: fixed;
+  right: 2rem;
+  bottom: -0.5rem;
+  cursor: pointer;
+
+  background: linear-gradient(
+    60deg,
+    m.primary(babble-pink-1) 0%,
+    m.primary(babble-pink-light) 100%
+  );
+
+  background-color: m.primary(babble-pink-1);
+  border-radius: m.border-radius(modal-minimize);
+  color: m.grey-scale(white);
+  box-shadow: v.$button-box-shadow;
+
+  &:hover {
+    transform: translateY(-0.5rem);
+    transition: all 0.2s ease-in;
+  }
+
+  .modal-button-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+  }
+}
