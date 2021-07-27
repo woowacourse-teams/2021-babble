@@ -11,6 +11,10 @@
   transition: 0.2s linear;
   border-radius: 0.8rem;
 
+  input[type='text'] {
+    text-align: center;
+  }
+
   svg {
     cursor: pointer;
   }

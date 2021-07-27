@@ -28,8 +28,8 @@ const DropdownInput = ({
   const onSelectItem = (e) => {
     const selectedValue = e.target.textContent;
     inputRef.current.value = selectedValue;
-    dropdownRef.current.classList.remove('show');
     containerRef.current.classList.remove('focused');
+    dropdownRef.current.classList.remove('show');
   };
 
   const onClickArrowDown = (e) => {
@@ -48,6 +48,7 @@ const DropdownInput = ({
         className='input-inner'
         placeholder={placeholder}
         onFocus={onFocusInput}
+        onBlur={onBlurInput}
         ref={inputRef}
         readOnly
       />
@@ -59,7 +60,7 @@ const DropdownInput = ({
               <button
                 type='button'
                 className='keyword-button'
-                onClick={onSelectItem}
+                onMouseDown={onSelectItem}
               >
                 {dropdownItem}
               </button>

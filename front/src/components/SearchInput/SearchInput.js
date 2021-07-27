@@ -69,6 +69,7 @@ const SearchInput = ({
         className='input-inner'
         placeholder={placeholder}
         onFocus={onFocusInput}
+        onBlur={onBlurInput}
         onChange={onChangeInput}
       />
       <ul className='keyword-list-container' ref={autoCompleteRef}>
@@ -78,7 +79,7 @@ const SearchInput = ({
               <button
                 type='button'
                 className='keyword-button'
-                onClick={onSelectItem}
+                onMouseDown={onSelectItem}
               >
                 {autoCompleteItem?.name}
               </button>
