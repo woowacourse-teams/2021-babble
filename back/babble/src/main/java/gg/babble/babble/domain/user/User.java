@@ -1,15 +1,23 @@
-package gg.babble.babble.domain;
+package gg.babble.babble.domain.user;
 
+import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
-import lombok.*;
-
-import javax.persistence.*;
 import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
-@Builder
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class User {
 
@@ -23,6 +31,18 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Room room;
+
+    public User(@NonNull final String name) {
+        this(null, name);
+    }
+
+    public User(final Long id, @NonNull final String name) {
+        this(id, name, null);
+    }
+
+    public User(@NonNull final String name, final Room room) {
+        this(null, name, room);
+    }
 
     public void join(final Room room) {
         if (Objects.nonNull(this.room) && !this.room.equals(room)) {
@@ -57,5 +77,22 @@ public class User {
 
     public boolean hasNotRoom(final Room room) {
         return Objects.isNull(this.room) || !this.room.equals(room);
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        User user = (User) o;
+        return Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

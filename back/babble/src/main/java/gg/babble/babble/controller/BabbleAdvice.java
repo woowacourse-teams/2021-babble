@@ -24,12 +24,14 @@ public class BabbleAdvice {
 
     @ExceptionHandler(BabbleException.class)
     public ResponseEntity<ExceptionDto> babbleException(final BabbleException babbleException) {
-        return ResponseEntity.status(babbleException.status()).body(new ExceptionDto(babbleException.getMessage()));
+        return ResponseEntity.status(babbleException.status())
+            .body(new ExceptionDto(babbleException.getMessage()));
     }
 
     @MessageExceptionHandler
-    public ResponseEntity<ExceptionDto>  handleException(final BabbleException babbleException) {
-        return ResponseEntity.status(babbleException.status()).body(new ExceptionDto(babbleException.getMessage()));
+    public ResponseEntity<ExceptionDto> handleException(final BabbleException babbleException) {
+        return ResponseEntity.status(babbleException.status())
+            .body(new ExceptionDto(babbleException.getMessage()));
     }
 
     @Getter

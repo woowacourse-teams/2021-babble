@@ -1,24 +1,28 @@
 package gg.babble.babble.domain.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.domain.Game;
-import gg.babble.babble.domain.Room;
-import gg.babble.babble.domain.Tag;
-import gg.babble.babble.domain.User;
+import gg.babble.babble.domain.room.Room;
+import gg.babble.babble.domain.tag.Tag;
+import gg.babble.babble.domain.user.User;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import gg.babble.babble.service.GameService;
 import gg.babble.babble.service.TagService;
 import gg.babble.babble.service.UserService;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 public class RoomRepositoryTest extends ApplicationTest {
+
+    private static final String LEAGUE_OF_LEGEND = "League Of Legend";
+    private static final String 루트 = "루트";
+    private static final String 실버 = "실버";
+    private static final String _2시간 = "2시간";
 
     @Autowired
     private RoomRepository roomRepository;
@@ -32,40 +36,28 @@ public class RoomRepositoryTest extends ApplicationTest {
     @Autowired
     private TagService tagService;
 
-//    @DisplayName("방 더미 데이터를 확인한다.")
-//    @Test
-//    void dummyGameTest() {
-//        Optional<Room> room = roomRepository.findById(1L);
-//
-//        Game expectedGame = Game.builder()
-//                .id(1L)
-//                .name("League Of Legend")
-//                .build();
-//        User expectedHost = User.builder()
-//                .id(1L)
-//                .name("루트")
-//                .room(room.get())
-//                .build();
-//
-//        List<Tag> expectedTags = Arrays.asList(
-//                Tag.builder()
-//                        .name("실버")
-//                        .build(),
-//                Tag.builder()
-//                        .name("2시간")
-//                        .build()
-//        );
-//
-//        assertThat(room.isPresent()).isTrue();
-//        assertThat(room.get().getCreatedDate()).isNotNull();
-//        assertThat(room.get().getGame()).usingRecursiveComparison()
-//                .isEqualTo(expectedGame);
-//        assertThat(room.get().getHost()).usingRecursiveComparison()
-//                .isEqualTo(expectedHost);
-//        assertThat(room.get().getTags()).usingRecursiveComparison()
-//                .ignoringFields("rooms")
-//                .isEqualTo(expectedTags);
-//    }
+    @DisplayName("방 더미 데이터를 확인한다.")
+    @Test
+    void dummyGameTest() {
+        Room room = roomRepository.findAll().get(0);
+
+        Game expectedGame = new Game(LEAGUE_OF_LEGEND);
+        User expectedHost = new User(루트, room);
+
+        List<String> expectedTags = Arrays.asList(실버, _2시간);
+
+        assertThat(room.getCreatedDate()).isNotNull();
+        assertThat(room.getGame()).usingRecursiveComparison()
+            .ignoringFields("id")
+            .isEqualTo(expectedGame);
+        assertThat(room.getHost()).usingRecursiveComparison()
+            .ignoringFields("id")
+            .isEqualTo(expectedHost);
+        assertThat(room.getTagRegistrationsOfRoom().tagNames())
+            .usingRecursiveComparison()
+            .ignoringFields("tagRegistrations")
+            .isEqualTo(expectedTags);
+    }
 
     @DisplayName("생성한 방을 저장한다.")
     @Test
@@ -77,14 +69,12 @@ public class RoomRepositoryTest extends ApplicationTest {
     }
 
     private Room saveRoom() {
-        Game game = gameService.findById(1L);
-        User user = userService.findById(1L);
-        List<Tag> tags = Arrays.asList(tagService.findById("실버"),
-                tagService.findById("2시간"));
+        Game game = gameService.findByName(LEAGUE_OF_LEGEND).get(0);
+        User user = userService.findByName(루트).get(0);
+        List<Tag> tags = Arrays.asList(tagService.findById(실버),
+            tagService.findById(_2시간));
 
-        Room room = roomRepository.save(Room.builder()
-                .game(game)
-                .tags(tags).build());
+        Room room = roomRepository.save(new Room(game, tags));
 
         room.join(user);
 
@@ -107,8 +97,8 @@ public class RoomRepositoryTest extends ApplicationTest {
         roomRepository.flush();
 
         assertThat(roomRepository.findById(room.getId())
-                .orElseThrow(BabbleNotFoundException::new)
-                .isDeleted())
-                .isTrue();
+            .orElseThrow(BabbleNotFoundException::new)
+            .isDeleted())
+            .isTrue();
     }
 }

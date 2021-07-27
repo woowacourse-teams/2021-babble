@@ -1,6 +1,6 @@
 package gg.babble.babble.service;
 
-import gg.babble.babble.domain.User;
+import gg.babble.babble.domain.user.User;
 import gg.babble.babble.dto.MessageRequest;
 import gg.babble.babble.dto.MessageResponse;
 import gg.babble.babble.dto.UserResponse;
@@ -18,6 +18,6 @@ public class ChatService {
     public MessageResponse sendChatMessage(final MessageRequest messageRequest) {
         User user = userService.findById(messageRequest.getUserId());
         String content = messageRequest.getContent();
-        return MessageResponse.of(UserResponse.from(user), content);
+        return new MessageResponse(UserResponse.from(user), content);
     }
 }

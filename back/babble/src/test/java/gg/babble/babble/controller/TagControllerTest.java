@@ -1,21 +1,21 @@
 package gg.babble.babble.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import gg.babble.babble.AcceptanceTest;
 import gg.babble.babble.dto.TagResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 public class TagControllerTest extends AcceptanceTest {
+
     @Override
     @BeforeEach
     public void setUp() {
@@ -27,23 +27,17 @@ public class TagControllerTest extends AcceptanceTest {
     void webSocketConnectTest() {
         //given
         List<TagResponse> expectedTagResponses = Arrays.asList(
-                TagResponse.builder()
-                        .name("2시간")
-                        .build(),
-                TagResponse.builder()
-                        .name("솔로랭크")
-                        .build(),
-                TagResponse.builder()
-                        .name("실버")
-                        .build()
+            new TagResponse("2시간"),
+            new TagResponse("솔로랭크"),
+            new TagResponse("실버")
         );
 
         //when
         ExtractableResponse<Response> response = RestAssured.given().log().all()
-                .when()
-                .get("/api/tags")
-                .then().log().all()
-                .extract();
+            .when()
+            .get("/api/tags")
+            .then().log().all()
+            .extract();
 
         List<TagResponse> tagResponses = response.jsonPath().getList(".", TagResponse.class);
 

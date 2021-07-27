@@ -1,31 +1,44 @@
 package gg.babble.babble.domain;
 
+import gg.babble.babble.domain.room.Room;
+import gg.babble.babble.domain.tag.Tag;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.NonNull;
+import lombok.NonNull;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "tag_registration")
 @Entity
-public class Game {
+public class TagRegistration {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NonNull
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "room_id")
+    private Room room;
 
-    public Game(@NonNull final String name) {
-        this(null, name);
+    @NonNull
+    @ManyToOne
+    @JoinColumn(name = "tag_name")
+    private Tag tag;
+
+    public TagRegistration(@NonNull final Room room, @NonNull final Tag tag) {
+        this(null, room, tag);
     }
 
     @Override
@@ -36,8 +49,8 @@ public class Game {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Game game = (Game) o;
-        return Objects.equals(id, game.id);
+        TagRegistration that = (TagRegistration) o;
+        return Objects.equals(id, that.id);
     }
 
     @Override
@@ -45,3 +58,4 @@ public class Game {
         return Objects.hash(id);
     }
 }
+

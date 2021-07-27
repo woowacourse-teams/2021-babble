@@ -1,14 +1,13 @@
 package gg.babble.babble.dto;
 
-import gg.babble.babble.domain.Room;
-import gg.babble.babble.domain.Tag;
+import gg.babble.babble.domain.room.Room;
+import gg.babble.babble.domain.room.TagRegistrationsOfRoom;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Builder
 @Getter
@@ -23,18 +22,17 @@ public class RoomResponse {
 
     public static RoomResponse from(final Room room) {
         return RoomResponse.builder()
-                .roomId(room.getId())
-                .createdDate(room.getCreatedDate().toString())
-                .game(GameResponse.from(room.getGame()))
-                .tags(tagNames(room.getTags()))
-                .build();
+            .roomId(room.getId())
+            .createdDate(room.getCreatedDate().toString())
+            .game(GameResponse.from(room.getGame()))
+            .tags(tagResponses(room.getTagRegistrationsOfRoom()))
+            .build();
     }
 
-    private static List<TagResponse> tagNames(final List<Tag> tags) {
-        return tags.stream()
-                .map(tag -> TagResponse.builder()
-                        .name(tag.getName())
-                        .build())
-                .collect(Collectors.toList());
+    private static List<TagResponse> tagResponses(TagRegistrationsOfRoom tagRegistrations) {
+        return tagRegistrations.tagNames()
+            .stream()
+            .map(TagResponse::new)
+            .collect(Collectors.toList());
     }
 }
