@@ -55,48 +55,48 @@ include::{snippets}/read-room/response-fields.adoc[]
 
 === HTTP Request
 
-include::{snippets}/../custom-snippets/chat-room-connect/http-request.adoc[]
+include::{snippets}/../custom-snippets/chat-room-connect/socket-request.adoc[]
 
 === HTTP Response
 
-include::{snippets}/../custom-snippets/chat-room-connect/http-response.adoc[]
+include::{snippets}/../custom-snippets/chat-room-connect/socket-response.adoc[]
 
 == 채팅방 유저 목록 API
 
 === HTTP Request
 
-include::{snippets}/../custom-snippets/user-list/http-request.adoc[]
+include::{snippets}/../custom-snippets/user-list/socket-request.adoc[]
 
 === HTTP Response
 
-include::{snippets}/../custom-snippets/user-list/http-response.adoc[]
+include::{snippets}/../custom-snippets/user-list/socket-response.adoc[]
 
 == 채팅방 입장 정보 업데이트 API
 
 === HTTP Request
 
-include::{snippets}/../custom-snippets/chat-room-update/http-request.adoc[]
+include::{snippets}/../custom-snippets/chat-room-update/socket-request.adoc[]
 
 === HTTP Response
 
-include::{snippets}/../custom-snippets/chat-room-update/http-response.adoc[]
+include::{snippets}/../custom-snippets/chat-room-update/socket-response.adoc[]
 
 == 채팅 전송 API
 
 === HTTP Request
 
-include::{snippets}/../custom-snippets/chat-send/http-request.adoc[]
+include::{snippets}/../custom-snippets/chat-send/socket-request.adoc[]
 
 === HTTP Response
 
-include::{snippets}/../custom-snippets/chat-send/http-response.adoc[]
+include::{snippets}/../custom-snippets/chat-send/socket-response.adoc[]
 
 == 채팅 수신 API
 
 === HTTP Request
 
-include::{snippets}/../custom-snippets/chat-receive/http-request.adoc[]
+include::{snippets}/../custom-snippets/chat-receive/socket-request.adoc[]
 
 === HTTP Response
 
-include::{snippets}/../custom-snippets/chat-receive/http-response.adoc[]
+include::{snippets}/../custom-snippets/chat-receive/socket-response.adoc[]
