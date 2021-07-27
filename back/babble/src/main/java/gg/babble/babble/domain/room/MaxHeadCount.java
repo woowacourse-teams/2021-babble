@@ -13,6 +13,7 @@ public class MaxHeadCount {
 
     private static final int MIN_VALUE = 2;
     private static final int MAX_VALUE = 20;
+
     private int value;
 
     public MaxHeadCount(final int value) {
