@@ -1,7 +1,7 @@
 @use '../../../style/variables' as v;
 @use '../../../style/mixins' as m;
 
-.searchbar-container {
+.input-container {
   display: flex;
   position: relative;
   justify-content: space-between;
@@ -11,17 +11,29 @@
   transition: 0.2s linear;
   border-radius: 0.8rem;
 
-  &:focus-within {
+  input[type='text'] {
+    text-align: center;
+  }
+
+  input[type='number'] {
+    cursor: pointer;
+  }
+
+  svg {
+    cursor: pointer;
+  }
+
+  &.focused {
     border: 2px solid m.primary(babble-pink);
   }
 
-  .searchbar {
+  .input-inner {
     width: 100%;
     font-size: 1.8rem;
     margin-left: 1rem;
   }
 
-  .auto-complete-container {
+  .keyword-list-container {
     position: absolute;
     display: none;
     transition: 0.5s linear;
@@ -34,23 +46,10 @@
     max-height: 35rem;
     border-radius: 0.6rem;
     box-shadow: 0 0 4px 2px rgba(0, 0, 0, 20%);
+    background-color: m.grey-scale(white);
 
     overflow-y: auto;
-
-    .auto-complete-button {
-      width: 100%;
-      text-align: left;
-      height: fit-content;
-      padding: 1rem 1.5rem;
-
-      &:hover {
-        background-color: m.grey-scale(2);
-      }
-    }
-
-    .result-not-found {
-      padding: 1rem 1.5rem;
-    }
+    z-index: m.z-index(layer-front-1);
 
     &.show {
       display: block;
@@ -76,6 +75,21 @@
 
     &::-webkit-scrollbar-thumb:active {
       background-color: m.grey-scale(10);
+    }
+
+    .keyword-button {
+      width: 100%;
+      text-align: left;
+      height: fit-content;
+      padding: 1rem 1.5rem;
+
+      &:hover {
+        background-color: m.grey-scale(2);
+      }
+    }
+
+    .result-not-found {
+      padding: 1rem 1.5rem;
     }
   }
 }
