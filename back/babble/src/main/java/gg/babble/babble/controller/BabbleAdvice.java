@@ -35,12 +35,7 @@ public class BabbleAdvice {
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<List<ExceptionDto>> constraintViolationException(final ConstraintViolationException exception) {
-        return ResponseEntity.badRequest().body(
-            exception.getConstraintViolations().stream()
-                .map(ConstraintViolation::getMessage)
-                .map(ExceptionDto::new)
-                .collect(Collectors.toList())
-        );
+        return ResponseEntity.badRequest().body(extractErrorMessages(exception));
     }
 
     private List<ExceptionDto> extractErrorMessages(final MethodArgumentNotValidException exception) {
@@ -48,6 +43,13 @@ public class BabbleAdvice {
             .getAllErrors()
             .stream()
             .map(DefaultMessageSourceResolvable::getDefaultMessage)
+            .map(ExceptionDto::new)
+            .collect(Collectors.toList());
+    }
+
+    private List<ExceptionDto> extractErrorMessages(final ConstraintViolationException exception) {
+        return exception.getConstraintViolations().stream()
+            .map(ConstraintViolation::getMessage)
             .map(ExceptionDto::new)
             .collect(Collectors.toList());
     }
