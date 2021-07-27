@@ -19,8 +19,9 @@ import lombok.NonNull;
 @Entity
 public class User {
 
+    // TODO: 기본 경로 프론트에게 받아오기
     @NonNull
-    private final String avatar = "URL";
+    private final String avatar = "https://hyeon9mak.github.io/assets/images/9vatar.png";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
