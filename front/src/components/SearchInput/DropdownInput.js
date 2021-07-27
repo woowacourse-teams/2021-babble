@@ -15,12 +15,12 @@ const DropdownInput = ({
   const dropdownRef = useRef(null);
   const inputRef = useRef(null);
 
-  const onFocusInput = (e) => {
+  const onFocusInput = () => {
     containerRef.current.classList.add('focused');
     dropdownRef.current.classList.add('show');
   };
 
-  const onBlurInput = (e) => {
+  const onBlurInput = () => {
     containerRef.current.classList.remove('focused');
     dropdownRef.current.classList.remove('show');
   };
@@ -32,7 +32,7 @@ const DropdownInput = ({
     dropdownRef.current.classList.remove('show');
   };
 
-  const onClickArrowDown = (e) => {
+  const onClickArrowDown = () => {
     containerRef.current.classList.toggle('focused');
     dropdownRef.current.classList.toggle('show');
   };

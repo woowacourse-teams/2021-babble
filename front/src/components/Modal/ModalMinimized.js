@@ -20,10 +20,7 @@ const ModalMinimized = ({ maximize, close }) => {
     </div>
   );
 
-  return ReactDOM.createPortal(
-    content,
-    document.querySelector('#chatting-modal')
-  );
+  return ReactDOM.createPortal(content, document.querySelector('#modal'));
 };
 
 ModalMinimized.propTypes = {

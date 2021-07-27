@@ -13,7 +13,7 @@ $border-radius: (
 );
 
 $button-padding: (
-  small: 1rem 1.8rem,
+  small: 0.6rem 1.8rem,
   medium: 1.4rem 2.6rem,
   large: 1.8rem 4rem,
 );
@@ -40,7 +40,8 @@ $grey-scale: (
   11: rgb(91, 95, 102),
   12: rgb(63, 66, 71),
   black: #222,
-  black-opacity: #0000008a,
+  black-opacity: rgba(0, 0, 0, 0.55),
+  black-opacity-light: rgba(0, 0, 0, 0.15),
 );
 
 $primary: (

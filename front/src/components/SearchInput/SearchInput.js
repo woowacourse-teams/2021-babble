@@ -17,17 +17,17 @@ const SearchInput = ({
   const containerRef = useRef(null);
   const autoCompleteRef = useRef(null);
 
-  const onFocusInput = (e) => {
+  const onFocusInput = () => {
     containerRef.current.classList.add('focused');
     autoCompleteRef.current.classList.add('show');
   };
 
-  const onBlurInput = (e) => {
+  const onBlurInput = () => {
     containerRef.current.classList.remove('focused');
     autoCompleteRef.current.classList.remove('show');
   };
 
-  const onSelectItem = (e) => {
+  const onSelectItem = () => {
     containerRef.current.classList.remove('focused');
     autoCompleteRef.current.classList.remove('show');
   };

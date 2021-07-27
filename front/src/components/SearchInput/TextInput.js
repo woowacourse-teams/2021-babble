@@ -7,11 +7,11 @@ import PropTypes from 'prop-types';
 const TextInput = ({ placeholder = '닉네임을 입력해주세요.' }) => {
   const containerRef = useRef(null);
 
-  const onFocusInput = (e) => {
+  const onFocusInput = () => {
     containerRef.current.classList.add('focused');
   };
 
-  const onBlurInput = (e) => {
+  const onBlurInput = () => {
     containerRef.current.classList.remove('focused');
   };
 

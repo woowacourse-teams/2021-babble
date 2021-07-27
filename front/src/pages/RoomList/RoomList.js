@@ -1,8 +1,9 @@
 import './RoomList.scss';
 
 import Body1 from '../../core/Typography/Body1';
+import ChattingRoom from '../ChattingRoom/ChattingRoom';
 import Logo from '../../core/Logo/Logo';
-import ModalChattingRoom from '../../components/Modal/ModalChattingRoom';
+import ModalNickname from '../../components/Modal/ModalNickname';
 import React from 'react';
 import SquareButton from '../../components/Button/SquareButton';
 import axios from 'axios';
@@ -22,12 +23,13 @@ const RoomList = () => {
       );
       const { tags, roomId, createdDate } = response.data;
       open(
-        <ModalChattingRoom
+        <ChattingRoom
           tags={tags}
           participants={{}}
           roomId={roomId}
           createdAt={createdDate}
-        />
+        />,
+        'chatting'
       );
     } catch (error) {
       alert('방 생성을 하는 데 오류가 있습니다.');
@@ -43,17 +45,23 @@ const RoomList = () => {
 
       const { tags, roomId, createdDate } = response.data;
       open(
-        <ModalChattingRoom
+        <ChattingRoom
           tags={tags}
           participants={{}}
           roomId={roomId}
           createdAt={createdDate}
-        />
+        />,
+        'chatting'
       );
     } catch (error) {
       alert('방이 존재하지 않습니다.');
       console.log(error);
     }
+  };
+
+  const openNicknameModal = () => {
+    console.log('?');
+    open(<ModalNickname />);
   };
 
   return (
@@ -66,6 +74,9 @@ const RoomList = () => {
       </SquareButton>
       <SquareButton colored={false} size='large' onClick={joinChatting}>
         <Body1>방 참가</Body1>
+      </SquareButton>
+      <SquareButton colored={false} size='large' onClick={openNicknameModal}>
+        <Body1>닉네임 생성</Body1>
       </SquareButton>
     </div>
   );

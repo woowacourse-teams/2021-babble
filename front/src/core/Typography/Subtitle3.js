@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 const Subtitle3 = ({ children }) => {
-  return <h5>{children}</h5>;
+  return <h5 className='subtitle3'>{children}</h5>;
 };
 
 Subtitle3.propTypes = {
