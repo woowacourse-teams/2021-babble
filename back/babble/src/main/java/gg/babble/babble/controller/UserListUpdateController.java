@@ -2,6 +2,7 @@ package gg.babble.babble.controller;
 
 import gg.babble.babble.dto.UserJoinRequest;
 import gg.babble.babble.service.RoomService;
+import javax.validation.Valid;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 @Controller
 public class UserListUpdateController {
+
     private final SimpMessagingTemplate template;
     private final RoomService roomService;
 
@@ -20,16 +22,18 @@ public class UserListUpdateController {
     }
 
     @MessageMapping("/rooms/{roomId}/users")
-    public void join(@DestinationVariable final Long roomId, final UserJoinRequest userJoinRequest) {
+    public void join(@DestinationVariable final Long roomId,
+                     @Valid final UserJoinRequest userJoinRequest) {
         template.convertAndSend(String.format("/topic/rooms/%s/users", roomId),
-                roomService.sendJoinRoom(roomId, userJoinRequest));
+            roomService.sendJoinRoom(roomId, userJoinRequest));
     }
 
     @EventListener
     public void exit(final SessionDisconnectEvent event) {
         template.convertAndSend(
-                String.format("/topic/rooms/%s/users", roomService.findRoomIdBySessionId(event.getSessionId())),
-                roomService.sendExitRoom(event.getSessionId())
+            String.format("/topic/rooms/%s/users",
+                roomService.findRoomIdBySessionId(event.getSessionId())),
+            roomService.sendExitRoom(event.getSessionId())
         );
     }
 }

@@ -1,21 +1,20 @@
 package gg.babble.babble.dto;
 
-import gg.babble.babble.domain.User;
-import lombok.*;
+import gg.babble.babble.domain.user.User;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 @Setter
 @Getter
-@Builder
 @AllArgsConstructor
-@NoArgsConstructor
 public class UserResponse {
-    private Long id;
-    private String name;
+
+    private final Long id;
+    private final String nickname;
+    private final String avatar;
 
     public static UserResponse from(final User user) {
-        return UserResponse.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .build();
+        return new UserResponse(user.getId(), user.getNickname(), user.getAvatar());
     }
 }

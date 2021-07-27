@@ -1,0 +1,43 @@
+@use '../../../style/variables' as v;
+@use '../../../style/mixins' as m;
+
+.room-container {
+  cursor: pointer;
+  padding: 1.5rem 2rem;
+  background: m.grey-scale(white);
+  border: 1px solid m.grey-scale(1);
+
+  box-shadow: v.$room-box-shadow;
+  border-radius: 1rem;
+
+  .information {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .about {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .room-number {
+        margin-right: 2rem;
+        color: m.grey-scale(11);
+      }
+
+      .avatar {
+        margin-right: 1.5rem;
+      }
+    }
+
+    strong {
+      color: m.primary(babble-pink);
+      font-weight: 500;
+    }
+  }
+
+  &:active {
+    transform: scale(0.96);
+    transition: transform 70ms ease-in;
+  }
+}

@@ -1,15 +1,14 @@
 package gg.babble.babble.domain.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import gg.babble.babble.ApplicationTest;
-import gg.babble.babble.domain.User;
+import gg.babble.babble.domain.user.User;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserRepositoryTest extends ApplicationTest {
 
@@ -18,10 +17,9 @@ public class UserRepositoryTest extends ApplicationTest {
 
     @DisplayName("유저 더미 데이터를 확인한다.")
     @ParameterizedTest
-    @CsvSource({"1, 루트", "2, 와일더", "3, 현구막"})
-    void dummyUserTest(final Long id, final String name) {
-        Optional<User> user = userRepository.findById(id);
-        assertThat(user.isPresent()).isTrue();
-        assertThat(user.get().getName()).isEqualTo(name);
+    @ValueSource(strings = {"루트", "와일더", "현구막"})
+    void dummyUserTest(final String name) {
+        List<User> users = userRepository.findByNickname(name);
+        assertThat(users).isNotEmpty();
     }
 }
