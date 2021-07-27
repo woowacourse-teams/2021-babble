@@ -5,7 +5,6 @@ import javax.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.logging.log4j.util.Strings;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
