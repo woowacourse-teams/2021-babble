@@ -45,12 +45,18 @@ class RoomServiceTest extends ApplicationTest {
         RoomResponse expected = RoomResponse.builder()
             .roomId(1L)
             .game(new GameResponse(game.getId(), game.getName()))
-            .tags(tags.stream().map(tag -> new TagResponse(tag.getName())).collect(Collectors.toList()))
+            .tags(tagResponsesFromTags(tags))
             .build();
 
         RoomResponse roomResponse = roomService.findById(1L);
         assertThat(roomResponse).usingRecursiveComparison()
             .ignoringFields("rooms", "createdDate").isEqualTo(expected);
+    }
+
+    private List<TagResponse> tagResponsesFromTags(final List<Tag> tags) {
+        return tags.stream()
+            .map(tag -> new TagResponse(tag.getName()))
+            .collect(Collectors.toList());
     }
 
     @DisplayName("방 Id가 없을 경우 예외를 던진다.")
