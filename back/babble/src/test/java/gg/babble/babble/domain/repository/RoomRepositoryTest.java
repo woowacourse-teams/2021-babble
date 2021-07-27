@@ -42,7 +42,7 @@ public class RoomRepositoryTest extends ApplicationTest {
     void dummyGameTest() {
         Room room = roomRepository.findAll().get(0);
 
-        Game expectedGame = new Game(LEAGUE_OF_LEGENDS);
+        Game expectedGame = new Game(LEAGUE_OF_LEGENDS, "https://static-cdn.jtvnw.net/ttv-boxart/League%20of%20Legends-1080x1436.jpg");
         User expectedHost = new User(루트, room);
 
         List<String> expectedTags = Arrays.asList(실버, _2시간);

@@ -59,7 +59,7 @@ public class DataLoader implements CommandLineRunner {
 
 
     private void prepareDummyGames() {
-        gameRepository.save(new Game(LEAGUE_OF_LEGENDS));
+        gameRepository.save(new Game(LEAGUE_OF_LEGENDS, "https://static-cdn.jtvnw.net/ttv-boxart/League%20of%20Legends-1080x1436.jpg"));
         gameRepository.save(new Game(OVERWATCH));
         gameRepository.save(new Game(APEX_LEGEND));
     }

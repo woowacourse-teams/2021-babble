@@ -2,8 +2,10 @@ package gg.babble.babble.service;
 
 import gg.babble.babble.domain.Game;
 import gg.babble.babble.domain.repository.GameRepository;
+import gg.babble.babble.dto.GameImageResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,5 +26,16 @@ public class GameService {
 
     public List<Game> findByName(final String name) {
         return gameRepository.findByName(name);
+    }
+
+    public GameImageResponse findGameImageById(final Long gameId) {
+        return GameImageResponse.from(findById(gameId));
+    }
+
+    public List<GameImageResponse> findAllGameImages() {
+        return gameRepository.findAll()
+            .stream()
+            .map(GameImageResponse::from)
+            .collect(Collectors.toList());
     }
 }

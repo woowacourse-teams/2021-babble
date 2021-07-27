@@ -17,6 +17,7 @@ import org.springframework.lang.NonNull;
 @Entity
 public class Game {
 
+    private static final String DEFAULT_IMAGE = "https://static-cdn.jtvnw.net/ttv-static/404_boxart-1080x1436.jpg";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,8 +25,19 @@ public class Game {
     @NonNull
     private String name;
 
+    @NonNull
+    private String image;
+
     public Game(@NonNull final String name) {
-        this(null, name);
+        this(null, name, DEFAULT_IMAGE);
+    }
+
+    public Game(final Long id, @NonNull final String name) {
+        this(id, name, DEFAULT_IMAGE);
+    }
+
+    public Game(@NonNull final String name, @NonNull final String image) {
+        this(null, name, image);
     }
 
     @Override
