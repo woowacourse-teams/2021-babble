@@ -6,3 +6,12 @@
     transform: translate(5%, -80%);
   }
 }
+
+@keyframes scaleUp {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}

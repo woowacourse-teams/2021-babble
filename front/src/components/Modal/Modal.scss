@@ -1,5 +1,6 @@
 @use '../../../style/mixins' as m;
 @use '../../../style/variables' as v;
+@use '../../../style/animations';
 
 .modal-container {
   position: fixed;
@@ -30,6 +31,7 @@
     border: 1px solid m.grey-scale(8);
     border-radius: m.border-radius(modal);
     box-shadow: v.$box-shadow;
+    transition: transform 200ms ease-in;
 
     & > section {
       width: 100%;
