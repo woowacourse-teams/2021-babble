@@ -5,6 +5,7 @@ import javax.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.logging.log4j.util.Strings;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class MaxHeadCount {
 
     private static final int MIN_VALUE = 2;
+    private static final int MAX_VALUE = 20;
     private int value;
 
     public MaxHeadCount(final int value) {
@@ -20,8 +22,8 @@ public class MaxHeadCount {
     }
 
     private static void validateToConstruct(final int value) {
-        if (value < MIN_VALUE) {
-            throw new BabbleIllegalArgumentException("방 최대 참가 인원 최소 2인 이상이어야 합니다.");
+        if (value < MIN_VALUE || MAX_VALUE < value) {
+            throw new BabbleIllegalArgumentException(String.format("방 최대 참가 인원은 %d~%d명 이어야 합니다.", MIN_VALUE, MAX_VALUE));
         }
     }
 }
