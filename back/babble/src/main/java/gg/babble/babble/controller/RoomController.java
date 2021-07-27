@@ -5,6 +5,7 @@ import gg.babble.babble.dto.FoundRoomResponse;
 import gg.babble.babble.dto.RoomRequest;
 import gg.babble.babble.service.RoomService;
 import java.net.URI;
+import javax.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +25,7 @@ public class RoomController {
     }
 
     @PostMapping
-    public ResponseEntity<CreatedRoomResponse> createRoom(@RequestBody final RoomRequest request) {
+    public ResponseEntity<CreatedRoomResponse> createRoom(@Valid @RequestBody final RoomRequest request) {
         CreatedRoomResponse response = roomService.create(request);
         return ResponseEntity.created(URI.create("api/rooms/" + response.getRoomId()))
             .body(response);
