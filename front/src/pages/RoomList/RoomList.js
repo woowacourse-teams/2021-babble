@@ -60,7 +60,6 @@ const RoomList = () => {
   };
 
   const openNicknameModal = () => {
-    console.log('?');
     open(<ModalNickname />);
   };
 
