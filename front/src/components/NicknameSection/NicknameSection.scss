@@ -1,0 +1,72 @@
+@use '../../../style/variables' as v;
+@use '../../../style/mixins' as m;
+
+.nickname-section-container {
+  width: fit-content;
+  display: flex;
+
+  & .notice-bubble {
+    display: inline-block;
+    background-color: m.primary(babble-pink);
+    border-radius: 0.6rem;
+
+    width: fit-content;
+    height: fit-content;
+    padding: 0.6rem 1.2rem;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    animation: 0.8s cubic-bezier(0.65, 0.04, 0.87, 0.24) 1s infinite alternate
+      bounce;
+
+    :after {
+      content: '';
+      display: block;
+      background-color: transparent;
+
+      width: 0;
+      height: 0;
+      border-top: 0.8rem solid m.primary(babble-pink);
+      border-right: 0.8rem solid transparent;
+      border-left: 0.8rem solid transparent;
+      border-bottom: 0.8rem solid none;
+
+      position: absolute;
+      bottom: -24%;
+      left: 15%;
+    }
+
+    .caption1 {
+      color: m.grey-scale(white);
+    }
+  }
+
+  .body2 {
+    display: inline-block;
+    font-weight: 500;
+    color: m.primary(babble-pink);
+  }
+
+  .edit {
+    margin: 0 1rem 0 0.5rem;
+
+    svg {
+      color: m.grey-scale(12);
+    }
+  }
+
+  .caption1 {
+    color: m.grey-scale(black);
+  }
+}
+
+@keyframes bounce {
+  from {
+    transform: translate(5%, -120%);
+  }
+  to {
+    transform: translate(5%, -80%);
+  }
+}
