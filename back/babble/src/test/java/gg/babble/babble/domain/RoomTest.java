@@ -3,6 +3,7 @@ package gg.babble.babble.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import gg.babble.babble.domain.room.MaxHeadCount;
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
@@ -32,7 +33,7 @@ public class RoomTest {
     }
 
     private Room generateEmptyRoom() {
-        return new Room(1L, game, tags);
+        return new Room(1L, game, tags, new MaxHeadCount(4));
     }
 
     @DisplayName("방에 유저가 입장한다.")

@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.domain.Game;
+import gg.babble.babble.domain.room.MaxHeadCount;
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
@@ -19,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class RoomRepositoryTest extends ApplicationTest {
 
-    private static final String LEAGUE_OF_LEGEND = "League Of Legend";
+    private static final String LEAGUE_OF_LEGENDS = "League Of Legends";
     private static final String 루트 = "루트";
     private static final String 실버 = "실버";
     private static final String _2시간 = "2시간";
@@ -41,7 +42,7 @@ public class RoomRepositoryTest extends ApplicationTest {
     void dummyGameTest() {
         Room room = roomRepository.findAll().get(0);
 
-        Game expectedGame = new Game(LEAGUE_OF_LEGEND);
+        Game expectedGame = new Game(LEAGUE_OF_LEGENDS);
         User expectedHost = new User(루트, room);
 
         List<String> expectedTags = Arrays.asList(실버, _2시간);
@@ -69,12 +70,12 @@ public class RoomRepositoryTest extends ApplicationTest {
     }
 
     private Room saveRoom() {
-        Game game = gameService.findByName(LEAGUE_OF_LEGEND).get(0);
-        User user = userService.findByName(루트).get(0);
+        Game game = gameService.findByName(LEAGUE_OF_LEGENDS).get(0);
+        User user = userService.findByNickname(루트).get(0);
         List<Tag> tags = Arrays.asList(tagService.findById(실버),
             tagService.findById(_2시간));
 
-        Room room = roomRepository.save(new Room(game, tags));
+        Room room = roomRepository.save(new Room(game, tags, new MaxHeadCount(4)));
 
         room.join(user);
 

@@ -1,9 +1,11 @@
 package gg.babble.babble.controller;
 
+import gg.babble.babble.dto.CreatedRoomResponse;
+import gg.babble.babble.dto.FoundRoomResponse;
 import gg.babble.babble.dto.RoomRequest;
-import gg.babble.babble.dto.RoomResponse;
 import gg.babble.babble.service.RoomService;
 import java.net.URI;
+import javax.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,15 +25,15 @@ public class RoomController {
     }
 
     @PostMapping
-    public ResponseEntity<RoomResponse> createRoom(@RequestBody final RoomRequest roomRequest) {
-        RoomResponse roomResponse = roomService.create(roomRequest);
-        return ResponseEntity.created(URI.create("api/rooms/" + roomResponse.getRoomId()))
-            .body(roomResponse);
+    public ResponseEntity<CreatedRoomResponse> createRoom(@Valid @RequestBody final RoomRequest request) {
+        CreatedRoomResponse response = roomService.create(request);
+        return ResponseEntity.created(URI.create("api/rooms/" + response.getRoomId()))
+            .body(response);
     }
 
     @GetMapping("/{roomId}")
-    public ResponseEntity<RoomResponse> readRoom(@PathVariable final Long roomId) {
-        RoomResponse roomResponse = roomService.findById(roomId);
-        return ResponseEntity.ok(roomResponse);
+    public ResponseEntity<FoundRoomResponse> readRoom(@PathVariable final Long roomId) {
+        FoundRoomResponse response = roomService.findById(roomId);
+        return ResponseEntity.ok(response);
     }
 }

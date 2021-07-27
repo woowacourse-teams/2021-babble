@@ -2,6 +2,7 @@ package gg.babble.babble.controller;
 
 import gg.babble.babble.dto.MessageRequest;
 import gg.babble.babble.service.ChatService;
+import javax.validation.Valid;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -19,7 +20,7 @@ public class ChatController {
     }
 
     @MessageMapping("/rooms/{roomId}/chat")
-    public void chat(@DestinationVariable final Long roomId, final MessageRequest messageRequest) {
+    public void chat(@DestinationVariable final Long roomId, @Valid final MessageRequest messageRequest) {
         template.convertAndSend(String.format("/topic/rooms/%s/chat", roomId),
             chatService.sendChatMessage(messageRequest));
     }
