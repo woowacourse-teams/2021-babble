@@ -31,7 +31,7 @@ public class FoundRoomResponse {
             .build();
     }
 
-    private static List<TagResponse> tagResponses(TagRegistrationsOfRoom tagRegistrations) {
+    private static List<TagResponse> tagResponses(final TagRegistrationsOfRoom tagRegistrations) {
         return tagRegistrations.tagNames()
             .stream()
             .map(TagResponse::new)
