@@ -1,11 +1,12 @@
 @use '../../../style/variables' as v;
 @use '../../../style/mixins' as m;
+@use '../../../style/animations';
 
 .nickname-section-container {
   width: fit-content;
   display: flex;
 
-  & .notice-bubble {
+  .notice-bubble {
     display: inline-block;
     background-color: m.primary(babble-pink);
     border-radius: 0.6rem;
@@ -59,14 +60,5 @@
 
   .caption1 {
     color: m.grey-scale(black);
-  }
-}
-
-@keyframes bounce {
-  from {
-    transform: translate(5%, -120%);
-  }
-  to {
-    transform: translate(5%, -80%);
   }
 }

@@ -9,7 +9,7 @@ import React from 'react';
 const NicknameSection = ({ nickname }) => {
   return (
     <section className='nickname-section-container'>
-      {!nickname && (
+      {nickname && (
         <div className='notice-bubble'>
           <Caption1>닉네임을 변경해주세요!</Caption1>
         </div>
