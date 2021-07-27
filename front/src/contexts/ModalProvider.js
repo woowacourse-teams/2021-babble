@@ -12,8 +12,8 @@ const ModalProvider = ({ children }) => {
   const [isMinimized, setIsMinimized] = useState(false);
   const [modalInner, setModalInner] = useState(null);
 
-  const open = (modalInner, modalType) => {
-    setModalType(modalType);
+  const open = (modalInner, type) => {
+    setModalType(type);
     setIsOpen(true);
     setModalInner(modalInner);
   };
