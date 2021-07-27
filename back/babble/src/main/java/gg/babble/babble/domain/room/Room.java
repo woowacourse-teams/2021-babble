@@ -53,6 +53,10 @@ public class Room {
     @Column(nullable = false)
     private boolean isDeleted;
 
+    public Room(@NonNull final Game game, @NonNull final List<Tag> tags) {
+        this(null, game, tags);
+    }
+
     public Room(final Long id, @NonNull final Game game, @NonNull final List<Tag> tags) {
         validateToConstruct(tags);
         this.id = id;
@@ -60,10 +64,6 @@ public class Room {
         this.users = new RoomUsers();
         this.isDeleted = false;
         this.tagRegistrationsOfRoom = new TagRegistrationsOfRoom(this, tags);
-    }
-
-    public Room(@NonNull final Game game, @NonNull final List<Tag> tags) {
-        this(null, game, tags);
     }
 
     private static void validateToConstruct(final List<Tag> tags) {

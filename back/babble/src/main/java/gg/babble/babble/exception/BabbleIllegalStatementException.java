@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 
 public class BabbleIllegalStatementException extends BabbleException {
 
-    public BabbleIllegalStatementException(String message) {
+    public BabbleIllegalStatementException(final String message) {
         super(message);
     }
 

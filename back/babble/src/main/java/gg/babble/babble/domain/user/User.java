@@ -32,16 +32,16 @@ public class User {
     @JoinColumn(name = "room_id")
     private Room room;
 
-    public User(@NonNull final String name, final Room room) {
-        this(null, name, room);
+    public User(@NonNull final String name) {
+        this(null, name);
     }
 
     public User(final Long id, @NonNull final String name) {
         this(id, name, null);
     }
 
-    public User(@NonNull final String name) {
-        this(null, name);
+    public User(@NonNull final String name, final Room room) {
+        this(null, name, room);
     }
 
     public void join(final Room room) {
