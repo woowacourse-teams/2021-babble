@@ -1,4 +1,4 @@
-import './Modal.scss';
+import './ChattingRoom.scss';
 
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -9,14 +9,14 @@ import LinearLayout from '../../core/Layout/LinearLayout';
 import Participants from '../../chunks/Participants/Participants';
 import PropTypes from 'prop-types';
 import SockJS from 'sockjs-client';
-import SpeechBubble from '../SpeechBubble/SpeechBubble';
-import SpeechBubbleWithAvatar from '../SpeechBubble/SpeechBubbleWithAvatar';
+import SpeechBubble from '../../components/SpeechBubble/SpeechBubble';
+import SpeechBubbleWithAvatar from '../../components/SpeechBubble/SpeechBubbleWithAvatar';
 import { Stomp } from '@stomp/stompjs';
 import Subtitle3 from '../../core/Typography/Subtitle3';
 import TagList from '../../chunks/TagList/TagList';
 import { useModal } from '../../contexts/ModalProvider';
 
-const ModalChattingRoom = ({ tags, participants, roomId, createdAt }) => {
+const ChattingRoom = ({ tags, participants, roomId, createdAt }) => {
   const [chattings, setChattings] = useState([]);
   const stompClient = useRef(null);
   const user_subscription = useRef(null);
@@ -60,12 +60,13 @@ const ModalChattingRoom = ({ tags, participants, roomId, createdAt }) => {
         (message) => {
           const users = JSON.parse(message.body);
           open(
-            <ModalChattingRoom
+            <ChattingRoom
               tags={tags}
               participants={users}
               roomId={roomId}
               createdAt={createdAt}
-            />
+            />,
+            'chatting'
           );
         }
       );
@@ -148,7 +149,7 @@ const ModalChattingRoom = ({ tags, participants, roomId, createdAt }) => {
   );
 };
 
-ModalChattingRoom.propTypes = {
+ChattingRoom.propTypes = {
   tags: PropTypes.arrayOf(PropTypes.string),
   participants: PropTypes.shape({
     host: PropTypes.shape({
@@ -168,4 +169,4 @@ ModalChattingRoom.propTypes = {
   createdAt: PropTypes.string,
 };
 
-export default ModalChattingRoom;
+export default ChattingRoom;

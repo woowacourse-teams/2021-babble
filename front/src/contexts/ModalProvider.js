@@ -7,11 +7,13 @@ import PropTypes from 'prop-types';
 const ModalContext = createContext();
 
 const ModalProvider = ({ children }) => {
+  const [modalType, setModalType] = useState('default');
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [modalInner, setModalInner] = useState(null);
 
-  const open = (modalInner) => {
+  const open = (modalInner, type) => {
+    setModalType(type);
     setIsOpen(true);
     setModalInner(modalInner);
   };
@@ -39,7 +41,7 @@ const ModalProvider = ({ children }) => {
   return (
     <ModalContext.Provider value={{ open, close, minimize }}>
       {children}
-      {isOpen && <Modal>{modalInner}</Modal>}
+      {isOpen && <Modal type={modalType}>{modalInner}</Modal>}
       {isMinimized && <ModalMinimized maximize={maximize} close={close} />}
     </ModalContext.Provider>
   );
