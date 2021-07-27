@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -20,16 +19,13 @@ import lombok.NonNull;
 @Entity
 public class User {
 
+    @NonNull
+    private final String avatar = "URL";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @NonNull
     private String nickname;
-
-    @NonNull
-    private final String avatar = "URL";
-
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Room room;

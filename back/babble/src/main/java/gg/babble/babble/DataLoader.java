@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DataLoader implements CommandLineRunner {
 
     private static final int FIRST_DATA_INDEX = 0;
-    private static final String LEAGUE_OF_LEGEND = "League Of Legend";
+    private static final String LEAGUE_OF_LEGENDS = "League Of Legends";
     private static final String OVERWATCH = "Overwatch";
     private static final String APEX_LEGEND = "Apex Legend";
     private static final String 루트 = "루트";
@@ -59,7 +59,7 @@ public class DataLoader implements CommandLineRunner {
 
 
     private void prepareDummyGames() {
-        gameRepository.save(new Game(LEAGUE_OF_LEGEND));
+        gameRepository.save(new Game(LEAGUE_OF_LEGENDS));
         gameRepository.save(new Game(OVERWATCH));
         gameRepository.save(new Game(APEX_LEGEND));
     }
@@ -80,7 +80,7 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void prepareDummyRoom() {
-        Game game = gameRepository.findByName(LEAGUE_OF_LEGEND).get(FIRST_DATA_INDEX);
+        Game game = gameRepository.findByName(LEAGUE_OF_LEGENDS).get(FIRST_DATA_INDEX);
         User user = userRepository.findByNickname(루트).get(FIRST_DATA_INDEX);
         List<Tag> tags = Arrays
             .asList(tagRepository.findById(실버).orElseThrow(BabbleNotFoundException::new),

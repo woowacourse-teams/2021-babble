@@ -16,10 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gg.babble.babble.ApplicationTest;
-import gg.babble.babble.domain.Game;
-import gg.babble.babble.domain.repository.GameRepository;
 import gg.babble.babble.domain.repository.RoomRepository;
-import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.dto.TagRequest;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -34,6 +31,7 @@ import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -66,30 +64,36 @@ public class RoomAcceptanceTest extends ApplicationTest {
     public void createRoomTest() throws Exception {
         Map<String, Object> body = new HashMap<>();
         body.put("gameId", 1L);
+        body.put("maxHeadCount", 20);
         body.put("tags",
-            Arrays.asList(new TagRequest("실버"), new TagRequest("2시간"), new TagRequest("솔로랭크")));
+            Arrays.asList(new TagRequest("실버"), new TagRequest("2시간"), new TagRequest("솔로랭크"))
+        );
         mockMvc.perform(post("/api/rooms")
             .accept(MediaType.APPLICATION_JSON_VALUE)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .content(objectMapper.writeValueAsString(body)))
+            .content(objectMapper.writeValueAsString(body)).characterEncoding("utf-8"))
+            .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.roomId").exists())
-            .andExpect(jsonPath("$.createdDate").exists())
-            .andExpect(jsonPath("$.game.id").value(1))
-            .andExpect(jsonPath("$.game.name").exists())
+            .andExpect(jsonPath("$.roomId").isNumber())
+            .andExpect(jsonPath("$.createdDate").isString())
+            .andExpect(jsonPath("$.game.id").value(1L))
+            .andExpect(jsonPath("$.game.name").value("League Of Legends"))
             .andExpect(jsonPath("$.tags").isArray())
             .andExpect(jsonPath("$.tags", hasSize(3)))
+            .andExpect(jsonPath("$.maxHeadCount").value(20))
             .andExpect(jsonPath("$.tags[0].name").value("실버"))
             .andExpect(jsonPath("$.tags[1].name").value("2시간"))
             .andExpect(jsonPath("$.tags[2].name").value("솔로랭크"))
 
             .andDo(document("create-room",
                 requestFields(fieldWithPath("gameId").description("게임 Id"),
+                    fieldWithPath("maxHeadCount").description("최대 참가 인원"),
                     fieldWithPath("tags[].name").description("태그 리스트")),
                 responseFields(fieldWithPath("roomId").description("방 Id"),
                     fieldWithPath("createdDate").description("방 생성 시각"),
                     fieldWithPath("game.id").description("게임 Id"),
                     fieldWithPath("game.name").description("게임 이름"),
+                    fieldWithPath("maxHeadCount").description("최대 참가 인원"),
                     fieldWithPath("tags[].name").description("태그 리스트"))));
     }
 
@@ -102,7 +106,7 @@ public class RoomAcceptanceTest extends ApplicationTest {
             .andExpect(jsonPath("$.roomId").value(dummyRoomId))
             .andExpect(jsonPath("$.createdDate").isString())
             .andExpect(jsonPath("$.game.id").value(1L))
-            .andExpect(jsonPath("$.game.name").value("League Of Legend"))
+            .andExpect(jsonPath("$.game.name").value("League Of Legends"))
             .andExpect(jsonPath("$.host.id").isNumber())
             .andExpect(jsonPath("$.host.nickname").isString())
             .andExpect(jsonPath("$.host.avatar").isString())
