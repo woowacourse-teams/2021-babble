@@ -8,6 +8,7 @@ const MainImage = ({
 }) => {
   return (
     <section className='main-image-container'>
+      <div className='gradient' />
       <img className='main-image' src={imageSrc} />
     </section>
   );
