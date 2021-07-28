@@ -37,6 +37,33 @@ public class GameApiDocumentTest extends ApplicationTest {
             .build();
     }
 
+    @DisplayName("게임 리스트 조회")
+    @Test
+    void findAllGames() throws Exception {
+        mockMvc.perform(get("/api/games")
+            .accept(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].id").value(1L))
+            .andExpect(jsonPath("$[0].name").value("League Of Legends"))
+            .andExpect(jsonPath("$[0].headCount").value(1))
+            .andExpect(jsonPath("$[0].thumbnail").value("https://static-cdn.jtvnw.net/ttv-boxart/League%20of%20Legends-1080x1436.jpg"))
+            .andExpect(jsonPath("$[1].id").value(2L))
+            .andExpect(jsonPath("$[1].name").value("Overwatch"))
+            .andExpect(jsonPath("$[1].headCount").value(0))
+            .andExpect(jsonPath("$[1].thumbnail").value("https://static-cdn.jtvnw.net/ttv-static/404_boxart-1080x1436.jpg"))
+            .andExpect(jsonPath("$[2].id").value(3L))
+            .andExpect(jsonPath("$[2].name").value("Apex Legend"))
+            .andExpect(jsonPath("$[2].headCount").value(0))
+            .andExpect(jsonPath("$[2].thumbnail").value("https://static-cdn.jtvnw.net/ttv-static/404_boxart-1080x1436.jpg"))
+
+            .andDo(document("read-games",
+                responseFields(
+                    fieldWithPath("[].id").description("게임 Id"),
+                    fieldWithPath("[].name").description("게임 이름"),
+                    fieldWithPath("[].headCount").description("게임의 참가자 수"),
+                    fieldWithPath("[].thumbnail").description("썸네일"))));
+    }
+
     @DisplayName("단일 게임 이미지 조회")
     @Test
     void findGameImageById() throws Exception {
@@ -47,9 +74,9 @@ public class GameApiDocumentTest extends ApplicationTest {
             .andExpect(jsonPath("$.image").value("https://static-cdn.jtvnw.net/ttv-boxart/League%20of%20Legends-1080x1436.jpg"))
 
             .andDo(document("read-game-image",
-                    responseFields(
-                        fieldWithPath("gameId").description("게임 Id"),
-                        fieldWithPath("image").description("이미지 URL"))));
+                responseFields(
+                    fieldWithPath("gameId").description("게임 Id"),
+                    fieldWithPath("image").description("이미지 URL"))));
     }
 
     @DisplayName("전체 게임 이미지 목록 조회")
