@@ -1,10 +1,12 @@
 import '../global.scss';
 
+import MakeRoom from './pages/MakeRoom/MakeRoom';
 import React from 'react';
-import RoomList from './pages/RoomList/RoomList';
+
+// import RoomList from './pages/RoomList/RoomList';
 
 const App = () => {
-  return <RoomList />;
+  return <MakeRoom />;
 };
 
 export default App;
