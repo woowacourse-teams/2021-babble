@@ -29,7 +29,8 @@
   .buttons {
     display: flex;
     justify-content: center;
-    & > button {
+
+    button {
       margin: 1rem;
     }
   }

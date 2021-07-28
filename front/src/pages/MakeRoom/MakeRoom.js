@@ -3,6 +3,7 @@ import './MakeRoom.scss';
 import Body2 from '../../core/Typography/Body2';
 import DropdownInput from '../../components/SearchInput/DropdownInput';
 import Headline2 from '../../core/Typography/Headline2';
+import { Link } from 'react-router-dom';
 import MainImage from '../../components/MainImage/MainImage';
 import PageLayout from '../../core/Layout/PageLayout';
 import React from 'react';
@@ -33,12 +34,16 @@ const MakeRoom = () => {
           />
         </section>
         <section className='buttons'>
-          <RoundButton size='small'>
-            <Body2>취소하기</Body2>
-          </RoundButton>
-          <RoundButton colored={true} size='small'>
-            <Body2>생성하기</Body2>
-          </RoundButton>
+          <Link to='/'>
+            <RoundButton size='small'>
+              <Body2>취소하기</Body2>
+            </RoundButton>
+          </Link>
+          <Link to='/'>
+            <RoundButton colored={true} size='small' onClick={() => {}}>
+              <Body2>생성하기</Body2>
+            </RoundButton>
+          </Link>
         </section>
       </PageLayout>
     </main>
