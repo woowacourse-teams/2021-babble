@@ -1,8 +1,10 @@
 package gg.babble.babble.service;
 
 import gg.babble.babble.domain.Game;
+import gg.babble.babble.domain.Games;
 import gg.babble.babble.domain.repository.GameRepository;
 import gg.babble.babble.dto.GameImageResponse;
+import gg.babble.babble.dto.IndexPageGameResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,6 +28,13 @@ public class GameService {
 
     public List<Game> findByName(final String name) {
         return gameRepository.findByName(name);
+    }
+
+    public List<IndexPageGameResponse> findSortedGames() {
+        Games games = new Games(gameRepository.findAll());
+        games.sortedByHeadCount();
+
+        return IndexPageGameResponse.listFrom(games);
     }
 
     public GameImageResponse findGameImageById(final Long gameId) {

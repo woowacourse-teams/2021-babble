@@ -1,6 +1,7 @@
 package gg.babble.babble.controller;
 
 import gg.babble.babble.dto.GameImageResponse;
+import gg.babble.babble.dto.IndexPageGameResponse;
 import gg.babble.babble.service.GameService;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,11 @@ public class GameController {
 
     public GameController(final GameService gameService) {
         this.gameService = gameService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<IndexPageGameResponse>> findIndexPageGames() {
+        return ResponseEntity.ok(gameService.findSortedGames());
     }
 
     @GetMapping(value = "/{gameId}/images")
