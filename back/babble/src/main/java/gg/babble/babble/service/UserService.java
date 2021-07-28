@@ -2,6 +2,8 @@ package gg.babble.babble.service;
 
 import gg.babble.babble.domain.repository.UserRepository;
 import gg.babble.babble.domain.user.User;
+import gg.babble.babble.dto.UserRequest;
+import gg.babble.babble.dto.UserResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -24,5 +26,11 @@ public class UserService {
 
     public List<User> findByNickname(final String name) {
         return userRepository.findByNickname(name);
+    }
+
+    @Transactional
+    public UserResponse save(final UserRequest request) {
+        User user = userRepository.save(new User(request.getNickname()));
+        return UserResponse.from(user);
     }
 }

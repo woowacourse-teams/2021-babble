@@ -5,11 +5,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.NonNull;
 
 @Getter
 @AllArgsConstructor
@@ -22,21 +22,21 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
+    @NotNull(message = "게임 이름은 Null 일 수 없습니다.")
     private String name;
 
-    @NonNull
+    @NotNull(message = "게임 이미지는 Null 일 수 없습니다.")
     private String image;
 
-    public Game(@NonNull final String name) {
+    public Game(final String name) {
         this(null, name, DEFAULT_IMAGE);
     }
 
-    public Game(final Long id, @NonNull final String name) {
+    public Game(final Long id, final String name) {
         this(id, name, DEFAULT_IMAGE);
     }
 
-    public Game(@NonNull final String name, @NonNull final String image) {
+    public Game(final String name, final String image) {
         this(null, name, image);
     }
 

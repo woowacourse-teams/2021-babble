@@ -19,10 +19,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -36,7 +36,7 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
+    @NotNull(message = "게임은 Null 이어서는 안됩니다.")
     @ManyToOne
     @JoinColumn(name = "game_id")
     private Game game;
@@ -56,11 +56,11 @@ public class Room {
     @Column(nullable = false)
     private boolean isDeleted;
 
-    public Room(@NonNull final Game game, @NonNull final List<Tag> tags, final MaxHeadCount maxHeadCount) {
+    public Room(final Game game, final List<Tag> tags, final MaxHeadCount maxHeadCount) {
         this(null, game, tags, maxHeadCount);
     }
 
-    public Room(final Long id, @NonNull final Game game, @NonNull final List<Tag> tags, final MaxHeadCount maxHeadCount) {
+    public Room(final Long id, final Game game, final List<Tag> tags, final MaxHeadCount maxHeadCount) {
         validateToConstruct(tags);
         this.id = id;
         this.game = game;
