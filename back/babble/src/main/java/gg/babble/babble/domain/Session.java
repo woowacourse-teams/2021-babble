@@ -11,11 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @EntityListeners(AuditingEntityListener.class)
@@ -29,20 +29,20 @@ public class Session {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
+    @NotNull(message = "세션 Id는 Null 일 수 없습니다.")
     private String sessionId;
 
-    @NonNull
+    @NotNull(message = "방은 Null 일 수 없습니다.")
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Room room;
 
-    @NonNull
+    @NotNull(message = "유저는 Null 일 수 없습니다.")
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Session(@NonNull final String sessionId, @NonNull final Room room, @NonNull final User user) {
+    public Session(final String sessionId, final Room room, final User user) {
         this(null, sessionId, room, user);
     }
 

@@ -33,8 +33,7 @@ public class GameApiDocumentTest extends ApplicationTest {
     public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
             .apply(documentationConfiguration(restDocumentation))
-            .alwaysDo(document("{method-name}", preprocessRequest(prettyPrint()),
-                preprocessResponse(prettyPrint())))
+            .alwaysDo(document("{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())))
             .build();
     }
 
@@ -48,10 +47,9 @@ public class GameApiDocumentTest extends ApplicationTest {
             .andExpect(jsonPath("$.image").value("https://static-cdn.jtvnw.net/ttv-boxart/League%20of%20Legends-1080x1436.jpg"))
 
             .andDo(document("read-game-image",
-                responseFields(fieldWithPath("gameId").description("게임 Id"),
-                    fieldWithPath("image").description("이미지 URL"))
-                )
-            );
+                    responseFields(
+                        fieldWithPath("gameId").description("게임 Id"),
+                        fieldWithPath("image").description("이미지 URL"))));
     }
 
     @DisplayName("전체 게임 이미지 목록 조회")

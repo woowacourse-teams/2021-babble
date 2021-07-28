@@ -9,41 +9,41 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class User {
 
-    // TODO: 기본 경로 프론트에게 받아오기
-    @NonNull
+    @NotNull(message = "아바타는 Null 이어서는 안됩니다.")
     private final String avatar = "https://hyeon9mak.github.io/assets/images/9vatar.png";
+    // TODO: 기본 경로 프론트에게 받아오기
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NonNull
+    @NotNull(message = "닉네임은 Null 이어서는 안됩니다.")
     private String nickname;
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Room room;
 
-    public User(@NonNull final String nickname) {
+    public User(final String nickname) {
         this(null, nickname);
     }
 
-    public User(final Long id, @NonNull final String nickname) {
+    public User(final Long id, final String nickname) {
         this(id, nickname, null);
     }
 
-    public User(@NonNull final String nickname, final Room room) {
+    public User(final String nickname, final Room room) {
         this(null, nickname, room);
     }
 
-    public User(final Long id, @NonNull final String nickname, final Room room) {
+    public User(final Long id, final String nickname, final Room room) {
         this.id = id;
         this.nickname = nickname;
         this.room = room;
