@@ -5,8 +5,8 @@
   display: flex;
   position: relative;
   justify-content: space-between;
-  width: 35rem;
-  padding: 0.8rem 1.6rem 0.8rem 1.4rem;
+  width: 100%;
+  padding: 1rem 1.6rem 1rem 1.4rem;
   border: 2px solid m.grey-scale(5);
   transition: 0.2s linear;
   border-radius: 0.8rem;
@@ -41,7 +41,7 @@
     left: 0;
     margin: 0 auto;
 
-    width: 35rem;
+    width: 100%;
     height: fit-content;
     max-height: 35rem;
     border-radius: 0.6rem;

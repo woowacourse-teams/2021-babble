@@ -1,0 +1,36 @@
+.make-room-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .subtitle1 {
+    margin: 4rem 0;
+  }
+
+  .inputs {
+    & .input-container {
+      margin-bottom: 1rem;
+    }
+
+    margin-bottom: 1rem;
+  }
+
+  .tag-list-section {
+    width: 100%;
+    min-height: 4rem;
+    margin-bottom: 4rem;
+
+    .linear-layout {
+      justify-content: center;
+    }
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: center;
+    & > button {
+      margin: 1rem;
+    }
+  }
+}

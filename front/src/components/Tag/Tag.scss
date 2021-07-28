@@ -17,7 +17,11 @@
 .erasable {
   padding: 0.4rem 0.8rem 0.4rem 1.2rem;
 
-  button:hover {
-    color: m.primary(babble-pink);
+  button {
+    margin-left: 0.6rem;
+
+    :hover {
+      color: m.primary(babble-pink);
+    }
   }
 }
