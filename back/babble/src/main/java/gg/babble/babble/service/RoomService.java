@@ -46,6 +46,10 @@ public class RoomService {
         return FoundRoomResponse.from(findRoomOrElseThrow(id));
     }
 
+    public List<FoundRoomResponse> findGamesByGameId(final int gameId, final List<Long> tagIds, final int page) {
+
+    }
+
     private Room findRoomOrElseThrow(final Long id) {
         return roomRepository.findById(id)
             .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 방 Id 입니다."));

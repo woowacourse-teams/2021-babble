@@ -9,7 +9,6 @@ import gg.babble.babble.domain.room.MaxHeadCount;
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
-import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.boot.CommandLineRunner;
@@ -71,6 +70,26 @@ public class DataLoader implements CommandLineRunner {
         userRepository.save(new User(포츈));
         userRepository.save(new User(그루밍));
         userRepository.save(new User(피터));
+        userRepository.save(new User("0"));
+        userRepository.save(new User("1"));
+        userRepository.save(new User("2"));
+        userRepository.save(new User("3"));
+        userRepository.save(new User("4"));
+        userRepository.save(new User("5"));
+        userRepository.save(new User("6"));
+        userRepository.save(new User("7"));
+        userRepository.save(new User("8"));
+        userRepository.save(new User("9"));
+        userRepository.save(new User("10"));
+        userRepository.save(new User("11"));
+        userRepository.save(new User("12"));
+        userRepository.save(new User("13"));
+        userRepository.save(new User("14"));
+        userRepository.save(new User("15"));
+        userRepository.save(new User("16"));
+        userRepository.save(new User("17"));
+        userRepository.save(new User("18"));
+        userRepository.save(new User("19"));
     }
 
     private void prepareDummyTags() {
@@ -80,8 +99,15 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void prepareDummyRoom() {
+        for (int i = 0; i < 20; i++) {
+            Room room = createAndJoinRoom(i);
+            roomRepository.save(room);
+        }
+    }
+
+    private Room createAndJoinRoom(int index) {
         Game game = gameRepository.findByName(LEAGUE_OF_LEGENDS).get(FIRST_DATA_INDEX);
-        User user = userRepository.findByNickname(루트).get(FIRST_DATA_INDEX);
+        User user = userRepository.findByNickname(Integer.toString(index)).get(FIRST_DATA_INDEX);
         List<Tag> tags = Arrays
             .asList(tagRepository.findByName(실버).get(0),
                 tagRepository.findByName(_2시간).get(0));
@@ -89,6 +115,6 @@ public class DataLoader implements CommandLineRunner {
         Room room = new Room(game, tags, new MaxHeadCount(4));
 
         room.join(user);
-        roomRepository.save(room);
+        return room;
     }
 }

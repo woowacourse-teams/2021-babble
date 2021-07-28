@@ -72,4 +72,68 @@ class RoomServiceTest extends ApplicationTest {
         assertThatThrownBy(() -> roomService.findById(Long.MAX_VALUE))
             .isInstanceOf(BabbleNotFoundException.class);
     }
+
+    @DisplayName("요청한 gameId에 해당되는 방 정보들을 반환한다.")
+    @Test
+    void findRoomsByGameIdTest() {
+        // given
+        int gameId = 1;
+        // 이런거 테스트 충족을 위해서 데이터로더가 아니고 독립적인 테스트 단위로 데이터를 채워넣어야한다고 생각되긴 함..
+        int countOfOnePage = 16;
+
+        // when
+        List<FoundRoomResponse> roomResponses = roomService.findGamesByGameId(gameId);
+
+        // then
+        assertThat(roomResponses).hasSize(countOfOnePage);
+    }
+
+    @DisplayName("요청한 gameId와 page에 해당되는 방 정보들을 반환한다.")
+    @Test
+    void findRoomsByGameIdAndPageTest() {
+        // given
+        int gameId = 1;
+        int page = 1;
+        // 이런거 테스트 충족을 위해서 데이터로더가 아니고 독립적인 테스트 단위로 데이터를 채워넣어야한다고 생각되긴 함..
+        int countOfOnePage = 16;
+
+        // when
+        List<FoundRoomResponse> roomResponses = roomService.findGamesByGameId(gameId, page);
+
+        // then
+        assertThat(roomResponses).hasSize(countOfOnePage);
+    }
+
+    @DisplayName("요청한 gameId와 tags에 해당되는 방 정보들을 반환한다.")
+    @Test
+    void findRoomsByGameIdAndTagsTest() {
+        // given
+        int gameId = 1;
+        List<Long> tagIds = Arrays.asList(1L, 2L, 3L);
+        // 이런거 테스트 충족을 위해서 데이터로더가 아니고 독립적인 테스트 단위로 데이터를 채워넣어야한다고 생각되긴 함..
+        int countOfOnePage = 16;
+
+        // when
+        List<FoundRoomResponse> roomResponses = roomService.findGamesByGameId(gameId, tagIds);
+
+        // then
+        assertThat(roomResponses).hasSize(countOfOnePage);
+    }
+
+    @DisplayName("요청한 gameId와 page, tags에 해당되는 방 정보들을 반환한다.")
+    @Test
+    void findRoomsByGameIdAndTagsTest() {
+        // given
+        int gameId = 1;
+        int page = 1;
+        List<Long> tagIds = Arrays.asList(1L, 2L, 3L);
+        // 이런거 테스트 충족을 위해서 데이터로더가 아니고 독립적인 테스트 단위로 데이터를 채워넣어야한다고 생각되긴 함..
+        int countOfOnePage = 16;
+
+        // when
+        List<FoundRoomResponse> roomResponses = roomService.findGamesByGameId(gameId, tagIds, page);
+
+        // then
+        assertThat(roomResponses).hasSize(countOfOnePage);
+    }
 }
