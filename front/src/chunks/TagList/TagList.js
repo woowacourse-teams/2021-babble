@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import Tag from '../../components/Tag/Tag';
 import TagErasable from '../../components/Tag/TagErasable';
 
-const TagList = ({ tags, tagType = 'default', useWheel = false }) => {
+const TagList = ({ tags, erasable = false, useWheel = false }) => {
   const tagListRef = useRef();
 
   const onWheel = (e) => {
@@ -26,16 +26,16 @@ const TagList = ({ tags, tagType = 'default', useWheel = false }) => {
       ref={tagListRef}
     >
       <LinearLayout direction='row'>
-        {tagType === 'default'
+        {erasable
           ? tags.map((tag, index) => (
-              <Tag key={index}>
-                <Caption1>{tag.name}</Caption1>
-              </Tag>
-            ))
-          : tags.map((tag, index) => (
               <TagErasable key={index}>
                 <Caption1>{tag.name}</Caption1>
               </TagErasable>
+            ))
+          : tags.map((tag, index) => (
+              <Tag key={index}>
+                <Caption1>{tag.name}</Caption1>
+              </Tag>
             ))}
       </LinearLayout>
     </div>
@@ -43,8 +43,8 @@ const TagList = ({ tags, tagType = 'default', useWheel = false }) => {
 };
 
 TagList.propTypes = {
-  tags: PropTypes.arrayOf(PropTypes.string),
-  tagType: PropTypes.oneOf(['default', 'erasable']),
+  tags: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string })),
+  erasable: PropTypes.bool,
   useWheel: PropTypes.bool,
 };
 
