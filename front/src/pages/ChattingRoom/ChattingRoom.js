@@ -111,7 +111,7 @@ const ChattingRoom = ({ tags, participants, roomId, createdAt }) => {
         <LinearLayout direction='row'>
           <LinearLayout direction='row'>
             <Subtitle3>태그</Subtitle3>
-            <TagList tags={tags} />
+            <TagList tags={tags} useWheel={true} />
           </LinearLayout>
           <LinearLayout direction='row'>
             <button className='room-minimize' onClick={onMinimize}>
