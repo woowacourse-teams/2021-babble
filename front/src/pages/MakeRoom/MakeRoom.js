@@ -5,6 +5,7 @@ import DropdownInput from '../../components/SearchInput/DropdownInput';
 import Headline2 from '../../core/Typography/Headline2';
 import { Link } from 'react-router-dom';
 import MainImage from '../../components/MainImage/MainImage';
+import PATH from '../../constants/path';
 import PageLayout from '../../core/Layout/PageLayout';
 import React from 'react';
 import RoundButton from '../../components/Button/RoundButton';
@@ -34,12 +35,12 @@ const MakeRoom = () => {
           />
         </section>
         <section className='buttons'>
-          <Link to='/'>
+          <Link to={PATH.HOME}>
             <RoundButton size='small'>
               <Body2>취소하기</Body2>
             </RoundButton>
           </Link>
-          <Link to='/'>
+          <Link to={PATH.HOME}>
             <RoundButton colored={true} size='small' onClick={() => {}}>
               <Body2>생성하기</Body2>
             </RoundButton>

@@ -1,15 +1,18 @@
 import './RoomList.scss';
 
+import React, { useEffect, useState } from 'react';
+
 import Body1 from '../../core/Typography/Body1';
 import Body2 from '../../core/Typography/Body2';
 import ChattingRoom from '../ChattingRoom/ChattingRoom';
 import Headline2 from '../../core/Typography/Headline2';
 import { Link } from 'react-router-dom';
+import { MODAL_TYPE_CHATTING } from '../../constants/chat';
 import MainImage from '../../components/MainImage/MainImage';
 import NicknameSection from '../../components/NicknameSection/NicknameSection';
+import PATH from '../../constants/path';
 import PageLayout from '../../core/Layout/PageLayout';
 import PropTypes from 'prop-types';
-import React from 'react';
 import Room from '../../components/Room/Room';
 import SearchInput from '../../components/SearchInput/SearchInput';
 import SquareButton from '../../components/Button/SquareButton';
@@ -20,57 +23,21 @@ import { useModal } from '../../contexts/ModalProvider';
 const RoomList = ({
   mainImage = 'https://images.igdb.com/igdb/image/upload/t_1080p/co254s.jpg',
 }) => {
+  const [roomList, setRoomList] = useState([]);
   const { open } = useModal();
-  const roomList = [
-    {
-      roomId: 1,
-      createdDate: '2021-07-05T00:00:00.000Z',
-      game: {
-        id: 10,
-        name: 'Apex Legend',
-      },
-      host: {
-        id: 1234,
-        name: 'wilder',
-      },
-      headCount: {
-        current: 3,
-        max: 20,
-      },
-      tags: [
-        {
-          name: '2시간',
-        },
-        {
-          name: '실버',
-        },
-      ],
-    },
-    {
-      roomId: 2,
-      createdDate: '2021-07-05T00:00:00.000Z',
-      game: {
-        id: 11,
-        name: 'Apex Legend',
-      },
-      host: {
-        id: 1111,
-        name: 'hyun9macasdfasdfasdfasdkasdfasdfck',
-      },
-      headCount: {
-        current: 1,
-        max: 10,
-      },
-      tags: [
-        {
-          name: '2시간',
-        },
-        {
-          name: '실버',
-        },
-      ],
-    },
-  ];
+
+  const getRooms = async () => {
+    const response = await axios.get('https://babble.o-r.kr/api/rooms', {
+      params: { gameId: 1, tagId: 1, page: 1 },
+    });
+    const rooms = await response.json();
+
+    setRoomList(rooms);
+  };
+
+  useEffect(() => {
+    getRooms();
+  }, []);
 
   // const createChatting = async () => {
   //   try {
@@ -108,7 +75,7 @@ const RoomList = ({
           roomId={roomId}
           createdAt={createdDate}
         />,
-        'chatting'
+        MODAL_TYPE_CHATTING
       );
     } catch (error) {
       alert('방이 존재하지 않습니다.');
@@ -124,7 +91,7 @@ const RoomList = ({
           <Headline2>{'League of Legends'}</Headline2>
           <div className='side'>
             <NicknameSection nickname={'wilder'} />
-            <Link to='/make-room'>
+            <Link to={PATH.MAKE_ROOM}>
               <SquareButton size='medium' colored>
                 <Body2>방 생성하기</Body2>
               </SquareButton>

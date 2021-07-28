@@ -5,6 +5,7 @@ import React, { useRef } from 'react';
 import Caption1 from '../../core/Typography/Caption1';
 import LinearLayout from '../../core/Layout/LinearLayout';
 import PropTypes from 'prop-types';
+import { SCROLL } from '../../constants/event';
 import Tag from '../../components/Tag/Tag';
 import TagErasable from '../../components/Tag/TagErasable';
 
@@ -12,16 +13,16 @@ const TagList = ({ tags, erasable = false, useWheel = false }) => {
   const tagListRef = useRef();
 
   const onWheel = (e) => {
-    if (e.deltaY > 0) {
-      tagListRef.current.scrollLeft += 20;
+    if (e.deltaY > SCROLL.NEUTRAL) {
+      tagListRef.current.scrollLeft += SCROLL.STEP;
     } else {
-      tagListRef.current.scrollLeft -= 20;
+      tagListRef.current.scrollLeft -= SCROLL.STEP;
     }
   };
 
   return (
     <div
-      className={`${useWheel ? '' : 'default'} tag-list-container`}
+      className={`${useWheel ? '' : SCROLL.BLOCKED} tag-list-container`}
       onWheel={useWheel ? onWheel : null}
       ref={tagListRef}
     >

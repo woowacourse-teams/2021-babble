@@ -1,5 +1,10 @@
 import './ChattingRoom.scss';
 
+import {
+  MODAL_TYPE_CHATTING,
+  SESSION_ID_LENGTH,
+  SOCKET_URL_DIVIDER,
+} from '../../constants/chat';
 import React, { useEffect, useRef, useState } from 'react';
 
 import Chatbox from '../../chunks/Chatbox/Chatbox';
@@ -51,8 +56,8 @@ const ChattingRoom = ({ tags, participants, roomId, createdAt }) => {
     stompClient.current.connect({}, () => {
       const socketURL = socket._transport.url;
       const sessionId = socketURL.substring(
-        socketURL.lastIndexOf('/') - 8,
-        socketURL.lastIndexOf('/')
+        socketURL.lastIndexOf(SOCKET_URL_DIVIDER) - SESSION_ID_LENGTH,
+        socketURL.lastIndexOf(SOCKET_URL_DIVIDER)
       );
 
       user_subscription.current = stompClient.current.subscribe(
@@ -66,7 +71,7 @@ const ChattingRoom = ({ tags, participants, roomId, createdAt }) => {
               roomId={roomId}
               createdAt={createdAt}
             />,
-            'chatting'
+            MODAL_TYPE_CHATTING
           );
         }
       );
