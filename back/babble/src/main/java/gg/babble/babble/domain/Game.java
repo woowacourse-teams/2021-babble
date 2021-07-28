@@ -1,6 +1,8 @@
 package gg.babble.babble.domain;
 
+import gg.babble.babble.domain.room.Rooms;
 import java.util.Objects;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,6 +30,9 @@ public class Game {
     @NotNull(message = "게임 이미지는 Null 일 수 없습니다.")
     private String image;
 
+    @Embedded
+    private final Rooms rooms = new Rooms();
+
     public Game(final String name) {
         this(null, name, DEFAULT_IMAGE);
     }
@@ -38,6 +43,10 @@ public class Game {
 
     public Game(final String name, final String image) {
         this(null, name, image);
+    }
+
+    public int userHeadCount() {
+        return rooms.totalHeadCount();
     }
 
     @Override
