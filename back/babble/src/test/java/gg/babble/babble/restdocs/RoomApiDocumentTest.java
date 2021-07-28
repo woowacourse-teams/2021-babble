@@ -51,8 +51,7 @@ public class RoomApiDocumentTest extends ApplicationTest {
     public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
             .apply(documentationConfiguration(restDocumentation))
-            .alwaysDo(document("{method-name}", preprocessRequest(prettyPrint()),
-                preprocessResponse(prettyPrint())))
+            .alwaysDo(document("{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())))
             .build();
 
         dummyRoomId = roomRepository.findAll().get(0).getId();
