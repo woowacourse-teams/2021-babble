@@ -18,7 +18,6 @@ import java.util.concurrent.TimeoutException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompFrameHandler;
 import org.springframework.messaging.simp.stomp.StompHeaders;
@@ -32,17 +31,15 @@ import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 
 public class WebSocketRoomUpdateTest extends AcceptanceTest {
 
-    @Value("${local.server.port}")
-    private int port;
-    private String URL;
-
     private static final String SUBSCRIBE_ROOM_UPDATE_BROAD_ENDPOINT = "/topic/rooms/1/users";
     private static final String SEND_ROOM_UPDATE_ENDPOINT = "/ws/rooms/1/users";
 
+    private String URL;
     private CompletableFuture<UserListUpdateResponse> completableFuture;
 
     @BeforeEach
     public void setup() {
+        super.setUp();
         completableFuture = new CompletableFuture<>();
         URL = "ws://localhost:" + port + "/connection";
     }
@@ -83,7 +80,7 @@ public class WebSocketRoomUpdateTest extends AcceptanceTest {
         return transports;
     }
 
-    private void sendJoinMessage(StompSession stompSession, UserJoinRequest userJoinRequest) throws JsonProcessingException {
+    private void sendJoinMessage(StompSession stompSession, UserJoinRequest userJoinRequest) {
         stompSession.send(SEND_ROOM_UPDATE_ENDPOINT, userJoinRequest);
     }
 
