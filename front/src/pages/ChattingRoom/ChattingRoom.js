@@ -45,7 +45,7 @@ const ChattingRoom = ({ tags, participants, roomId, createdAt }) => {
 
   useEffect(() => {
     // 웹소켓 연결, 웹소켓으로 subscribe해서 방 참가자 정보 불러오기
-    const socket = new SockJS('https://babble-test.o-r.kr/connection');
+    const socket = new SockJS('https://babble.o-r.kr/connection');
     stompClient.current = Stomp.over(socket);
 
     stompClient.current.connect({}, () => {
@@ -111,7 +111,7 @@ const ChattingRoom = ({ tags, participants, roomId, createdAt }) => {
         <LinearLayout direction='row'>
           <LinearLayout direction='row'>
             <Subtitle3>태그</Subtitle3>
-            <TagList tags={tags} />
+            <TagList tags={tags} useWheel={true} />
           </LinearLayout>
           <LinearLayout direction='row'>
             <button className='room-minimize' onClick={onMinimize}>

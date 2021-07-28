@@ -5,6 +5,7 @@
 .nickname-section-container {
   width: fit-content;
   display: flex;
+  position: relative;
 
   .notice-bubble {
     display: inline-block;
@@ -16,8 +17,8 @@
     padding: 0.6rem 1.2rem;
 
     position: absolute;
-    top: 0;
-    left: 0;
+    top: -14px;
+    left: -8px;
 
     animation: 0.8s cubic-bezier(0.65, 0.04, 0.87, 0.24) 1s infinite alternate
       bounce;
@@ -36,10 +37,10 @@
 
       position: absolute;
       bottom: -24%;
-      left: 15%;
+      left: 12%;
     }
 
-    .caption1 {
+    .caption2 {
       color: m.grey-scale(white);
     }
   }

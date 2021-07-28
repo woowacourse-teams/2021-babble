@@ -6,14 +6,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import TagList from '../../chunks/TagList/TagList';
 
-const Room = ({
-  roomId,
-  imageSrc,
-  nickname,
-  headCount,
-  totalHeadCount,
-  tags,
-}) => {
+const Room = ({ imageSrc, room }) => {
+  const { roomId, host, headCount, tags } = room;
+  const { current, max } = headCount;
+
   return (
     <section className='room-container'>
       <section className='information'>
@@ -23,14 +19,14 @@ const Room = ({
           </div>
           <div className='avatar'>
             <Avatar size='small' imageSrc={imageSrc} direction='row'>
-              <Body2>{nickname}</Body2>
+              <Body2>{host.name}</Body2>
             </Avatar>
           </div>
           <TagList tags={tags} />
         </div>
         <div className='headcount-container'>
           <Body2>
-            <strong>{headCount}</strong> / {totalHeadCount}
+            <strong>{current}</strong> / {max}
           </Body2>
         </div>
       </section>
@@ -39,12 +35,23 @@ const Room = ({
 };
 
 Room.propTypes = {
-  roomId: PropTypes.number,
   imageSrc: PropTypes.string,
-  nickname: PropTypes.string,
-  headCount: PropTypes.number,
-  totalHeadCount: PropTypes.number,
-  tags: PropTypes.arrayOf(PropTypes.string),
+  room: PropTypes.shape({
+    roomId: PropTypes.number,
+    host: PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string,
+    }),
+    headCount: PropTypes.shape({
+      current: PropTypes.number,
+      max: PropTypes.number,
+    }),
+    tags: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      })
+    ),
+  }),
 };
 
 export default Room;
