@@ -1,0 +1,16 @@
+.page-layout {
+  display: flex;
+  justify-content: center;
+
+  &.default {
+    width: 92.66664rem;
+  }
+
+  &.narrow {
+    width: 49.33332rem;
+  }
+
+  &.column {
+    flex-direction: column;
+  }
+}
