@@ -49,8 +49,8 @@ public class RoomRepositoryTest extends ApplicationTest {
     private Room saveRoom() {
         Game game = gameService.findByName(LEAGUE_OF_LEGENDS).get(0);
         User user = userService.findByNickname(루트).get(0);
-        List<Tag> tags = Arrays.asList(tagService.findById(실버),
-            tagService.findById(_2시간));
+        List<Tag> tags = Arrays.asList(tagService.findByName(실버).get(0),
+            tagService.findByName(_2시간).get(0));
 
         Room room = roomRepository.save(new Room(game, tags, new MaxHeadCount(4)));
 

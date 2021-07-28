@@ -47,12 +47,17 @@ public class TagApiDocumentTest extends AcceptanceTest {
             .andExpect(jsonPath("$").exists())
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$", hasSize(3)))
-            .andExpect(jsonPath("$.[0].name").value("2시간"))
-            .andExpect(jsonPath("$.[1].name").value("솔로랭크"))
-            .andExpect(jsonPath("$.[2].name").value("실버"))
+            .andExpect(jsonPath("$.[0].id").value(1L))
+            .andExpect(jsonPath("$.[0].name").value("실버"))
+            .andExpect(jsonPath("$.[1].id").value(2L))
+            .andExpect(jsonPath("$.[1].name").value("2시간"))
+            .andExpect(jsonPath("$.[2].id").value(3L))
+            .andExpect(jsonPath("$.[2].name").value("솔로랭크"))
+
 
             .andDo(document("tags-get",
                 responseFields(
+                    fieldWithPath("[].id").description("태그 Id"),
                     fieldWithPath("[].name").description("태그 이름"))));
     }
 }

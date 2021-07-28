@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TagRequest {
 
-    @NotNull(message = "태그 이름은 Null 일 수 없습니다.")
-    private String name;
+    @NotNull(message = "태그 Id는 Null 일 수 없습니다.")
+    private Long id;
 }

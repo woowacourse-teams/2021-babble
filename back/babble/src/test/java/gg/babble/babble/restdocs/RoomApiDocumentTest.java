@@ -64,7 +64,7 @@ public class RoomApiDocumentTest extends ApplicationTest {
         body.put("gameId", 1L);
         body.put("maxHeadCount", 20);
         body.put("tags",
-            Arrays.asList(new TagRequest("실버"), new TagRequest("2시간"), new TagRequest("솔로랭크"))
+            Arrays.asList(new TagRequest(1L), new TagRequest(2L), new TagRequest(3L))
         );
         mockMvc.perform(post("/api/rooms")
             .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -79,19 +79,23 @@ public class RoomApiDocumentTest extends ApplicationTest {
             .andExpect(jsonPath("$.tags").isArray())
             .andExpect(jsonPath("$.tags", hasSize(3)))
             .andExpect(jsonPath("$.maxHeadCount").value(20))
+            .andExpect(jsonPath("$.tags[0].id").value(1L))
             .andExpect(jsonPath("$.tags[0].name").value("실버"))
+            .andExpect(jsonPath("$.tags[1].id").value(2L))
             .andExpect(jsonPath("$.tags[1].name").value("2시간"))
+            .andExpect(jsonPath("$.tags[2].id").value(3L))
             .andExpect(jsonPath("$.tags[2].name").value("솔로랭크"))
 
             .andDo(document("create-room",
                 requestFields(fieldWithPath("gameId").description("게임 Id"),
                     fieldWithPath("maxHeadCount").description("최대 참가 인원"),
-                    fieldWithPath("tags[].name").description("태그 리스트")),
+                    fieldWithPath("tags[].id").description("태그 Id")),
                 responseFields(fieldWithPath("roomId").description("방 Id"),
                     fieldWithPath("createdDate").description("방 생성 시각"),
                     fieldWithPath("game.id").description("게임 Id"),
                     fieldWithPath("game.name").description("게임 이름"),
                     fieldWithPath("maxHeadCount").description("최대 참가 인원"),
+                    fieldWithPath("tags[].id").description("태그 Id"),
                     fieldWithPath("tags[].name").description("태그 리스트"))));
     }
 
@@ -112,7 +116,9 @@ public class RoomApiDocumentTest extends ApplicationTest {
             .andExpect(jsonPath("$.headCount.max").isNumber())
             .andExpect(jsonPath("$.tags").isArray())
             .andExpect(jsonPath("$.tags", hasSize(2)))
+            .andExpect(jsonPath("$.tags[0].id").value(1L))
             .andExpect(jsonPath("$.tags[0].name").value("실버"))
+            .andExpect(jsonPath("$.tags[1].id").value(2L))
             .andExpect(jsonPath("$.tags[1].name").value("2시간"))
 
             .andDo(document("read-room",
@@ -125,6 +131,7 @@ public class RoomApiDocumentTest extends ApplicationTest {
                     fieldWithPath("host.avatar").description("호스트 아바타"),
                     fieldWithPath("headCount.current").description("현재 참가 인원"),
                     fieldWithPath("headCount.max").description("최대 참가 인원"),
-                    fieldWithPath("tags[].name").description("태그 리스트"))));
+                    fieldWithPath("tags[].id").description("태그 Id"),
+                    fieldWithPath("tags[].name").description("태그 이름"))));
     }
 }

@@ -8,6 +8,7 @@ import gg.babble.babble.dto.TagResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class TagServiceTest extends ApplicationTest {
     @DisplayName("존재하지 않는 태그면 예외 처리한다.")
     @Test
     void tagNotFoundTest() {
-        assertThatThrownBy(() -> tagService.findById("쏙옙뷁훑"))
+        assertThatThrownBy(() -> tagService.findById(Long.MAX_VALUE))
             .isInstanceOf(BabbleNotFoundException.class);
     }
 
@@ -50,14 +51,13 @@ public class TagServiceTest extends ApplicationTest {
     void getAllTags() {
 
         // given
-        List<TagResponse> expectedTags = Arrays.asList(
-            new TagResponse("2시간"),
-            new TagResponse("솔로랭크"),
-            new TagResponse("실버")
-        );
+        List<String> expectedTags = Arrays.asList("실버", "2시간", "솔로랭크");
 
         // when
-        List<TagResponse> allTags = tagService.getAllTags();
+        List<String> allTags = tagService.getAllTags()
+            .stream()
+            .map(TagResponse::getName)
+            .collect(Collectors.toList());
 
         // then
         assertThat(expectedTags).usingRecursiveComparison().isEqualTo(allTags);

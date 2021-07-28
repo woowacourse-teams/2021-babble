@@ -26,9 +26,9 @@ public class TagRegistrationsOfRoom {
             .collect(Collectors.toList());
     }
 
-    public List<String> tagNames() {
+    public List<Tag> tags() {
         return tagRegistrations.stream()
-            .map(tagRegistration -> tagRegistration.getTag().getName())
+            .map(TagRegistration::getTag)
             .collect(Collectors.toList());
     }
 }
