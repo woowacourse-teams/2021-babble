@@ -37,29 +37,6 @@ public class RoomRepositoryTest extends ApplicationTest {
     @Autowired
     private TagService tagService;
 
-    @DisplayName("방 더미 데이터를 확인한다.")
-    @Test
-    void dummyGameTest() {
-        Room room = roomRepository.findAll().get(0);
-
-        Game expectedGame = new Game(LEAGUE_OF_LEGENDS, "https://static-cdn.jtvnw.net/ttv-boxart/League%20of%20Legends-1080x1436.jpg");
-        User expectedHost = new User(루트, room);
-
-        List<String> expectedTags = Arrays.asList(실버, _2시간);
-
-        assertThat(room.getCreatedDate()).isNotNull();
-        assertThat(room.getGame()).usingRecursiveComparison()
-            .ignoringFields("id")
-            .isEqualTo(expectedGame);
-        assertThat(room.getHost()).usingRecursiveComparison()
-            .ignoringFields("id")
-            .isEqualTo(expectedHost);
-        assertThat(room.getTagRegistrationsOfRoom().tagNames())
-            .usingRecursiveComparison()
-            .ignoringFields("tagRegistrations")
-            .isEqualTo(expectedTags);
-    }
-
     @DisplayName("생성한 방을 저장한다.")
     @Test
     void saveTest() {
