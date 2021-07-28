@@ -14,7 +14,7 @@
   flex-direction: column;
   align-items: center;
   box-shadow: v.$box-shadow;
-  animation: scaleUp 150ms ease-in;
+  animation: scaleUp 150ms cubic-bezier(0.15, 0.91, 0.15, 0.9);
 
   .control-bar {
     position: absolute;

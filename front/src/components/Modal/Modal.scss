@@ -31,7 +31,8 @@
     border: 1px solid m.grey-scale(8);
     border-radius: m.border-radius(modal);
     box-shadow: v.$box-shadow;
-    transition: transform 200ms ease-in;
+    animation: maximize 300ms cubic-bezier(0.92, -0.03, 0.15, 0.96),
+      blurUp 200ms cubic-bezier(0.14, 0.93, 0.19, 1);
 
     & > section {
       width: 100%;
@@ -47,6 +48,8 @@
   right: 2rem;
   bottom: -0.5rem;
   cursor: pointer;
+  animation: minimize 300ms cubic-bezier(0.92, -0.03, 0.15, 0.96),
+    blurUp 200ms cubic-bezier(0.14, 0.93, 0.19, 1);
 
   background: linear-gradient(
     60deg,
