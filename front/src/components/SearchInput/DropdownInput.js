@@ -32,11 +32,6 @@ const DropdownInput = ({
     dropdownRef.current.classList.remove('show');
   };
 
-  const onClickArrowDown = () => {
-    containerRef.current.classList.toggle('focused');
-    dropdownRef.current.classList.toggle('show');
-  };
-
   useEffect(() => {
     setDropdownList(dropdownKeywords);
   }, []);
@@ -52,7 +47,7 @@ const DropdownInput = ({
         ref={inputRef}
         readOnly
       />
-      <IoCaretDown size='20px' onClick={onClickArrowDown} />
+      <IoCaretDown size='20px' />
       <ul className='keyword-list-container' ref={dropdownRef}>
         {dropdownList.length ? (
           dropdownList.map((dropdownItem, index) => (
