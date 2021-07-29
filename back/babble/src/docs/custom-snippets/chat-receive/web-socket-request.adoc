@@ -1,0 +1,4 @@
+[source,http,options="nowrap"]
+----
+GET /topic/rooms/1/chat HTTP/1.1
+----

@@ -51,7 +51,8 @@ class RoomServiceTest extends ApplicationTest {
     private CreatedRoomResponse savedRoom;
 
     @BeforeEach
-    void setUp() {
+    protected void setUp() {
+        super.setUp();
         savedRoom = roomService.create(
             new RoomRequest(1L,
                 Arrays.asList(
