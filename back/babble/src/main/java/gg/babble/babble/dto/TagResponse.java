@@ -10,9 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TagResponse {
 
+    private Long id;
     private String name;
 
     public static TagResponse from(final Tag tag) {
-        return new TagResponse(tag.getName());
+        return new TagResponse(tag.getId(), tag.getName());
     }
 }

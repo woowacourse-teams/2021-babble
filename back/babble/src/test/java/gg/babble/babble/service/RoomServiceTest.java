@@ -45,8 +45,8 @@ class RoomServiceTest extends ApplicationTest {
 
         Game game = gameService.findByName(LEAGUE_OF_LEGENDS).get(0);
         User user = userService.findByNickname(루트).get(0);
-        List<Tag> tags = Arrays.asList(tagService.findById(실버),
-            tagService.findById(_2시간));
+        List<Tag> tags = Arrays.asList(tagService.findByName(실버).get(0),
+            tagService.findByName(_2시간).get(0));
         FoundRoomResponse expected = FoundRoomResponse.builder()
             .roomId(1L)
             .game(new GameResponse(game.getId(), game.getName()))
@@ -62,7 +62,7 @@ class RoomServiceTest extends ApplicationTest {
 
     private List<TagResponse> tagResponsesFromTags(final List<Tag> tags) {
         return tags.stream()
-            .map(tag -> new TagResponse(tag.getName()))
+            .map(TagResponse::from)
             .collect(Collectors.toList());
     }
 

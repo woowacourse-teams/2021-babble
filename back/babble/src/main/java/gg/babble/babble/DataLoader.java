@@ -83,8 +83,8 @@ public class DataLoader implements CommandLineRunner {
         Game game = gameRepository.findByName(LEAGUE_OF_LEGENDS).get(FIRST_DATA_INDEX);
         User user = userRepository.findByNickname(루트).get(FIRST_DATA_INDEX);
         List<Tag> tags = Arrays
-            .asList(tagRepository.findById(실버).orElseThrow(BabbleNotFoundException::new),
-                tagRepository.findById(_2시간).orElseThrow(BabbleNotFoundException::new));
+            .asList(tagRepository.findByName(실버).get(0),
+                tagRepository.findByName(_2시간).get(0));
 
         Room room = new Room(game, tags, new MaxHeadCount(4));
 

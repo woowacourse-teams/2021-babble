@@ -20,14 +20,18 @@ public class TagService {
         this.tagRepository = tagRepository;
     }
 
-    public Tag findById(final String name) {
-        return tagRepository.findById(name)
+    public Tag findById(final Long id) {
+        return tagRepository.findById(id)
             .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 태그입니다."));
+    }
+
+    public List<Tag> findByName(final String name) {
+        return tagRepository.findByName(name);
     }
 
     public List<Tag> findById(final List<TagRequest> tagRequests) {
         return tagRequests.stream()
-            .map(tagRequest -> findById(tagRequest.getName()))
+            .map(tagRequest -> findById(tagRequest.getId()))
             .collect(Collectors.toList());
     }
 

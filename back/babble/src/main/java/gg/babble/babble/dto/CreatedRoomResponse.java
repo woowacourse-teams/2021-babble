@@ -30,9 +30,9 @@ public class CreatedRoomResponse {
     }
 
     private static List<TagResponse> tagResponses(TagRegistrationsOfRoom tagRegistrations) {
-        return tagRegistrations.tagNames()
+        return tagRegistrations.tags()
             .stream()
-            .map(TagResponse::new)
+            .map(TagResponse::from)
             .collect(Collectors.toList());
     }
 }
