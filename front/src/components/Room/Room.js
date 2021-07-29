@@ -6,12 +6,16 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import TagList from '../../chunks/TagList/TagList';
 
-const Room = ({ imageSrc, room }) => {
+const Room = ({ imageSrc, room, onClickRoom }) => {
   const { roomId, host, headCount, tags } = room;
   const { current, max } = headCount;
 
   return (
-    <section className='room-container'>
+    <section
+      className='room-container'
+      data-room-id={roomId}
+      onClick={onClickRoom}
+    >
       <section className='information'>
         <div className='about'>
           <div className='room-number'>
@@ -52,6 +56,7 @@ Room.propTypes = {
       })
     ),
   }),
+  onClickRoom: PropTypes.func,
 };
 
 export default Room;
