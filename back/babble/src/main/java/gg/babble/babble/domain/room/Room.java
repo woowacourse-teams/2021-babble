@@ -155,4 +155,8 @@ public class Room {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    public boolean isFull() {
+        return maxHeadCount() == getUsers().headCount();
+    }
 }
