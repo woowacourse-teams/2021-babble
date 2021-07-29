@@ -9,7 +9,7 @@ import { SCROLL } from '../../constants/event';
 import Tag from '../../components/Tag/Tag';
 import TagErasable from '../../components/Tag/TagErasable';
 
-const TagList = ({ tags, erasable = false, useWheel = false }) => {
+const TagList = ({ tags, onDeleteTag, erasable = false, useWheel = false }) => {
   const tagListRef = useRef();
 
   const onWheel = (e) => {
@@ -29,7 +29,7 @@ const TagList = ({ tags, erasable = false, useWheel = false }) => {
       <LinearLayout direction='row'>
         {erasable
           ? tags.map((tag, index) => (
-              <TagErasable key={index}>
+              <TagErasable key={index} deleteTag={onDeleteTag}>
                 <Caption1>{tag.name}</Caption1>
               </TagErasable>
             ))
@@ -45,6 +45,7 @@ const TagList = ({ tags, erasable = false, useWheel = false }) => {
 
 TagList.propTypes = {
   tags: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string })),
+  onDeleteTag: PropTypes.func,
   erasable: PropTypes.bool,
   useWheel: PropTypes.bool,
 };
