@@ -20,8 +20,6 @@ import lombok.NoArgsConstructor;
 public class Game {
 
     private static final String DEFAULT_IMAGE = "https://static-cdn.jtvnw.net/ttv-static/404_boxart-1080x1436.jpg";
-    @Embedded
-    private final Rooms rooms = new Rooms();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,6 +27,8 @@ public class Game {
     private String name;
     @NotNull(message = "게임 이미지는 Null 일 수 없습니다.")
     private String image;
+    @Embedded
+    private final Rooms rooms = new Rooms();
 
     public Game(final String name) {
         this(null, name, DEFAULT_IMAGE);

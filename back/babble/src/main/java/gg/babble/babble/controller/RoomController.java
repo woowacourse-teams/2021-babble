@@ -42,7 +42,7 @@ public class RoomController {
 
     @GetMapping
     public ResponseEntity<List<FoundRoomResponse>> readRoomByTags(@RequestParam Long gameId,
-                                                                  @RequestParam(required = false, defaultValue = "") List<Long> tagIds,
+                                                                  @RequestParam(defaultValue = "") List<Long> tagIds,
                                                                   Pageable pageable) {
         return ResponseEntity.ok(roomService.findGamesByGameIdAndTagIds(gameId, tagIds, pageable));
     }
