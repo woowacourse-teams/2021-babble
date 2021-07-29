@@ -1,6 +1,6 @@
 package gg.babble.babble.service;
 
-import gg.babble.babble.config.UrlPhaser;
+import gg.babble.babble.util.UrlPhaser;
 import gg.babble.babble.exception.BabbleIllegalStatementException;
 import org.springframework.stereotype.Service;
 
