@@ -55,19 +55,18 @@ public class SubscribeAuthServiceTest extends ApplicationTest {
     @DisplayName("방 인원수보다 더 많은 인원이 입장하려고 하는경우, 예외가 발생한다.")
     @Test
     void overcrowdExceptionTest() {
-        prepareDummyRoom();
-
+        Room room = prepareDummyRoom();
         User guest = userRepository.findByNickname(포츈).get(0);
-        Room room = roomRepository.getById(2L);
+
         room.join(guest);
         roomRepository.save(room);
 
         assertThatThrownBy(() -> {
-            subscribeAuthService.validate("/topic/rooms/2/users");
+            subscribeAuthService.validate(String.format("/topic/rooms/%s/users", room.getId()));
         }).isInstanceOf(BabbleIllegalStatementException.class);
     }
 
-    private void prepareDummyRoom() {
+    private Room prepareDummyRoom() {
         Game game = gameRepository.findByName(APEX_LEGEND).get(0);
         User host = userRepository.findByNickname(현구막).get(0);
         List<Tag> tags = Collections.singletonList(tagRepository.findByName(실버).get(0));
@@ -75,6 +74,6 @@ public class SubscribeAuthServiceTest extends ApplicationTest {
         Room room = new Room(game, tags, new MaxHeadCount(2));
 
         room.join(host);
-        roomRepository.save(room);
+        return roomRepository.save(room);
     }
 }
