@@ -4,9 +4,11 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import gg.babble.babble.ApplicationTest;
-import gg.babble.babble.dto.UserJoinRequest;
-import gg.babble.babble.dto.UserListUpdateResponse;
-import gg.babble.babble.dto.UserResponse;
+import gg.babble.babble.domain.repository.UserRepository;
+import gg.babble.babble.domain.user.User;
+import gg.babble.babble.dto.request.UserJoinRequest;
+import gg.babble.babble.dto.response.UserListUpdateResponse;
+import gg.babble.babble.dto.response.UserResponse;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,8 +17,10 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompFrameHandler;
 import org.springframework.messaging.simp.stomp.StompHeaders;
@@ -46,8 +50,12 @@ public class WebSocketRoomUpdateTest extends ApplicationTest {
 //    @Autowired
 //    private GameRepository gameRepository;
 //
-//    @Autowired
-//    private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
+
+    private User user2;
+    private User user3;
+    private User user4;
 //
 //    @Autowired
 //    private TagRepository tagRepository;
@@ -57,21 +65,25 @@ public class WebSocketRoomUpdateTest extends ApplicationTest {
 
     private String URL;
     private CompletableFuture<UserListUpdateResponse> completableFuture;
-    private final UserListUpdateResponse expectedUserListUpdateResponse = new UserListUpdateResponse(
-        new UserResponse(1L, "루트", "https://hyeon9mak.github.io/assets/images/9vatar.png"),
-        Collections.singletonList(
-            new UserResponse(2L, "와일더", "https://hyeon9mak.github.io/assets/images/9vatar.png")
-        )
-    );
+    private UserListUpdateResponse expectedUserListUpdateResponse;
 
     @BeforeEach
-    public void setup() {
+    protected void setup() {
         // TODO : 데이터로더에 비 의존적으로 리팩토링
 //        dummyDataSet();
 
         super.setUp();
         completableFuture = new CompletableFuture<>();
         URL = "ws://localhost:" + port + "/connection";
+        user2 = userRepository.findByNickname("user0").get(0);
+        user3 = userRepository.findByNickname("와일더").get(0);
+        user4 = userRepository.findByNickname("현구막").get(0);
+        expectedUserListUpdateResponse = new UserListUpdateResponse(
+            UserResponse.from(user2),
+            Collections.singletonList(
+                UserResponse.from(user3)
+            )
+        );
     }
 
     // TODO : 데이터로더에 비 의존적으로 리팩토링
@@ -104,13 +116,14 @@ public class WebSocketRoomUpdateTest extends ApplicationTest {
         stompClient.setMessageConverter(new MappingJackson2MessageConverter());
 
         // Connection
-        userJoinAndBroadCasting(stompClient, new UserJoinRequest(2L, "7777"));
+        userJoinAndBroadCasting(stompClient, new UserJoinRequest(user3.getId(), "7777"));
         UserListUpdateResponse userListUpdateResponse = completableFuture.get(5, SECONDS);
 
         //then
         assertThat(userListUpdateResponse).usingRecursiveComparison().isEqualTo(expectedUserListUpdateResponse);
     }
 
+    @Disabled
     @DisplayName("1번방에 있는 유저가 퇴장시, 자신을 포함한 1번방의 유저 정보들을 수신한다.")
     @Test
     public void testUserExitTest() throws InterruptedException, ExecutionException, TimeoutException {
@@ -118,14 +131,14 @@ public class WebSocketRoomUpdateTest extends ApplicationTest {
         stompClient.setMessageConverter(new MappingJackson2MessageConverter());
 
         // 두번째 유저 입장.
-        userJoinAndBroadCasting(stompClient, new UserJoinRequest(2L, "7777"));
+        userJoinAndBroadCasting(stompClient, new UserJoinRequest(user3.getId(), "7777"));
 
         // 세번째 유저 입장
         StompSession stompSession2 = stompClient.connect(URL, new StompSessionHandlerAdapter() {
         }).get(60, SECONDS);
 
         joinRoom(stompSession2);
-        sendJoinMessage(stompSession2, new UserJoinRequest(3L, "8888"));
+        sendJoinMessage(stompSession2, new UserJoinRequest(user4.getId(), "8888"));
 
         stompSession2.disconnect();
 

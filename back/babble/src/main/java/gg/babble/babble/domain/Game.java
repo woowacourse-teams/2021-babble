@@ -23,13 +23,10 @@ public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @NotNull(message = "게임 이름은 Null 일 수 없습니다.")
     private String name;
-
     @NotNull(message = "게임 이미지는 Null 일 수 없습니다.")
     private String image;
-
     @Embedded
     private final Rooms rooms = new Rooms();
 

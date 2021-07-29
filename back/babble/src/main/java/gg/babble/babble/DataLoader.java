@@ -9,9 +9,9 @@ import gg.babble.babble.domain.room.MaxHeadCount;
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
-import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -35,6 +35,7 @@ public class DataLoader implements CommandLineRunner {
     private static final String 실버 = "실버";
     private static final String _2시간 = "2시간";
     private static final String 솔로랭크 = "솔로랭크";
+    private static final int MAX_USER_INDEX = 20;
 
     private final GameRepository gameRepository;
     private final UserRepository userRepository;
@@ -71,6 +72,10 @@ public class DataLoader implements CommandLineRunner {
         userRepository.save(new User(포츈));
         userRepository.save(new User(그루밍));
         userRepository.save(new User(피터));
+
+        for (int userIndex = 0; userIndex < MAX_USER_INDEX; userIndex++) {
+            userRepository.save(new User("user" + userIndex));
+        }
     }
 
     private void prepareDummyTags() {
@@ -80,15 +85,20 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void prepareDummyRoom() {
+        for (int userIndex = 0; userIndex < MAX_USER_INDEX; userIndex++) {
+            Room room = createAndJoinRoom(userIndex);
+            roomRepository.save(room);
+        }
+    }
+
+    private Room createAndJoinRoom(int userIndex) {
         Game game = gameRepository.findByName(LEAGUE_OF_LEGENDS).get(FIRST_DATA_INDEX);
-        User user = userRepository.findByNickname(루트).get(FIRST_DATA_INDEX);
-        List<Tag> tags = Arrays
-            .asList(tagRepository.findByName(실버).get(0),
-                tagRepository.findByName(_2시간).get(0));
+        User user = userRepository.findByNickname("user" + userIndex).get(FIRST_DATA_INDEX);
+        List<Tag> tags = Arrays.asList(tagRepository.findByName(실버).get(0), tagRepository.findByName(_2시간).get(0));
 
         Room room = new Room(game, tags, new MaxHeadCount(4));
 
         room.join(user);
-        roomRepository.save(room);
+        return room;
     }
 }

@@ -4,21 +4,24 @@ import gg.babble.babble.domain.repository.RoomRepository;
 import gg.babble.babble.domain.room.MaxHeadCount;
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.user.User;
-import gg.babble.babble.dto.CreatedRoomResponse;
-import gg.babble.babble.dto.FoundRoomResponse;
-import gg.babble.babble.dto.RoomRequest;
-import gg.babble.babble.dto.UserJoinRequest;
-import gg.babble.babble.dto.UserListUpdateResponse;
-import gg.babble.babble.dto.UserResponse;
+import gg.babble.babble.dto.request.RoomRequest;
+import gg.babble.babble.dto.request.UserJoinRequest;
+import gg.babble.babble.dto.response.CreatedRoomResponse;
+import gg.babble.babble.dto.response.FoundRoomResponse;
+import gg.babble.babble.dto.response.UserListUpdateResponse;
+import gg.babble.babble.dto.response.UserResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(readOnly = true)
 public class RoomService {
+
+    private static final int PAGE_SIZE = 16;
 
     private final RoomRepository roomRepository;
     private final GameService gameService;
@@ -44,6 +47,19 @@ public class RoomService {
 
     public FoundRoomResponse findById(final Long id) {
         return FoundRoomResponse.from(findRoomOrElseThrow(id));
+    }
+
+    public List<FoundRoomResponse> findGamesByGameIdAndTagIds(final Long gameId, final List<Long> tagIds, final Pageable pageable) {
+        return findByGameIdAndTagIdsInRepository(gameId, tagIds, pageable).stream()
+            .map(FoundRoomResponse::from)
+            .collect(Collectors.toList());
+    }
+
+    private List<Room> findByGameIdAndTagIdsInRepository(final Long gameId, final List<Long> tagIds, final Pageable pageable) {
+        if (tagIds.isEmpty()) {
+            return roomRepository.findAllByGameId(gameId, pageable);
+        }
+        return roomRepository.findAllByGameIdAndTagIds(gameId, tagIds, (long) tagIds.size(), pageable);
     }
 
     private Room findRoomOrElseThrow(final Long id) {

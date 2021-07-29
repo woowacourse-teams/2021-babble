@@ -54,7 +54,6 @@ public class TagApiDocumentTest extends ApplicationTest {
             .andExpect(jsonPath("$.[2].id").value(3L))
             .andExpect(jsonPath("$.[2].name").value("솔로랭크"))
 
-
             .andDo(document("tags-get",
                 responseFields(
                     fieldWithPath("[].id").description("태그 Id"),

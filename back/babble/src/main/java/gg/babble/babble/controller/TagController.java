@@ -1,6 +1,6 @@
 package gg.babble.babble.controller;
 
-import gg.babble.babble.dto.TagResponse;
+import gg.babble.babble.dto.response.TagResponse;
 import gg.babble.babble.service.TagService;
 import java.util.List;
 import org.springframework.http.ResponseEntity;

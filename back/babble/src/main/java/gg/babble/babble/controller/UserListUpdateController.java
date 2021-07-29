@@ -1,6 +1,6 @@
 package gg.babble.babble.controller;
 
-import gg.babble.babble.dto.UserJoinRequest;
+import gg.babble.babble.dto.request.UserJoinRequest;
 import gg.babble.babble.service.RoomService;
 import javax.validation.Valid;
 import org.springframework.context.event.EventListener;

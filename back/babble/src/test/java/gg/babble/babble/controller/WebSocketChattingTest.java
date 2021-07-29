@@ -4,11 +4,11 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import gg.babble.babble.ApplicationTest;
-import gg.babble.babble.dto.MessageRequest;
-import gg.babble.babble.dto.MessageResponse;
-import gg.babble.babble.dto.UserJoinRequest;
-import gg.babble.babble.dto.UserListUpdateResponse;
-import gg.babble.babble.dto.UserResponse;
+import gg.babble.babble.dto.request.MessageRequest;
+import gg.babble.babble.dto.request.UserJoinRequest;
+import gg.babble.babble.dto.response.MessageResponse;
+import gg.babble.babble.dto.response.UserListUpdateResponse;
+import gg.babble.babble.dto.response.UserResponse;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,13 +37,13 @@ public class WebSocketChattingTest extends ApplicationTest {
     private static final String SEND_CHAT_UPDATE_ENDPOINT = "/ws/rooms/1/chat";
 
     private String URL;
-    private CompletableFuture<UserListUpdateResponse> completableFutureUesrs;
+    private CompletableFuture<UserListUpdateResponse> completableFutureUsers;
     private CompletableFuture<MessageResponse> completableFutureChat;
 
     @BeforeEach
     public void setup() {
         super.setUp();
-        completableFutureUesrs = new CompletableFuture<>();
+        completableFutureUsers = new CompletableFuture<>();
         completableFutureChat = new CompletableFuture<>();
         URL = "ws://localhost:" + port + "/connection";
     }
@@ -113,7 +113,7 @@ public class WebSocketChattingTest extends ApplicationTest {
         @Override
         public void handleFrame(StompHeaders stompHeaders, Object o) {
             System.out.println(o);
-            completableFutureUesrs.complete((UserListUpdateResponse) o);
+            completableFutureUsers.complete((UserListUpdateResponse) o);
         }
     }
 }

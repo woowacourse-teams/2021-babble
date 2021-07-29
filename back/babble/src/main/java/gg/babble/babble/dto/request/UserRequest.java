@@ -1,4 +1,4 @@
-package gg.babble.babble.dto;
+package gg.babble.babble.dto.request;
 
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

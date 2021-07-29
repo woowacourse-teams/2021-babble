@@ -1,4 +1,4 @@
-package gg.babble.babble.dto;
+package gg.babble.babble.dto.response;
 
 import gg.babble.babble.domain.tag.Tag;
 import lombok.AllArgsConstructor;

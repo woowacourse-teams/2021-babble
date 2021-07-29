@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import gg.babble.babble.ApplicationTest;
-import gg.babble.babble.dto.GameImageResponse;
-import gg.babble.babble.dto.IndexPageGameResponse;
+import gg.babble.babble.dto.response.GameImageResponse;
+import gg.babble.babble.dto.response.IndexPageGameResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.Arrays;
 import java.util.List;
@@ -62,7 +62,7 @@ class GameServiceTest extends ApplicationTest {
     void findAllGames() {
         // when
         List<IndexPageGameResponse> expectedResponses = Arrays.asList(
-            new IndexPageGameResponse(1L, LEAGUE_OF_LEGENDS, 1, LEAGUE_OF_LEGENDS_URL),
+            new IndexPageGameResponse(1L, LEAGUE_OF_LEGENDS, 20, LEAGUE_OF_LEGENDS_URL),
             new IndexPageGameResponse(2L, OVERWATCH, 0, DEFAULT_URL),
             new IndexPageGameResponse(3L, APEX_LEGEND, 0, DEFAULT_URL)
         );

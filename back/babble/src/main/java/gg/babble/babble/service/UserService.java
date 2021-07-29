@@ -2,8 +2,8 @@ package gg.babble.babble.service;
 
 import gg.babble.babble.domain.repository.UserRepository;
 import gg.babble.babble.domain.user.User;
-import gg.babble.babble.dto.UserRequest;
-import gg.babble.babble.dto.UserResponse;
+import gg.babble.babble.dto.request.UserRequest;
+import gg.babble.babble.dto.response.UserResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.List;
 import org.springframework.stereotype.Service;

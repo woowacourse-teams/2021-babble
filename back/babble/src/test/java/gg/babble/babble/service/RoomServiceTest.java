@@ -7,18 +7,26 @@ import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.domain.Game;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
-import gg.babble.babble.dto.FoundRoomResponse;
-import gg.babble.babble.dto.GameResponse;
-import gg.babble.babble.dto.HeadCountResponse;
-import gg.babble.babble.dto.TagResponse;
-import gg.babble.babble.dto.UserResponse;
+import gg.babble.babble.dto.request.RoomRequest;
+import gg.babble.babble.dto.request.TagRequest;
+import gg.babble.babble.dto.request.UserJoinRequest;
+import gg.babble.babble.dto.response.CreatedRoomResponse;
+import gg.babble.babble.dto.response.FoundRoomResponse;
+import gg.babble.babble.dto.response.GameResponse;
+import gg.babble.babble.dto.response.HeadCountResponse;
+import gg.babble.babble.dto.response.TagResponse;
+import gg.babble.babble.dto.response.UserResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 class RoomServiceTest extends ApplicationTest {
 
@@ -26,6 +34,7 @@ class RoomServiceTest extends ApplicationTest {
     private static final String 실버 = "실버";
     private static final String _2시간 = "2시간";
     private static final String 루트 = "루트";
+    private static final int COUNT_OF_ONE_PAGE = 16;
 
     @Autowired
     private RoomService roomService;
@@ -39,6 +48,24 @@ class RoomServiceTest extends ApplicationTest {
     @Autowired
     private TagService tagService;
 
+    private CreatedRoomResponse savedRoom;
+
+    @BeforeEach
+    protected void setUp() {
+        super.setUp();
+        savedRoom = roomService.create(
+            new RoomRequest(1L,
+                Arrays.asList(
+                    new TagRequest(tagService.findByName(실버).get(0).getId()),
+                    new TagRequest(tagService.findByName(_2시간).get(0).getId())
+                ),
+                4
+            )
+        );
+
+        roomService.sendJoinRoom(savedRoom.getRoomId(), new UserJoinRequest(1L, "1234"));
+    }
+
     @DisplayName("요청한 Id의 방 정보를 반환한다.")
     @Test
     void findTest() {
@@ -48,14 +75,14 @@ class RoomServiceTest extends ApplicationTest {
         List<Tag> tags = Arrays.asList(tagService.findByName(실버).get(0),
             tagService.findByName(_2시간).get(0));
         FoundRoomResponse expected = FoundRoomResponse.builder()
-            .roomId(1L)
+            .roomId(savedRoom.getRoomId())
             .game(new GameResponse(game.getId(), game.getName()))
             .host(UserResponse.from(user))
-            .headCount(new HeadCountResponse(1, 4))
+            .headCount(new HeadCountResponse(1, savedRoom.getMaxHeadCount()))
             .tags(tagResponsesFromTags(tags))
             .build();
 
-        FoundRoomResponse foundRoomResponse = roomService.findById(1L);
+        FoundRoomResponse foundRoomResponse = roomService.findById(savedRoom.getRoomId());
         assertThat(foundRoomResponse).usingRecursiveComparison()
             .ignoringFields("rooms", "createdDate").isEqualTo(expected);
     }
@@ -71,5 +98,34 @@ class RoomServiceTest extends ApplicationTest {
     void roomNotFoundTest() {
         assertThatThrownBy(() -> roomService.findById(Long.MAX_VALUE))
             .isInstanceOf(BabbleNotFoundException.class);
+    }
+
+    @DisplayName("요청한 gameId와 page에 해당되는 방 정보들을 반환한다.")
+    @Test
+    void findRoomsByGameIdAndPageTest() {
+        // given
+        Long gameId = 1L;
+        Pageable pageable = PageRequest.of(0, COUNT_OF_ONE_PAGE);
+
+        // when
+        List<FoundRoomResponse> roomResponses = roomService.findGamesByGameIdAndTagIds(gameId, new ArrayList<>(), pageable);
+
+        // then
+        assertThat(roomResponses).hasSize(COUNT_OF_ONE_PAGE);
+    }
+
+    @DisplayName("요청한 gameId와 page, tags에 해당되는 방 정보들을 반환한다.")
+    @Test
+    void findRoomsByGameIdAndTagsTest() {
+        // given
+        Long gameId = 1L;
+        Pageable pageable = PageRequest.of(0, COUNT_OF_ONE_PAGE);
+        List<Long> tagIds = Arrays.asList(1L, 2L);
+
+        // when
+        List<FoundRoomResponse> roomResponses = roomService.findGamesByGameIdAndTagIds(gameId, tagIds, pageable);
+
+        // then
+        assertThat(roomResponses).hasSize(COUNT_OF_ONE_PAGE);
     }
 }
