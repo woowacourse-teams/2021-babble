@@ -11,11 +11,11 @@ const App = () => {
   return (
     <Switch>
       <Route path={PATH.HOME} exact>
-        <RoomList />
+        <RoomList gameId={1} />
       </Route>
       <Route path={PATH.MAKE_ROOM}>
         {/* TODO: 나중에 gameId를 선택하는 게임에 따라 바뀌도록 로직 추가하기 */}
-        <MakeRoom gameId={0} />
+        <MakeRoom gameId={1} />
       </Route>
     </Switch>
   );
