@@ -13,7 +13,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     private final StompHandler stompHandler;
 
-    public WebSocketConfig(StompHandler stompHandler) {
+    public WebSocketConfig(final StompHandler stompHandler) {
         this.stompHandler = stompHandler;
     }
 

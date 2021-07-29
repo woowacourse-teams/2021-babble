@@ -12,6 +12,8 @@ import org.springframework.messaging.support.ChannelInterceptor;
 @Configuration
 public class StompHandler implements ChannelInterceptor {
 
+    private static final String DESTINATION_HEADER_KEY = "simpDestination";
+
     private final SubscribeAuthService subscribeAuthService;
 
     public StompHandler(final SubscribeAuthService subscribeAuthService) {
@@ -28,7 +30,7 @@ public class StompHandler implements ChannelInterceptor {
     }
 
     private void subscribeValidate(final Message<?> message) {
-        String destinationUrl = (String) message.getHeaders().get("simpDestination");
+        String destinationUrl = (String) message.getHeaders().get(DESTINATION_HEADER_KEY);
         subscribeAuthService.validate(Objects.requireNonNull(destinationUrl));
     }
 }
