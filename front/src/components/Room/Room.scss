@@ -3,12 +3,17 @@
 
 .room-container {
   cursor: pointer;
-  padding: 1.5rem 2rem;
+  padding: 1.2rem 2.6rem;
   background: m.grey-scale(white);
   border: 1px solid m.grey-scale(1);
 
   box-shadow: v.$room-box-shadow;
   border-radius: 1rem;
+  transition: ease-in 0.1s;
+
+  &:hover {
+    transform: scale(1.01);
+  }
 
   .information {
     display: flex;
@@ -27,6 +32,11 @@
 
       .avatar {
         margin-right: 1.5rem;
+
+        .body2 {
+          width: 10rem;
+          word-break: break-all;
+        }
       }
     }
 
@@ -37,7 +47,7 @@
   }
 
   &:active {
-    transform: scale(0.96);
-    transition: transform 70ms ease-in;
+    transform: scale(0.99);
+    transition: transform 10ms ease-in;
   }
 }

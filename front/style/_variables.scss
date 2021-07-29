@@ -1,5 +1,5 @@
 $box-shadow: 0 0.08rem 0.5rem rgba(0, 0, 0, 0.18);
-$room-box-shadow: 0 0 0.6rem rgba(134, 134, 134, 0.25);
+$room-box-shadow: 0 0 0.6rem rgba(134, 134, 134, 0.35);
 $button-box-shadow: 1px 3px 10px rgba(255, 56, 82, 0.35);
 $dot-box-shadow: 0 0 0 1px rgb(118, 123, 131);
 
@@ -13,7 +13,8 @@ $border-radius: (
 );
 
 $button-padding: (
-  small: 0.6rem 1.8rem,
+  tiny: 0.6rem 1.8rem,
+  small: 0.8rem 2.2rem,
   medium: 1.4rem 2.6rem,
   large: 1.8rem 4rem,
 );
@@ -59,5 +60,8 @@ $shadow: (
 
 $z-index: (
   layer-back-1: -1,
+  layer-middle: 0,
   layer-front-1: 1,
+  layer-modal-dimmer: 998,
+  layer-modal: 999,
 );

@@ -12,6 +12,10 @@
 }
 
 button {
+  &.tiny {
+    padding: m.button-padding(tiny);
+  }
+
   &.small {
     padding: m.button-padding(small);
   }

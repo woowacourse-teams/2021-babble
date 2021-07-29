@@ -3,6 +3,7 @@
 
 .modal-container {
   position: fixed;
+  z-index: m.z-index(layer-modal-dimmer);
 
   &.default {
     width: 100%;
@@ -17,6 +18,7 @@
 
     .linear-layout {
       justify-content: center;
+      z-index: m.z-index(layer-modal);
     }
   }
 
@@ -30,6 +32,7 @@
     border: 1px solid m.grey-scale(8);
     border-radius: m.border-radius(modal);
     box-shadow: v.$box-shadow;
+    z-index: m.z-index(layer-modal);
 
     & > section {
       width: 100%;
@@ -45,6 +48,7 @@
   right: 2rem;
   bottom: -0.5rem;
   cursor: pointer;
+  z-index: m.z-index(layer-modal);
 
   background: linear-gradient(
     60deg,

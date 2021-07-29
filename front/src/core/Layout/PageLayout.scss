@@ -1,0 +1,19 @@
+.page-layout {
+  display: flex;
+  justify-content: center;
+  padding: 0 5rem;
+
+  &.default {
+    width: 100%;
+    max-width: 102.66664rem;
+  }
+
+  &.narrow {
+    width: 100%;
+    max-width: 59.33332rem;
+  }
+
+  &.column {
+    flex-direction: column;
+  }
+}
