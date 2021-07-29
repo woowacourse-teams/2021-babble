@@ -9,7 +9,6 @@ import gg.babble.babble.domain.room.MaxHeadCount;
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
-import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.boot.CommandLineRunner;
