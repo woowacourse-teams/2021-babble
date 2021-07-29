@@ -105,4 +105,9 @@ public class RoomService {
 
         return new UserListUpdateResponse(UserResponse.from(room.getHost()), getGuests(room));
     }
+
+    public boolean isFullRoom(final Long id) {
+        Room room = findRoomOrElseThrow(id);
+        return room.isFull();
+    }
 }

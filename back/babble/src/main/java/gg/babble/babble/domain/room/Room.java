@@ -139,6 +139,10 @@ public class Room {
         return !users.hasUser(user);
     }
 
+    public boolean isFull() {
+        return maxHeadCount() == currentHeadCount();
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
@@ -155,4 +159,5 @@ public class Room {
     public int hashCode() {
         return Objects.hash(id);
     }
+
 }
