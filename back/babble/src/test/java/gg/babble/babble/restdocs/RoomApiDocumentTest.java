@@ -40,6 +40,7 @@ import org.springframework.web.context.WebApplicationContext;
 @ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
 public class RoomApiDocumentTest extends ApplicationTest {
 
+    private static final int COUNT_OF_ONE_PAGE = 16;
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -142,34 +143,26 @@ public class RoomApiDocumentTest extends ApplicationTest {
                     fieldWithPath("tags[].name").description("태그 이름"))));
     }
 
-    @DisplayName("page 번호와 태그 없이 게임에 해당하는 방 목록을 조회한다.")
-    @Test
-    public void readGameRoomsWithoutPageAndTagsTest() throws Exception {
-        // GET /api/rooms?gameId=2
-        // - 한 `page에 16개`
-        // - page는 1부터 시작한다.
-        int countOfOnePage = 16;
-
-        ResultActions actions = mockMvc.perform(get("/api/rooms?gameId=" + dummyGameId)
-            .accept(MediaType.APPLICATION_JSON_VALUE));
-
-        for (int i = 0; i < countOfOnePage; i++) {
+    private void testRoomResponseOfOnePage(final ResultActions actions) throws Exception {
+        for (int indexOfPage = 0; indexOfPage < COUNT_OF_ONE_PAGE; indexOfPage++) {
             actions.andExpect(status().isOk())
-                .andExpect(jsonPath("$[" + i + "].roomId").isNumber())
-                .andExpect(jsonPath("$[" + i + "].createdDate").isString())
-                .andExpect(jsonPath("$[" + i + "].game.id").value(dummyGameId))
-                .andExpect(jsonPath("$[" + i + "].game.name").value("League Of Legends"))
-                .andExpect(jsonPath("$[" + i + "].host.id").isNumber())
-                .andExpect(jsonPath("$[" + i + "].host.nickname").isString())
-                .andExpect(jsonPath("$[" + i + "].host.avatar").isString())
-                .andExpect(jsonPath("$[" + i + "].headCount.current").isNumber())
-                .andExpect(jsonPath("$[" + i + "].headCount.max").isNumber())
-                .andExpect(jsonPath("$[" + i + "].tags").isArray())
-                .andExpect(jsonPath("$[" + i + "].tags", hasSize(2)))
-                .andExpect(jsonPath("$[" + i + "].tags[0].name").value("실버"))
-                .andExpect(jsonPath("$[" + i + "].tags[1].name").value("2시간"));
+                .andExpect(jsonPath("$[%d].roomId", indexOfPage).isNumber())
+                .andExpect(jsonPath("$[%d].createdDate", indexOfPage).isString())
+                .andExpect(jsonPath("$[%d].game.id", indexOfPage).value(dummyGameId))
+                .andExpect(jsonPath("$[%d].host.id", indexOfPage).isNumber())
+                .andExpect(jsonPath("$[%d].game.name", indexOfPage).value("League Of Legends"))
+                .andExpect(jsonPath("$[%d].host.nickname", indexOfPage).isString())
+                .andExpect(jsonPath("$[%d].host.avatar", indexOfPage).isString())
+                .andExpect(jsonPath("$[%d].headCount.current", indexOfPage).isNumber())
+                .andExpect(jsonPath("$[%d].headCount.max", indexOfPage).isNumber())
+                .andExpect(jsonPath("$[%d].tags", indexOfPage).isArray())
+                .andExpect(jsonPath("$[%d].tags.length()", indexOfPage).value(2))
+                .andExpect(jsonPath("$[%d].tags[0].name", indexOfPage).value("실버"))
+                .andExpect(jsonPath("$[%d].tags[1].name", indexOfPage).value("2시간"));
         }
+    }
 
+    private void describeRoomResponse(final ResultActions actions) throws Exception {
         actions.andDo(document("read-game-rooms-without-page-and-tags",
             responseFields(fieldWithPath("[].roomId").description("방 Id"),
                 fieldWithPath("[].createdDate").description("방 생성 시각"),
@@ -182,134 +175,48 @@ public class RoomApiDocumentTest extends ApplicationTest {
                 fieldWithPath("[].headCount.max").description("최대 참가 인원"),
                 fieldWithPath("[].tags[].id").description("태그 Id"),
                 fieldWithPath("[].tags[].name").description("태그 이름"))));
+    }
+
+    @DisplayName("page 번호와 태그 없이 게임에 해당하는 방 목록을 조회한다.")
+    @Test
+    public void readGameRoomsWithoutPageAndTagsTest() throws Exception {
+        ResultActions actions = mockMvc.perform(get("/api/rooms?gameId=" + dummyGameId)
+            .accept(MediaType.APPLICATION_JSON_VALUE));
+
+        testRoomResponseOfOnePage(actions);
+        describeRoomResponse(actions);
     }
 
     @DisplayName("태그 없이 게임과 page 번호에 해당하는 방 목록을 조회한다.")
     @Test
     public void readGameRoomsWithoutTagsTest() throws Exception {
-        // GET /api/rooms?gameId=2&page=1
-        // - 한 `page에 16개`
-        // - page는 1부터 시작한다.
-        int countOfOnePage = 16;
-
         ResultActions actions = mockMvc.perform(get("/api/rooms?gameId=" + dummyGameId + "&page=1")
             .accept(MediaType.APPLICATION_JSON_VALUE));
 
         actions.andDo(MockMvcResultHandlers.print());
 
-        for (int i = 0; i < countOfOnePage; i++) {
-            actions.andExpect(status().isOk())
-                .andExpect(jsonPath("$[" + i + "].roomId").isNumber())
-                .andExpect(jsonPath("$[" + i + "].createdDate").isString())
-                .andExpect(jsonPath("$[" + i + "].game.id").value(dummyGameId))
-                .andExpect(jsonPath("$[" + i + "].game.name").value("League Of Legends"))
-                .andExpect(jsonPath("$[" + i + "].host.id").isNumber())
-                .andExpect(jsonPath("$[" + i + "].host.nickname").isString())
-                .andExpect(jsonPath("$[" + i + "].host.avatar").isString())
-                .andExpect(jsonPath("$[" + i + "].headCount.current").isNumber())
-                .andExpect(jsonPath("$[" + i + "].headCount.max").isNumber())
-                .andExpect(jsonPath("$[" + i + "].tags").isArray())
-                .andExpect(jsonPath("$[" + i + "].tags", hasSize(2)))
-                .andExpect(jsonPath("$[" + i + "].tags[0].name").value("실버"))
-                .andExpect(jsonPath("$[" + i + "].tags[1].name").value("2시간"));
-        }
-
-        actions.andDo(document("read-game-rooms-without-page-and-tags",
-            responseFields(fieldWithPath("[].roomId").description("방 Id"),
-                fieldWithPath("[].createdDate").description("방 생성 시각"),
-                fieldWithPath("[].game.id").description("게임 Id"),
-                fieldWithPath("[].game.name").description("게임 이름"),
-                fieldWithPath("[].host.id").description("호스트 Id"),
-                fieldWithPath("[].host.nickname").description("호스트 닉네임"),
-                fieldWithPath("[].host.avatar").description("호스트 아바타"),
-                fieldWithPath("[].headCount.current").description("현재 참가 인원"),
-                fieldWithPath("[].headCount.max").description("최대 참가 인원"),
-                fieldWithPath("[].tags[].id").description("태그 Id"),
-                fieldWithPath("[].tags[].name").description("태그 이름"))));
+        testRoomResponseOfOnePage(actions);
+        describeRoomResponse(actions);
     }
 
     @DisplayName("page 번호 없이 게임과 태그에 해당하는 방 목록을 조회한다.")
     @Test
     public void readGameRoomsWithoutPageTest() throws Exception {
-        // GET /api/rooms?gameId=2&tagIds=1,2,3
-        // - 한 `page에 16개`
-        // - page는 1부터 시작한다.
-        int countOfOnePage = 16;
-
         ResultActions actions = mockMvc.perform(get("/api/rooms?gameId=" + dummyGameId + "&tagIds=1,2")
             .accept(MediaType.APPLICATION_JSON_VALUE));
 
-        for (int i = 0; i < countOfOnePage; i++) {
-            actions.andExpect(status().isOk())
-                .andExpect(jsonPath("$[" + i + "].roomId").isNumber())
-                .andExpect(jsonPath("$[" + i + "].createdDate").isString())
-                .andExpect(jsonPath("$[" + i + "].game.id").value(dummyGameId))
-                .andExpect(jsonPath("$[" + i + "].game.name").value("League Of Legends"))
-                .andExpect(jsonPath("$[" + i + "].host.id").isNumber())
-                .andExpect(jsonPath("$[" + i + "].host.nickname").isString())
-                .andExpect(jsonPath("$[" + i + "].host.avatar").isString())
-                .andExpect(jsonPath("$[" + i + "].headCount.current").isNumber())
-                .andExpect(jsonPath("$[" + i + "].headCount.max").isNumber())
-                .andExpect(jsonPath("$[" + i + "].tags").isArray())
-                .andExpect(jsonPath("$[" + i + "].tags", hasSize(2)))
-                .andExpect(jsonPath("$[" + i + "].tags[0].name").value("실버"))
-                .andExpect(jsonPath("$[" + i + "].tags[1].name").value("2시간"));
-        }
-
-        actions.andDo(document("read-game-rooms-without-page-and-tags",
-            responseFields(fieldWithPath("[].roomId").description("방 Id"),
-                fieldWithPath("[].createdDate").description("방 생성 시각"),
-                fieldWithPath("[].game.id").description("게임 Id"),
-                fieldWithPath("[].game.name").description("게임 이름"),
-                fieldWithPath("[].host.id").description("호스트 Id"),
-                fieldWithPath("[].host.nickname").description("호스트 닉네임"),
-                fieldWithPath("[].host.avatar").description("호스트 아바타"),
-                fieldWithPath("[].headCount.current").description("현재 참가 인원"),
-                fieldWithPath("[].headCount.max").description("최대 참가 인원"),
-                fieldWithPath("[].tags[].id").description("태그 Id"),
-                fieldWithPath("[].tags[].name").description("태그 이름"))));
+        testRoomResponseOfOnePage(actions);
+        describeRoomResponse(actions);
     }
 
     @DisplayName("게임과 page 번호, 태그에 해당하는 방 목록을 조회한다.")
     @Test
     public void readGameRoomsTest() throws Exception {
-        // GET /api/rooms?gameId=2&tagIds=1,2,3&page=1
-        // - 한 `page에 16개`
-        // - page는 1부터 시작한다.
-        int countOfOnePage = 16;
-
         ResultActions actions = mockMvc.perform(get("/api/rooms?gameId=" + dummyGameId + "&tagIds=1,2&page=1")
             .accept(MediaType.APPLICATION_JSON_VALUE));
 
-        for (int i = 0; i < countOfOnePage; i++) {
-            actions.andExpect(status().isOk())
-                .andExpect(jsonPath("$[" + i + "].roomId").isNumber())
-                .andExpect(jsonPath("$[" + i + "].createdDate").isString())
-                .andExpect(jsonPath("$[" + i + "].game.id").value(dummyGameId))
-                .andExpect(jsonPath("$[" + i + "].game.name").value("League Of Legends"))
-                .andExpect(jsonPath("$[" + i + "].host.id").isNumber())
-                .andExpect(jsonPath("$[" + i + "].host.nickname").isString())
-                .andExpect(jsonPath("$[" + i + "].host.avatar").isString())
-                .andExpect(jsonPath("$[" + i + "].headCount.current").isNumber())
-                .andExpect(jsonPath("$[" + i + "].headCount.max").isNumber())
-                .andExpect(jsonPath("$[" + i + "].tags").isArray())
-                .andExpect(jsonPath("$[" + i + "].tags", hasSize(2)))
-                .andExpect(jsonPath("$[" + i + "].tags[0].name").value("실버"))
-                .andExpect(jsonPath("$[" + i + "].tags[1].name").value("2시간"));
-        }
-
-        actions.andDo(document("read-game-rooms-without-page-and-tags",
-            responseFields(fieldWithPath("[].roomId").description("방 Id"),
-                fieldWithPath("[].createdDate").description("방 생성 시각"),
-                fieldWithPath("[].game.id").description("게임 Id"),
-                fieldWithPath("[].game.name").description("게임 이름"),
-                fieldWithPath("[].host.id").description("호스트 Id"),
-                fieldWithPath("[].host.nickname").description("호스트 닉네임"),
-                fieldWithPath("[].host.avatar").description("호스트 아바타"),
-                fieldWithPath("[].headCount.current").description("현재 참가 인원"),
-                fieldWithPath("[].headCount.max").description("최대 참가 인원"),
-                fieldWithPath("[].tags[].id").description("태그 Id"),
-                fieldWithPath("[].tags[].name").description("태그 이름"))));
+        testRoomResponseOfOnePage(actions);
+        describeRoomResponse(actions);
     }
 }
 
