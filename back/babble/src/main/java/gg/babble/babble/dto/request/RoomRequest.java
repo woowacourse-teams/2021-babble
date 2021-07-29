@@ -1,4 +1,4 @@
-package gg.babble.babble.dto;
+package gg.babble.babble.dto.request;
 
 import java.util.List;
 import javax.validation.constraints.Max;

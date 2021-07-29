@@ -1,9 +1,9 @@
 package gg.babble.babble.service;
 
 import gg.babble.babble.domain.user.User;
-import gg.babble.babble.dto.MessageRequest;
-import gg.babble.babble.dto.MessageResponse;
-import gg.babble.babble.dto.UserResponse;
+import gg.babble.babble.dto.request.MessageRequest;
+import gg.babble.babble.dto.response.MessageResponse;
+import gg.babble.babble.dto.response.UserResponse;
 import org.springframework.stereotype.Service;
 
 @Service

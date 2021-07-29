@@ -1,6 +1,6 @@
 package gg.babble.babble.controller;
 
-import gg.babble.babble.dto.MessageRequest;
+import gg.babble.babble.dto.request.MessageRequest;
 import gg.babble.babble.service.ChatService;
 import javax.validation.Valid;
 import org.springframework.messaging.handler.annotation.DestinationVariable;

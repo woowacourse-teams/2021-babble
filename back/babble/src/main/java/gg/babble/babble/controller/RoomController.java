@@ -1,8 +1,8 @@
 package gg.babble.babble.controller;
 
-import gg.babble.babble.dto.CreatedRoomResponse;
-import gg.babble.babble.dto.FoundRoomResponse;
-import gg.babble.babble.dto.RoomRequest;
+import gg.babble.babble.dto.request.RoomRequest;
+import gg.babble.babble.dto.response.CreatedRoomResponse;
+import gg.babble.babble.dto.response.FoundRoomResponse;
 import gg.babble.babble.service.RoomService;
 import java.net.URI;
 import java.util.List;

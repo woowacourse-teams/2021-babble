@@ -1,4 +1,4 @@
-package gg.babble.babble.dto;
+package gg.babble.babble.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

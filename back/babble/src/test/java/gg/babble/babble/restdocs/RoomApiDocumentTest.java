@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.domain.repository.GameRepository;
 import gg.babble.babble.domain.repository.RoomRepository;
-import gg.babble.babble.dto.TagRequest;
+import gg.babble.babble.dto.request.TagRequest;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;

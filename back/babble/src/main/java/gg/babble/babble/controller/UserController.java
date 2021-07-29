@@ -1,7 +1,7 @@
 package gg.babble.babble.controller;
 
-import gg.babble.babble.dto.UserRequest;
-import gg.babble.babble.dto.UserResponse;
+import gg.babble.babble.dto.request.UserRequest;
+import gg.babble.babble.dto.response.UserResponse;
 import gg.babble.babble.service.UserService;
 import javax.validation.Valid;
 import org.springframework.http.ResponseEntity;
