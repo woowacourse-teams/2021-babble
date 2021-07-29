@@ -1,0 +1,13 @@
+[source,http,options="nowrap"]
+----
+POST /ws/rooms/1/chat HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+Content-Length: 51
+Host: localhost:8080
+
+{
+    "userId": 1,
+    "content": "그루밍은 졸려"
+}
+----

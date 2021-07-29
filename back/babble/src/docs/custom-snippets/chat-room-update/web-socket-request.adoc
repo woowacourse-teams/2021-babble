@@ -1,0 +1,13 @@
+[source,http,options="nowrap"]
+----
+POST /ws/rooms/1/users HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+Content-Length: 48
+Host: localhost:8080
+
+{
+    "userId": 1,
+    "sessionId": "35B1UD9A"
+}
+----
