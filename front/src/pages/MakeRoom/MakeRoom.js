@@ -1,5 +1,7 @@
 import './MakeRoom.scss';
 
+import React, { useEffect } from 'react';
+
 import Body2 from '../../core/Typography/Body2';
 import DropdownInput from '../../components/SearchInput/DropdownInput';
 import Headline2 from '../../core/Typography/Headline2';
@@ -7,15 +9,30 @@ import { Link } from 'react-router-dom';
 import MainImage from '../../components/MainImage/MainImage';
 import PATH from '../../constants/path';
 import PageLayout from '../../core/Layout/PageLayout';
-import React from 'react';
+import PropTypes from 'prop-types';
 import RoundButton from '../../components/Button/RoundButton';
 import SearchInput from '../../components/SearchInput/SearchInput';
 import TagList from '../../chunks/TagList/TagList';
+import axios from 'axios';
 
-const MakeRoom = () => {
+const MakeRoom = ({ gameId }) => {
+  const [imageUrl, setImageUrl] = useState('');
+
+  const getImage = async () => {
+    const mainImage = await axios.get(
+      `https://babble.o-r.kr/api/games/${gameId}/images`
+    );
+
+    setImageUrl(mainImage);
+  };
+
+  useEffect(() => {
+    getImage();
+  }, []);
+
   return (
     <main className='make-room-container'>
-      <MainImage />
+      <MainImage imageSrc={imageUrl} />
       <PageLayout type='narrow'>
         <Headline2>방 생성하기</Headline2>
         <section className='inputs'>
@@ -51,6 +68,8 @@ const MakeRoom = () => {
   );
 };
 
-MakeRoom.propTypes = {};
+MakeRoom.propTypes = {
+  gameId: PropTypes.number,
+};
 
 export default MakeRoom;

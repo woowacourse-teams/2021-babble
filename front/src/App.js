@@ -14,7 +14,8 @@ const App = () => {
         <RoomList />
       </Route>
       <Route path={PATH.MAKE_ROOM}>
-        <MakeRoom />
+        {/* TODO: 나중에 gameId를 선택하는 게임에 따라 바뀌도록 로직 추가하기 */}
+        <MakeRoom gameId={0} />
       </Route>
     </Switch>
   );
