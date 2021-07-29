@@ -13,12 +13,15 @@ import gg.babble.babble.dto.UserResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(readOnly = true)
 public class RoomService {
+
+    private static final int PAGE_SIZE = 16;
 
     private final RoomRepository roomRepository;
     private final GameService gameService;
@@ -46,8 +49,17 @@ public class RoomService {
         return FoundRoomResponse.from(findRoomOrElseThrow(id));
     }
 
-    public List<FoundRoomResponse> findGamesByGameId(final int gameId, final List<Long> tagIds, final int page) {
+    public List<FoundRoomResponse> findGamesByGameIdAndTagIds(final Long gameId, final List<Long> tagIds, final Pageable pageable) {
+        return findByGameIdAndTagIdsInRepository(gameId, tagIds, pageable).stream()
+            .map(FoundRoomResponse::from)
+            .collect(Collectors.toList());
+    }
 
+    private List<Room> findByGameIdAndTagIdsInRepository(final Long gameId, final List<Long> tagIds, final Pageable pageable) {
+        if (tagIds.isEmpty()) {
+            return roomRepository.findAllByGameId(gameId, pageable);
+        }
+        return roomRepository.findAllByGameIdAndTagIds(gameId, tagIds, (long) tagIds.size(), pageable);
     }
 
     private Room findRoomOrElseThrow(final Long id) {

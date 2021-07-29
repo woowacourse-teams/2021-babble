@@ -5,20 +5,29 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.domain.Game;
+import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
+import gg.babble.babble.dto.CreatedRoomResponse;
 import gg.babble.babble.dto.FoundRoomResponse;
 import gg.babble.babble.dto.GameResponse;
 import gg.babble.babble.dto.HeadCountResponse;
+import gg.babble.babble.dto.RoomRequest;
+import gg.babble.babble.dto.TagRequest;
 import gg.babble.babble.dto.TagResponse;
+import gg.babble.babble.dto.UserJoinRequest;
 import gg.babble.babble.dto.UserResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 class RoomServiceTest extends ApplicationTest {
 
@@ -26,6 +35,7 @@ class RoomServiceTest extends ApplicationTest {
     private static final String 실버 = "실버";
     private static final String _2시간 = "2시간";
     private static final String 루트 = "루트";
+    private static final int COUNT_OF_ONE_PAGE = 16;
 
     @Autowired
     private RoomService roomService;
@@ -39,6 +49,23 @@ class RoomServiceTest extends ApplicationTest {
     @Autowired
     private TagService tagService;
 
+    private CreatedRoomResponse savedRoom;
+
+    @BeforeEach
+    void setUp() {
+        savedRoom = roomService.create(
+            new RoomRequest(1L,
+                Arrays.asList(
+                    new TagRequest(tagService.findByName(실버).get(0).getId()),
+                    new TagRequest(tagService.findByName(_2시간).get(0).getId())
+                ),
+                4
+            )
+        );
+
+        roomService.sendJoinRoom(savedRoom.getRoomId(), new UserJoinRequest(1L, "1234"));
+    }
+
     @DisplayName("요청한 Id의 방 정보를 반환한다.")
     @Test
     void findTest() {
@@ -48,14 +75,14 @@ class RoomServiceTest extends ApplicationTest {
         List<Tag> tags = Arrays.asList(tagService.findByName(실버).get(0),
             tagService.findByName(_2시간).get(0));
         FoundRoomResponse expected = FoundRoomResponse.builder()
-            .roomId(1L)
+            .roomId(savedRoom.getRoomId())
             .game(new GameResponse(game.getId(), game.getName()))
             .host(UserResponse.from(user))
-            .headCount(new HeadCountResponse(1, 4))
+            .headCount(new HeadCountResponse(1, savedRoom.getMaxHeadCount()))
             .tags(tagResponsesFromTags(tags))
             .build();
 
-        FoundRoomResponse foundRoomResponse = roomService.findById(1L);
+        FoundRoomResponse foundRoomResponse = roomService.findById(savedRoom.getRoomId());
         assertThat(foundRoomResponse).usingRecursiveComparison()
             .ignoringFields("rooms", "createdDate").isEqualTo(expected);
     }
@@ -73,67 +100,32 @@ class RoomServiceTest extends ApplicationTest {
             .isInstanceOf(BabbleNotFoundException.class);
     }
 
-    @DisplayName("요청한 gameId에 해당되는 방 정보들을 반환한다.")
-    @Test
-    void findRoomsByGameIdTest() {
-        // given
-        int gameId = 1;
-        // 이런거 테스트 충족을 위해서 데이터로더가 아니고 독립적인 테스트 단위로 데이터를 채워넣어야한다고 생각되긴 함..
-        int countOfOnePage = 16;
-
-        // when
-        List<FoundRoomResponse> roomResponses = roomService.findGamesByGameId(gameId);
-
-        // then
-        assertThat(roomResponses).hasSize(countOfOnePage);
-    }
-
     @DisplayName("요청한 gameId와 page에 해당되는 방 정보들을 반환한다.")
     @Test
     void findRoomsByGameIdAndPageTest() {
         // given
-        int gameId = 1;
-        int page = 1;
-        // 이런거 테스트 충족을 위해서 데이터로더가 아니고 독립적인 테스트 단위로 데이터를 채워넣어야한다고 생각되긴 함..
-        int countOfOnePage = 16;
+        Long gameId = 1L;
+        Pageable pageable = PageRequest.of(0, COUNT_OF_ONE_PAGE);
 
         // when
-        List<FoundRoomResponse> roomResponses = roomService.findGamesByGameId(gameId, page);
+        List<FoundRoomResponse> roomResponses = roomService.findGamesByGameIdAndTagIds(gameId, new ArrayList<>(), pageable);
 
         // then
-        assertThat(roomResponses).hasSize(countOfOnePage);
-    }
-
-    @DisplayName("요청한 gameId와 tags에 해당되는 방 정보들을 반환한다.")
-    @Test
-    void findRoomsByGameIdAndTagsTest() {
-        // given
-        int gameId = 1;
-        List<Long> tagIds = Arrays.asList(1L, 2L, 3L);
-        // 이런거 테스트 충족을 위해서 데이터로더가 아니고 독립적인 테스트 단위로 데이터를 채워넣어야한다고 생각되긴 함..
-        int countOfOnePage = 16;
-
-        // when
-        List<FoundRoomResponse> roomResponses = roomService.findGamesByGameId(gameId, tagIds);
-
-        // then
-        assertThat(roomResponses).hasSize(countOfOnePage);
+        assertThat(roomResponses).hasSize(COUNT_OF_ONE_PAGE);
     }
 
     @DisplayName("요청한 gameId와 page, tags에 해당되는 방 정보들을 반환한다.")
     @Test
     void findRoomsByGameIdAndTagsTest() {
         // given
-        int gameId = 1;
-        int page = 1;
-        List<Long> tagIds = Arrays.asList(1L, 2L, 3L);
-        // 이런거 테스트 충족을 위해서 데이터로더가 아니고 독립적인 테스트 단위로 데이터를 채워넣어야한다고 생각되긴 함..
-        int countOfOnePage = 16;
+        Long gameId = 1L;
+        Pageable pageable = PageRequest.of(0, COUNT_OF_ONE_PAGE);
+        List<Long> tagIds = Arrays.asList(1L, 2L);
 
         // when
-        List<FoundRoomResponse> roomResponses = roomService.findGamesByGameId(gameId, tagIds, page);
+        List<FoundRoomResponse> roomResponses = roomService.findGamesByGameIdAndTagIds(gameId, tagIds, pageable);
 
         // then
-        assertThat(roomResponses).hasSize(countOfOnePage);
+        assertThat(roomResponses).hasSize(COUNT_OF_ONE_PAGE);
     }
 }

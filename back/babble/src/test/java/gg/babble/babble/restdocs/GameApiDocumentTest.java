@@ -45,7 +45,7 @@ public class GameApiDocumentTest extends ApplicationTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$[0].id").value(1L))
             .andExpect(jsonPath("$[0].name").value("League Of Legends"))
-            .andExpect(jsonPath("$[0].headCount").value(1))
+            .andExpect(jsonPath("$[0].headCount").value(20))
             .andExpect(jsonPath("$[0].thumbnail").value("https://static-cdn.jtvnw.net/ttv-boxart/League%20of%20Legends-1080x1436.jpg"))
             .andExpect(jsonPath("$[1].id").value(2L))
             .andExpect(jsonPath("$[1].name").value("Overwatch"))

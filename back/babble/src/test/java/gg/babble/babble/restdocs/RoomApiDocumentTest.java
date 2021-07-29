@@ -1,41 +1,41 @@
 package gg.babble.babble.restdocs;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+    import static org.hamcrest.Matchers.hasSize;
+    import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+    import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+    import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+    import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+    import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+    import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+    import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+    import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+    import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+    import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+    import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+    import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import gg.babble.babble.ApplicationTest;
-import gg.babble.babble.domain.repository.GameRepository;
-import gg.babble.babble.domain.repository.RoomRepository;
-import gg.babble.babble.dto.TagRequest;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.restdocs.RestDocumentationContextProvider;
-import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
+    import com.fasterxml.jackson.databind.ObjectMapper;
+    import gg.babble.babble.ApplicationTest;
+    import gg.babble.babble.domain.repository.GameRepository;
+    import gg.babble.babble.domain.repository.RoomRepository;
+    import gg.babble.babble.dto.TagRequest;
+    import java.util.Arrays;
+    import java.util.HashMap;
+    import java.util.Map;
+    import org.junit.jupiter.api.BeforeEach;
+    import org.junit.jupiter.api.DisplayName;
+    import org.junit.jupiter.api.Test;
+    import org.junit.jupiter.api.extension.ExtendWith;
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.http.MediaType;
+    import org.springframework.restdocs.RestDocumentationContextProvider;
+    import org.springframework.restdocs.RestDocumentationExtension;
+    import org.springframework.test.context.junit.jupiter.SpringExtension;
+    import org.springframework.test.web.servlet.MockMvc;
+    import org.springframework.test.web.servlet.ResultActions;
+    import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+    import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+    import org.springframework.web.context.WebApplicationContext;
 
 @ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
 public class RoomApiDocumentTest extends ApplicationTest {
@@ -150,7 +150,7 @@ public class RoomApiDocumentTest extends ApplicationTest {
         // - page는 1부터 시작한다.
         int countOfOnePage = 16;
 
-        ResultActions actions = mockMvc.perform(get("/api/rooms/?gameId=" + dummyGameId)
+        ResultActions actions = mockMvc.perform(get("/api/rooms?gameId=" + dummyGameId)
             .accept(MediaType.APPLICATION_JSON_VALUE));
 
         for (int i = 0; i < countOfOnePage; i++) {
@@ -180,7 +180,8 @@ public class RoomApiDocumentTest extends ApplicationTest {
                 fieldWithPath("[].host.avatar").description("호스트 아바타"),
                 fieldWithPath("[].headCount.current").description("현재 참가 인원"),
                 fieldWithPath("[].headCount.max").description("최대 참가 인원"),
-                fieldWithPath("[].tags[].name").description("태그 리스트"))));
+                fieldWithPath("[].tags[].id").description("태그 Id"),
+                fieldWithPath("[].tags[].name").description("태그 이름"))));
     }
 
     @DisplayName("태그 없이 게임과 page 번호에 해당하는 방 목록을 조회한다.")
@@ -191,8 +192,10 @@ public class RoomApiDocumentTest extends ApplicationTest {
         // - page는 1부터 시작한다.
         int countOfOnePage = 16;
 
-        ResultActions actions = mockMvc.perform(get("/api/rooms/?gameId=" + dummyGameId + "&page=1")
+        ResultActions actions = mockMvc.perform(get("/api/rooms?gameId=" + dummyGameId + "&page=1")
             .accept(MediaType.APPLICATION_JSON_VALUE));
+
+        actions.andDo(MockMvcResultHandlers.print());
 
         for (int i = 0; i < countOfOnePage; i++) {
             actions.andExpect(status().isOk())
@@ -221,7 +224,8 @@ public class RoomApiDocumentTest extends ApplicationTest {
                 fieldWithPath("[].host.avatar").description("호스트 아바타"),
                 fieldWithPath("[].headCount.current").description("현재 참가 인원"),
                 fieldWithPath("[].headCount.max").description("최대 참가 인원"),
-                fieldWithPath("[].tags[].name").description("태그 리스트"))));
+                fieldWithPath("[].tags[].id").description("태그 Id"),
+                fieldWithPath("[].tags[].name").description("태그 이름"))));
     }
 
     @DisplayName("page 번호 없이 게임과 태그에 해당하는 방 목록을 조회한다.")
@@ -232,7 +236,7 @@ public class RoomApiDocumentTest extends ApplicationTest {
         // - page는 1부터 시작한다.
         int countOfOnePage = 16;
 
-        ResultActions actions = mockMvc.perform(get("/api/rooms/?gameId=" + dummyGameId + "&tagIds=1,2")
+        ResultActions actions = mockMvc.perform(get("/api/rooms?gameId=" + dummyGameId + "&tagIds=1,2")
             .accept(MediaType.APPLICATION_JSON_VALUE));
 
         for (int i = 0; i < countOfOnePage; i++) {
@@ -262,7 +266,8 @@ public class RoomApiDocumentTest extends ApplicationTest {
                 fieldWithPath("[].host.avatar").description("호스트 아바타"),
                 fieldWithPath("[].headCount.current").description("현재 참가 인원"),
                 fieldWithPath("[].headCount.max").description("최대 참가 인원"),
-                fieldWithPath("[].tags[].name").description("태그 리스트"))));
+                fieldWithPath("[].tags[].id").description("태그 Id"),
+                fieldWithPath("[].tags[].name").description("태그 이름"))));
     }
 
     @DisplayName("게임과 page 번호, 태그에 해당하는 방 목록을 조회한다.")
@@ -273,7 +278,7 @@ public class RoomApiDocumentTest extends ApplicationTest {
         // - page는 1부터 시작한다.
         int countOfOnePage = 16;
 
-        ResultActions actions = mockMvc.perform(get("/api/rooms/?gameId=" + dummyGameId + "&tagIds=1,2&page=1")
+        ResultActions actions = mockMvc.perform(get("/api/rooms?gameId=" + dummyGameId + "&tagIds=1,2&page=1")
             .accept(MediaType.APPLICATION_JSON_VALUE));
 
         for (int i = 0; i < countOfOnePage; i++) {
@@ -303,7 +308,8 @@ public class RoomApiDocumentTest extends ApplicationTest {
                 fieldWithPath("[].host.avatar").description("호스트 아바타"),
                 fieldWithPath("[].headCount.current").description("현재 참가 인원"),
                 fieldWithPath("[].headCount.max").description("최대 참가 인원"),
-                fieldWithPath("[].tags[].name").description("태그 리스트"))));
+                fieldWithPath("[].tags[].id").description("태그 Id"),
+                fieldWithPath("[].tags[].name").description("태그 이름"))));
     }
 }
-}
+
