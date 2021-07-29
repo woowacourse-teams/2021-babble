@@ -11,7 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-public class WebSocketTest extends ApplicationTest {
+public class WebSocketConnectTest extends ApplicationTest {
 
     @Override
     @BeforeEach
