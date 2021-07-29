@@ -12,7 +12,7 @@
   transition: ease-in 0.1s;
 
   &:hover {
-    transform: scaleX(1.01) scaleY(1.03);
+    transform: scale(1.01);
   }
 
   .information {
@@ -47,7 +47,7 @@
   }
 
   &:active {
-    transform: scale(0.96);
-    transition: transform 70ms ease-in;
+    transform: scale(0.99);
+    transition: transform 10ms ease-in;
   }
 }

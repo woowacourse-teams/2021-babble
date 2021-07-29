@@ -20,6 +20,9 @@ const SquareButtonTemplate = () => (
         width: '54rem',
       }}
     >
+      <SquareButton size='tiny'>
+        <Caption2>방 생성하기</Caption2>
+      </SquareButton>
       <SquareButton size='small'>
         <Caption2>방 생성하기</Caption2>
       </SquareButton>
@@ -31,7 +34,7 @@ const SquareButtonTemplate = () => (
       </SquareButton>
     </div>
     <br />
-    <div style={{ width: '54rem', height: '9rem', padding: '1rem 2rem' }}>
+    <div style={{ width: '54rem', height: '9rem', padding: '1rem 0' }}>
       <SquareButton size='block'>
         <Body1>방 생성하기</Body1>
       </SquareButton>
@@ -45,6 +48,9 @@ const SquareButtonTemplate = () => (
         width: '54rem',
       }}
     >
+      <SquareButton size='tiny' colored={false}>
+        <Caption2>방 생성하기</Caption2>
+      </SquareButton>
       <SquareButton size='small' colored={false}>
         <Caption2>방 생성하기</Caption2>
       </SquareButton>
@@ -56,7 +62,7 @@ const SquareButtonTemplate = () => (
       </SquareButton>
     </div>
     <br />
-    <div style={{ width: '54rem', height: '9rem', padding: '1rem 2rem' }}>
+    <div style={{ width: '54rem', height: '9rem', padding: '1rem 0' }}>
       <SquareButton size='block' colored={false}>
         <Body1>방 생성하기</Body1>
       </SquareButton>
@@ -74,6 +80,9 @@ const RoundButtonTemplate = () => (
         width: '54rem',
       }}
     >
+      <RoundButton size='tiny' colored={true}>
+        <Caption2>방 생성하기</Caption2>
+      </RoundButton>
       <RoundButton size='small' colored={true}>
         <Caption2>방 생성하기</Caption2>
       </RoundButton>
@@ -85,7 +94,7 @@ const RoundButtonTemplate = () => (
       </RoundButton>
     </div>
     <br />
-    <div style={{ width: '54rem', height: '9rem', padding: '1rem 2rem' }}>
+    <div style={{ width: '54rem', height: '9rem', padding: '1rem 0' }}>
       <RoundButton size='block' colored={true}>
         <Body1>방 생성하기</Body1>
       </RoundButton>
@@ -99,6 +108,9 @@ const RoundButtonTemplate = () => (
         width: '54rem',
       }}
     >
+      <RoundButton size='tiny'>
+        <Caption2>방 생성하기</Caption2>
+      </RoundButton>
       <RoundButton size='small'>
         <Caption2>방 생성하기</Caption2>
       </RoundButton>
@@ -110,7 +122,7 @@ const RoundButtonTemplate = () => (
       </RoundButton>
     </div>
     <br />
-    <div style={{ width: '54rem', height: '9rem', padding: '1rem 2rem' }}>
+    <div style={{ width: '54rem', height: '9rem', padding: '1rem 0' }}>
       <RoundButton size='block'>
         <Body1>방 생성하기</Body1>
       </RoundButton>

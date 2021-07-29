@@ -4,7 +4,7 @@
   flex-direction: column;
   align-items: center;
 
-  .subtitle1 {
+  .headline2 {
     margin: 4rem 0;
   }
 
@@ -18,18 +18,19 @@
 
   .tag-list-section {
     width: 100%;
-    min-height: 4rem;
-    margin-bottom: 4rem;
+    min-height: 2rem;
+    margin-bottom: 5rem;
 
     .linear-layout {
-      justify-content: center;
+      justify-content: flex-start;
     }
   }
 
   .buttons {
     display: flex;
     justify-content: center;
-    & > button {
+
+    button {
       margin: 1rem;
     }
   }

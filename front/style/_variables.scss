@@ -13,7 +13,8 @@ $border-radius: (
 );
 
 $button-padding: (
-  small: 0.6rem 1.8rem,
+  tiny: 0.6rem 1.8rem,
+  small: 0.8rem 2.2rem,
   medium: 1.4rem 2.6rem,
   large: 1.8rem 4rem,
 );
@@ -61,4 +62,6 @@ $z-index: (
   layer-back-1: -1,
   layer-middle: 0,
   layer-front-1: 1,
+  layer-modal-dimmer: 998,
+  layer-modal: 999,
 );
