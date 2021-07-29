@@ -3,6 +3,7 @@ package gg.babble.babble.util;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import gg.babble.babble.exception.BabbleIllegalStatementException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -24,6 +25,6 @@ class UrlParserTest {
         String wrongUrl = "/topic/jasonManse";
         assertThatThrownBy(() -> {
             UrlParser.getRoomId(wrongUrl);
-        }).isInstanceOf(IllegalStateException.class);
+        }).isInstanceOf(BabbleIllegalStatementException.class).hasMessageContaining("roomId를 파싱할 수 없는 url 입니다.");
     }
 }
