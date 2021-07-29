@@ -3,14 +3,14 @@ package gg.babble.babble.util;
 import java.util.Map;
 import org.springframework.util.AntPathMatcher;
 
-public enum UrlPhaser {
+public enum UrlParser {
     ROOM_SUBSCRIBE_URL_PATTERN("/topic/rooms/{roomId}/*");
 
-    public static final AntPathMatcher PATH_MATCHER = new AntPathMatcher();
+    private static final AntPathMatcher PATH_MATCHER = new AntPathMatcher();
 
     private final String urlPattern;
 
-    UrlPhaser(final String urlPattern) {
+    UrlParser(final String urlPattern) {
         this.urlPattern = urlPattern;
     }
 

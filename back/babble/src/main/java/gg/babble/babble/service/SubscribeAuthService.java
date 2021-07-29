@@ -1,6 +1,6 @@
 package gg.babble.babble.service;
 
-import gg.babble.babble.util.UrlPhaser;
+import gg.babble.babble.util.UrlParser;
 import gg.babble.babble.exception.BabbleIllegalStatementException;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +22,7 @@ public class SubscribeAuthService {
     }
 
     private void validateHeadCount(final String destinationUrl) {
-        Long roomId = UrlPhaser.getRoomId(destinationUrl);
+        Long roomId = UrlParser.getRoomId(destinationUrl);
         if (roomService.isFullRoom(roomId)) {
             throw new BabbleIllegalStatementException("유저가 가득찬 방에는 입장할 수 없습니다.");
         }
