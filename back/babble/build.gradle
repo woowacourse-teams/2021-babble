@@ -56,6 +56,10 @@ test {
 	useJUnitPlatform()
 }
 
+asciidoctor.doFirst {
+	delete file('src/main/resources/static/docs')
+}
+
 asciidoctor {
 	attributes 'snippets': snippetsDir
 	inputs.dir snippetsDir
