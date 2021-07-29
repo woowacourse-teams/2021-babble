@@ -1,15 +1,20 @@
-$box-shadow: 0 0.08rem 0.5rem rgb(0 0 0 / 18%);
+$box-shadow: 0 0.08rem 0.5rem rgba(0, 0, 0, 0.18);
+$room-box-shadow: 0 0 0.6rem rgba(134, 134, 134, 0.35);
 $button-box-shadow: 1px 3px 10px rgba(255, 56, 82, 0.35);
+$dot-box-shadow: 0 0 0 1px rgb(118, 123, 131);
 
 $border-radius: (
   tag: 50rem,
   speech-bubble: 0.5rem,
   modal: 0.8rem,
   modal-minimize: 0.8rem 0.8rem 0 0,
+  dots-container: 1.5rem,
+  dot: 9999px,
 );
 
 $button-padding: (
-  small: 1rem 1.8rem,
+  tiny: 0.6rem 1.8rem,
+  small: 0.8rem 2.2rem,
   medium: 1.4rem 2.6rem,
   large: 1.8rem 4rem,
 );
@@ -36,6 +41,8 @@ $grey-scale: (
   11: rgb(91, 95, 102),
   12: rgb(63, 66, 71),
   black: #222,
+  black-opacity: rgba(0, 0, 0, 0.55),
+  black-opacity-light: rgba(0, 0, 0, 0.15),
 );
 
 $primary: (
@@ -53,5 +60,8 @@ $shadow: (
 
 $z-index: (
   layer-back-1: -1,
+  layer-middle: 0,
   layer-front-1: 1,
+  layer-modal-dimmer: 998,
+  layer-modal: 999,
 );

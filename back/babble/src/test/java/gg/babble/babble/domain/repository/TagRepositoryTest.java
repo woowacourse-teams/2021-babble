@@ -1,12 +1,12 @@
 package gg.babble.babble.domain.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import gg.babble.babble.ApplicationTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class TagRepositoryTest extends ApplicationTest {
 
@@ -17,6 +17,6 @@ public class TagRepositoryTest extends ApplicationTest {
     @ParameterizedTest
     @ValueSource(strings = {"실버", "2시간", "솔로랭크"})
     void dummyGameTest(final String tagName) {
-        assertThat(tagRepository.existsById(tagName)).isTrue();
+        assertThat(tagRepository.findByName(tagName)).isNotEmpty();
     }
 }

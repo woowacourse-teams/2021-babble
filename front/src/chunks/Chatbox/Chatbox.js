@@ -13,7 +13,7 @@ const Chatbox = ({ roomId, createdAt, onSubmit, children }) => {
   }, [children]);
 
   return (
-    <main className='chatbox-container'>
+    <section className='chatbox-container'>
       <section className='chattings' ref={chattingsRef}>
         <article className='chatting-room-info'>
           <span>{`${roomId}번 방`}</span>
@@ -24,7 +24,7 @@ const Chatbox = ({ roomId, createdAt, onSubmit, children }) => {
       <section className='chatting-form'>
         <ChattingForm onSubmit={onSubmit} />
       </section>
-    </main>
+    </section>
   );
 };
 

@@ -6,9 +6,9 @@ import React from 'react';
 
 const Avatar = ({ size = 'small', direction = 'col', imageSrc, children }) => {
   return (
-    <figure className={direction}>
+    <figure className={`avatar-container ${direction}`}>
       <AvatarImage imageSrc={imageSrc} size={size} />
-      <figcaption className={size}>{children}</figcaption>
+      <figcaption>{children}</figcaption>
     </figure>
   );
 };

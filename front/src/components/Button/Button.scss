@@ -12,6 +12,10 @@
 }
 
 button {
+  &.tiny {
+    padding: m.button-padding(tiny);
+  }
+
   &.small {
     padding: m.button-padding(small);
   }
@@ -37,6 +41,7 @@ button {
     );
     box-shadow: v.$button-box-shadow;
     color: m.grey-scale(0);
+    border: 1px solid m.primary(babble-pink);
 
     &:hover {
       background: linear-gradient(

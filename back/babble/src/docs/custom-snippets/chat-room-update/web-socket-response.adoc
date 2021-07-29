@@ -1,0 +1,15 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Location: /ws/rooms/1/users
+Content-Type: application/json
+Content-Length: 48
+
+{
+    "userId": 1,
+    "sessionId": "35B1UD9A"
+}
+----

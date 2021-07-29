@@ -22,7 +22,7 @@ const RoundButton = ({
 };
 
 RoundButton.propTypes = {
-  size: PropTypes.string,
+  size: PropTypes.oneOf(['small', 'medium', 'large']),
   type: PropTypes.string,
   colored: PropTypes.bool,
   onClick: PropTypes.func,

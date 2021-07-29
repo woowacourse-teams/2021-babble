@@ -2,7 +2,14 @@
 @use '../../../style/mixins' as m;
 
 .tag-list-container {
-  & .tag-container {
+  &.default {
+    .linear-layout {
+      flex-wrap: wrap;
+      gap: 1rem 0;
+    }
+  }
+
+  .tag-container {
     margin-right: 1rem;
   }
 }

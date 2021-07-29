@@ -1,0 +1,41 @@
+@use '../../../style/variables' as v;
+@use '../../../style/mixins' as m;
+
+.game-card-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 20rem;
+  height: 30rem;
+
+  img {
+    border-radius: 0.8rem;
+    width: 100%;
+
+    &:hover {
+      box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 25%);
+    }
+  }
+
+  figcaption {
+    width: 100%;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+
+    & > * {
+      margin-bottom: 0.2rem;
+    }
+
+    .body2 {
+      font-weight: 600;
+      color: m.grey-scale(12);
+    }
+  }
+
+  .participant-count {
+    color: m.primary(babble-pink);
+    font-weight: 600;
+  }
+}

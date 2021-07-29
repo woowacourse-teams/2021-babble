@@ -1,0 +1,19 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Location: /topic/rooms/1/chat
+Content-Type: application/json
+Content-Length: 144
+
+{
+		"user": {
+			"id": 1,
+			"nickname": "그루밍",
+			"avatar" : https://d2bidcnq0n74fu.cloudfront.net/1.jpg
+		},
+		"content": "그루밍은 졸려"
+}
+----
