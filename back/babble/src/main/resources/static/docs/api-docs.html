@@ -542,13 +542,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/rooms HTTP/1.1
-Content-Type: application/json
+Content-Type: application/json;charset=utf-8
 Accept: application/json
-Content-Length: 127
+Content-Length: 150
 Host: localhost:8080
 
 {
   "gameId" : 1,
+  "maxHeadCount" : 20,
   "tags" : [ {
     "name" : "실버"
   }, {
@@ -579,6 +580,11 @@ Host: localhost:8080
 <td class="tableblock halign-center valign-top"><p class="tableblock">게임 Id</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>maxHeadCount</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">최대 참가 인원</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><code>tags[].name</code></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock">태그 리스트</p></td>
@@ -596,15 +602,16 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Location: api/rooms/2
 Content-Type: application/json
-Content-Length: 236
+Content-Length: 263
 
 {
   "roomId" : 2,
-  "createdDate" : "2021-07-27T12:44:18.139",
+  "createdDate" : "2021-07-29T11:13:23.288332",
   "game" : {
     "id" : 1,
-    "name" : "League Of Legend"
+    "name" : "League Of Legends"
   },
+  "maxHeadCount" : 20,
   "tags" : [ {
     "name" : "실버"
   }, {
@@ -648,6 +655,11 @@ Content-Length: 236
 <td class="tableblock halign-center valign-top"><p class="tableblock"><code>game.name</code></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock">게임 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>maxHeadCount</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">최대 참가 인원</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><code>tags[].name</code></p></td>
@@ -681,14 +693,23 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 201
+Content-Length: 390
 
 {
   "roomId" : 1,
-  "createdDate" : "2021-07-27T12:44:17.695",
+  "createdDate" : "2021-07-29T11:13:22.690849",
   "game" : {
     "id" : 1,
-    "name" : "League Of Legend"
+    "name" : "League Of Legends"
+  },
+  "host" : {
+    "id" : 1,
+    "nickname" : "루트",
+    "avatar" : "https://hyeon9mak.github.io/assets/images/9vatar.png"
+  },
+  "headCount" : {
+    "current" : 1,
+    "max" : 4
   },
   "tags" : [ {
     "name" : "실버"
@@ -733,6 +754,31 @@ Content-Length: 201
 <td class="tableblock halign-center valign-top"><p class="tableblock">게임 이름</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>host.id</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">호스트 Id</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>host.nickname</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">호스트 닉네임</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>host.avatar</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">호스트 아바타</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>headCount.current</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">현재 참가 인원</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>headCount.max</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">최대 참가 인원</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><code>tags[].name</code></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock">태그 리스트</p></td>
@@ -747,14 +793,18 @@ Content-Length: 201
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_http_request_3">3.1. HTTP Request</h3>
-<div class="paragraph">
-<p>Unresolved directive in api-docs.adoc - include::/Users/yoonsung/source/github/2021-babble/back/babble/build/generated-snippets/../custom-snippets/chat-room-connect/socket-request.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /connection HTTP/1.1</code></pre>
+</div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_http_response_3">3.2. HTTP Response</h3>
-<div class="paragraph">
-<p>Unresolved directive in api-docs.adoc - include::/Users/yoonsung/source/github/2021-babble/back/babble/build/generated-snippets/../custom-snippets/chat-room-connect/socket-response.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -764,14 +814,44 @@ Content-Length: 201
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_http_request_4">4.1. HTTP Request</h3>
-<div class="paragraph">
-<p>Unresolved directive in api-docs.adoc - include::/Users/yoonsung/source/github/2021-babble/back/babble/build/generated-snippets/../custom-snippets/user-list/socket-request.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /topic/rooms/1/users HTTP/1.1</code></pre>
+</div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_http_response_4">4.2. HTTP Response</h3>
-<div class="paragraph">
-<p>Unresolved directive in api-docs.adoc - include::/Users/yoonsung/source/github/2021-babble/back/babble/build/generated-snippets/../custom-snippets/user-list/socket-response.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Location: /topic/rooms/1/users
+Content-Type: application/json
+Content-Length: 362
+
+{
+  "host" : {
+		"id": 1,
+		"nickname": "wilder",
+		"avatar" : https://d2bidcnq0n74fu.cloudfront.net/avatar-1.jpg
+	},
+  "guests": [
+		{
+			"id" : 2,
+			"nickname": "hyeon9mak",
+			"avatar" : https://d2bidcnq0n74fu.cloudfront.net/avatar-2.jpg
+		},
+		{
+			"id" : 3,
+			"nickname": "jason",
+			"avatar" : https://d2bidcnq0n74fu.cloudfront.net/avatar-3.jpg
+		}
+  ]
+}</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -781,14 +861,38 @@ Content-Length: 201
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_http_request_5">5.1. HTTP Request</h3>
-<div class="paragraph">
-<p>Unresolved directive in api-docs.adoc - include::/Users/yoonsung/source/github/2021-babble/back/babble/build/generated-snippets/../custom-snippets/chat-room-update/socket-request.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /ws/rooms/1/users HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+Content-Length: 48
+Host: localhost:8080
+
+{
+    "userId": 1,
+    "sessionId": "35B1UD9A"
+}</code></pre>
+</div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_http_response_5">5.2. HTTP Response</h3>
-<div class="paragraph">
-<p>Unresolved directive in api-docs.adoc - include::/Users/yoonsung/source/github/2021-babble/back/babble/build/generated-snippets/../custom-snippets/chat-room-update/socket-response.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Location: /ws/rooms/1/users
+Content-Type: application/json
+Content-Length: 48
+
+{
+    "userId": 1,
+    "sessionId": "35B1UD9A"
+}</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -798,14 +902,42 @@ Content-Length: 201
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_http_request_6">6.1. HTTP Request</h3>
-<div class="paragraph">
-<p>Unresolved directive in api-docs.adoc - include::/Users/yoonsung/source/github/2021-babble/back/babble/build/generated-snippets/../custom-snippets/chat-send/socket-request.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /ws/rooms/1/chat HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+Content-Length: 51
+Host: localhost:8080
+
+{
+    "userId": 1,
+    "content": "그루밍은 졸려"
+}</code></pre>
+</div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_http_response_6">6.2. HTTP Response</h3>
-<div class="paragraph">
-<p>Unresolved directive in api-docs.adoc - include::/Users/yoonsung/source/github/2021-babble/back/babble/build/generated-snippets/../custom-snippets/chat-send/socket-response.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Location: /topic/rooms/1/chat
+Content-Type: application/json
+Content-Length: 144
+
+{
+		"user": {
+			"id": 1,
+			"nickname": "그루밍",
+			"avatar" : https://d2bidcnq0n74fu.cloudfront.net/1.jpg
+		},
+		"content": "그루밍은 졸려"
+}</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -815,14 +947,33 @@ Content-Length: 201
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_http_request_7">7.1. HTTP Request</h3>
-<div class="paragraph">
-<p>Unresolved directive in api-docs.adoc - include::/Users/yoonsung/source/github/2021-babble/back/babble/build/generated-snippets/../custom-snippets/chat-receive/socket-request.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /topic/rooms/1/chat HTTP/1.1</code></pre>
+</div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_http_response_7">7.2. HTTP Response</h3>
-<div class="paragraph">
-<p>Unresolved directive in api-docs.adoc - include::/Users/yoonsung/source/github/2021-babble/back/babble/build/generated-snippets/../custom-snippets/chat-receive/socket-response.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Location: /topic/rooms/1/chat
+Content-Type: application/json
+Content-Length: 144
+
+{
+		"user": {
+			"id": 1,
+			"nickname": "그루밍",
+			"avatar" : https://d2bidcnq0n74fu.cloudfront.net/1.jpg
+		},
+		"content": "그루밍은 졸려"
+}</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -888,7 +1039,7 @@ Content-Length: 84
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2021-07-27 12:32:30 +0900
+Last updated 2021-07-29 11:03:55 +0900
 </div>
 </div>
 </body>
