@@ -11,7 +11,9 @@ import gg.babble.babble.dto.response.FoundRoomResponse;
 import gg.babble.babble.dto.response.UserListUpdateResponse;
 import gg.babble.babble.dto.response.UserResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -59,7 +61,8 @@ public class RoomService {
         if (tagIds.isEmpty()) {
             return roomRepository.findAllByGameId(gameId, pageable);
         }
-        return roomRepository.findAllByGameIdAndTagIds(gameId, tagIds, (long) tagIds.size(), pageable);
+        Set<Long> distinctTagIds = new HashSet<>(tagIds);
+        return roomRepository.findAllByGameIdAndTagIds(gameId, distinctTagIds, (long) distinctTagIds.size(), pageable);
     }
 
     private Room findRoomOrElseThrow(final Long id) {
