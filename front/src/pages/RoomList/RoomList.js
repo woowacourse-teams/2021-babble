@@ -28,20 +28,20 @@ const RoomList = ({ gameId }) => {
 
   const getImage = async () => {
     const { image } = await axios.get(
-      `https://babble.o-r.kr/api/games/${gameId}/images`
+      `https://babble-test.o-r.kr/api/games/${gameId}/images`
     );
 
     setImageUrl(image);
   };
 
   const getTags = async () => {
-    const tags = await axios.get('https://babble.o-r.kr/api/tags');
+    const tags = await axios.get('https://babble-test.o-r.kr/api/tags');
 
     setTagList(tags);
   };
 
   const getRooms = async (tagIds) => {
-    const response = await axios.get('https://babble.o-r.kr/api/rooms', {
+    const response = await axios.get('https://babble-test.o-r.kr/api/rooms', {
       params: { gameId: 1, tagIds, page: 1 },
     });
     const rooms = await response.json();
@@ -72,7 +72,7 @@ const RoomList = ({ gameId }) => {
 
     try {
       const response = await axios.get(
-        `https://babble.o-r.kr/api/rooms/${selectedRoomId}`
+        `https://babble-test.o-r.kr/api/rooms/${selectedRoomId}`
       );
 
       const { tags, roomId, createdDate } = response.data;
