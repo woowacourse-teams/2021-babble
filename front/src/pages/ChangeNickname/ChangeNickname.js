@@ -1,15 +1,18 @@
-import './ModalNickname.scss';
+import './ChangeNickname.scss';
 
 import Caption1 from '../../core/Typography/Caption1';
 import { IoCloseOutline } from 'react-icons/io5';
 import React from 'react';
-import RoundButton from '../Button/RoundButton';
+import RoundButton from '../../components/Button/RoundButton';
 import Subtitle3 from '../../core/Typography/Subtitle3';
-import TextInput from '../SearchInput/TextInput';
+import TextInput from '../../components/SearchInput/TextInput';
 import { useModal } from '../../contexts/ModalProvider';
 
-const ModalNickname = () => {
+// import { useUser } from '../../contexts/UserProvider';
+
+const ChangeNickname = () => {
   const { close } = useModal();
+  // const { changeNickname } = useUser();
 
   return (
     <div className='nickname-container'>
@@ -32,4 +35,4 @@ const ModalNickname = () => {
   );
 };
 
-export default ModalNickname;
+export default ChangeNickname;
