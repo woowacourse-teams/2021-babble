@@ -90,6 +90,8 @@ const ChattingRoom = ({ tags, roomId, createdAt }) => {
         socketURL.lastIndexOf(SOCKET_URL_DIVIDER)
       );
 
+      if (user_subscription.current) user_subscription.current.unsubscribe();
+
       user_subscription.current = stompClient.current.subscribe(
         `/topic/rooms/${roomId}/users`,
         (message) => {
@@ -97,6 +99,8 @@ const ChattingRoom = ({ tags, roomId, createdAt }) => {
           setParticipants(users);
         }
       );
+
+      if (chat_subscription.current) chat_subscription.current.unsubscribe();
 
       chat_subscription.current = stompClient.current.subscribe(
         `/topic/rooms/${roomId}/chat`,
