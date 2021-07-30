@@ -16,23 +16,27 @@ import RoundButton from '../../components/Button/RoundButton';
 import SearchInput from '../../components/SearchInput/SearchInput';
 import TagList from '../../chunks/TagList/TagList';
 import axios from 'axios';
+import { useModal } from '../../contexts/ModalProvider';
 
 const MakeRoom = ({ gameId }) => {
   const [imageUrl, setImageUrl] = useState('');
   const [tagList, setTagList] = useState([]);
   const [selectedTagList, setSelectedTagList] = useState([]);
-  const [headCount, setHeadCount] = useState(0);
+  const [maxHeadCount, setMaxHeadCount] = useState(0);
+  const { open } = useModal();
 
   const getImage = async () => {
-    const { image } = await axios.get(
+    const response = await axios.get(
       `https://babble-test.o-r.kr/api/games/${gameId}/images`
     );
+    const image = response.data.image;
 
     setImageUrl(image);
   };
 
   const getTags = async () => {
-    const tags = await axios.get('https://babble-test.o-r.kr/api/tags');
+    const response = await axios.get('https://babble-test.o-r.kr/api/tags');
+    const tags = response.data;
 
     setTagList(tags);
   };
@@ -46,24 +50,31 @@ const MakeRoom = ({ gameId }) => {
 
   const eraseTag = (e) => {
     // TODO: selectedTag 찾는 로직 고민해보기(element 구조에 종속적임)
-    const selectedTag = e.target
+    const selectedTagName = e.target
       .closest('.tag-container')
       .querySelector('.caption1').textContent;
 
-    setSelectedTagList((prevTagList) => [
-      ...prevTagList.filter((tag) => tag !== selectedTag),
-    ]);
+    setSelectedTagList((prevTagList) =>
+      prevTagList.filter((tag) => tag.name !== selectedTagName)
+    );
   };
 
-  const createRoom = async () => {
+  // const generateEightDigits = () => {
+  //   return Math.floor(10000000 + Math.random() * 9000000);
+  // };
+
+  const createRoom = async (e) => {
+    e.preventDefault();
+
     try {
       // TODO: 테스트 서버에서 실제 배포 서버로 변경하기
+      const tagIds = selectedTagList.map(({ id }) => ({ id }));
       const response = await axios.post(
         'https://babble-test.o-r.kr/api/rooms',
         {
           gameId,
-          maxHeadCount: headCount,
-          tags: selectedTagList,
+          maxHeadCount,
+          tags: tagIds,
         }
       );
       const { tags, roomId, createdDate } = response.data;
@@ -88,15 +99,16 @@ const MakeRoom = ({ gameId }) => {
   }, []);
 
   return (
-    <main className='make-room-container'>
+    <form className='make-room-container' onSubmit={createRoom}>
       <MainImage imageSrc={imageUrl} />
       <PageLayout type='narrow'>
         <Headline2>방 생성하기</Headline2>
         <section className='inputs'>
+          {/* TODO: DropdownInput 컴포넌트에서 도메인 제거하기 */}
           <DropdownInput
             dropdownKeywords={[...Array(21).keys()].slice(2)}
-            headCount={headCount}
-            setHeadCount={setHeadCount}
+            maxHeadCount={maxHeadCount}
+            setMaxHeadCount={setMaxHeadCount}
           />
           <SearchInput
             autoCompleteKeywords={tagList}
@@ -113,13 +125,13 @@ const MakeRoom = ({ gameId }) => {
             </RoundButton>
           </Link>
           <Link to={PATH.HOME}>
-            <RoundButton colored={true} size='small' onClick={createRoom}>
+            <RoundButton type='submit' colored={true} size='small'>
               <Body2>생성하기</Body2>
             </RoundButton>
           </Link>
         </section>
       </PageLayout>
-    </main>
+    </form>
   );
 };
 
