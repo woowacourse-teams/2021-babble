@@ -4,7 +4,7 @@ import React, { useRef } from 'react';
 
 import PropTypes from 'prop-types';
 
-const TextInput = ({ placeholder = '닉네임을 입력해주세요.' }) => {
+const TextInput = ({ name, placeholder = '닉네임을 입력해주세요.' }) => {
   const containerRef = useRef(null);
 
   const onFocusInput = () => {
@@ -22,12 +22,18 @@ const TextInput = ({ placeholder = '닉네임을 입력해주세요.' }) => {
       onBlur={onBlurInput}
       ref={containerRef}
     >
-      <input type='text' className='input-inner' placeholder={placeholder} />
+      <input
+        type='text'
+        className='input-inner'
+        name={name}
+        placeholder={placeholder}
+      />
     </div>
   );
 };
 
 TextInput.propTypes = {
+  name: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
 };
 
