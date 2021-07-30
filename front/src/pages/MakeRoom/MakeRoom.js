@@ -1,12 +1,12 @@
 import './MakeRoom.scss';
 
+import { Link, useHistory } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 
 import Body2 from '../../core/Typography/Body2';
 import ChattingRoom from '../ChattingRoom/ChattingRoom';
 import DropdownInput from '../../components/SearchInput/DropdownInput';
 import Headline2 from '../../core/Typography/Headline2';
-import { Link } from 'react-router-dom';
 import { MODAL_TYPE_CHATTING } from '../../constants/chat';
 import MainImage from '../../components/MainImage/MainImage';
 import PATH from '../../constants/path';
@@ -24,6 +24,7 @@ const MakeRoom = ({ gameId }) => {
   const [selectedTagList, setSelectedTagList] = useState([]);
   const [maxHeadCount, setMaxHeadCount] = useState(0);
   const { open } = useModal();
+  const history = useHistory();
 
   const getImage = async () => {
     const response = await axios.get(
@@ -59,10 +60,6 @@ const MakeRoom = ({ gameId }) => {
     );
   };
 
-  // const generateEightDigits = () => {
-  //   return Math.floor(10000000 + Math.random() * 9000000);
-  // };
-
   const createRoom = async (e) => {
     e.preventDefault();
 
@@ -88,6 +85,8 @@ const MakeRoom = ({ gameId }) => {
         />,
         MODAL_TYPE_CHATTING
       );
+
+      history.push({ pathname: PATH.HOME });
     } catch (error) {
       alert('방 생성을 하는 데 오류가 있습니다.');
     }
@@ -124,11 +123,9 @@ const MakeRoom = ({ gameId }) => {
               <Body2>취소하기</Body2>
             </RoundButton>
           </Link>
-          <Link to={PATH.HOME}>
-            <RoundButton type='submit' colored={true} size='small'>
-              <Body2>생성하기</Body2>
-            </RoundButton>
-          </Link>
+          <RoundButton type='submit' size='small' colored>
+            <Body2>생성하기</Body2>
+          </RoundButton>
         </section>
       </PageLayout>
     </form>
