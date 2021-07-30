@@ -14,6 +14,7 @@ import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.LastModifiedDate;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -32,6 +33,7 @@ public class User{
     @JoinColumn(name = "room_id")
     private Room room;
 
+    @LastModifiedDate
     private LocalDateTime joinedAt;
 
     public User(final String nickname) {
