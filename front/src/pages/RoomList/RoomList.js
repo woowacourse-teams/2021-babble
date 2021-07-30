@@ -24,18 +24,21 @@ const RoomList = ({ gameId }) => {
   const [tagList, setTagList] = useState([]);
   const [selectedTagList, setSelectedTagList] = useState([]);
   const [roomList, setRoomList] = useState([]);
+  // const { user, changeNickname } = useUser();
   const { open } = useModal();
 
   const getImage = async () => {
-    const { image } = await axios.get(
+    const response = await axios.get(
       `https://babble-test.o-r.kr/api/games/${gameId}/images`
     );
+    const image = response.data.image;
 
     setImageUrl(image);
   };
 
   const getTags = async () => {
-    const tags = await axios.get('https://babble-test.o-r.kr/api/tags');
+    const response = await axios.get('https://babble-test.o-r.kr/api/tags');
+    const tags = response.data;
 
     setTagList(tags);
   };
@@ -44,7 +47,7 @@ const RoomList = ({ gameId }) => {
     const response = await axios.get('https://babble-test.o-r.kr/api/rooms', {
       params: { gameId: 1, tagIds, page: 1 },
     });
-    const rooms = await response.json();
+    const rooms = response.data;
 
     setRoomList(rooms);
   };
@@ -58,14 +61,22 @@ const RoomList = ({ gameId }) => {
 
   const eraseTag = (e) => {
     // TODO: selectedTag 찾는 로직 고민해보기(element 구조에 종속적임)
-    const selectedTag = e.target
+    const selectedTagName = e.target
       .closest('.tag-container')
       .querySelector('.caption1').textContent;
 
     setSelectedTagList((prevTagList) => [
-      ...prevTagList.filter((tag) => tag !== selectedTag),
+      ...prevTagList.filter((tag) => tag.name !== selectedTagName),
     ]);
   };
+
+  // const generateEightDigits = () => {
+  //   // 닉네임에만 쓰일 숫자(userId와 관련 없음) 익명#84729384
+  //   // TODO: 지금은 숫자로 퉁치지만, 시간 나면 바로 형용사 + 명사 랜덤 매칭
+  //   // { noun: '너구리', image: '너구리 사진' }
+  //   // 라이브러리 npm 배포 가능
+  //   return Math.floor(10000000 + Math.random() * 9000000);
+  // };
 
   const joinChatting = async (e) => {
     const selectedRoomId = e.target.closest('.room-container').dataset.roomId;
