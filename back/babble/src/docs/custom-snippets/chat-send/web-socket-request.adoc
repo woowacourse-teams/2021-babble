@@ -1,10 +1,7 @@
 [source,http,options="nowrap"]
 ----
-POST /ws/rooms/1/chat HTTP/1.1
+/ws/rooms/1/chat
 Content-Type: application/json
-Accept: application/json
-Content-Length: 51
-Host: localhost:8080
 
 {
     "userId": 1,

@@ -51,7 +51,7 @@ include::{snippets}/read-room-test/http-response.adoc[]
 [cols="^,^,^",options="headers"]
 include::{snippets}/read-room/response-fields.adoc[]
 
-== 채팅방 입장 API
+== 방 입장 API
 
 === HTTP Request
 
@@ -61,46 +61,25 @@ include::{snippets}/../../src/docs/custom-snippets/chat-room-connect/web-socket-
 
 include::{snippets}/../../src/docs/custom-snippets/chat-room-connect/web-socket-response.adoc[]
 
-== 채팅방 유저 목록 API
+== 방 입장 정보 업데이트 API
 
-=== HTTP Request
-
-include::{snippets}/../../src/docs/custom-snippets/user-list/web-socket-request.adoc[]
-
-=== HTTP Response
-
-include::{snippets}/../../src/docs/custom-snippets/user-list/web-socket-response.adoc[]
-
-== 채팅방 입장 정보 업데이트 API
-
-=== HTTP Request
+=== WebSocket Send
 
 include::{snippets}/../../src/docs/custom-snippets/chat-room-update/web-socket-request.adoc[]
 
-=== HTTP Response
+=== WebSocket Subscribe
 
-include::{snippets}/../../src/docs/custom-snippets/chat-room-update/web-socket-response.adoc[]
+include::{snippets}/../../src/docs/custom-snippets/user-list/web-socket-response.adoc[]
 
 == 채팅 전송 API
 
-=== HTTP Request
+=== WebSocket Send
 
 include::{snippets}/../../src/docs/custom-snippets/chat-send/web-socket-request.adoc[]
 
-=== HTTP Response
+=== WebSocket Subscribe
 
 include::{snippets}/../../src/docs/custom-snippets/chat-send/web-socket-response.adoc[]
-
-== 채팅 수신 API
-
-=== HTTP Request
-
-include::{snippets}/../../src/docs/custom-snippets/chat-receive/web-socket-request.adoc[]
-
-=== HTTP Response
-
-include::{snippets}/../../src/docs/custom-snippets/chat-receive/web-socket-response.adoc[]
-
 
 == 태그 전체 수신 API
 

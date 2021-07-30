@@ -28,7 +28,7 @@ jobs:
 
     - name: 빌드 진행
       working-directory: ./back/babble
-      run: ./gradlew clean build
+      run: ./gradlew build
 
     - name: SCP 명령을 이용해 WAS 서버로 jar 파일 전송
       working-directory: ./back/babble
