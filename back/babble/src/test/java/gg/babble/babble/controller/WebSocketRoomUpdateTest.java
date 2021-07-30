@@ -17,7 +17,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,9 +52,9 @@ public class WebSocketRoomUpdateTest extends ApplicationTest {
     @Autowired
     private UserRepository userRepository;
 
-    private User user2;
-    private User user3;
-    private User user4;
+    private User host;
+    private User guest1;
+    private User guest2;
 //
 //    @Autowired
 //    private TagRepository tagRepository;
@@ -75,13 +74,16 @@ public class WebSocketRoomUpdateTest extends ApplicationTest {
         super.setUp();
         completableFuture = new CompletableFuture<>();
         URL = "ws://localhost:" + port + "/connection";
-        user2 = userRepository.findByNickname("user0").get(0);
-        user3 = userRepository.findByNickname("와일더").get(0);
-        user4 = userRepository.findByNickname("현구막").get(0);
+//        user2 = userRepository.findByNickname("user0").get(0);
+//        user3 = userRepository.findByNickname("와일더").get(0);
+//        user4 = userRepository.findByNickname("현구막").get(0);
+        host = userRepository.findByNickname("user0").get(0);
+        guest1 = userRepository.findByNickname("루트").get(0);
+        guest2 = userRepository.findByNickname("user2").get(0);
         expectedUserListUpdateResponse = new UserListUpdateResponse(
-            UserResponse.from(user2),
+            UserResponse.from(host),
             Collections.singletonList(
-                UserResponse.from(user3)
+                UserResponse.from(guest1)
             )
         );
     }
@@ -116,46 +118,49 @@ public class WebSocketRoomUpdateTest extends ApplicationTest {
         stompClient.setMessageConverter(new MappingJackson2MessageConverter());
 
         // Connection
-        userJoinAndBroadCasting(stompClient, new UserJoinRequest(user3.getId(), "7777"));
+        userJoinAndBroadCasting(stompClient, new UserJoinRequest(guest1.getId(), "7777"));
         UserListUpdateResponse userListUpdateResponse = completableFuture.get(5, SECONDS);
 
         //then
         assertThat(userListUpdateResponse).usingRecursiveComparison().isEqualTo(expectedUserListUpdateResponse);
     }
 
-    @Disabled
     @DisplayName("1번방에 있는 유저가 퇴장시, 자신을 포함한 1번방의 유저 정보들을 수신한다.")
     @Test
     public void testUserExitTest() throws InterruptedException, ExecutionException, TimeoutException {
         WebSocketStompClient stompClient = new WebSocketStompClient(new SockJsClient(createTransportClient()));
         stompClient.setMessageConverter(new MappingJackson2MessageConverter());
 
-        // 두번째 유저 입장.
-        userJoinAndBroadCasting(stompClient, new UserJoinRequest(user3.getId(), "7777"));
+        // user1 입장.
+        StompSession stompSession1 = stompClient.connect(URL, new StompSessionHandlerAdapter() {
+        }).get(120, SECONDS);
+        userJoinAndBroadCastingUseSession(stompSession1, new UserJoinRequest(guest1.getId(), "7777"));
 
-        // 세번째 유저 입장
+        // user2 입장
         StompSession stompSession2 = stompClient.connect(URL, new StompSessionHandlerAdapter() {
-        }).get(60, SECONDS);
+        }).get(120, SECONDS);
+        userJoinAndBroadCastingUseSession(stompSession1, new UserJoinRequest(guest2.getId(), "8888"));
 
-        joinRoom(stompSession2);
-        sendJoinMessage(stompSession2, new UserJoinRequest(user4.getId(), "8888"));
-
+        // 연결끊기, user2 퇴장
         stompSession2.disconnect();
 
-        completableFuture.get(5, SECONDS);  // 와일더(id = 2L) 입장 메시지
-        completableFuture.get(5, SECONDS);  // 현구막(id = 3L) 입장메시지
         UserListUpdateResponse userListUpdateResponse = completableFuture.get(5, SECONDS);  // 현구막 퇴장
 
         //then
         assertThat(userListUpdateResponse).usingRecursiveComparison().isEqualTo(expectedUserListUpdateResponse);
     }
 
+    private void userJoinAndBroadCastingUseSession(final StompSession stompSession, final UserJoinRequest userJoinRequest) {
+        stompSession.subscribe(SUBSCRIBE_ROOM_UPDATE_BROAD_ENDPOINT, new UserUpdateStompFrameHandler());
+        sendJoinMessage(stompSession, userJoinRequest);
+    }
+
     private void userJoinAndBroadCasting(WebSocketStompClient stompClient, UserJoinRequest userJoinRequest)
         throws InterruptedException, ExecutionException, TimeoutException {
         StompSession stompSession = stompClient.connect(URL, new StompSessionHandlerAdapter() {
-        }).get(60, SECONDS);
+        }).get(120, SECONDS);
 
-        joinRoom(stompSession);
+        stompSession.subscribe(SUBSCRIBE_ROOM_UPDATE_BROAD_ENDPOINT, new UserUpdateStompFrameHandler());
         sendJoinMessage(stompSession, userJoinRequest);
     }
 

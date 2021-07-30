@@ -71,6 +71,7 @@ public class User{
         }
 
         this.room = null;
+        this.joinedAt = null;
         delegateToLeave(room);
     }
 
