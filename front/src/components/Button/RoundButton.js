@@ -22,8 +22,8 @@ const RoundButton = ({
 };
 
 RoundButton.propTypes = {
-  size: PropTypes.oneOf(['small', 'medium', 'large']),
-  type: PropTypes.string,
+  size: PropTypes.oneOf(['tiny', 'small', 'medium', 'large', 'block']),
+  type: PropTypes.oneOf(['button', 'submit']),
   colored: PropTypes.bool,
   onClick: PropTypes.func,
   children: PropTypes.node,
