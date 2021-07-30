@@ -460,40 +460,28 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_http_response_2">2.2. HTTP Response</a></li>
 </ul>
 </li>
-<li><a href="#_채팅방_입장_api">3. 채팅방 입장 API</a>
+<li><a href="#_방_입장_api">3. 방 입장 API</a>
 <ul class="sectlevel2">
 <li><a href="#_http_request_3">3.1. HTTP Request</a></li>
 <li><a href="#_http_response_3">3.2. HTTP Response</a></li>
 </ul>
 </li>
-<li><a href="#_채팅방_유저_목록_api">4. 채팅방 유저 목록 API</a>
+<li><a href="#_방_입장_정보_업데이트_api">4. 방 입장 정보 업데이트 API</a>
 <ul class="sectlevel2">
-<li><a href="#_http_request_4">4.1. HTTP Request</a></li>
-<li><a href="#_http_response_4">4.2. HTTP Response</a></li>
+<li><a href="#_websocket_send">4.1. WebSocket Send</a></li>
+<li><a href="#_websocket_subscribe">4.2. WebSocket Subscribe</a></li>
 </ul>
 </li>
-<li><a href="#_채팅방_입장_정보_업데이트_api">5. 채팅방 입장 정보 업데이트 API</a>
+<li><a href="#_채팅_전송_api">5. 채팅 전송 API</a>
 <ul class="sectlevel2">
-<li><a href="#_http_request_5">5.1. HTTP Request</a></li>
-<li><a href="#_http_response_5">5.2. HTTP Response</a></li>
+<li><a href="#_websocket_send_2">5.1. WebSocket Send</a></li>
+<li><a href="#_websocket_subscribe_2">5.2. WebSocket Subscribe</a></li>
 </ul>
 </li>
-<li><a href="#_채팅_전송_api">6. 채팅 전송 API</a>
+<li><a href="#_태그_전체_수신_api">6. 태그 전체 수신 API</a>
 <ul class="sectlevel2">
-<li><a href="#_http_request_6">6.1. HTTP Request</a></li>
-<li><a href="#_http_response_6">6.2. HTTP Response</a></li>
-</ul>
-</li>
-<li><a href="#_채팅_수신_api">7. 채팅 수신 API</a>
-<ul class="sectlevel2">
-<li><a href="#_http_request_7">7.1. HTTP Request</a></li>
-<li><a href="#_http_response_7">7.2. HTTP Response</a></li>
-</ul>
-</li>
-<li><a href="#_태그_전체_수신_api">8. 태그 전체 수신 API</a>
-<ul class="sectlevel2">
-<li><a href="#_http_request_8">8.1. HTTP Request</a></li>
-<li><a href="#_http_response_8">8.2. HTTP Response</a></li>
+<li><a href="#_http_request_4">6.1. HTTP Request</a></li>
+<li><a href="#_http_response_4">6.2. HTTP Response</a></li>
 </ul>
 </li>
 </ul>
@@ -606,7 +594,7 @@ Content-Length: 303
 
 {
   "roomId" : 21,
-  "createdDate" : "2021-07-30T17:23:39.814",
+  "createdDate" : "2021-07-30T17:54:04.200",
   "game" : {
     "id" : 1,
     "name" : "League Of Legends"
@@ -705,7 +693,7 @@ Content-Length: 414
 
 {
   "roomId" : 1,
-  "createdDate" : "2021-07-30T17:23:36.539",
+  "createdDate" : "2021-07-30T17:54:00.741",
   "game" : {
     "id" : 1,
     "name" : "League Of Legends"
@@ -804,7 +792,7 @@ Content-Length: 414
 </div>
 </div>
 <div class="sect1">
-<h2 id="_채팅방_입장_api">3. 채팅방 입장 API</h2>
+<h2 id="_방_입장_api">3. 방 입장 API</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_http_request_3">3.1. HTTP Request</h3>
@@ -825,27 +813,28 @@ Content-Length: 414
 </div>
 </div>
 <div class="sect1">
-<h2 id="_채팅방_유저_목록_api">4. 채팅방 유저 목록 API</h2>
+<h2 id="_방_입장_정보_업데이트_api">4. 방 입장 정보 업데이트 API</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_http_request_4">4.1. HTTP Request</h3>
+<h3 id="_websocket_send">4.1. WebSocket Send</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /topic/rooms/1/users HTTP/1.1</code></pre>
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">SEND /ws/rooms/1/users
+Content-Type: application/json
+
+{
+    "userId": 1,
+    "sessionId": "35B1UD9A"
+}</code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_http_response_4">4.2. HTTP Response</h3>
+<h3 id="_websocket_subscribe">4.2. WebSocket Subscribe</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Location: /topic/rooms/1/users
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">SUBSCRIBE /topic/rooms/1/users
 Content-Type: application/json
-Content-Length: 362
 
 {
   "host" : {
@@ -872,58 +861,14 @@ Content-Length: 362
 </div>
 </div>
 <div class="sect1">
-<h2 id="_채팅방_입장_정보_업데이트_api">5. 채팅방 입장 정보 업데이트 API</h2>
+<h2 id="_채팅_전송_api">5. 채팅 전송 API</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_http_request_5">5.1. HTTP Request</h3>
+<h3 id="_websocket_send_2">5.1. WebSocket Send</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /ws/rooms/1/users HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">/ws/rooms/1/chat
 Content-Type: application/json
-Accept: application/json
-Content-Length: 48
-Host: localhost:8080
-
-{
-    "userId": 1,
-    "sessionId": "35B1UD9A"
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_http_response_5">5.2. HTTP Response</h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Location: /ws/rooms/1/users
-Content-Type: application/json
-Content-Length: 48
-
-{
-    "userId": 1,
-    "sessionId": "35B1UD9A"
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_채팅_전송_api">6. 채팅 전송 API</h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_http_request_6">6.1. HTTP Request</h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /ws/rooms/1/chat HTTP/1.1
-Content-Type: application/json
-Accept: application/json
-Content-Length: 51
-Host: localhost:8080
 
 {
     "userId": 1,
@@ -933,24 +878,19 @@ Host: localhost:8080
 </div>
 </div>
 <div class="sect2">
-<h3 id="_http_response_6">6.2. HTTP Response</h3>
+<h3 id="_websocket_subscribe_2">5.2. WebSocket Subscribe</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Location: /topic/rooms/1/chat
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">SUBSCRIBE /topic/rooms/1/chat
 Content-Type: application/json
-Content-Length: 144
 
 {
-		"user": {
-			"id": 1,
-			"nickname": "그루밍",
-			"avatar" : https://d2bidcnq0n74fu.cloudfront.net/1.jpg
-		},
-		"content": "그루밍은 졸려"
+    "user": {
+        "id": 1,
+        "nickname": "그루밍",
+        "avatar" : https://d2bidcnq0n74fu.cloudfront.net/1.jpg
+    },
+    "content": "그루밍은 졸려"
 }</code></pre>
 </div>
 </div>
@@ -958,46 +898,10 @@ Content-Length: 144
 </div>
 </div>
 <div class="sect1">
-<h2 id="_채팅_수신_api">7. 채팅 수신 API</h2>
+<h2 id="_태그_전체_수신_api">6. 태그 전체 수신 API</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_http_request_7">7.1. HTTP Request</h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /topic/rooms/1/chat HTTP/1.1</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_http_response_7">7.2. HTTP Response</h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Location: /topic/rooms/1/chat
-Content-Type: application/json
-Content-Length: 144
-
-{
-		"user": {
-			"id": 1,
-			"nickname": "그루밍",
-			"avatar" : https://d2bidcnq0n74fu.cloudfront.net/1.jpg
-		},
-		"content": "그루밍은 졸려"
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_태그_전체_수신_api">8. 태그 전체 수신 API</h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_http_request_8">8.1. HTTP Request</h3>
+<h3 id="_http_request_4">6.1. HTTP Request</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/tags HTTP/1.1
@@ -1007,7 +911,7 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_http_response_8">8.2. HTTP Response</h3>
+<h3 id="_http_response_4">6.2. HTTP Response</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
@@ -1062,7 +966,7 @@ Content-Length: 120
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2021-07-29 22:58:10 +0900
+Last updated 2021-07-30 17:52:48 +0900
 </div>
 </div>
 </body>

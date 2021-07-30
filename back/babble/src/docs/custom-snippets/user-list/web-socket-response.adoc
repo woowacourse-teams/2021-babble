@@ -1,12 +1,7 @@
 [source,http,options="nowrap"]
 ----
-HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Location: /topic/rooms/1/users
+SUBSCRIBE /topic/rooms/1/users
 Content-Type: application/json
-Content-Length: 362
 
 {
   "host" : {
