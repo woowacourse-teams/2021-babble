@@ -3,8 +3,8 @@ import './NicknameSection.scss';
 import Body2 from '../../core/Typography/Body2';
 import Caption1 from '../../core/Typography/Caption1';
 import Caption2 from '../../core/Typography/Caption2';
+import ChangeNickname from '../../pages/ChangeNickname/ChangeNickname';
 import { FiEdit } from 'react-icons/fi';
-import ModalNickname from '../Modal/ModalNickname';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useModal } from '../../contexts/ModalProvider';
@@ -13,7 +13,7 @@ const NicknameSection = ({ nickname }) => {
   const { open } = useModal();
 
   const openNicknameModal = () => {
-    open(<ModalNickname />);
+    open(<ChangeNickname />);
   };
 
   return (
