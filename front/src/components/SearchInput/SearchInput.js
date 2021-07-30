@@ -68,7 +68,7 @@ const SearchInput = ({
 
   useEffect(() => {
     setAutoCompleteList(autoCompleteKeywords);
-  }, []);
+  }, [autoCompleteKeywords]);
 
   return (
     <div className='input-container' ref={containerRef}>
