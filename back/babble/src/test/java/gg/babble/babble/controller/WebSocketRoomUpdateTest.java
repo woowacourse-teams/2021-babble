@@ -17,6 +17,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,6 +126,7 @@ public class WebSocketRoomUpdateTest extends ApplicationTest {
         assertThat(userListUpdateResponse).usingRecursiveComparison().isEqualTo(expectedUserListUpdateResponse);
     }
 
+    @Disabled
     @DisplayName("1번방에 있는 유저가 퇴장시, 자신을 포함한 1번방의 유저 정보들을 수신한다.")
     @Test
     public void testUserExitTest() throws InterruptedException, ExecutionException, TimeoutException {
