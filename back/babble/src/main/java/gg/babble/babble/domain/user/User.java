@@ -5,7 +5,6 @@ import gg.babble.babble.exception.BabbleIllegalArgumentException;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,15 +14,11 @@ import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-@EntityListeners(AuditingEntityListener.class)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class User{
+public class User {
 
     @NotNull(message = "아바타는 Null 이어서는 안됩니다.")
     private final String avatar = "https://hyeon9mak.github.io/assets/images/9vatar.png";
@@ -37,7 +32,6 @@ public class User{
     @JoinColumn(name = "room_id")
     private Room room;
 
-    @CreatedDate
     private LocalDateTime joinedAt;
 
     public User(final String nickname) {
