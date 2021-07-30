@@ -2,6 +2,7 @@ package gg.babble.babble.domain.user;
 
 import gg.babble.babble.exception.BabbleIllegalStatementException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import javax.persistence.Embeddable;
 import javax.persistence.OneToMany;
@@ -24,6 +25,7 @@ public class RoomUsers {
         if (users.isEmpty()) {
             throw new BabbleIllegalStatementException("유저가 존재하지 않습니다.");
         }
+        users.sort(Comparator.comparing(User::getJoinedAt));
         return users.get(0);
     }
 
@@ -31,6 +33,7 @@ public class RoomUsers {
         if (users.isEmpty()) {
             throw new BabbleIllegalStatementException("유저가 존재하지 않습니다.");
         }
+        users.sort(Comparator.comparing(User::getJoinedAt));
         return users.subList(1, users.size());
     }
 
