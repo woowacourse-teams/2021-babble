@@ -11,7 +11,7 @@ const TagErasable = ({ onDeleteTag, children }) => {
     <Tag customClass='erasable'>
       {children}
 
-      <BadgeClickable onClick={onDeleteTag}>
+      <BadgeClickable onClickBadge={onDeleteTag} ariaLabel='delete'>
         <IoCloseOutline size='18px' />
       </BadgeClickable>
     </Tag>

@@ -29,7 +29,7 @@ const TagList = ({ tags, onDeleteTag, erasable = false, useWheel = false }) => {
       <LinearLayout direction='row'>
         {erasable
           ? tags.map((tag, index) => (
-              <TagErasable key={index} deleteTag={onDeleteTag}>
+              <TagErasable key={index} onDeleteTag={onDeleteTag}>
                 <Caption1>{tag.name}</Caption1>
               </TagErasable>
             ))
