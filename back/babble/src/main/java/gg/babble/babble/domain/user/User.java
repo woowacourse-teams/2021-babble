@@ -2,6 +2,7 @@ package gg.babble.babble.domain.user;
 
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class User {
+public class User{
 
     @NotNull(message = "아바타는 Null 이어서는 안됩니다.")
     private final String avatar = "https://hyeon9mak.github.io/assets/images/9vatar.png";
@@ -30,6 +31,8 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Room room;
+
+    private LocalDateTime joinedAt;
 
     public User(final String nickname) {
         this(null, nickname);
@@ -54,6 +57,7 @@ public class User {
             this.room.leave(this);
         }
 
+        joinedAt = LocalDateTime.now();
         this.room = room;
 
         if (room.hasNotUser(this)) {
@@ -67,6 +71,7 @@ public class User {
         }
 
         this.room = null;
+        this.joinedAt = null;
         delegateToLeave(room);
     }
 
