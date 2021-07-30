@@ -154,7 +154,7 @@ const ChattingRoom = ({ tags, roomId, createdAt }) => {
                 ) : (
                   <SpeechBubbleWithAvatar
                     key={index}
-                    nickname={chatting.user.name}
+                    nickname={chatting.user.nickname}
                   >
                     {chatting.content}
                   </SpeechBubbleWithAvatar>

@@ -23,7 +23,7 @@ const Room = ({ imageSrc, room, onClickRoom }) => {
           </div>
           <div className='avatar'>
             <Avatar size='small' imageSrc={imageSrc} direction='row'>
-              <Body2>{host.name}</Body2>
+              <Body2>{host.nickname}</Body2>
             </Avatar>
           </div>
           <TagList tags={tags} />
@@ -44,7 +44,7 @@ Room.propTypes = {
     roomId: PropTypes.number,
     host: PropTypes.shape({
       id: PropTypes.number,
-      name: PropTypes.string,
+      nickname: PropTypes.string,
     }),
     headCount: PropTypes.shape({
       current: PropTypes.number,

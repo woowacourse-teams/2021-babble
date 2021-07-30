@@ -71,12 +71,12 @@ const RoomList = ({ gameId }) => {
     ]);
   };
 
-  const generateEightDigits = () => {
+  const generateSixDigits = () => {
     // 닉네임에만 쓰일 숫자(userId와 관련 없음) 익명#84729384
     // TODO: 지금은 숫자로 퉁치지만, 시간 나면 바로 형용사 + 명사 랜덤 매칭
     // { noun: '너구리', image: '너구리 사진' }
     // 라이브러리 npm 배포 가능
-    return Math.floor(10000000 + Math.random() * 9000000);
+    return Math.floor(100000 + Math.random() * 90000);
   };
 
   const joinChatting = async (e) => {
@@ -103,7 +103,15 @@ const RoomList = ({ gameId }) => {
     getRooms('');
     getTags();
     // TODO: localStorage로 새로고침 후에도 닉네임 유지되도록 관리
-    changeNickname(`익명#${generateEightDigits()}`);
+    changeNickname(`익명#${generateSixDigits()}`);
+
+    // 데모데이 이후 삭제될 운명
+    const interval = setInterval(() => {
+      const selectedTagIdParam = selectedTagList.map(({ id }) => id).join(',');
+      getRooms(selectedTagIdParam);
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {

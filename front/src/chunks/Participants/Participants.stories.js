@@ -14,16 +14,16 @@ Default.args = {
   participants: {
     host: {
       id: 1,
-      name: 'wilder',
+      nickname: 'wilder',
     },
     guests: [
       {
         id: 2,
-        name: 'hyeon9mak',
+        nickname: 'hyeon9mak',
       },
       {
         id: 3,
-        name: 'jason',
+        nickname: 'jason',
       },
     ],
   },
