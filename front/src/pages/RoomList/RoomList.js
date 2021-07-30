@@ -18,13 +18,14 @@ import SquareButton from '../../components/Button/SquareButton';
 import TagList from '../../chunks/TagList/TagList';
 import axios from 'axios';
 import { useModal } from '../../contexts/ModalProvider';
+import { useUser } from '../../contexts/UserProvider';
 
 const RoomList = ({ gameId }) => {
   const [imageUrl, setImageUrl] = useState('');
   const [tagList, setTagList] = useState([]);
   const [selectedTagList, setSelectedTagList] = useState([]);
   const [roomList, setRoomList] = useState([]);
-  // const { user, changeNickname } = useUser();
+  const { user, changeNickname } = useUser();
   const { open } = useModal();
 
   const getImage = async () => {
@@ -70,13 +71,13 @@ const RoomList = ({ gameId }) => {
     ]);
   };
 
-  // const generateEightDigits = () => {
-  //   // 닉네임에만 쓰일 숫자(userId와 관련 없음) 익명#84729384
-  //   // TODO: 지금은 숫자로 퉁치지만, 시간 나면 바로 형용사 + 명사 랜덤 매칭
-  //   // { noun: '너구리', image: '너구리 사진' }
-  //   // 라이브러리 npm 배포 가능
-  //   return Math.floor(10000000 + Math.random() * 9000000);
-  // };
+  const generateEightDigits = () => {
+    // 닉네임에만 쓰일 숫자(userId와 관련 없음) 익명#84729384
+    // TODO: 지금은 숫자로 퉁치지만, 시간 나면 바로 형용사 + 명사 랜덤 매칭
+    // { noun: '너구리', image: '너구리 사진' }
+    // 라이브러리 npm 배포 가능
+    return Math.floor(10000000 + Math.random() * 9000000);
+  };
 
   const joinChatting = async (e) => {
     const selectedRoomId = e.target.closest('.room-container').dataset.roomId;
@@ -106,6 +107,8 @@ const RoomList = ({ gameId }) => {
     getImage();
     getRooms('');
     getTags();
+    // TODO: localStorage로 새로고침 후에도 닉네임 유지되도록 관리
+    changeNickname(`익명#${generateEightDigits()}`);
   }, []);
 
   useEffect(() => {
@@ -120,7 +123,7 @@ const RoomList = ({ gameId }) => {
         <section className='room-list-header'>
           <Headline2>{'League of Legends'}</Headline2>
           <div className='side'>
-            <NicknameSection nickname={'wilder'} />
+            <NicknameSection nickname={user.nickname} />
             <Link to={PATH.MAKE_ROOM}>
               <SquareButton size='medium' colored>
                 <Body2>방 생성하기</Body2>
