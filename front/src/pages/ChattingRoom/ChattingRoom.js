@@ -1,11 +1,7 @@
 import './ChattingRoom.scss';
 
-import {
-  MODAL_TYPE_CHATTING,
-  SESSION_ID_LENGTH,
-  SOCKET_URL_DIVIDER,
-} from '../../constants/chat';
 import React, { useEffect, useRef, useState } from 'react';
+import { SESSION_ID_LENGTH, SOCKET_URL_DIVIDER } from '../../constants/chat';
 
 import Chatbox from '../../chunks/Chatbox/Chatbox';
 import { IoCloseOutline } from 'react-icons/io5';
@@ -21,14 +17,17 @@ import Subtitle3 from '../../core/Typography/Subtitle3';
 import TagList from '../../chunks/TagList/TagList';
 import axios from 'axios';
 import { useModal } from '../../contexts/ModalProvider';
+import useUpdateEffect from '../../hooks/useUpdateEffect';
 import { useUser } from '../../contexts/UserProvider';
 
-const ChattingRoom = ({ tags, participants, roomId, createdAt }) => {
+const ChattingRoom = ({ tags, roomId, createdAt }) => {
   const [chattings, setChattings] = useState([]);
+  const [participants, setParticipants] = useState({});
+
   const stompClient = useRef(null);
   const user_subscription = useRef(null);
   const chat_subscription = useRef(null);
-  const { open, close, minimize } = useModal();
+  const { close, minimize } = useModal();
   const {
     user: { nickname, id: userId },
     changeUserId,
@@ -53,29 +52,36 @@ const ChattingRoom = ({ tags, participants, roomId, createdAt }) => {
     e.target.reset();
   };
 
-  // 닉네임 변경 안하고 그냥 방 목록에 있는 방을 선택한 상황: default nickname으로 userId 신청
-  // userId 발급받고 방 입장(connection)
-
   const getUserId = async () => {
-    const generatedUser = await axios.post(
-      'https://babble-test.o-r.kr/api/users',
-      {
-        nickname,
-      }
-    );
+    const response = await axios.post('https://babble-test.o-r.kr/api/users', {
+      nickname,
+    });
+    const generatedUser = response.data;
 
     changeUserId(generatedUser.id);
   };
 
-  // useEffect(() => {
-  //   getUserId();
-  // }, []);
-
   useEffect(() => {
+    getUserId();
+
+    return () => {
+      if (user_subscription.current) {
+        user_subscription.current.unsubscribe();
+      }
+      if (chat_subscription.current) {
+        chat_subscription.current.unsubscribe();
+      }
+      if (stompClient.current) {
+        stompClient.current.disconnect();
+      }
+    };
+  }, []);
+
+  useUpdateEffect(() => {
     const socket = new SockJS('https://babble-test.o-r.kr/connection');
     stompClient.current = Stomp.over(socket);
 
-    getUserId();
+    if (stompClient.current) stompClient.current.disconnect();
 
     stompClient.current.connect({}, () => {
       const socketURL = socket._transport.url;
@@ -88,15 +94,7 @@ const ChattingRoom = ({ tags, participants, roomId, createdAt }) => {
         `/topic/rooms/${roomId}/users`,
         (message) => {
           const users = JSON.parse(message.body);
-          open(
-            <ChattingRoom
-              tags={tags}
-              participants={users}
-              roomId={roomId}
-              createdAt={createdAt}
-            />,
-            MODAL_TYPE_CHATTING
-          );
+          setParticipants(users);
         }
       );
 
@@ -119,19 +117,7 @@ const ChattingRoom = ({ tags, participants, roomId, createdAt }) => {
         JSON.stringify({ userId, sessionId })
       );
     });
-
-    return () => {
-      if (user_subscription.current) {
-        user_subscription.current.unsubscribe();
-      }
-      if (chat_subscription.current) {
-        chat_subscription.current.unsubscribe();
-      }
-      if (stompClient.current) {
-        stompClient.current.disconnect();
-      }
-    };
-  }, []);
+  }, [userId]);
 
   return (
     <div className='modal-chatting-room'>
@@ -184,20 +170,6 @@ ChattingRoom.propTypes = {
       name: PropTypes.string,
     })
   ),
-  participants: PropTypes.shape({
-    host: PropTypes.shape({
-      id: PropTypes.number,
-      name: PropTypes.string,
-      profileImg: PropTypes.string,
-    }),
-    guests: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.number,
-        name: PropTypes.string,
-        profileImg: PropTypes.string,
-      })
-    ),
-  }),
   roomId: PropTypes.number,
   createdAt: PropTypes.string,
 };

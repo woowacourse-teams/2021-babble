@@ -89,12 +89,7 @@ const RoomList = ({ gameId }) => {
 
       const { tags, roomId, createdDate } = response.data;
       open(
-        <ChattingRoom
-          tags={tags}
-          participants={{}}
-          roomId={roomId}
-          createdAt={createdDate}
-        />,
+        <ChattingRoom tags={tags} roomId={roomId} createdAt={createdDate} />,
         MODAL_TYPE_CHATTING
       );
     } catch (error) {

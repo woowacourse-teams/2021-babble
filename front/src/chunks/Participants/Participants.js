@@ -14,13 +14,13 @@ const Participants = ({ participants }) => {
       <LinearLayout>
         {participants?.host && (
           <Avatar direction='row' imageSrc={participants?.host?.profileImg}>
-            <Caption2>{participants?.host?.name}</Caption2>
+            <Caption2>{participants?.host?.nickname}</Caption2>
           </Avatar>
         )}
 
-        {participants?.guests?.map(({ profileImg, name }, index) => (
+        {participants?.guests?.map(({ profileImg, nickname }, index) => (
           <Avatar direction='row' key={index} imageSrc={profileImg}>
-            <Caption2>{name}</Caption2>
+            <Caption2>{nickname}</Caption2>
           </Avatar>
         ))}
       </LinearLayout>
@@ -32,13 +32,13 @@ Participants.propTypes = {
   participants: PropTypes.shape({
     host: PropTypes.shape({
       id: PropTypes.number,
-      name: PropTypes.string,
+      nickname: PropTypes.string,
       profileImg: PropTypes.string,
     }),
     guests: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.number,
-        name: PropTypes.string,
+        nickname: PropTypes.string,
         profileImg: PropTypes.string,
       })
     ),
