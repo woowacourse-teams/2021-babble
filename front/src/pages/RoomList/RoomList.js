@@ -17,6 +17,7 @@ import SearchInput from '../../components/SearchInput/SearchInput';
 import SquareButton from '../../components/Button/SquareButton';
 import TagList from '../../chunks/TagList/TagList';
 import axios from 'axios';
+import useInterval from '../../hooks/useInterval';
 import { useModal } from '../../contexts/ModalProvider';
 import { useUser } from '../../contexts/UserProvider';
 
@@ -66,9 +67,9 @@ const RoomList = ({ gameId }) => {
       .closest('.tag-container')
       .querySelector('.caption1').textContent;
 
-    setSelectedTagList((prevTagList) => [
-      ...prevTagList.filter((tag) => tag.name !== selectedTagName),
-    ]);
+    setSelectedTagList((prevTagList) =>
+      prevTagList.filter((tag) => tag.name !== selectedTagName)
+    );
   };
 
   const generateSixDigits = () => {
@@ -102,18 +103,17 @@ const RoomList = ({ gameId }) => {
     getImage();
     getRooms('');
     getTags();
+
     // TODO: localStorage로 새로고침 후에도 닉네임 유지되도록 관리
     changeNickname(`익명#${generateSixDigits()}`);
-
-    // 데모데이 이후 삭제될 운명
-    const interval = setInterval(() => {
-      const selectedTagIdParam = selectedTagList.map(({ id }) => id).join(',');
-      getRooms(selectedTagIdParam);
-    }, 5000);
-
-    return () => clearInterval(interval);
   }, []);
 
+  useInterval(() => {
+    const selectedTagIdParam = selectedTagList.map(({ id }) => id).join(',');
+    getRooms(selectedTagIdParam);
+  }, 5000);
+
+  // 데모데이 이후 삭제될 운명
   useEffect(() => {
     const selectedTagIdParam = selectedTagList.map(({ id }) => id).join(',');
     getRooms(selectedTagIdParam);
