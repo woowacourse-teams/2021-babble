@@ -11,7 +11,7 @@ import { useUser } from '../../contexts/UserProvider';
 
 const ChangeNickname = () => {
   const { close } = useModal();
-  const { changeNickname } = useUser();
+  const { user, changeNickname } = useUser();
 
   const submitNickname = (e) => {
     e.preventDefault();
@@ -28,7 +28,12 @@ const ChangeNickname = () => {
       </div>
       <div className='control-inputs'>
         <Subtitle3>닉네임 변경하기</Subtitle3>
-        <TextInput name='nickname' placeholder='닉네임을 입력해주세요.' />
+        <TextInput
+          value={user.nickname}
+          name='nickname'
+          placeholder='닉네임을 입력해주세요.'
+          isContentSelected
+        />
       </div>
       <div className='control-buttons'>
         <RoundButton onClick={close} size='small'>
