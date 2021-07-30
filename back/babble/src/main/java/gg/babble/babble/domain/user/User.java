@@ -15,6 +15,7 @@ import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -36,7 +37,7 @@ public class User{
     @JoinColumn(name = "room_id")
     private Room room;
 
-    @LastModifiedDate
+    @CreatedDate
     private LocalDateTime joinedAt;
 
     public User(final String nickname) {
