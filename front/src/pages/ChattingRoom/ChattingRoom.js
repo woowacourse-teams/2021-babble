@@ -19,15 +19,20 @@ import SpeechBubbleWithAvatar from '../../components/SpeechBubble/SpeechBubbleWi
 import { Stomp } from '@stomp/stompjs';
 import Subtitle3 from '../../core/Typography/Subtitle3';
 import TagList from '../../chunks/TagList/TagList';
+import axios from 'axios';
 import { useModal } from '../../contexts/ModalProvider';
+import { useUser } from '../../contexts/UserProvider';
 
 const ChattingRoom = ({ tags, participants, roomId, createdAt }) => {
   const [chattings, setChattings] = useState([]);
   const stompClient = useRef(null);
   const user_subscription = useRef(null);
   const chat_subscription = useRef(null);
-  const userId = useRef(-1);
   const { open, close, minimize } = useModal();
+  const {
+    user: { nickname, id: userId },
+    changeUserId,
+  } = useUser();
 
   const onMinimize = () => minimize();
 
@@ -42,16 +47,35 @@ const ChattingRoom = ({ tags, participants, roomId, createdAt }) => {
     stompClient.current.send(
       `/ws/rooms/${roomId}/chat`,
       {},
-      JSON.stringify({ userId: userId.current, content })
+      JSON.stringify({ userId, content })
     );
 
     e.target.reset();
   };
 
+  // 닉네임 변경 안하고 그냥 방 목록에 있는 방을 선택한 상황: default nickname으로 userId 신청
+  // userId 발급받고 방 입장(connection)
+
+  const getUserId = async () => {
+    const generatedUser = await axios.post(
+      'https://babble-test.o-r.kr/api/users',
+      {
+        nickname,
+      }
+    );
+
+    changeUserId(generatedUser.id);
+  };
+
+  // useEffect(() => {
+  //   getUserId();
+  // }, []);
+
   useEffect(() => {
-    // 웹소켓 연결, 웹소켓으로 subscribe해서 방 참가자 정보 불러오기
     const socket = new SockJS('https://babble-test.o-r.kr/connection');
     stompClient.current = Stomp.over(socket);
+
+    getUserId();
 
     stompClient.current.connect({}, () => {
       const socketURL = socket._transport.url;
@@ -89,11 +113,10 @@ const ChattingRoom = ({ tags, participants, roomId, createdAt }) => {
         }
       );
 
-      userId.current = Number(prompt('유저 아이디 입력하소'));
       stompClient.current.send(
         `/ws/rooms/${roomId}/users`,
         {},
-        JSON.stringify({ userId: userId.current, sessionId })
+        JSON.stringify({ userId, sessionId })
       );
     });
 
@@ -136,7 +159,7 @@ const ChattingRoom = ({ tags, participants, roomId, createdAt }) => {
           <Chatbox roomId={roomId} createdAt={createdAt} onSubmit={onSubmit}>
             {chattings &&
               chattings.map((chatting, index) =>
-                chatting.user.id === userId.current ? (
+                chatting.user.id === userId ? (
                   <SpeechBubble key={index}>{chatting.content}</SpeechBubble>
                 ) : (
                   <SpeechBubbleWithAvatar
@@ -155,7 +178,12 @@ const ChattingRoom = ({ tags, participants, roomId, createdAt }) => {
 };
 
 ChattingRoom.propTypes = {
-  tags: PropTypes.arrayOf(PropTypes.string),
+  tags: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string,
+    })
+  ),
   participants: PropTypes.shape({
     host: PropTypes.shape({
       id: PropTypes.number,
