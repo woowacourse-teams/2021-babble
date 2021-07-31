@@ -73,6 +73,8 @@ const ChattingRoom = ({ tags, roomId, createdAt }) => {
     getUserId();
 
     return () => {
+      sendMessage(`${nickname} 님이 퇴장했습니다!`);
+
       if (user_subscription.current) {
         user_subscription.current.unsubscribe();
       }
@@ -80,7 +82,6 @@ const ChattingRoom = ({ tags, roomId, createdAt }) => {
         chat_subscription.current.unsubscribe();
       }
       if (isConnected.current) {
-        sendMessage(`${nickname} 님이 퇴장했습니다!`);
         stompClient.current.disconnect();
         isConnected.current = false;
       }
