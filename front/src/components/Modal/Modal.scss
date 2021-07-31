@@ -19,6 +19,21 @@
     .linear-layout {
       justify-content: center;
       z-index: m.z-index(layer-modal-default);
+
+      .default-container {
+        position: relative;
+        width: 48rem;
+        height: 24rem;
+        background-color: m.grey-scale(white);
+        border-radius: m.border-radius(modal);
+        padding: 3rem;
+        justify-content: center;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        box-shadow: v.$box-shadow;
+      }
     }
   }
 
@@ -52,7 +67,7 @@
   right: 2rem;
   bottom: -0.5rem;
   cursor: pointer;
-  z-index: m.z-index(layer-modal);
+  z-index: m.z-index(layer-modal-chatting);
 
   background: linear-gradient(
     60deg,

@@ -2,18 +2,9 @@
 @use '../../../style/variables' as v;
 
 .nickname-container {
-  position: relative;
-  width: 48rem;
-  height: 24rem;
-  background-color: m.grey-scale(white);
-  border-radius: m.border-radius(modal);
-  padding: 3rem;
-  justify-content: center;
   display: flex;
-  justify-content: center;
   flex-direction: column;
   align-items: center;
-  box-shadow: v.$box-shadow;
 
   .control-bar {
     position: absolute;
