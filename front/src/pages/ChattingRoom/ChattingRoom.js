@@ -7,6 +7,7 @@ import Chatbox from '../../chunks/Chatbox/Chatbox';
 import { IoCloseOutline } from 'react-icons/io5';
 import { IoRemove } from 'react-icons/io5';
 import LinearLayout from '../../core/Layout/LinearLayout';
+import ModalError from '../../components/Modal/ModalError';
 import Participants from '../../chunks/Participants/Participants';
 import PropTypes from 'prop-types';
 import SockJS from 'sockjs-client';
@@ -17,6 +18,7 @@ import Subtitle3 from '../../core/Typography/Subtitle3';
 import TagList from '../../chunks/TagList/TagList';
 import axios from 'axios';
 import { useChattingModal } from '../../contexts/ChattingModalProvider';
+import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 import useUpdateEffect from '../../hooks/useUpdateEffect';
 import { useUser } from '../../contexts/UserProvider';
 
@@ -29,7 +31,8 @@ const ChattingRoom = ({ tags, roomId, createdAt }) => {
   const chat_subscription = useRef(null);
   const isConnected = useRef(false);
 
-  const { close, minimize } = useChattingModal();
+  const { openModal } = useDefaultModal();
+  const { closeChatting, minimize } = useChattingModal();
   const {
     user: { nickname, id: userId },
     changeUserId,
@@ -37,7 +40,7 @@ const ChattingRoom = ({ tags, roomId, createdAt }) => {
 
   const onMinimize = () => minimize();
 
-  const onClose = () => close();
+  const onClose = () => closeChatting();
 
   const sendMessage = (content) => {
     stompClient.current.send(
@@ -93,54 +96,57 @@ const ChattingRoom = ({ tags, roomId, createdAt }) => {
       isConnected.current = false;
     }
 
-    stompClient.current.connect({}, () => {
-      isConnected.current = true;
-      const socketURL = socket._transport.url;
-      const sessionId = socketURL.substring(
-        socketURL.lastIndexOf(SOCKET_URL_DIVIDER) - SESSION_ID_LENGTH,
-        socketURL.lastIndexOf(SOCKET_URL_DIVIDER)
-      );
+    stompClient.current.connect(
+      {},
+      () => {
+        isConnected.current = true;
+        const socketURL = socket._transport.url;
+        const sessionId = socketURL.substring(
+          socketURL.lastIndexOf(SOCKET_URL_DIVIDER) - SESSION_ID_LENGTH,
+          socketURL.lastIndexOf(SOCKET_URL_DIVIDER)
+        );
 
-      if (user_subscription.current) user_subscription.current.unsubscribe();
+        if (user_subscription.current) user_subscription.current.unsubscribe();
 
-      user_subscription.current = stompClient.current.subscribe(
-        `/topic/rooms/${roomId}/users`,
-        (message) => {
-          const users = JSON.parse(message.body);
-          setParticipants(users);
-        }
-      );
+        user_subscription.current = stompClient.current.subscribe(
+          `/topic/rooms/${roomId}/users`,
+          (message) => {
+            const users = JSON.parse(message.body);
+            setParticipants(users);
+          }
+        );
 
-      if (chat_subscription.current) chat_subscription.current.unsubscribe();
+        if (chat_subscription.current) chat_subscription.current.unsubscribe();
 
-      chat_subscription.current = stompClient.current.subscribe(
-        `/topic/rooms/${roomId}/chat`,
-        (message) => {
-          setChattings((prevChattings) => [
-            // setChatting를 해줄 때 어떤 조건을 기준으로 type을 나눠줄 것이냐.
-            // (나중에 chattings에서 메시지를 꺼내서 사용할 때 type에 따라 렌더링을 해줘야 하니깐)
+        chat_subscription.current = stompClient.current.subscribe(
+          `/topic/rooms/${roomId}/chat`,
+          (message) => {
+            setChattings((prevChattings) => [
+              ...prevChattings,
+              {
+                user: JSON.parse(message.body).user,
+                content: JSON.parse(message.body).content,
+              },
+            ]);
+          }
+        );
 
-            // 1. 입장 시 가장 먼저 배열에 들어온 chatting이 입장 메시지.
-            // 2. 서버에서 Chatting Type을 지정해준다. (announce, defaultChat)
-            // 3. 서버에서 Announce API를 따로 만든다.
+        stompClient.current.send(
+          `/ws/rooms/${roomId}/users`,
+          {},
+          JSON.stringify({ userId, sessionId })
+        );
 
-            ...prevChattings,
-            {
-              user: JSON.parse(message.body).user,
-              content: JSON.parse(message.body).content,
-            },
-          ]);
-        }
-      );
+        sendMessage(`${nickname} 님이 입장했습니다!`);
+      },
+      (error) => {
+        const errorStrings = error.headers.message.split(':');
+        const errorMessage = errorStrings[errorStrings.length - 1].trim();
 
-      stompClient.current.send(
-        `/ws/rooms/${roomId}/users`,
-        {},
-        JSON.stringify({ userId, sessionId })
-      );
-
-      sendMessage(`${nickname} 님이 입장했습니다!`);
-    });
+        closeChatting();
+        openModal(<ModalError>{errorMessage}</ModalError>);
+      }
+    );
   }, [userId]);
 
   return (
