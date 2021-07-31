@@ -25,7 +25,7 @@ const RoomList = ({ gameId }) => {
   const [tagList, setTagList] = useState([]);
   const [selectedTagList, setSelectedTagList] = useState([]);
   const [roomList, setRoomList] = useState([]);
-  const { user, changeNickname } = useUser();
+  const { user, changeUserNickname } = useUser();
   const { open, close } = useChattingModal();
 
   const getImage = async () => {
@@ -109,7 +109,7 @@ const RoomList = ({ gameId }) => {
     getTags();
 
     // TODO: localStorage로 새로고침 후에도 닉네임 유지되도록 관리
-    changeNickname(`익명#${generateSixDigits()}`);
+    changeUserNickname(`익명#${generateSixDigits()}`);
   }, []);
 
   useInterval(() => {

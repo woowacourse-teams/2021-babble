@@ -15,7 +15,7 @@ const UserProvider = ({ children }) => {
     setUser((prevState) => ({ ...prevState, id }));
   };
 
-  const changeNickname = (nickname) => {
+  const changeUserNickname = (nickname) => {
     setUser((prevState) => ({ ...prevState, nickname }));
   };
 
@@ -25,7 +25,7 @@ const UserProvider = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ user, changeUserId, changeNickname, changeAvatar }}
+      value={{ user, changeUserId, changeUserNickname, changeAvatar }}
     >
       {children}
     </UserContext.Provider>
