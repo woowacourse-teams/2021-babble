@@ -5,6 +5,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-left: 0.5rem;
+  color: m.grey-scale(10);
 
   &.colored {
     color: m.primary(babble-pink);

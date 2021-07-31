@@ -9,6 +9,8 @@ import PropTypes from 'prop-types';
 const DropdownInput = ({
   placeholder = '방 인원을 선택해주세요.',
   dropdownKeywords,
+  maxHeadCount,
+  setMaxHeadCount,
 }) => {
   const [dropdownList, setDropdownList] = useState([]);
   const containerRef = useRef(null);
@@ -26,8 +28,9 @@ const DropdownInput = ({
   };
 
   const onSelectItem = (e) => {
-    const selectedValue = e.target.textContent;
-    inputRef.current.value = selectedValue;
+    const selectedValue = Number(e.target.textContent);
+    setMaxHeadCount(selectedValue);
+
     containerRef.current.classList.remove('focused');
     dropdownRef.current.classList.remove('show');
   };
@@ -41,6 +44,7 @@ const DropdownInput = ({
       <input
         type='number'
         className='input-inner'
+        value={maxHeadCount ? maxHeadCount : ''}
         placeholder={placeholder}
         onFocus={onFocusInput}
         onBlur={onBlurInput}
@@ -73,6 +77,8 @@ const DropdownInput = ({
 
 DropdownInput.propTypes = {
   placeholder: PropTypes.string,
+  maxHeadCount: PropTypes.number,
+  setMaxHeadCount: PropTypes.func,
   dropdownKeywords: PropTypes.arrayOf(PropTypes.number),
 };
 

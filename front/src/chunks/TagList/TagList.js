@@ -5,30 +5,31 @@ import React, { useRef } from 'react';
 import Caption1 from '../../core/Typography/Caption1';
 import LinearLayout from '../../core/Layout/LinearLayout';
 import PropTypes from 'prop-types';
+import { SCROLL } from '../../constants/event';
 import Tag from '../../components/Tag/Tag';
 import TagErasable from '../../components/Tag/TagErasable';
 
-const TagList = ({ tags, erasable = false, useWheel = false }) => {
+const TagList = ({ tags, onDeleteTag, erasable = false, useWheel = false }) => {
   const tagListRef = useRef();
 
   const onWheel = (e) => {
-    if (e.deltaY > 0) {
-      tagListRef.current.scrollLeft += 20;
+    if (e.deltaY > SCROLL.NEUTRAL) {
+      tagListRef.current.scrollLeft += SCROLL.STEP;
     } else {
-      tagListRef.current.scrollLeft -= 20;
+      tagListRef.current.scrollLeft -= SCROLL.STEP;
     }
   };
 
   return (
     <div
-      className={`${useWheel ? '' : 'default'} tag-list-container`}
+      className={`${useWheel ? '' : SCROLL.BLOCKED} tag-list-container`}
       onWheel={useWheel ? onWheel : null}
       ref={tagListRef}
     >
       <LinearLayout direction='row'>
         {erasable
           ? tags.map((tag, index) => (
-              <TagErasable key={index}>
+              <TagErasable key={index} onDeleteTag={onDeleteTag}>
                 <Caption1>{tag.name}</Caption1>
               </TagErasable>
             ))
@@ -44,6 +45,7 @@ const TagList = ({ tags, erasable = false, useWheel = false }) => {
 
 TagList.propTypes = {
   tags: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string })),
+  onDeleteTag: PropTypes.func,
   erasable: PropTypes.bool,
   useWheel: PropTypes.bool,
 };

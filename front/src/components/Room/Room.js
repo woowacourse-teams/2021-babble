@@ -6,12 +6,16 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import TagList from '../../chunks/TagList/TagList';
 
-const Room = ({ imageSrc, room }) => {
+const Room = ({ imageSrc, room, onClickRoom }) => {
   const { roomId, host, headCount, tags } = room;
   const { current, max } = headCount;
 
   return (
-    <section className='room-container'>
+    <section
+      className='room-container'
+      data-room-id={roomId}
+      onClick={onClickRoom}
+    >
       <section className='information'>
         <div className='about'>
           <div className='room-number'>
@@ -19,7 +23,7 @@ const Room = ({ imageSrc, room }) => {
           </div>
           <div className='avatar'>
             <Avatar size='small' imageSrc={imageSrc} direction='row'>
-              <Body2>{host.name}</Body2>
+              <Body2>{host.nickname}</Body2>
             </Avatar>
           </div>
           <TagList tags={tags} />
@@ -40,7 +44,7 @@ Room.propTypes = {
     roomId: PropTypes.number,
     host: PropTypes.shape({
       id: PropTypes.number,
-      name: PropTypes.string,
+      nickname: PropTypes.string,
     }),
     headCount: PropTypes.shape({
       current: PropTypes.number,
@@ -52,6 +56,7 @@ Room.propTypes = {
       })
     ),
   }),
+  onClickRoom: PropTypes.func,
 };
 
 export default Room;
