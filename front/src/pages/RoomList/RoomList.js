@@ -26,7 +26,7 @@ const RoomList = ({ gameId }) => {
   const [selectedTagList, setSelectedTagList] = useState([]);
   const [roomList, setRoomList] = useState([]);
   const { user, changeUserNickname } = useUser();
-  const { open, close } = useChattingModal();
+  const { openChatting, closeChatting } = useChattingModal();
 
   const getImage = async () => {
     const response = await axios.get(
@@ -93,8 +93,8 @@ const RoomList = ({ gameId }) => {
 
       const { tags, roomId, createdDate } = response.data;
 
-      close();
-      open(
+      closeChatting();
+      openChatting(
         <ChattingRoom tags={tags} roomId={roomId} createdAt={createdDate} />
       );
     } catch (error) {

@@ -10,7 +10,7 @@ import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 import { useUser } from '../../contexts/UserProvider';
 
 const ChangeNickname = () => {
-  const { close } = useDefaultModal();
+  const { closeModal } = useDefaultModal();
   const { user, changeUserNickname } = useUser();
 
   const submitNickname = (e) => {
@@ -18,12 +18,12 @@ const ChangeNickname = () => {
     const nicknameInput = e.target.nickname.value;
 
     changeUserNickname(nicknameInput);
-    close();
+    closeModal();
   };
 
   return (
     <form className='nickname-container' onSubmit={submitNickname}>
-      <div onClick={close} className='control-bar'>
+      <div onClick={closeModal} className='control-bar'>
         <IoCloseOutline size='24px' />
       </div>
       <div className='control-inputs'>
@@ -36,7 +36,7 @@ const ChangeNickname = () => {
         />
       </div>
       <div className='control-buttons'>
-        <RoundButton onClick={close} size='small'>
+        <RoundButton onClick={closeModal} size='small'>
           <Caption1>취소하기</Caption1>
         </RoundButton>
         <RoundButton type='submit' size='small' colored>

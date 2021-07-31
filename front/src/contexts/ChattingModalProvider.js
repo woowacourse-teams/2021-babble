@@ -12,12 +12,12 @@ const ChattingModalProvider = ({ children }) => {
   const [isMinimized, setIsMinimized] = useState(false);
   const [modalInner, setModalInner] = useState(null);
 
-  const open = (modalInner) => {
+  const openChatting = (modalInner) => {
     setIsChattingModalOpen(true);
     setModalInner(modalInner);
   };
 
-  const close = (e) => {
+  const closeChatting = (e) => {
     if (isMinimized) {
       e.stopPropagation();
     }
@@ -36,14 +36,18 @@ const ChattingModalProvider = ({ children }) => {
   };
 
   return (
-    <ChattingModalContext.Provider value={{ open, close, minimize }}>
+    <ChattingModalContext.Provider
+      value={{ openChatting, closeChatting, minimize }}
+    >
       {children}
       {isChattingModalOpen && (
         <Modal type={MODAL_TYPE_CHATTING} isMinimized={isMinimized}>
           {modalInner}
         </Modal>
       )}
-      {isMinimized && <ModalMinimized maximize={maximize} close={close} />}
+      {isMinimized && (
+        <ModalMinimized maximize={maximize} close={closeChatting} />
+      )}
     </ChattingModalContext.Provider>
   );
 };

@@ -22,7 +22,7 @@ const MakeRoom = ({ gameId }) => {
   const [tagList, setTagList] = useState([]);
   const [selectedTagList, setSelectedTagList] = useState([]);
   const [maxHeadCount, setMaxHeadCount] = useState(0);
-  const { open } = useChattingModal();
+  const { openChatting } = useChattingModal();
   const history = useHistory();
 
   const getImage = async () => {
@@ -79,7 +79,7 @@ const MakeRoom = ({ gameId }) => {
       );
       const { tags, roomId, createdDate } = response.data;
 
-      open(
+      openChatting(
         <ChattingRoom tags={tags} roomId={roomId} createdAt={createdDate} />
       );
 

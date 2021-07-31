@@ -10,21 +10,23 @@ const DefaultModalProvider = ({ children }) => {
   const [isDefaultModalOpen, setIsDefaultModalOpen] = useState(false);
   const [modalInner, setModalInner] = useState(null);
 
-  const open = (modalInner) => {
+  const openModal = (modalInner) => {
     setIsDefaultModalOpen(true);
     setModalInner(modalInner);
   };
 
-  const close = () => {
+  const closeModal = () => {
     setIsDefaultModalOpen(false);
     setModalInner(null);
   };
 
   return (
-    <DefaultModalContext.Provider value={{ open, close }}>
+    <DefaultModalContext.Provider value={{ openModal, closeModal }}>
       {children}
       {isDefaultModalOpen && (
-        <Modal type={MODAL_TYPE_DEFAULT}>{modalInner}</Modal>
+        <Modal type={MODAL_TYPE_DEFAULT}>
+          <div className='default-container'>{modalInner}</div>
+        </Modal>
       )}
     </DefaultModalContext.Provider>
   );

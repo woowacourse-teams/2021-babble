@@ -10,10 +10,10 @@ import React from 'react';
 import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 
 const NicknameSection = ({ nickname }) => {
-  const { open } = useDefaultModal();
+  const { openModal } = useDefaultModal();
 
   const openNicknameModal = () => {
-    open(<ChangeNickname />);
+    openModal(<ChangeNickname />);
   };
 
   return (
