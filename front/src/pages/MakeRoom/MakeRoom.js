@@ -7,7 +7,6 @@ import Body2 from '../../core/Typography/Body2';
 import ChattingRoom from '../ChattingRoom/ChattingRoom';
 import DropdownInput from '../../components/SearchInput/DropdownInput';
 import Headline2 from '../../core/Typography/Headline2';
-import { MODAL_TYPE_CHATTING } from '../../constants/chat';
 import MainImage from '../../components/MainImage/MainImage';
 import PATH from '../../constants/path';
 import PageLayout from '../../core/Layout/PageLayout';
@@ -16,14 +15,14 @@ import RoundButton from '../../components/Button/RoundButton';
 import SearchInput from '../../components/SearchInput/SearchInput';
 import TagList from '../../chunks/TagList/TagList';
 import axios from 'axios';
-import { useModal } from '../../contexts/ModalProvider';
+import { useChattingModal } from '../../contexts/ChattingModalProvider';
 
 const MakeRoom = ({ gameId }) => {
   const [imageUrl, setImageUrl] = useState('');
   const [tagList, setTagList] = useState([]);
   const [selectedTagList, setSelectedTagList] = useState([]);
   const [maxHeadCount, setMaxHeadCount] = useState(0);
-  const { open } = useModal();
+  const { open } = useChattingModal();
   const history = useHistory();
 
   const getImage = async () => {
@@ -77,8 +76,7 @@ const MakeRoom = ({ gameId }) => {
       const { tags, roomId, createdDate } = response.data;
 
       open(
-        <ChattingRoom tags={tags} roomId={roomId} createdAt={createdDate} />,
-        MODAL_TYPE_CHATTING
+        <ChattingRoom tags={tags} roomId={roomId} createdAt={createdDate} />
       );
 
       history.push({ pathname: PATH.HOME });

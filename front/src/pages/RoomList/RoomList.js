@@ -6,7 +6,6 @@ import Body2 from '../../core/Typography/Body2';
 import ChattingRoom from '../ChattingRoom/ChattingRoom';
 import Headline2 from '../../core/Typography/Headline2';
 import { Link } from 'react-router-dom';
-import { MODAL_TYPE_CHATTING } from '../../constants/chat';
 import MainImage from '../../components/MainImage/MainImage';
 import NicknameSection from '../../components/NicknameSection/NicknameSection';
 import PATH from '../../constants/path';
@@ -17,8 +16,8 @@ import SearchInput from '../../components/SearchInput/SearchInput';
 import SquareButton from '../../components/Button/SquareButton';
 import TagList from '../../chunks/TagList/TagList';
 import axios from 'axios';
+import { useChattingModal } from '../../contexts/ChattingModalProvider';
 import useInterval from '../../hooks/useInterval';
-import { useModal } from '../../contexts/ModalProvider';
 import { useUser } from '../../contexts/UserProvider';
 
 const RoomList = ({ gameId }) => {
@@ -27,7 +26,7 @@ const RoomList = ({ gameId }) => {
   const [selectedTagList, setSelectedTagList] = useState([]);
   const [roomList, setRoomList] = useState([]);
   const { user, changeNickname } = useUser();
-  const { open, close } = useModal();
+  const { open, close } = useChattingModal();
 
   const getImage = async () => {
     const response = await axios.get(
@@ -92,8 +91,7 @@ const RoomList = ({ gameId }) => {
 
       close();
       open(
-        <ChattingRoom tags={tags} roomId={roomId} createdAt={createdDate} />,
-        MODAL_TYPE_CHATTING
+        <ChattingRoom tags={tags} roomId={roomId} createdAt={createdDate} />
       );
     } catch (error) {
       alert('방이 존재하지 않습니다.');

@@ -16,7 +16,7 @@ import { Stomp } from '@stomp/stompjs';
 import Subtitle3 from '../../core/Typography/Subtitle3';
 import TagList from '../../chunks/TagList/TagList';
 import axios from 'axios';
-import { useModal } from '../../contexts/ModalProvider';
+import { useChattingModal } from '../../contexts/ChattingModalProvider';
 import useUpdateEffect from '../../hooks/useUpdateEffect';
 import { useUser } from '../../contexts/UserProvider';
 
@@ -27,7 +27,7 @@ const ChattingRoom = ({ tags, roomId, createdAt }) => {
   const stompClient = useRef(null);
   const user_subscription = useRef(null);
   const chat_subscription = useRef(null);
-  const { close, minimize } = useModal();
+  const { close, minimize } = useChattingModal();
   const {
     user: { nickname, id: userId },
     changeUserId,
@@ -147,19 +147,18 @@ const ChattingRoom = ({ tags, roomId, createdAt }) => {
         </div>
         <div className='modal-chatbox-container'>
           <Chatbox roomId={roomId} createdAt={createdAt} onSubmit={onSubmit}>
-            {chattings &&
-              chattings.map((chatting, index) =>
-                chatting.user.id === userId ? (
-                  <SpeechBubble key={index}>{chatting.content}</SpeechBubble>
-                ) : (
-                  <SpeechBubbleWithAvatar
-                    key={index}
-                    nickname={chatting.user.nickname}
-                  >
-                    {chatting.content}
-                  </SpeechBubbleWithAvatar>
-                )
-              )}
+            {chattings.map((chatting, index) =>
+              chatting.user.id === userId ? (
+                <SpeechBubble key={index}>{chatting.content}</SpeechBubble>
+              ) : (
+                <SpeechBubbleWithAvatar
+                  key={index}
+                  nickname={chatting.user.nickname}
+                >
+                  {chatting.content}
+                </SpeechBubbleWithAvatar>
+              )
+            )}
           </Chatbox>
         </div>
       </div>

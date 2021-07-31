@@ -6,11 +6,11 @@ import React from 'react';
 import RoundButton from '../../components/Button/RoundButton';
 import Subtitle3 from '../../core/Typography/Subtitle3';
 import TextInput from '../../components/SearchInput/TextInput';
-import { useModal } from '../../contexts/ModalProvider';
+import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 import { useUser } from '../../contexts/UserProvider';
 
 const ChangeNickname = () => {
-  const { close } = useModal();
+  const { close } = useDefaultModal();
   const { user, changeNickname } = useUser();
 
   const submitNickname = (e) => {

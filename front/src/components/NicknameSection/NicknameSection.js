@@ -7,10 +7,10 @@ import ChangeNickname from '../../pages/ChangeNickname/ChangeNickname';
 import { FiEdit } from 'react-icons/fi';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { useModal } from '../../contexts/ModalProvider';
+import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 
 const NicknameSection = ({ nickname }) => {
-  const { open } = useModal();
+  const { open } = useDefaultModal();
 
   const openNicknameModal = () => {
     open(<ChangeNickname />);

@@ -1,20 +1,19 @@
 import React, { createContext, useContext, useState } from 'react';
 
+import { MODAL_TYPE_CHATTING } from '../constants/chat';
 import Modal from '../components/Modal/Modal';
 import ModalMinimized from '../components/Modal/ModalMinimized';
 import PropTypes from 'prop-types';
 
-const ModalContext = createContext();
+const ChattingModalContext = createContext();
 
-const ModalProvider = ({ children }) => {
-  const [modalType, setModalType] = useState('default');
-  const [isOpen, setIsOpen] = useState(false);
+const ChattingModalProvider = ({ children }) => {
+  const [isChattingModalOpen, setIsChattingModalOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [modalInner, setModalInner] = useState(null);
 
-  const open = (modalInner, type) => {
-    setModalType(type);
-    setIsOpen(true);
+  const open = (modalInner) => {
+    setIsChattingModalOpen(true);
     setModalInner(modalInner);
   };
 
@@ -23,7 +22,7 @@ const ModalProvider = ({ children }) => {
       e.stopPropagation();
     }
 
-    setIsOpen(false);
+    setIsChattingModalOpen(false);
     setIsMinimized(false);
     setModalInner(null);
   };
@@ -37,24 +36,24 @@ const ModalProvider = ({ children }) => {
   };
 
   return (
-    <ModalContext.Provider value={{ open, close, minimize }}>
+    <ChattingModalContext.Provider value={{ open, close, minimize }}>
       {children}
-      {isOpen && (
-        <Modal type={modalType} isMinimized={isMinimized}>
+      {isChattingModalOpen && (
+        <Modal type={MODAL_TYPE_CHATTING} isMinimized={isMinimized}>
           {modalInner}
         </Modal>
       )}
       {isMinimized && <ModalMinimized maximize={maximize} close={close} />}
-    </ModalContext.Provider>
+    </ChattingModalContext.Provider>
   );
 };
 
-ModalProvider.propTypes = {
+ChattingModalProvider.propTypes = {
   children: PropTypes.node,
 };
 
-export const useModal = () => {
-  return useContext(ModalContext);
+export const useChattingModal = () => {
+  return useContext(ChattingModalContext);
 };
 
-export default ModalProvider;
+export default ChattingModalProvider;

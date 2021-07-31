@@ -18,7 +18,7 @@
 
     .linear-layout {
       justify-content: center;
-      z-index: m.z-index(layer-modal);
+      z-index: m.z-index(layer-modal-default);
     }
   }
 
@@ -32,7 +32,7 @@
     border: 1px solid m.grey-scale(8);
     border-radius: m.border-radius(modal);
     box-shadow: v.$box-shadow;
-    z-index: m.z-index(layer-modal);
+    z-index: m.z-index(layer-modal-chatting);
 
     & > section {
       width: 100%;

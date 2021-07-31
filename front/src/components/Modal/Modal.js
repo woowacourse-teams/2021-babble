@@ -1,11 +1,12 @@
 import './Modal.scss';
 
 import LinearLayout from '../../core/Layout/LinearLayout';
+import { MODAL_TYPE_DEFAULT } from '../../constants/chat';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-const Modal = ({ type = 'default', isMinimized, children }) => {
+const Modal = ({ type = MODAL_TYPE_DEFAULT, isMinimized, children }) => {
   const content = (
     <div
       className={`modal-container ${type} ${isMinimized ? 'minimized' : ''}`}
