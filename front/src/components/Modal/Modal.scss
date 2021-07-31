@@ -39,6 +39,10 @@
       height: 100%;
     }
   }
+
+  &.minimized {
+    display: none;
+  }
 }
 
 .modal-minimized-container {

@@ -29,19 +29,21 @@ const ModalProvider = ({ children }) => {
   };
 
   const minimize = () => {
-    setIsOpen(false);
     setIsMinimized(true);
   };
 
   const maximize = () => {
-    setIsOpen(true);
     setIsMinimized(false);
   };
 
   return (
     <ModalContext.Provider value={{ open, close, minimize }}>
       {children}
-      {isOpen && <Modal type={modalType}>{modalInner}</Modal>}
+      {isOpen && (
+        <Modal type={modalType} isMinimized={isMinimized}>
+          {modalInner}
+        </Modal>
+      )}
       {isMinimized && <ModalMinimized maximize={maximize} close={close} />}
     </ModalContext.Provider>
   );

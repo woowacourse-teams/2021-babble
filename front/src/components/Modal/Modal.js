@@ -5,9 +5,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-const Modal = ({ type = 'default', children }) => {
+const Modal = ({ type = 'default', isMinimized, children }) => {
   const content = (
-    <div className={`modal-container ${type}`}>
+    <div
+      className={`modal-container ${type} ${isMinimized ? 'minimized' : ''}`}
+    >
       <LinearLayout>{children}</LinearLayout>
     </div>
   );
@@ -17,6 +19,7 @@ const Modal = ({ type = 'default', children }) => {
 
 Modal.propTypes = {
   type: PropTypes.oneOf(['default', 'chatting']),
+  isMinimized: PropTypes.bool,
   children: PropTypes.node,
 };
 
