@@ -4,17 +4,17 @@ import Badge from './Badge';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const BadgeClickable = ({ onClick, areaLabel, children }) => {
+const BadgeClickable = ({ onClickBadge, ariaLabel, children }) => {
   return (
-    <button onClick={onClick} aria-label={areaLabel}>
+    <button onClick={onClickBadge} aria-label={ariaLabel}>
       <Badge>{children}</Badge>
     </button>
   );
 };
 
 BadgeClickable.propTypes = {
-  onClick: PropTypes.bool,
-  areaLabel: PropTypes.string,
+  onClickBadge: PropTypes.func,
+  ariaLabel: PropTypes.string,
   children: PropTypes.node,
 };
 

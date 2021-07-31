@@ -1,11 +1,13 @@
 import './ChattingRoom.scss';
 
 import React, { useEffect, useRef, useState } from 'react';
+import { SESSION_ID_LENGTH, SOCKET_URL_DIVIDER } from '../../constants/chat';
 
 import Chatbox from '../../chunks/Chatbox/Chatbox';
 import { IoCloseOutline } from 'react-icons/io5';
 import { IoRemove } from 'react-icons/io5';
 import LinearLayout from '../../core/Layout/LinearLayout';
+import ModalError from '../../components/Modal/ModalError';
 import Participants from '../../chunks/Participants/Participants';
 import PropTypes from 'prop-types';
 import SockJS from 'sockjs-client';
@@ -14,19 +16,39 @@ import SpeechBubbleWithAvatar from '../../components/SpeechBubble/SpeechBubbleWi
 import { Stomp } from '@stomp/stompjs';
 import Subtitle3 from '../../core/Typography/Subtitle3';
 import TagList from '../../chunks/TagList/TagList';
-import { useModal } from '../../contexts/ModalProvider';
+import axios from 'axios';
+import { useChattingModal } from '../../contexts/ChattingModalProvider';
+import { useDefaultModal } from '../../contexts/DefaultModalProvider';
+import useUpdateEffect from '../../hooks/useUpdateEffect';
+import { useUser } from '../../contexts/UserProvider';
 
-const ChattingRoom = ({ tags, participants, roomId, createdAt }) => {
+const ChattingRoom = ({ tags, roomId, createdAt }) => {
   const [chattings, setChattings] = useState([]);
+  const [participants, setParticipants] = useState({});
+
   const stompClient = useRef(null);
   const user_subscription = useRef(null);
   const chat_subscription = useRef(null);
-  const userId = useRef(-1);
-  const { open, close, minimize } = useModal();
+  const isConnected = useRef(false);
+
+  const { openModal } = useDefaultModal();
+  const { closeChatting, minimize } = useChattingModal();
+  const {
+    user: { nickname, id: userId },
+    changeUserId,
+  } = useUser();
 
   const onMinimize = () => minimize();
 
-  const onClose = () => close();
+  const onClose = () => closeChatting();
+
+  const sendMessage = (content) => {
+    stompClient.current.send(
+      `/ws/rooms/${roomId}/chat`,
+      {},
+      JSON.stringify({ userId, content })
+    );
+  };
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -34,63 +56,21 @@ const ChattingRoom = ({ tags, participants, roomId, createdAt }) => {
     const content = e.target.chat.value;
     if (!content) return;
 
-    stompClient.current.send(
-      `/ws/rooms/${roomId}/chat`,
-      {},
-      JSON.stringify({ userId: userId.current, content })
-    );
-
+    sendMessage(content);
     e.target.reset();
   };
 
-  useEffect(() => {
-    // 웹소켓 연결, 웹소켓으로 subscribe해서 방 참가자 정보 불러오기
-    const socket = new SockJS('https://babble.o-r.kr/connection');
-    stompClient.current = Stomp.over(socket);
-
-    stompClient.current.connect({}, () => {
-      const socketURL = socket._transport.url;
-      const sessionId = socketURL.substring(
-        socketURL.lastIndexOf('/') - 8,
-        socketURL.lastIndexOf('/')
-      );
-
-      user_subscription.current = stompClient.current.subscribe(
-        `/topic/rooms/${roomId}/users`,
-        (message) => {
-          const users = JSON.parse(message.body);
-          open(
-            <ChattingRoom
-              tags={tags}
-              participants={users}
-              roomId={roomId}
-              createdAt={createdAt}
-            />,
-            'chatting'
-          );
-        }
-      );
-
-      chat_subscription.current = stompClient.current.subscribe(
-        `/topic/rooms/${roomId}/chat`,
-        (message) => {
-          setChattings((prevChattings) => [
-            ...prevChattings,
-            {
-              user: JSON.parse(message.body).user,
-              content: JSON.parse(message.body).content,
-            },
-          ]);
-        }
-      );
-
-      userId.current = Number(prompt('유저 아이디 입력하소'));
-      stompClient.current.send(
-        `/ws/rooms/${roomId}/users`,
-        {},
-        JSON.stringify({ userId: userId.current, sessionId })
-      );
+  const getUserId = async () => {
+    const response = await axios.post('https://babble-test.o-r.kr/api/users', {
+      nickname,
     });
+    const generatedUser = response.data;
+
+    changeUserId(generatedUser.id);
+  };
+
+  useEffect(() => {
+    getUserId();
 
     return () => {
       if (user_subscription.current) {
@@ -99,11 +79,75 @@ const ChattingRoom = ({ tags, participants, roomId, createdAt }) => {
       if (chat_subscription.current) {
         chat_subscription.current.unsubscribe();
       }
-      if (stompClient.current) {
+      if (isConnected.current) {
+        sendMessage(`${nickname} 님이 퇴장했습니다!`);
         stompClient.current.disconnect();
+        isConnected.current = false;
       }
     };
   }, []);
+
+  useUpdateEffect(() => {
+    const socket = new SockJS('https://babble-test.o-r.kr/connection');
+    stompClient.current = Stomp.over(socket);
+
+    if (isConnected.current) {
+      stompClient.current.disconnect();
+      isConnected.current = false;
+    }
+
+    stompClient.current.connect(
+      {},
+      () => {
+        isConnected.current = true;
+        const socketURL = socket._transport.url;
+        const sessionId = socketURL.substring(
+          socketURL.lastIndexOf(SOCKET_URL_DIVIDER) - SESSION_ID_LENGTH,
+          socketURL.lastIndexOf(SOCKET_URL_DIVIDER)
+        );
+
+        if (user_subscription.current) user_subscription.current.unsubscribe();
+
+        user_subscription.current = stompClient.current.subscribe(
+          `/topic/rooms/${roomId}/users`,
+          (message) => {
+            const users = JSON.parse(message.body);
+            setParticipants(users);
+          }
+        );
+
+        if (chat_subscription.current) chat_subscription.current.unsubscribe();
+
+        chat_subscription.current = stompClient.current.subscribe(
+          `/topic/rooms/${roomId}/chat`,
+          (message) => {
+            setChattings((prevChattings) => [
+              ...prevChattings,
+              {
+                user: JSON.parse(message.body).user,
+                content: JSON.parse(message.body).content,
+              },
+            ]);
+          }
+        );
+
+        stompClient.current.send(
+          `/ws/rooms/${roomId}/users`,
+          {},
+          JSON.stringify({ userId, sessionId })
+        );
+
+        sendMessage(`${nickname} 님이 입장했습니다!`);
+      },
+      (error) => {
+        const errorStrings = error.headers.message.split(':');
+        const errorMessage = errorStrings[errorStrings.length - 1].trim();
+
+        closeChatting();
+        openModal(<ModalError>{errorMessage}</ModalError>);
+      }
+    );
+  }, [userId]);
 
   return (
     <div className='modal-chatting-room'>
@@ -129,19 +173,18 @@ const ChattingRoom = ({ tags, participants, roomId, createdAt }) => {
         </div>
         <div className='modal-chatbox-container'>
           <Chatbox roomId={roomId} createdAt={createdAt} onSubmit={onSubmit}>
-            {chattings &&
-              chattings.map((chatting, index) =>
-                chatting.user.id === userId.current ? (
-                  <SpeechBubble key={index}>{chatting.content}</SpeechBubble>
-                ) : (
-                  <SpeechBubbleWithAvatar
-                    key={index}
-                    nickname={chatting.user.name}
-                  >
-                    {chatting.content}
-                  </SpeechBubbleWithAvatar>
-                )
-              )}
+            {chattings.map((chatting, index) =>
+              chatting.user.id === userId ? (
+                <SpeechBubble key={index}>{chatting.content}</SpeechBubble>
+              ) : (
+                <SpeechBubbleWithAvatar
+                  key={index}
+                  nickname={chatting.user.nickname}
+                >
+                  {chatting.content}
+                </SpeechBubbleWithAvatar>
+              )
+            )}
           </Chatbox>
         </div>
       </div>
@@ -150,21 +193,12 @@ const ChattingRoom = ({ tags, participants, roomId, createdAt }) => {
 };
 
 ChattingRoom.propTypes = {
-  tags: PropTypes.arrayOf(PropTypes.string),
-  participants: PropTypes.shape({
-    host: PropTypes.shape({
+  tags: PropTypes.arrayOf(
+    PropTypes.shape({
       id: PropTypes.number,
       name: PropTypes.string,
-      profileImg: PropTypes.string,
-    }),
-    guests: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.number,
-        name: PropTypes.string,
-        profileImg: PropTypes.string,
-      })
-    ),
-  }),
+    })
+  ),
   roomId: PropTypes.number,
   createdAt: PropTypes.string,
 };

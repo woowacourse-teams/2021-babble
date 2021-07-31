@@ -12,7 +12,10 @@
     "build-storybook": "build-storybook",
     "semantic-release": "semantic-release"
   },
-  "author": "",
+  "contributors": [
+    "iborymagic <mlch8023@gmail.com>",
+    "ddongule <mnk918p@gmail.com>"
+  ],
   "license": "ISC",
   "browserslist": "> 0.25%, not dead",
   "devDependencies": {

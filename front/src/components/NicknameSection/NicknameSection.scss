@@ -17,8 +17,7 @@
     padding: 0.6rem 1.2rem;
 
     position: absolute;
-    top: -14px;
-    left: -8px;
+    transform: translate(0, -160%);
 
     animation: 0.8s cubic-bezier(0.65, 0.04, 0.87, 0.24) 1s infinite alternate
       bounce;
@@ -36,8 +35,7 @@
       border-bottom: 0.8rem solid none;
 
       position: absolute;
-      bottom: -24%;
-      left: 12%;
+      transform: translate(12%, 54%);
     }
 
     .caption2 {

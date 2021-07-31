@@ -3,6 +3,7 @@ import './Chatbox.scss';
 import React, { useEffect, useRef } from 'react';
 
 import ChattingForm from '../../components/ChattingForm/ChattingForm';
+import { KOREAN } from '../../constants/i18n';
 import PropTypes from 'prop-types';
 
 const Chatbox = ({ roomId, createdAt, onSubmit, children }) => {
@@ -17,7 +18,7 @@ const Chatbox = ({ roomId, createdAt, onSubmit, children }) => {
       <section className='chattings' ref={chattingsRef}>
         <article className='chatting-room-info'>
           <span>{`${roomId}번 방`}</span>
-          <time>{createdAt.toLocaleString('ko-KR')}</time>
+          <time>{createdAt.toLocaleString(KOREAN)}</time>
         </article>
         <article className='chatting-contents'>{children}</article>
       </section>

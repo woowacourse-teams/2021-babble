@@ -11,6 +11,7 @@ import useDebounce from '../../hooks/useDebounce';
 const SearchInput = ({
   placeholder = '태그를 검색해주세요.',
   autoCompleteKeywords,
+  onClickKeyword,
 }) => {
   const { debounce } = useDebounce(500);
   const [autoCompleteList, setAutoCompleteList] = useState([]);
@@ -27,7 +28,10 @@ const SearchInput = ({
     autoCompleteRef.current.classList.remove('show');
   };
 
-  const onSelectItem = () => {
+  const onSelectItem = ({ target }) => {
+    const selectedItem = target.textContent;
+    onClickKeyword(selectedItem);
+
     containerRef.current.classList.remove('focused');
     autoCompleteRef.current.classList.remove('show');
   };
@@ -64,7 +68,7 @@ const SearchInput = ({
 
   useEffect(() => {
     setAutoCompleteList(autoCompleteKeywords);
-  }, []);
+  }, [autoCompleteKeywords]);
 
   return (
     <div className='input-container' ref={containerRef}>
@@ -105,6 +109,7 @@ SearchInput.propTypes = {
   autoCompleteKeywords: PropTypes.arrayOf(
     PropTypes.shape({ name: PropTypes.string })
   ),
+  onClickKeyword: PropTypes.func,
 };
 
 export default SearchInput;
