@@ -45,7 +45,11 @@ const MakeRoom = ({ gameId }) => {
     const tagId = tagList.find((tag) => tag.name === tagName).id;
     const tag = { id: tagId, name: tagName };
 
-    setSelectedTagList((prevTagList) => [...prevTagList, tag]);
+    setSelectedTagList((prevTagList) =>
+      prevTagList.find((prevTag) => prevTag.name === tag.name)
+        ? prevTagList
+        : [...prevTagList, tag]
+    );
   };
 
   const eraseTag = (e) => {
