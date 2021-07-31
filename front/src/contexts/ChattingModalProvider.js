@@ -17,7 +17,13 @@ const ChattingModalProvider = ({ children }) => {
     setModalInner(modalInner);
   };
 
-  const closeChatting = (e) => {
+  const closeChatting = () => {
+    setIsChattingModalOpen(false);
+    setIsMinimized(false);
+    setModalInner(null);
+  };
+
+  const clickCloseChatting = (e) => {
     if (isMinimized) {
       e.stopPropagation();
     }
@@ -46,7 +52,7 @@ const ChattingModalProvider = ({ children }) => {
         </Modal>
       )}
       {isMinimized && (
-        <ModalMinimized maximize={maximize} close={closeChatting} />
+        <ModalMinimized maximize={maximize} close={clickCloseChatting} />
       )}
     </ChattingModalContext.Provider>
   );
