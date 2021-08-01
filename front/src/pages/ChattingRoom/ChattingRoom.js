@@ -38,16 +38,24 @@ const ChattingRoom = ({ tags, roomId, createdAt }) => {
     changeUserId,
   } = useUser();
 
-  const onMinimize = () => minimize();
-
-  const onClose = () => closeChatting();
+  const waitForConnectionReady = (callback) => {
+    setTimeout(() => {
+      if (stompClient.current.ws.readyState === WebSocket.OPEN) {
+        callback();
+      } else {
+        waitForConnectionReady(callback);
+      }
+    }, 1);
+  };
 
   const sendMessage = (content) => {
-    stompClient.current.send(
-      `/ws/rooms/${roomId}/chat`,
-      {},
-      JSON.stringify({ userId, content })
-    );
+    waitForConnectionReady(() => {
+      stompClient.current.send(
+        `/ws/rooms/${roomId}/chat`,
+        {},
+        JSON.stringify({ userId, content })
+      );
+    });
   };
 
   const onSubmit = (e) => {
@@ -66,6 +74,7 @@ const ChattingRoom = ({ tags, roomId, createdAt }) => {
     });
     const generatedUser = response.data;
 
+    console.log(generatedUser);
     changeUserId(generatedUser.id);
   };
 
@@ -73,16 +82,15 @@ const ChattingRoom = ({ tags, roomId, createdAt }) => {
     getUserId();
 
     return () => {
-      sendMessage(`${nickname} 님이 퇴장했습니다!`);
-
-      if (user_subscription.current) {
-        user_subscription.current.unsubscribe();
-      }
-      if (chat_subscription.current) {
-        chat_subscription.current.unsubscribe();
-      }
       if (isConnected.current) {
-        stompClient.current.disconnect();
+        stompClient.current.disconnect(() => {
+          if (user_subscription.current) {
+            user_subscription.current.unsubscribe();
+          }
+          if (chat_subscription.current) {
+            chat_subscription.current.unsubscribe();
+          }
+        });
         isConnected.current = false;
       }
     };
@@ -107,17 +115,14 @@ const ChattingRoom = ({ tags, roomId, createdAt }) => {
           socketURL.lastIndexOf(SOCKET_URL_DIVIDER)
         );
 
-        if (user_subscription.current) user_subscription.current.unsubscribe();
-
         user_subscription.current = stompClient.current.subscribe(
           `/topic/rooms/${roomId}/users`,
           (message) => {
             const users = JSON.parse(message.body);
+            console.log(users, 'users');
             setParticipants(users);
           }
         );
-
-        if (chat_subscription.current) chat_subscription.current.unsubscribe();
 
         chat_subscription.current = stompClient.current.subscribe(
           `/topic/rooms/${roomId}/chat`,
@@ -132,13 +137,15 @@ const ChattingRoom = ({ tags, roomId, createdAt }) => {
           }
         );
 
-        stompClient.current.send(
-          `/ws/rooms/${roomId}/users`,
-          {},
-          JSON.stringify({ userId, sessionId })
-        );
+        waitForConnectionReady(() => {
+          stompClient.current.send(
+            `/ws/rooms/${roomId}/users`,
+            {},
+            JSON.stringify({ userId, sessionId })
+          );
+        });
 
-        sendMessage(`${nickname} 님이 입장했습니다!`);
+        sendMessage(`${nickname}님이 입장했습니다!`);
       },
       (error) => {
         const errorStrings = error.headers.message.split(':');
@@ -159,10 +166,10 @@ const ChattingRoom = ({ tags, roomId, createdAt }) => {
             <TagList tags={tags} useWheel={true} />
           </LinearLayout>
           <LinearLayout direction='row'>
-            <button className='room-minimize' onClick={onMinimize}>
+            <button className='room-minimize' onClick={minimize}>
               <IoRemove size='24px' />
             </button>
-            <button className='room-exit' onClick={onClose}>
+            <button className='room-exit' onClick={closeChatting}>
               <IoCloseOutline size='24px' />
             </button>
           </LinearLayout>
