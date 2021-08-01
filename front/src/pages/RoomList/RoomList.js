@@ -25,7 +25,7 @@ const RoomList = ({ gameId }) => {
   const [tagList, setTagList] = useState([]);
   const [selectedTagList, setSelectedTagList] = useState([]);
   const [roomList, setRoomList] = useState([]);
-  const { user, changeUserNickname } = useUser();
+  const { changeUserNickname } = useUser();
   const { openChatting, closeChatting } = useChattingModal();
 
   const getImage = async () => {
@@ -130,7 +130,7 @@ const RoomList = ({ gameId }) => {
         <section className='room-list-header'>
           <Headline2>{'League of Legends'}</Headline2>
           <div className='side'>
-            <NicknameSection nickname={user.nickname} />
+            <NicknameSection />
             <Link to={PATH.MAKE_ROOM}>
               <SquareButton size='medium' colored>
                 <Body2>방 생성하기</Body2>

@@ -11,12 +11,13 @@ import { useUser } from '../../contexts/UserProvider';
 
 const ChangeNickname = () => {
   const { closeModal } = useDefaultModal();
-  const { user, changeUserNickname } = useUser();
+  const { user, changeUserNickname, setIsNicknameChanged } = useUser();
 
   const submitNickname = (e) => {
     e.preventDefault();
     const nicknameInput = e.target.nickname.value;
 
+    setIsNicknameChanged(true);
     changeUserNickname(nicknameInput);
     closeModal();
   };
