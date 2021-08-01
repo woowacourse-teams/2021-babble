@@ -18,14 +18,12 @@ import TagList from '../../chunks/TagList/TagList';
 import axios from 'axios';
 import { useChattingModal } from '../../contexts/ChattingModalProvider';
 import useInterval from '../../hooks/useInterval';
-import { useUser } from '../../contexts/UserProvider';
 
 const RoomList = ({ gameId }) => {
   const [imageUrl, setImageUrl] = useState('');
   const [tagList, setTagList] = useState([]);
   const [selectedTagList, setSelectedTagList] = useState([]);
   const [roomList, setRoomList] = useState([]);
-  const { changeUserNickname } = useUser();
   const { openChatting, closeChatting } = useChattingModal();
 
   const getImage = async () => {
@@ -75,14 +73,6 @@ const RoomList = ({ gameId }) => {
     );
   };
 
-  const generateSixDigits = () => {
-    // 닉네임에만 쓰일 숫자(userId와 관련 없음) 익명#84729384
-    // TODO: 지금은 숫자로 퉁치지만, 시간 나면 바로 형용사 + 명사 랜덤 매칭
-    // { noun: '너구리', image: '너구리 사진' }
-    // 라이브러리 npm 배포 가능
-    return Math.floor(100000 + Math.random() * 90000);
-  };
-
   const joinChatting = async (e) => {
     const selectedRoomId = e.target.closest('.room-container').dataset.roomId;
 
@@ -107,9 +97,6 @@ const RoomList = ({ gameId }) => {
     getImage();
     getRooms('');
     getTags();
-
-    // TODO: localStorage로 새로고침 후에도 닉네임 유지되도록 관리
-    changeUserNickname(`익명#${generateSixDigits()}`);
   }, []);
 
   useInterval(() => {
