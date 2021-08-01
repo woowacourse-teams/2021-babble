@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
+  // TODO: 데모데이 이후 isNicknameChanged 삭제하고 더 나은 방법 찾아보기
+  const [isNicknameChanged, setIsNicknameChanged] = useState(false);
   const [user, setUser] = useState({
     id: -1,
     nickname: '',
@@ -25,7 +27,14 @@ const UserProvider = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ user, changeUserId, changeUserNickname, changeAvatar }}
+      value={{
+        user,
+        changeUserId,
+        changeUserNickname,
+        changeAvatar,
+        isNicknameChanged,
+        setIsNicknameChanged,
+      }}
     >
       {children}
     </UserContext.Provider>

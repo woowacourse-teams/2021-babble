@@ -6,6 +6,7 @@
   width: fit-content;
   display: flex;
   position: relative;
+  align-items: center;
 
   .notice-bubble {
     display: inline-block;
@@ -51,6 +52,15 @@
 
   .edit {
     margin: 0 1rem 0 0.5rem;
+    display: flex;
+    align-items: center;
+
+    &:disabled {
+      svg {
+        color: m.grey-scale(5);
+        cursor: default;
+      }
+    }
 
     svg {
       color: m.grey-scale(12);

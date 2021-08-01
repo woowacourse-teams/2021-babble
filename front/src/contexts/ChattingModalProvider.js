@@ -41,9 +41,10 @@ const ChattingModalProvider = ({ children }) => {
     setIsMinimized(false);
   };
 
+  // TODO: 데모데이 이후 isChattingModalOpen 없애기
   return (
     <ChattingModalContext.Provider
-      value={{ openChatting, closeChatting, minimize }}
+      value={{ openChatting, closeChatting, minimize, isChattingModalOpen }}
     >
       {children}
       {isChattingModalOpen && (
