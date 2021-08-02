@@ -12,7 +12,7 @@ module.exports = (env, options) => {
     output: {
       path: path.join(__dirname, '/dist'),
       publicPath: '/',
-      filename: 'bundle.js',
+      filename: 'bundle-v0.1.js',
     },
 
     module: {

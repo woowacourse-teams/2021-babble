@@ -17,6 +17,7 @@ const SearchInput = ({
   const [autoCompleteList, setAutoCompleteList] = useState([]);
   const containerRef = useRef(null);
   const autoCompleteRef = useRef(null);
+  const inputRef = useRef(null);
 
   const onFocusInput = () => {
     containerRef.current.classList.add('focused');
@@ -34,6 +35,8 @@ const SearchInput = ({
 
     containerRef.current.classList.remove('focused');
     autoCompleteRef.current.classList.remove('show');
+    inputRef.current.value = '';
+    setAutoCompleteList(autoCompleteKeywords);
   };
 
   const onChangeInput = (e) => {
@@ -80,6 +83,7 @@ const SearchInput = ({
         onFocus={onFocusInput}
         onBlur={onBlurInput}
         onChange={onChangeInputDebounced}
+        ref={inputRef}
       />
       <ul className='keyword-list-container' ref={autoCompleteRef}>
         {autoCompleteList.length ? (
