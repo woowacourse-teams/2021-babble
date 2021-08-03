@@ -2,7 +2,7 @@ import './SearchInput.scss';
 
 import React, { useEffect, useRef, useState } from 'react';
 
-import Caption1 from '../../core/Typography/Caption1';
+import { Caption1 } from '../../core/Typography';
 import { FiSearch } from 'react-icons/fi';
 import PropTypes from 'prop-types';
 import getKorRegExp from './service/getKorRegExp';

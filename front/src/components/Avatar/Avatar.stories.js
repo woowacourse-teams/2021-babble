@@ -1,7 +1,6 @@
+import { Body2, Caption1, Caption2 } from '../../core/Typography';
+
 import Avatar from './Avatar';
-import Body2 from '../../core/Typography/Body2';
-import Caption1 from '../../core/Typography/Caption1';
-import Caption2 from '../../core/Typography/Caption2';
 import React from 'react';
 
 export default {

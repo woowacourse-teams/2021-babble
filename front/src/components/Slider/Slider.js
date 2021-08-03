@@ -2,7 +2,7 @@ import './Slider.scss';
 
 import React, { useEffect, useRef, useState } from 'react';
 
-import Caption2 from '../../core/Typography/Caption2';
+import { Caption2 } from '../../core/Typography';
 import PropTypes from 'prop-types';
 
 const Slider = ({ imageList }) => {

@@ -1,18 +1,19 @@
 import './MakeRoom.scss';
 
+import { Body2, Headline2 } from '../../core/Typography';
+import {
+  DropdownInput,
+  MainImage,
+  RoundButton,
+  SearchInput,
+} from '../../components';
 import { Link, useHistory } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 
-import Body2 from '../../core/Typography/Body2';
 import ChattingRoom from '../ChattingRoom/ChattingRoom';
-import DropdownInput from '../../components/SearchInput/DropdownInput';
-import Headline2 from '../../core/Typography/Headline2';
-import MainImage from '../../components/MainImage/MainImage';
 import PATH from '../../constants/path';
 import PageLayout from '../../core/Layout/PageLayout';
 import PropTypes from 'prop-types';
-import RoundButton from '../../components/Button/RoundButton';
-import SearchInput from '../../components/SearchInput/SearchInput';
 import TagList from '../../chunks/TagList/TagList';
 import axios from 'axios';
 import { useChattingModal } from '../../contexts/ChattingModalProvider';

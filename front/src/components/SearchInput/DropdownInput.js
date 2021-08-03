@@ -2,7 +2,7 @@ import './SearchInput.scss';
 
 import React, { useEffect, useRef, useState } from 'react';
 
-import Caption1 from '../../core/Typography/Caption1';
+import { Caption1 } from '../../core/Typography';
 import { IoCaretDown } from 'react-icons/io5';
 import PropTypes from 'prop-types';
 

@@ -1,8 +1,7 @@
 import './NicknameSection.scss';
 
-import Body2 from '../../core/Typography/Body2';
-import Caption1 from '../../core/Typography/Caption1';
-import Caption2 from '../../core/Typography/Caption2';
+import { Body2, Caption1, Caption2 } from '../../core/Typography';
+
 import ChangeNickname from '../../pages/ChangeNickname/ChangeNickname';
 import { FiEdit } from 'react-icons/fi';
 import React from 'react';

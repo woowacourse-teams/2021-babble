@@ -1,13 +1,12 @@
 import './TagList.scss';
 
 import React, { useRef } from 'react';
+import { Tag, TagErasable } from '../../components';
 
-import Caption1 from '../../core/Typography/Caption1';
+import { Caption1 } from '../../core/Typography';
 import LinearLayout from '../../core/Layout/LinearLayout';
 import PropTypes from 'prop-types';
 import { SCROLL } from '../../constants/event';
-import Tag from '../../components/Tag/Tag';
-import TagErasable from '../../components/Tag/TagErasable';
 
 const TagList = ({ tags, onDeleteTag, erasable = false, useWheel = false }) => {
   const tagListRef = useRef();

@@ -1,6 +1,5 @@
-import Body1 from '../../core/Typography/Body1';
-import Body2 from '../../core/Typography/Body2';
-import Caption2 from '../../core/Typography/Caption2';
+import { Body1, Body2, Caption2 } from '../../core/Typography';
+
 import React from 'react';
 import RoundButton from './RoundButton';
 import SquareButton from './SquareButton';

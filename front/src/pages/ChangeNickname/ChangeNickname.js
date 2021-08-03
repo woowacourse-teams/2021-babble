@@ -1,11 +1,10 @@
 import './ChangeNickname.scss';
 
-import Caption1 from '../../core/Typography/Caption1';
+import { Caption1, Subtitle3 } from '../../core/Typography';
+import { RoundButton, TextInput } from '../../components';
+
 import { IoCloseOutline } from 'react-icons/io5';
 import React from 'react';
-import RoundButton from '../../components/Button/RoundButton';
-import Subtitle3 from '../../core/Typography/Subtitle3';
-import TextInput from '../../components/SearchInput/TextInput';
 import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 import { useUser } from '../../contexts/UserProvider';
 

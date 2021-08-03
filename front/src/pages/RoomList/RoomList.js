@@ -1,19 +1,20 @@
 import './RoomList.scss';
 
+import { Body2, Headline2 } from '../../core/Typography';
+import {
+  MainImage,
+  NicknameSection,
+  Room,
+  SearchInput,
+  SquareButton,
+} from '../../components';
 import React, { useEffect, useState } from 'react';
 
-import Body2 from '../../core/Typography/Body2';
 import ChattingRoom from '../ChattingRoom/ChattingRoom';
-import Headline2 from '../../core/Typography/Headline2';
 import { Link } from 'react-router-dom';
-import MainImage from '../../components/MainImage/MainImage';
-import NicknameSection from '../../components/NicknameSection/NicknameSection';
 import PATH from '../../constants/path';
 import PageLayout from '../../core/Layout/PageLayout';
 import PropTypes from 'prop-types';
-import Room from '../../components/Room/Room';
-import SearchInput from '../../components/SearchInput/SearchInput';
-import SquareButton from '../../components/Button/SquareButton';
 import TagList from '../../chunks/TagList/TagList';
 import axios from 'axios';
 import { useChattingModal } from '../../contexts/ChattingModalProvider';

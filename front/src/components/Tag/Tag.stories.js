@@ -1,4 +1,4 @@
-import Caption2 from '../../core/Typography/Caption2';
+import { Caption2 } from '../../core/Typography';
 import React from 'react';
 import Tag from './Tag';
 import TagErasable from './TagErasable';

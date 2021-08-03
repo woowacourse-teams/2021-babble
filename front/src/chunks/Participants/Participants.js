@@ -1,14 +1,12 @@
 import './Participants.scss';
 
+import { Avatar, Badge } from '../../components';
+import { Caption2, Subtitle3 } from '../../core/Typography';
 import React, { useState } from 'react';
 
-import Avatar from '../../components/Avatar/Avatar';
-import Badge from '../../components/Badge/Badge';
-import Caption2 from '../../core/Typography/Caption2';
 import LinearLayout from '../../core/Layout/LinearLayout';
 import PropTypes from 'prop-types';
 import { RiVipCrown2Fill } from 'react-icons/ri';
-import Subtitle3 from '../../core/Typography/Subtitle3';
 import { VscCircleFilled } from 'react-icons/vsc';
 import { useUser } from '../../contexts/UserProvider';
 

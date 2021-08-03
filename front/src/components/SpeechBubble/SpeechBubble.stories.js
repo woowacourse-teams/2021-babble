@@ -1,7 +1,7 @@
 import React from 'react';
 import SpeechBubble from './SpeechBubble';
 import SpeechBubbleWithAvatar from './SpeechBubbleWithAvatar';
-import Subtitle3 from '../../core/Typography/Subtitle3';
+import { Subtitle3 } from '../../core/Typography';
 
 export default {
   title: 'components/SpeechBubble',

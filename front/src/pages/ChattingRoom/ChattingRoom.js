@@ -1,5 +1,10 @@
 import './ChattingRoom.scss';
 
+import {
+  ModalError,
+  SpeechBubble,
+  SpeechBubbleWithAvatar,
+} from '../../components';
 import React, { useEffect, useRef, useState } from 'react';
 import { SESSION_ID_LENGTH, SOCKET_URL_DIVIDER } from '../../constants/chat';
 
@@ -7,14 +12,11 @@ import Chatbox from '../../chunks/Chatbox/Chatbox';
 import { IoCloseOutline } from 'react-icons/io5';
 import { IoRemove } from 'react-icons/io5';
 import LinearLayout from '../../core/Layout/LinearLayout';
-import ModalError from '../../components/Modal/ModalError';
 import Participants from '../../chunks/Participants/Participants';
 import PropTypes from 'prop-types';
 import SockJS from 'sockjs-client';
-import SpeechBubble from '../../components/SpeechBubble/SpeechBubble';
-import SpeechBubbleWithAvatar from '../../components/SpeechBubble/SpeechBubbleWithAvatar';
 import { Stomp } from '@stomp/stompjs';
-import Subtitle3 from '../../core/Typography/Subtitle3';
+import { Subtitle3 } from '../../core/Typography';
 import TagList from '../../chunks/TagList/TagList';
 import axios from 'axios';
 import { useChattingModal } from '../../contexts/ChattingModalProvider';

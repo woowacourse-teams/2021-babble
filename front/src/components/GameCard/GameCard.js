@@ -1,7 +1,7 @@
 import './GameCard.scss';
 
-import Body2 from '../../core/Typography/Body2';
-import Caption1 from '../../core/Typography/Caption1';
+import { Body2, Caption1 } from '../../core/Typography';
+
 import PropTypes from 'prop-types';
 import React from 'react';
 
