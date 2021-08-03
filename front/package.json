@@ -7,7 +7,7 @@
     "start": "webpack serve --mode development --env development",
     "prod": "webpack --mode production",
     "build": "webpack",
-    "dev": "webpack --watch",
+    "test": "jest --watch",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "semantic-release": "semantic-release"
