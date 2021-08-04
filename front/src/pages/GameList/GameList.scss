@@ -1,0 +1,31 @@
+@use '../../../style/mixins' as m;
+@use '../../../style/variables' as v;
+
+.game-list-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 5rem;
+
+  .headline2 {
+    margin: 5rem 0;
+  }
+
+  .search-section {
+    max-width: 50rem;
+    min-width: 15rem;
+    margin-bottom: 3rem;
+    display: flex;
+    gap: 1rem;
+
+    .input-container {
+      flex-basis: 80%;
+    }
+  }
+
+  .game-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 2rem;
+  }
+}
