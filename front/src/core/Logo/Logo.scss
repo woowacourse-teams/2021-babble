@@ -1,0 +1,39 @@
+.logo-container {
+  svg {
+    &:hover {
+      .speech-bubble {
+        transform-origin: center;
+        animation: fill 0.6s cubic-bezier(0.72, 0, 0.32, 1.04),
+          tilt 0.8s cubic-bezier(0.72, 0, 0.32, 1.04);
+      }
+    }
+  }
+}
+
+@keyframes fill {
+  0% {
+    fill: transparent;
+  }
+
+  100% {
+    fill: #ff005c;
+  }
+}
+
+@keyframes tilt {
+  0% {
+    transform: skewY(0);
+  }
+
+  20% {
+    transform: rotateZ(-0.5deg) skewY(-0.5deg) scaleX(0.97);
+  }
+
+  40% {
+    transform: rotateZ(0.5deg) skewY(1deg) scaleX(1);
+  }
+
+  100% {
+    transform: rotateZ(0) skewY(0) scaleX(1);
+  }
+}
