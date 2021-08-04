@@ -1,6 +1,7 @@
 import './RoomList.scss';
 
 import { Body2, Headline2 } from '../../core/Typography';
+import { Link, useLocation } from 'react-router-dom';
 import {
   MainImage,
   NicknameSection,
@@ -11,21 +12,28 @@ import {
 import React, { useEffect, useState } from 'react';
 
 import ChattingRoom from '../ChattingRoom/ChattingRoom';
-import { Link } from 'react-router-dom';
 import PATH from '../../constants/path';
 import PageLayout from '../../core/Layout/PageLayout';
 import PropTypes from 'prop-types';
 import TagList from '../../chunks/TagList/TagList';
 import axios from 'axios';
+import getKorRegExp from '../../components/SearchInput/service/getKorRegExp';
 import { useChattingModal } from '../../contexts/ChattingModalProvider';
 import useInterval from '../../hooks/useInterval';
 
-const RoomList = ({ gameId }) => {
+const RoomList = ({ match }) => {
+  const location = useLocation();
   const [imageUrl, setImageUrl] = useState('');
   const [tagList, setTagList] = useState([]);
   const [selectedTagList, setSelectedTagList] = useState([]);
   const [roomList, setRoomList] = useState([]);
   const { openChatting, closeChatting } = useChattingModal();
+
+  // TODO: 임시 방편. onChangeInput을 SearchInput 내부로 집어넣으면서 사라질 운명
+  const [autoCompleteTagList, setAutoCompleteTagList] = useState([]);
+
+  const { gameId } = match.params;
+  const { gameName } = location.state;
 
   const getImage = async () => {
     const response = await axios.get(
@@ -45,7 +53,7 @@ const RoomList = ({ gameId }) => {
 
   const getRooms = async (tagIds) => {
     const response = await axios.get('https://babble-test.o-r.kr/api/rooms', {
-      params: { gameId: 1, tagIds, page: 1 },
+      params: { gameId, tagIds, page: 1 },
     });
     const rooms = response.data;
 
@@ -94,32 +102,66 @@ const RoomList = ({ gameId }) => {
     }
   };
 
+  const onChangeTagInput = (e) => {
+    const inputValue = e.target.value;
+
+    const searchResults = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]+/g.test(inputValue)
+      ? tagList.filter((tag) => {
+          const keywordRegExp = getKorRegExp(inputValue, {
+            initialSearch: true,
+            ignoreSpace: true,
+          });
+          return tag.name.match(keywordRegExp);
+        })
+      : tagList.filter((tag) => {
+          const searchRegex = new RegExp(inputValue, 'gi');
+          const keywordWithoutSpace = tag.name.replace(/\s/g, '');
+          return (
+            keywordWithoutSpace.match(searchRegex) ||
+            tag.name.match(searchRegex)
+          );
+        });
+
+    setAutoCompleteTagList(searchResults);
+  };
+
   useEffect(() => {
     getImage();
     getRooms('');
     getTags();
   }, []);
 
+  // TODO: 데모데이 이후 삭제될 운명
   useInterval(() => {
     const selectedTagIdParam = selectedTagList.map(({ id }) => id).join(',');
     getRooms(selectedTagIdParam);
   }, 5000);
 
-  // 데모데이 이후 삭제될 운명
   useEffect(() => {
     const selectedTagIdParam = selectedTagList.map(({ id }) => id).join(',');
     getRooms(selectedTagIdParam);
   }, [selectedTagList]);
+
+  useEffect(() => {
+    setAutoCompleteTagList(tagList);
+  }, [tagList]);
 
   return (
     <div className='room-list-container'>
       <MainImage imageSrc={imageUrl} />
       <PageLayout>
         <section className='room-list-header'>
-          <Headline2>{'League of Legends'}</Headline2>
+          <Headline2>{gameName}</Headline2>
           <div className='side'>
             <NicknameSection />
-            <Link to={PATH.MAKE_ROOM}>
+            <Link
+              to={{
+                pathname: `${PATH.ROOM_LIST}/${gameId}${PATH.MAKE_ROOM}`,
+                state: {
+                  gameName,
+                },
+              }}
+            >
               <SquareButton size='medium' colored>
                 <Body2>방 생성하기</Body2>
               </SquareButton>
@@ -129,8 +171,9 @@ const RoomList = ({ gameId }) => {
 
         <section className='search-section'>
           <SearchInput
-            autoCompleteKeywords={tagList}
+            autoCompleteKeywords={autoCompleteTagList}
             onClickKeyword={selectTag}
+            onChangeInput={onChangeTagInput}
           />
           <TagList tags={selectedTagList} onDeleteTag={eraseTag} erasable />
         </section>
@@ -146,7 +189,7 @@ const RoomList = ({ gameId }) => {
 };
 
 RoomList.propTypes = {
-  gameId: PropTypes.number,
+  match: PropTypes.object,
 };
 
 export default RoomList;
