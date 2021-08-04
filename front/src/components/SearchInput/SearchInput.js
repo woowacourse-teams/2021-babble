@@ -5,13 +5,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Caption1 } from '../../core/Typography';
 import { FiSearch } from 'react-icons/fi';
 import PropTypes from 'prop-types';
-import getKorRegExp from './service/getKorRegExp';
 import useDebounce from '../../hooks/useDebounce';
 
 const SearchInput = ({
   placeholder = '태그를 검색해주세요.',
   autoCompleteKeywords,
   onClickKeyword,
+  onChangeInput,
+  isResetable = true,
 }) => {
   const { debounce } = useDebounce(500);
   const [autoCompleteList, setAutoCompleteList] = useState([]);
@@ -33,37 +34,18 @@ const SearchInput = ({
     const selectedItem = target.textContent;
     onClickKeyword(selectedItem);
 
-    containerRef.current.classList.remove('focused');
-    autoCompleteRef.current.classList.remove('show');
-    inputRef.current.value = '';
+    onBlurInput();
+
+    if (isResetable) {
+      inputRef.current.value = '';
+    } else {
+      inputRef.current.value = selectedItem;
+    }
+
     setAutoCompleteList(autoCompleteKeywords);
   };
 
-  const onChangeInput = (e) => {
-    const inputValue = e.target.value;
-
-    const searchResults = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]+/g.test(inputValue)
-      ? autoCompleteKeywords.filter((autoCompleteKeyword) => {
-          const keywordRegExp = getKorRegExp(inputValue, {
-            initialSearch: true,
-            ignoreSpace: true,
-          });
-          return autoCompleteKeyword.name.match(keywordRegExp);
-        })
-      : autoCompleteKeywords.filter((autoCompleteKeyword) => {
-          const searchRegex = new RegExp(inputValue, 'gi');
-          const keywordWithoutSpace = autoCompleteKeyword.name.replace(
-            /\s/g,
-            ''
-          );
-          return (
-            keywordWithoutSpace.match(searchRegex) ||
-            autoCompleteKeyword.name.match(searchRegex)
-          );
-        });
-
-    setAutoCompleteList(searchResults);
-  };
+  // TODO: GameList와 RoomList에 있는 자동완성 로직 하나로 합쳐서 SearchInput에 있어야 할 듯.
 
   const onChangeInputDebounced = (e) => {
     debounce(() => onChangeInput(e));
@@ -114,6 +96,8 @@ SearchInput.propTypes = {
     PropTypes.shape({ name: PropTypes.string })
   ),
   onClickKeyword: PropTypes.func,
+  onChangeInput: PropTypes.func,
+  isResetable: PropTypes.bool,
 };
 
 export default SearchInput;
