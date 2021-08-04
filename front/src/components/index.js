@@ -20,4 +20,5 @@ export { default as Slider } from './Slider/Slider';
 export { default as SpeechBubble } from './SpeechBubble/SpeechBubble';
 export { default as SpeechBubbleWithAvatar } from './SpeechBubble/SpeechBubbleWithAvatar';
 export { default as Tag } from './Tag/Tag';
+export { default as NavBar } from './NavBar/NavBar';
 export { default as TagErasable } from './Tag/TagErasable';
