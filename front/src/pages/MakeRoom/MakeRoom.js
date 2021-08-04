@@ -7,7 +7,7 @@ import {
   RoundButton,
   SearchInput,
 } from '../../components';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 
 import ChattingRoom from '../ChattingRoom/ChattingRoom';
@@ -18,13 +18,17 @@ import TagList from '../../chunks/TagList/TagList';
 import axios from 'axios';
 import { useChattingModal } from '../../contexts/ChattingModalProvider';
 
-const MakeRoom = ({ gameId }) => {
+const MakeRoom = ({ match }) => {
+  const location = useLocation();
   const [imageUrl, setImageUrl] = useState('');
   const [tagList, setTagList] = useState([]);
   const [selectedTagList, setSelectedTagList] = useState([]);
   const [maxHeadCount, setMaxHeadCount] = useState(0);
   const { openChatting } = useChattingModal();
   const history = useHistory();
+
+  const { gameId } = match.params;
+  const { gameName } = location.state;
 
   const getImage = async () => {
     const response = await axios.get(
@@ -84,7 +88,10 @@ const MakeRoom = ({ gameId }) => {
         <ChattingRoom tags={tags} roomId={roomId} createdAt={createdDate} />
       );
 
-      history.push({ pathname: PATH.HOME });
+      history.push({
+        pathname: `${PATH.ROOM_LIST}/${gameId}`,
+        state: { gameName },
+      });
     } catch (error) {
       alert('방 생성을 하는 데 오류가 있습니다.');
     }
@@ -96,42 +103,45 @@ const MakeRoom = ({ gameId }) => {
   }, []);
 
   return (
-    <form className='make-room-container' onSubmit={createRoom}>
-      <MainImage imageSrc={imageUrl} />
-      <PageLayout type='narrow'>
-        <Headline2>방 생성하기</Headline2>
-        <section className='inputs'>
-          {/* TODO: DropdownInput 컴포넌트에서 도메인 제거하기 */}
-          <DropdownInput
-            dropdownKeywords={[...Array(21).keys()].slice(2)}
-            maxHeadCount={maxHeadCount}
-            setMaxHeadCount={setMaxHeadCount}
-          />
-          <SearchInput
-            autoCompleteKeywords={tagList}
-            onClickKeyword={selectTag}
-          />
-        </section>
-        <section className='tag-list-section'>
-          <TagList tags={selectedTagList} onDeleteTag={eraseTag} erasable />
-        </section>
-        <section className='buttons'>
-          <Link to={PATH.HOME}>
-            <RoundButton size='small'>
-              <Body2>취소하기</Body2>
+    <div className='make-room-container'>
+      <form className='make-room-form' onSubmit={createRoom}>
+        <MainImage imageSrc={imageUrl} />
+        <PageLayout type='narrow'>
+          <Headline2>방 생성하기</Headline2>
+          <section className='inputs'>
+            {/* TODO: DropdownInput 컴포넌트에서 도메인 제거하기 */}
+            <DropdownInput
+              dropdownKeywords={[...Array(21).keys()].slice(2)}
+              maxHeadCount={maxHeadCount}
+              setMaxHeadCount={setMaxHeadCount}
+            />
+            <SearchInput
+              autoCompleteKeywords={tagList}
+              onClickKeyword={selectTag}
+            />
+          </section>
+          <section className='tag-list-section'>
+            <TagList tags={selectedTagList} onDeleteTag={eraseTag} erasable />
+          </section>
+          <section className='buttons'>
+            <Link to={PATH.HOME}>
+              <RoundButton size='small'>
+                <Body2>취소하기</Body2>
+              </RoundButton>
+            </Link>
+            <RoundButton type='submit' size='small' colored>
+              <Body2>생성하기</Body2>
             </RoundButton>
-          </Link>
-          <RoundButton type='submit' size='small' colored>
-            <Body2>생성하기</Body2>
-          </RoundButton>
-        </section>
-      </PageLayout>
-    </form>
+          </section>
+        </PageLayout>
+      </form>
+    </div>
   );
 };
 
 MakeRoom.propTypes = {
   gameId: PropTypes.number,
+  match: PropTypes.object,
 };
 
 export default MakeRoom;

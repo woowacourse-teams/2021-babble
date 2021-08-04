@@ -1,42 +1,46 @@
 .make-room-container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  padding-bottom: 5rem;
 
-  .headline2 {
-    margin: 4rem 0;
-  }
+  .make-room-form {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-  .inputs {
-    & .input-container {
+    .headline2 {
+      margin: 4rem 0;
+    }
+
+    .inputs {
+      & .input-container {
+        margin-bottom: 1rem;
+      }
+
       margin-bottom: 1rem;
     }
 
-    margin-bottom: 1rem;
-  }
-
-  .make-room-form {
-    padding: 0;
-    margin: 0;
-  }
-
-  .tag-list-section {
-    width: 100%;
-    min-height: 2rem;
-    margin-bottom: 5rem;
-
-    .linear-layout {
-      justify-content: flex-start;
+    .make-room-form {
+      padding: 0;
+      margin: 0;
     }
-  }
 
-  .buttons {
-    display: flex;
-    justify-content: center;
+    .tag-list-section {
+      width: 100%;
+      min-height: 2rem;
+      margin-bottom: 5rem;
 
-    button {
-      margin: 1rem;
+      .linear-layout {
+        justify-content: flex-start;
+      }
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+
+      button {
+        margin: 1rem;
+      }
     }
   }
 }
