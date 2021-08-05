@@ -18,10 +18,8 @@ import SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
 import { Subtitle3 } from '../../core/Typography';
 import TagList from '../../chunks/TagList/TagList';
-import axios from 'axios';
 import { useChattingModal } from '../../contexts/ChattingModalProvider';
 import { useDefaultModal } from '../../contexts/DefaultModalProvider';
-import useUpdateEffect from '../../hooks/useUpdateEffect';
 import { useUser } from '../../contexts/UserProvider';
 
 const ChattingRoom = ({ tags, roomId, createdAt }) => {
@@ -37,7 +35,6 @@ const ChattingRoom = ({ tags, roomId, createdAt }) => {
   const { closeChatting, minimize } = useChattingModal();
   const {
     user: { nickname, id: userId },
-    changeUserId,
   } = useUser();
 
   const waitForConnectionReady = (callback) => {
@@ -70,34 +67,7 @@ const ChattingRoom = ({ tags, roomId, createdAt }) => {
     e.target.reset();
   };
 
-  const getUserId = async () => {
-    const response = await axios.post('https://babble-test.o-r.kr/api/users', {
-      nickname,
-    });
-    const generatedUser = response.data;
-
-    changeUserId(generatedUser.id);
-  };
-
   useEffect(() => {
-    getUserId();
-
-    return () => {
-      if (isConnected.current) {
-        stompClient.current.disconnect(() => {
-          if (user_subscription.current) {
-            user_subscription.current.unsubscribe();
-          }
-          if (chat_subscription.current) {
-            chat_subscription.current.unsubscribe();
-          }
-        });
-        isConnected.current = false;
-      }
-    };
-  }, []);
-
-  useUpdateEffect(() => {
     const socket = new SockJS('https://babble-test.o-r.kr/connection');
     stompClient.current = Stomp.over(socket);
 
@@ -155,7 +125,21 @@ const ChattingRoom = ({ tags, roomId, createdAt }) => {
         openModal(<ModalError>{errorMessage}</ModalError>);
       }
     );
-  }, [userId]);
+
+    return () => {
+      if (isConnected.current) {
+        stompClient.current.disconnect(() => {
+          if (user_subscription.current) {
+            user_subscription.current.unsubscribe();
+          }
+          if (chat_subscription.current) {
+            chat_subscription.current.unsubscribe();
+          }
+        });
+        isConnected.current = false;
+      }
+    };
+  }, []);
 
   return (
     <div className='modal-chatting-room'>
