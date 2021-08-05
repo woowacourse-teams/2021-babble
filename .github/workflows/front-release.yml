@@ -2,7 +2,7 @@ name: Node.js Package
 
 on:
   push:
-    branches: [main]
+    branches: [release]
     paths:
       - 'front/**'
 
@@ -22,12 +22,7 @@ jobs:
       - name: 빌드
         working-directory: ./front
         run: npm run prod
-
-      - name: Semantic Release 실행
-        uses: go-semantic-release/action@v1
-        with:
-          github-token: ${{ secrets.SEMANTIC_RELEASE_GH_TOKEN }}
-
+        
       - name: 배포
         working-directory: ./front
         run: aws s3 sync ./dist s3://bucket-babble-front/ --delete
