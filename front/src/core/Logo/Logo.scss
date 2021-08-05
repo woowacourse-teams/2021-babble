@@ -1,0 +1,17 @@
+@use '../../../style/animations';
+
+.logo-container {
+  svg {
+    &:not(:root) {
+      overflow: visible;
+    }
+
+    &:hover {
+      .speech-bubble {
+        transform-origin: center;
+        animation: fill 0.7s cubic-bezier(0.72, 0, 0.32, 1.04),
+          tilt 0.8s cubic-bezier(0.72, 0, 0.32, 1.04);
+      }
+    }
+  }
+}

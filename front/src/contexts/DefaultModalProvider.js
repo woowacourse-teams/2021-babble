@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from 'react';
 
 import { MODAL_TYPE_DEFAULT } from '../constants/chat';
-import Modal from '../components/Modal/Modal';
+import { Modal } from '../components';
 import PropTypes from 'prop-types';
 
 const DefaultModalContext = createContext();

@@ -1,24 +1,33 @@
 import './ChangeNickname.scss';
 
-import Caption1 from '../../core/Typography/Caption1';
+import { Caption1, Subtitle3 } from '../../core/Typography';
+import { RoundButton, TextInput } from '../../components';
+
 import { IoCloseOutline } from 'react-icons/io5';
+import { NICKNAME_MAX_LENGTH } from '../../constants/chat';
 import React from 'react';
-import RoundButton from '../../components/Button/RoundButton';
-import Subtitle3 from '../../core/Typography/Subtitle3';
-import TextInput from '../../components/SearchInput/TextInput';
+import axios from 'axios';
+import { setLocalStorage } from '../../utils/localStorage';
 import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 import { useUser } from '../../contexts/UserProvider';
 
 const ChangeNickname = () => {
   const { closeModal } = useDefaultModal();
-  const { user, changeUserNickname, setIsNicknameChanged } = useUser();
+  const { user, changeUser, setIsNicknameChanged } = useUser();
 
-  const submitNickname = (e) => {
+  const submitNickname = async (e) => {
     e.preventDefault();
     const nicknameInput = e.target.nickname.value;
 
+    const response = await axios.post('https://babble-test.o-r.kr/api/users', {
+      nickname: nicknameInput,
+    });
+    const generatedUser = response.data;
+
+    setLocalStorage('nickname', generatedUser.nickname);
+
     setIsNicknameChanged(true);
-    changeUserNickname(nicknameInput);
+    changeUser({ id: generatedUser.id, nickname: generatedUser.nickname });
     closeModal();
   };
 
@@ -33,6 +42,7 @@ const ChangeNickname = () => {
           value={user.nickname}
           name='nickname'
           placeholder='닉네임을 입력해주세요.'
+          maxLength={NICKNAME_MAX_LENGTH}
           isContentSelected
         />
       </div>

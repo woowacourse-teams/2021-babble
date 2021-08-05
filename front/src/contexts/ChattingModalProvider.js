@@ -1,8 +1,7 @@
+import { Modal, ModalMinimized } from '../components';
 import React, { createContext, useContext, useState } from 'react';
 
 import { MODAL_TYPE_CHATTING } from '../constants/chat';
-import Modal from '../components/Modal/Modal';
-import ModalMinimized from '../components/Modal/ModalMinimized';
 import PropTypes from 'prop-types';
 
 const ChattingModalContext = createContext();

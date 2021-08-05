@@ -1,30 +1,42 @@
 import './RoomList.scss';
 
+import { Body2, Headline2 } from '../../core/Typography';
+import { Link, useLocation } from 'react-router-dom';
+import {
+  MainImage,
+  NicknameSection,
+  Room,
+  SearchInput,
+  SquareButton,
+} from '../../components';
 import React, { useEffect, useState } from 'react';
+import { getLocalStorage, setLocalStorage } from '../../utils/localStorage';
 
-import Body2 from '../../core/Typography/Body2';
 import ChattingRoom from '../ChattingRoom/ChattingRoom';
-import Headline2 from '../../core/Typography/Headline2';
-import { Link } from 'react-router-dom';
-import MainImage from '../../components/MainImage/MainImage';
-import NicknameSection from '../../components/NicknameSection/NicknameSection';
 import PATH from '../../constants/path';
 import PageLayout from '../../core/Layout/PageLayout';
 import PropTypes from 'prop-types';
-import Room from '../../components/Room/Room';
-import SearchInput from '../../components/SearchInput/SearchInput';
-import SquareButton from '../../components/Button/SquareButton';
 import TagList from '../../chunks/TagList/TagList';
 import axios from 'axios';
+import getKorRegExp from '../../components/SearchInput/service/getKorRegExp';
 import { useChattingModal } from '../../contexts/ChattingModalProvider';
 import useInterval from '../../hooks/useInterval';
+import { useUser } from '../../contexts/UserProvider';
 
-const RoomList = ({ gameId }) => {
+const RoomList = ({ match }) => {
+  const location = useLocation();
   const [imageUrl, setImageUrl] = useState('');
   const [tagList, setTagList] = useState([]);
   const [selectedTagList, setSelectedTagList] = useState([]);
   const [roomList, setRoomList] = useState([]);
+  const { changeUser } = useUser();
   const { openChatting, closeChatting } = useChattingModal();
+
+  // TODO: 임시 방편. onChangeInput을 SearchInput 내부로 집어넣으면서 사라질 운명
+  const [autoCompleteTagList, setAutoCompleteTagList] = useState([]);
+
+  const { gameId } = match.params;
+  const { gameName } = location.state;
 
   const getImage = async () => {
     const response = await axios.get(
@@ -40,11 +52,12 @@ const RoomList = ({ gameId }) => {
     const tags = response.data;
 
     setTagList(tags);
+    setAutoCompleteTagList(tags);
   };
 
   const getRooms = async (tagIds) => {
     const response = await axios.get('https://babble-test.o-r.kr/api/rooms', {
-      params: { gameId: 1, tagIds, page: 1 },
+      params: { gameId, tagIds, page: 1 },
     });
     const rooms = response.data;
 
@@ -89,22 +102,71 @@ const RoomList = ({ gameId }) => {
       );
     } catch (error) {
       alert('방이 존재하지 않습니다.');
-      console.log(error);
+      console.error(error);
     }
+  };
+
+  const onChangeTagInput = (e) => {
+    const inputValue = e.target.value;
+
+    const searchResults = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]+/g.test(inputValue)
+      ? tagList.filter((tag) => {
+          const keywordRegExp = getKorRegExp(inputValue, {
+            initialSearch: true,
+            ignoreSpace: true,
+          });
+          return tag.name.match(keywordRegExp);
+        })
+      : tagList.filter((tag) => {
+          const searchRegex = new RegExp(inputValue, 'gi');
+          const keywordWithoutSpace = tag.name.replace(/\s/g, '');
+          return (
+            keywordWithoutSpace.match(searchRegex) ||
+            tag.name.match(searchRegex)
+          );
+        });
+
+    setAutoCompleteTagList(searchResults);
+  };
+
+  const generateSixDigits = () => {
+    // 닉네임에만 쓰일 숫자(userId와 관련 없음) 익명#84729384
+    // TODO: 지금은 숫자로 퉁치지만, 시간 나면 바로 형용사 + 명사 랜덤 매칭
+    // { noun: '너구리', image: '너구리 사진' }
+    // 라이브러리 npm 배포 가능
+    return Math.floor(100000 + Math.random() * 90000);
+  };
+
+  const getUserId = async () => {
+    const newUser = { id: -1, nickname: '' };
+    newUser.nickname = getLocalStorage('nickname');
+
+    if (!newUser.nickname) {
+      newUser.nickname = `익명#${generateSixDigits()}`;
+      setLocalStorage('nickname', newUser.nickname);
+    }
+
+    const response = await axios.post('https://babble-test.o-r.kr/api/users', {
+      nickname: newUser.nickname,
+    });
+    newUser.id = response.data.id;
+    newUser.nickname = response.data.nickname;
+    changeUser(newUser);
   };
 
   useEffect(() => {
     getImage();
     getRooms('');
     getTags();
+    getUserId();
   }, []);
 
+  // TODO: 데모데이 이후 삭제될 운명
   useInterval(() => {
     const selectedTagIdParam = selectedTagList.map(({ id }) => id).join(',');
     getRooms(selectedTagIdParam);
   }, 5000);
 
-  // 데모데이 이후 삭제될 운명
   useEffect(() => {
     const selectedTagIdParam = selectedTagList.map(({ id }) => id).join(',');
     getRooms(selectedTagIdParam);
@@ -115,10 +177,17 @@ const RoomList = ({ gameId }) => {
       <MainImage imageSrc={imageUrl} />
       <PageLayout>
         <section className='room-list-header'>
-          <Headline2>{'League of Legends'}</Headline2>
+          <Headline2>{gameName}</Headline2>
           <div className='side'>
             <NicknameSection />
-            <Link to={PATH.MAKE_ROOM}>
+            <Link
+              to={{
+                pathname: `${PATH.ROOM_LIST}/${gameId}${PATH.MAKE_ROOM}`,
+                state: {
+                  gameName,
+                },
+              }}
+            >
               <SquareButton size='medium' colored>
                 <Body2>방 생성하기</Body2>
               </SquareButton>
@@ -128,8 +197,9 @@ const RoomList = ({ gameId }) => {
 
         <section className='search-section'>
           <SearchInput
-            autoCompleteKeywords={tagList}
+            autoCompleteKeywords={autoCompleteTagList}
             onClickKeyword={selectTag}
+            onChangeInput={onChangeTagInput}
           />
           <TagList tags={selectedTagList} onDeleteTag={eraseTag} erasable />
         </section>
@@ -145,7 +215,7 @@ const RoomList = ({ gameId }) => {
 };
 
 RoomList.propTypes = {
-  gameId: PropTypes.number,
+  match: PropTypes.object,
 };
 
 export default RoomList;

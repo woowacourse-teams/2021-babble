@@ -1,7 +1,7 @@
+import { SpeechBubble, SpeechBubbleWithAvatar } from '../../components';
+
 import Chatbox from './Chatbox';
 import React from 'react';
-import SpeechBubble from '../../components/SpeechBubble/SpeechBubble';
-import SpeechBubbleWithAvatar from '../../components/SpeechBubble/SpeechBubbleWithAvatar';
 import { withA11y } from '@storybook/addon-a11y';
 
 export default {

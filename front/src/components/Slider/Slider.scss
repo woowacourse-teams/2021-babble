@@ -3,14 +3,15 @@
 
 .slider-container {
   width: 100%;
-  height: 40rem;
+  height: 35rem;
   overflow: hidden;
+  position: relative;
 
   .show {
     width: 100%;
+    height: 100%;
     max-height: 35rem;
     overflow: hidden;
-    position: relative;
 
     .page-index-container {
       height: 2.5rem;
@@ -37,11 +38,13 @@
     }
 
     .slide-list {
+      height: 100%;
       display: flex;
       transition: transform 250ms ease-in;
 
       .slide {
         float: left;
+        width: 100%;
 
         img {
           width: 100%;
@@ -55,10 +58,11 @@
   .swiper-pagination-container {
     width: 100%;
     height: 5rem;
+    position: absolute;
+    bottom: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-bottom: 1px solid m.grey-scale(3);
 
     .dots-container {
       display: flex;
