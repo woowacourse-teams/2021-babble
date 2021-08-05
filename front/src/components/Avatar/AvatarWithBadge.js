@@ -1,6 +1,6 @@
 import Avatar from './Avatar';
 import Badge from '../Badge/Badge';
-import Caption2 from '../../core/Typography/Caption2';
+import { Caption2 } from '../../core/Typography';
 import PropTypes from 'prop-types';
 import React from 'react';
 

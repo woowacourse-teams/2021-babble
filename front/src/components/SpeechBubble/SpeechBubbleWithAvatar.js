@@ -1,5 +1,5 @@
 import AvatarImage from '../Avatar/AvatarImage';
-import Caption2 from '../../core/Typography/Caption2';
+import { Caption2 } from '../../core/Typography';
 import LinearLayout from '../../core/Layout/LinearLayout';
 import PropTypes from 'prop-types';
 import React from 'react';

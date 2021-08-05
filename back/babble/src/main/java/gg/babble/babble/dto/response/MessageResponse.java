@@ -13,4 +13,5 @@ public class MessageResponse {
 
     private UserResponse user;
     private String content;
+    private String type;
 }

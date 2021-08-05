@@ -1,6 +1,6 @@
 import './ChattingForm.scss';
 
-import Caption1 from '../../core/Typography/Caption1';
+import { Caption1 } from '../../core/Typography';
 import PropTypes from 'prop-types';
 import React from 'react';
 import SquareButton from '../Button/SquareButton';

@@ -1,9 +1,9 @@
+import { Caption2, Subtitle3 } from '../../core/Typography';
+
 import Avatar from '../Avatar/Avatar';
 import AvatarWithBadge from '../Avatar/AvatarWithBadge';
 import Badge from './Badge';
-import Caption2 from '../../core/Typography/Caption2';
 import React from 'react';
-import Subtitle3 from '../../core/Typography/Subtitle3';
 import TagErasable from '../Tag/TagErasable';
 
 export default {

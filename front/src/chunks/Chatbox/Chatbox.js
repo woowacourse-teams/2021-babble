@@ -2,7 +2,7 @@ import './Chatbox.scss';
 
 import React, { useEffect, useRef } from 'react';
 
-import ChattingForm from '../../components/ChattingForm/ChattingForm';
+import { ChattingForm } from '../../components';
 import { KOREAN } from '../../constants/i18n';
 import PropTypes from 'prop-types';
 

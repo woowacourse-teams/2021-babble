@@ -1,3 +1,5 @@
+@use './mixins' as m;
+
 @keyframes bounce {
   from {
     transform: translate(0, -160%);
@@ -73,5 +75,33 @@
 
   50% {
     transform: rotate(-5deg);
+  }
+}
+
+@keyframes fill {
+  0% {
+    fill: transparent;
+  }
+
+  100% {
+    fill: m.primary(babble-pink);
+  }
+}
+
+@keyframes tilt {
+  0% {
+    transform: skewY(0);
+  }
+
+  20% {
+    transform: rotateZ(-2deg) skewX(15deg) skewY(-0.5deg) scaleX(0.97);
+  }
+
+  40% {
+    transform: rotateZ(2deg) skewX(-8deg) skewY(1deg) scaleX(1.01);
+  }
+
+  100% {
+    transform: rotateZ(0) skewX(0deg) skewY(0) scaleX(1);
   }
 }

@@ -1,0 +1,9 @@
+export { default as Body1 } from './Body1';
+export { default as Body2 } from './Body2';
+export { default as Caption1 } from './Caption1';
+export { default as Caption2 } from './Caption2';
+export { default as Headline1 } from './Headline1';
+export { default as Headline2 } from './Headline2';
+export { default as Subtitle1 } from './Subtitle1';
+export { default as Subtitle2 } from './Subtitle2';
+export { default as Subtitle3 } from './Subtitle3';

@@ -1,11 +1,10 @@
 import './ModalError.scss';
 
-import Body2 from '../../core/Typography/Body2';
-import Caption1 from '../../core/Typography/Caption1';
+import { Body2, Caption1, Subtitle2 } from '../../core/Typography';
+
 import PropTypes from 'prop-types';
 import React from 'react';
-import RoundButton from '../../components/Button/RoundButton';
-import Subtitle2 from '../../core/Typography/Subtitle2';
+import { RoundButton } from '../../components';
 import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 
 const ModalError = ({ children }) => {

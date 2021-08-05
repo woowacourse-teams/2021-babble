@@ -1,7 +1,7 @@
 import './Room.scss';
 
 import Avatar from '../Avatar/Avatar';
-import Body2 from '../../core/Typography/Body2';
+import { Body2 } from '../../core/Typography';
 import PropTypes from 'prop-types';
 import React from 'react';
 import TagList from '../../chunks/TagList/TagList';
