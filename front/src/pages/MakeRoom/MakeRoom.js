@@ -154,7 +154,12 @@ const MakeRoom = ({ match }) => {
             <TagList tags={selectedTagList} onDeleteTag={eraseTag} erasable />
           </section>
           <section className='buttons'>
-            <Link to={PATH.HOME}>
+            <Link
+              to={{
+                pathname: `${PATH.ROOM_LIST}/${gameId}`,
+                state: { gameName },
+              }}
+            >
               <RoundButton size='small'>
                 <Body2>취소하기</Body2>
               </RoundButton>
