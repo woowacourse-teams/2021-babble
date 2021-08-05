@@ -49,6 +49,7 @@ const RoomList = ({ match }) => {
     const tags = response.data;
 
     setTagList(tags);
+    setAutoCompleteTagList(tags);
   };
 
   const getRooms = async (tagIds) => {
@@ -141,10 +142,6 @@ const RoomList = ({ match }) => {
     const selectedTagIdParam = selectedTagList.map(({ id }) => id).join(',');
     getRooms(selectedTagIdParam);
   }, [selectedTagList]);
-
-  useEffect(() => {
-    setAutoCompleteTagList(tagList);
-  }, [tagList]);
 
   return (
     <div className='room-list-container'>

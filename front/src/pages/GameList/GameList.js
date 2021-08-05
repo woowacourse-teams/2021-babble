@@ -82,10 +82,6 @@ const GameList = () => {
   };
 
   useEffect(() => {
-    setSelectedGames(gameList);
-  }, [gameList]);
-
-  useEffect(() => {
     // getSliderImages();
     getGames();
   }, []);

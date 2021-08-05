@@ -16,16 +16,20 @@ import PageLayout from '../../core/Layout/PageLayout';
 import PropTypes from 'prop-types';
 import TagList from '../../chunks/TagList/TagList';
 import axios from 'axios';
+import getKorRegExp from '../../components/SearchInput/service/getKorRegExp';
 import { useChattingModal } from '../../contexts/ChattingModalProvider';
 
 const MakeRoom = ({ match }) => {
   const location = useLocation();
+  const history = useHistory();
   const [imageUrl, setImageUrl] = useState('');
   const [tagList, setTagList] = useState([]);
   const [selectedTagList, setSelectedTagList] = useState([]);
   const [maxHeadCount, setMaxHeadCount] = useState(0);
   const { openChatting } = useChattingModal();
-  const history = useHistory();
+
+  // TODO: 임시 방편. onChangeInput을 SearchInput 내부로 집어넣으면서 사라질 운명
+  const [autoCompleteTagList, setAutoCompleteTagList] = useState([]);
 
   const { gameId } = match.params;
   const { gameName } = location.state;
@@ -44,6 +48,7 @@ const MakeRoom = ({ match }) => {
     const tags = response.data;
 
     setTagList(tags);
+    setAutoCompleteTagList(tags);
   };
 
   const selectTag = (tagName) => {
@@ -66,6 +71,30 @@ const MakeRoom = ({ match }) => {
     setSelectedTagList((prevTagList) =>
       prevTagList.filter((tag) => tag.name !== selectedTagName)
     );
+  };
+
+  // TODO: onChangeTagInput을 SearchInput 내부로 집어넣으면서 사라질 운명.
+  const onChangeTagInput = (e) => {
+    const inputValue = e.target.value;
+
+    const searchResults = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]+/g.test(inputValue)
+      ? tagList.filter((tag) => {
+          const keywordRegExp = getKorRegExp(inputValue, {
+            initialSearch: true,
+            ignoreSpace: true,
+          });
+          return tag.name.match(keywordRegExp);
+        })
+      : tagList.filter((tag) => {
+          const searchRegex = new RegExp(inputValue, 'gi');
+          const keywordWithoutSpace = tag.name.replace(/\s/g, '');
+          return (
+            keywordWithoutSpace.match(searchRegex) ||
+            tag.name.match(searchRegex)
+          );
+        });
+
+    setAutoCompleteTagList(searchResults);
   };
 
   const createRoom = async (e) => {
@@ -116,8 +145,9 @@ const MakeRoom = ({ match }) => {
               setMaxHeadCount={setMaxHeadCount}
             />
             <SearchInput
-              autoCompleteKeywords={tagList}
+              autoCompleteKeywords={autoCompleteTagList}
               onClickKeyword={selectTag}
+              onChangeInput={onChangeTagInput}
             />
           </section>
           <section className='tag-list-section'>
