@@ -23,13 +23,28 @@
     justify-content: space-between;
     margin: 5rem 0;
 
+    .headline2 {
+      flex-basis: 50%;
+    }
+
     .side {
+      flex-basis: 50%;
+
       display: flex;
       align-items: center;
-      min-width: fit-content;
+      justify-content: flex-end;
 
       & > *:not(:last-child) {
         margin-right: 2rem;
+      }
+
+      .nickname-section-container {
+        display: flex;
+        flex-basis: 65%;
+
+        .caption1 {
+          flex-basis: 55%;
+        }
       }
     }
   }
