@@ -76,7 +76,6 @@ const ChattingRoom = ({ tags, roomId, createdAt }) => {
     });
     const generatedUser = response.data;
 
-    console.log(generatedUser);
     changeUserId(generatedUser.id);
   };
 
@@ -121,7 +120,6 @@ const ChattingRoom = ({ tags, roomId, createdAt }) => {
           `/topic/rooms/${roomId}/users`,
           (message) => {
             const users = JSON.parse(message.body);
-            console.log(users, 'users');
             setParticipants(users);
           }
         );

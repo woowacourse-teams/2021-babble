@@ -99,7 +99,7 @@ const RoomList = ({ match }) => {
       );
     } catch (error) {
       alert('방이 존재하지 않습니다.');
-      console.log(error);
+      console.error(error);
     }
   };
 
