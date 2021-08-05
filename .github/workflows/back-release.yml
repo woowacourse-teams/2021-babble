@@ -27,10 +27,7 @@ jobs:
 
     - name: 소나큐브 빌드 진행
       working-directory: ./back/babble
-      run: ./gradlew sonarqube \
-          -Dsonar.projectKey=babble-sonarqube \
-          -Dsonar.host.url=${{ secrets.SONARQUBE_SERVER_URL }} \
-          -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}
+      run: ./gradlew sonarqube -Dsonar.projectKey=babble-sonarqube -Dsonar.host.url=${{ secrets.SONARQUBE_SERVER_URL }} -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}
 
   build:
     runs-on: deploy
