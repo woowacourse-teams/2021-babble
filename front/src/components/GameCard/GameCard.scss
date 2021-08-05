@@ -30,7 +30,7 @@
 
     &.center {
       img {
-        transform: translate(0, -0.7rem);
+        transform: translate(0, -0.8rem);
       }
     }
 
@@ -40,8 +40,7 @@
       }
     }
 
-    &:before,
-    & img:before {
+    &:before {
       display: block;
       position: absolute;
       width: 100%;
@@ -49,14 +48,6 @@
       top: 0;
       left: 0;
     }
-    // &:before {
-    //   content: ' ';
-    //   border-radius: 0.8rem;
-    //   bottom: 0;
-    //   top: auto;
-    //   bottom: -0.8rem;
-    //   background-color: m.primary(babble-pink);
-    // }
 
     &:hover {
       &:before {
@@ -75,8 +66,6 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-
-      transform-style: preserve-3d;
       transition: transform 0.1s ease-out;
     }
   }
