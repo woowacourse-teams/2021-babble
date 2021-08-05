@@ -11,7 +11,6 @@ import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.IntStream;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
