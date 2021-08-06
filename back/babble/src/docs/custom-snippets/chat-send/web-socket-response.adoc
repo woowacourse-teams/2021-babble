@@ -9,6 +9,7 @@ Content-Type: application/json
         "nickname": "그루밍",
         "avatar" : https://d2bidcnq0n74fu.cloudfront.net/1.jpg
     },
-    "content": "그루밍은 졸려"
+    "content": "그루밍은 졸려",
+    "type" : "chat"
 }
 ----

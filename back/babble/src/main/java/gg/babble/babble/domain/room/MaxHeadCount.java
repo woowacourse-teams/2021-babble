@@ -1,6 +1,7 @@
 package gg.babble.babble.domain.room;
 
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -14,6 +15,7 @@ public class MaxHeadCount {
     private static final int MIN_VALUE = 2;
     private static final int MAX_VALUE = 20;
 
+    @Column(name = "max_headcount")
     private int value;
 
     public MaxHeadCount(final int value) {
