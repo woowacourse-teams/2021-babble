@@ -1,53 +1,80 @@
 @use '../../../style/variables' as v;
 @use '../../../style/mixins' as m;
 
-.room-container {
-  cursor: pointer;
-  padding: 1.2rem 2.6rem;
-  background: m.grey-scale(white);
-  border: 1px solid m.grey-scale(1);
+.room-wrapper {
+  position: relative;
 
-  box-shadow: v.$room-box-shadow;
-  border-radius: 1rem;
-  transition: ease-in 0.1s;
+  .room-container {
+    cursor: pointer;
+    padding: 1.2rem 2.6rem;
+    background: m.grey-scale(white);
+    border: 1px solid m.grey-scale(1);
+    box-shadow: v.$room-box-shadow;
+    border-radius: 1rem;
+    transition: ease-in 0.1s;
 
-  &:hover {
-    transform: scale(1.01);
-  }
+    &:hover {
+      transform: scale(1.01);
+    }
 
-  .information {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    &.disabled {
+      background: linear-gradient(
+        135deg,
+        rgba(0, 0, 0, 10%) 25%,
+        rgba(255, 255, 255, 100%) 0,
+        rgba(255, 255, 255, 100%) 50%,
+        rgba(0, 0, 0, 10%) 0,
+        rgba(0, 0, 0, 10%) 75%,
+        rgba(255, 255, 255, 100%) 0
+      );
+      background-size: 10px 10px;
+      user-select: none;
+    }
 
-    .about {
+    .information {
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
 
-      .room-number {
-        margin-right: 2rem;
-        color: m.grey-scale(11);
+      .about {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .room-number {
+          margin-right: 2rem;
+          color: m.grey-scale(11);
+        }
+
+        .avatar {
+          margin-right: 1.5rem;
+
+          .body2 {
+            width: 10rem;
+            word-break: break-all;
+          }
+        }
       }
 
-      .avatar {
-        margin-right: 1.5rem;
-
-        .body2 {
-          width: 10rem;
-          word-break: break-all;
-        }
+      strong {
+        color: m.primary(babble-pink);
+        font-weight: 500;
       }
     }
 
-    strong {
-      color: m.primary(babble-pink);
-      font-weight: 500;
+    &:active {
+      transform: scale(0.99);
+      transition: transform 10ms ease-in;
     }
   }
 
-  &:active {
-    transform: scale(0.99);
-    transition: transform 10ms ease-in;
+  .room-shade.disabled {
+    position: absolute;
+    border-radius: 1rem;
+    display: block;
+    backdrop-filter: grayscale(1) brightness(0.97);
+    width: 100%;
+    height: 100%;
+    z-index: 5;
   }
 }
