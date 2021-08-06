@@ -1,6 +1,7 @@
 package gg.babble.babble.controller;
 
 import gg.babble.babble.dto.response.GameImageResponse;
+import gg.babble.babble.dto.response.GameWithImageResponse;
 import gg.babble.babble.dto.response.IndexPageGameResponse;
 import gg.babble.babble.service.GameService;
 import java.util.List;
@@ -23,6 +24,11 @@ public class GameController {
     @GetMapping
     public ResponseEntity<List<IndexPageGameResponse>> findIndexPageGames() {
         return ResponseEntity.ok(gameService.findSortedGames());
+    }
+
+    @GetMapping(value = "/{gameId}")
+    public ResponseEntity<GameWithImageResponse> findGame(@PathVariable final Long gameId) {
+        return ResponseEntity.ok(gameService.findGame(gameId));
     }
 
     @GetMapping(value = "/{gameId}/images")
