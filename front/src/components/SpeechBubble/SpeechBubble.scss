@@ -22,9 +22,8 @@
     width: fit-content;
 
     .text {
-      background: white;
+      background: m.chatting(others-background);
       border-radius: m.border-radius(speech-bubble);
-      border: 1px solid m.grey-scale(6);
       height: fit-content;
       width: fit-content;
       max-width: 30rem;
@@ -42,7 +41,8 @@
 
     &.mine {
       .text {
-        border: 1px solid m.primary(babble-pink);
+        border: none;
+        background: m.chatting(mine-background);
       }
 
       .time {
@@ -50,6 +50,32 @@
         text-align: right;
         color: m.grey-scale(11);
       }
+    }
+  }
+
+  &.notice-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: m.grey-scale(2);
+    width: 100%;
+    margin-bottom: 1rem;
+
+    .text {
+      text-align: center;
+      display: inline-block;
+      background: transparent;
+      border: none;
+      padding: 1rem 0;
+      font-size: 1.2rem;
+      color: #585858;
+    }
+
+    .time {
+      display: inline-block;
+      text-align: center;
+      margin-left: 0.5rem;
+      font-size: 1.1rem;
     }
   }
 }

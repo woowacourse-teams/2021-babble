@@ -29,6 +29,7 @@
       .tag-list-container {
         width: 45rem;
         overflow-x: auto;
+        padding-left: 0.5rem;
 
         &::-webkit-scrollbar {
           display: none;

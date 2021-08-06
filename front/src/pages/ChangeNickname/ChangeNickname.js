@@ -1,10 +1,10 @@
 import './ChangeNickname.scss';
 
 import { Caption1, Subtitle3 } from '../../core/Typography';
+import { NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH } from '../../constants/chat';
 import { RoundButton, TextInput } from '../../components';
 
 import { IoCloseOutline } from 'react-icons/io5';
-import { NICKNAME_MAX_LENGTH } from '../../constants/chat';
 import React from 'react';
 import axios from 'axios';
 import { setLocalStorage } from '../../utils/localStorage';
@@ -43,6 +43,7 @@ const ChangeNickname = () => {
           name='nickname'
           placeholder='닉네임을 입력해주세요.'
           maxLength={NICKNAME_MAX_LENGTH}
+          minLength={NICKNAME_MIN_LENGTH}
           isContentSelected
         />
       </div>

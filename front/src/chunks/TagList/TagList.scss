@@ -4,6 +4,7 @@
 .tag-list-container {
   &.default {
     .linear-layout {
+      padding: 0 0.5rem;
       flex-wrap: wrap;
       gap: 1rem 0;
     }
