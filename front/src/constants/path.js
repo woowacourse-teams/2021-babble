@@ -1,7 +1,7 @@
 const PATH = {
   HOME: '/',
   MAKE_ROOM: '/make-room',
-  ROOM_LIST: '/rooms',
+  ROOM_LIST: '/games',
 };
 
 export default PATH;

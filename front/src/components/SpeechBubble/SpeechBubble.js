@@ -16,7 +16,7 @@ const SpeechBubble = ({ time, type = 'mine', children }) => {
 
 SpeechBubble.propTypes = {
   time: PropTypes.string,
-  type: PropTypes.string,
+  type: PropTypes.oneOf(['mine', 'others', 'notice']),
   children: PropTypes.node,
 };
 

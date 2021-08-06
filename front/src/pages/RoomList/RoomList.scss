@@ -23,13 +23,34 @@
     justify-content: space-between;
     margin: 5rem 0;
 
+    .headline2 {
+      flex-basis: 50%;
+    }
+
     .side {
+      flex-basis: 50%;
+
       display: flex;
       align-items: center;
-      min-width: fit-content;
+      justify-content: flex-end;
 
       & > *:not(:last-child) {
         margin-right: 2rem;
+      }
+
+      .nickname-section-container {
+        display: flex;
+        flex-basis: 65%;
+        justify-content: flex-end;
+
+        .body2 {
+          text-align: right;
+        }
+
+        .caption1 {
+          flex-basis: 30%;
+          min-width: max-content;
+        }
       }
     }
   }
@@ -48,7 +69,7 @@
     overflow-y: auto;
     overflow: visible;
 
-    .room-container:not(:last-child) {
+    .room-wrapper:not(:last-child) {
       margin-bottom: 1.2rem;
     }
   }

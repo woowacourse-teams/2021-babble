@@ -62,3 +62,12 @@
   @warn "Unknown `#{$key}` in $z-index!";
   @return null;
 }
+
+@function chatting($key) {
+  @if map-has-key($chatting, $key) {
+    @return map-get($chatting, $key);
+  }
+
+  @warn "Unknown `#{$key}` in $chatting!";
+  @return null;
+}

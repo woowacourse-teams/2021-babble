@@ -30,6 +30,7 @@ const ChattingForm = ({ onSubmit }) => {
         name='chat'
         rows='2'
         aria-label='chatting-text-area'
+        autoFocus
       ></textarea>
       <SquareButton size='block' type='submit' name='send'>
         <Caption1>전송하기</Caption1>
