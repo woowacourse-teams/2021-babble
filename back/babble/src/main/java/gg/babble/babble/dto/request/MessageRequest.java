@@ -20,4 +20,7 @@ public class MessageRequest {
 
     @NotNull(message = "채팅 메시지는 Null 일 수 없습니다.")
     private String content;
+
+    @NotNull(message = "채팅 타입은 Null 일 수 없습니다.")
+    private String type;
 }

@@ -53,7 +53,7 @@ public class WebSocketChattingTest extends ApplicationTest {
     public void testUserUpdateEndpoint() throws InterruptedException, ExecutionException, TimeoutException {
         MessageResponse expectedMessageResponse = new MessageResponse(
             new UserResponse(2L, "와일더", "https://hyeon9mak.github.io/assets/images/9vatar.png"),
-            "철권 붐은 온다."
+            "철권 붐은 온다.", "chat"
         );
 
         // init setting
@@ -67,7 +67,7 @@ public class WebSocketChattingTest extends ApplicationTest {
         joinRoom(stompSession);
 
         stompSession.subscribe(SUBSCRIBE_CHAT_UPDATE_BROAD_ENDPOINT, new ChatUpdateStompFrameHandler());
-        stompSession.send(SEND_CHAT_UPDATE_ENDPOINT, new MessageRequest(2L, "철권 붐은 온다."));
+        stompSession.send(SEND_CHAT_UPDATE_ENDPOINT, new MessageRequest(2L, "철권 붐은 온다.", "chat"));
         MessageResponse messageResponse = completableFutureChat.get(5, SECONDS);
 
         //then

@@ -18,6 +18,6 @@ public class ChatService {
     public MessageResponse sendChatMessage(final MessageRequest messageRequest) {
         User user = userService.findById(messageRequest.getUserId());
         String content = messageRequest.getContent();
-        return new MessageResponse(UserResponse.from(user), content);
+        return new MessageResponse(UserResponse.from(user), content, messageRequest.getType());
     }
 }
