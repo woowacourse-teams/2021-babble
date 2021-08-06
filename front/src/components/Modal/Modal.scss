@@ -1,5 +1,6 @@
 @use '../../../style/mixins' as m;
 @use '../../../style/variables' as v;
+@use '../../../style/animations';
 
 .modal-container {
   position: fixed;
@@ -19,6 +20,8 @@
     .linear-layout {
       justify-content: center;
       z-index: m.z-index(layer-modal-default);
+
+      animation: scaleUp 150ms cubic-bezier(0.15, 0.91, 0.15, 0.9);
 
       .default-container {
         position: relative;
@@ -48,6 +51,8 @@
     border-radius: m.border-radius(modal);
     box-shadow: v.$box-shadow;
     z-index: m.z-index(layer-modal-chatting);
+
+    animation: maximize 300ms cubic-bezier(0.92, -0.03, 0.15, 0.96);
 
     & > section {
       width: 100%;
@@ -79,6 +84,8 @@
   border-radius: m.border-radius(modal-minimize);
   color: m.grey-scale(white);
   box-shadow: v.$button-box-shadow;
+
+  animation: minimize 300ms cubic-bezier(0.92, -0.03, 0.15, 0.96);
 
   &:hover {
     transform: translateY(-0.5rem);
