@@ -92,10 +92,25 @@ public class GameApiDocumentTest extends ApplicationTest {
             .andExpect(jsonPath("$[2].gameId").value(3L))
             .andExpect(jsonPath("$[2].image").value("https://static-cdn.jtvnw.net/ttv-static/404_boxart-1080x1436.jpg"))
 
-            .andDo(document("read-game-image",
+            .andDo(document("read-game-images",
                 responseFields(fieldWithPath("[].gameId").description("게임 Id"),
                     fieldWithPath("[].image").description("이미지 URL"))
                 )
             );
+    }
+
+    @DisplayName("단일 게임 조회")
+    @Test
+    void findGameById() throws Exception {
+        mockMvc.perform(get("/api/games/1")
+            .accept(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").value(1L))
+            .andExpect(jsonPath("$.name").value("League Of Legends"))
+            .andExpect(jsonPath("$.thumbnail").value("https://static-cdn.jtvnw.net/ttv-boxart/League%20of%20Legends-1080x1436.jpg"))
+            .andDo(document("read-game",
+                responseFields(fieldWithPath("id").description("게임 Id"),
+                    fieldWithPath("name").description("게임 이름"),
+                    fieldWithPath("thumbnail").description("썸네일"))));
     }
 }

@@ -4,6 +4,7 @@ import gg.babble.babble.domain.Game;
 import gg.babble.babble.domain.Games;
 import gg.babble.babble.domain.repository.GameRepository;
 import gg.babble.babble.dto.response.GameImageResponse;
+import gg.babble.babble.dto.response.GameWithImageResponse;
 import gg.babble.babble.dto.response.IndexPageGameResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.List;
@@ -46,5 +47,9 @@ public class GameService {
             .stream()
             .map(GameImageResponse::from)
             .collect(Collectors.toList());
+    }
+
+    public GameWithImageResponse findGame(Long id) {
+        return GameWithImageResponse.from(findById(id));
     }
 }

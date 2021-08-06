@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.dto.response.GameImageResponse;
+import gg.babble.babble.dto.response.GameWithImageResponse;
 import gg.babble.babble.dto.response.IndexPageGameResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.Arrays;
@@ -69,5 +70,15 @@ class GameServiceTest extends ApplicationTest {
         // then
         assertThat(gameService.findSortedGames()).usingRecursiveComparison()
             .isEqualTo(expectedResponses);
+    }
+
+    @DisplayName("단일 게임을 반환한다.")
+    @Test
+    void findGame() {
+        // when
+        GameWithImageResponse expectedResponse = new GameWithImageResponse(1L, LEAGUE_OF_LEGENDS, LEAGUE_OF_LEGENDS_URL);
+        // then
+        assertThat(gameService.findGame(1L)).usingRecursiveComparison()
+            .isEqualTo(expectedResponse);
     }
 }
