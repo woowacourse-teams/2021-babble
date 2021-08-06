@@ -17,15 +17,20 @@ const SpeechBubbleTemplate = (args) => (
       justifyContent: 'space-around',
     }}
   >
-    <div style={{ margin: '8rem 0 1rem 0' }}>
+    <div style={{ margin: '20rem 0 1rem 0' }}>
       <Subtitle3>상대방의 채팅</Subtitle3>
       <br />
-      <SpeechBubble {...args} />
+      <SpeechBubbleWithAvatar {...args} />
     </div>
     <div style={{ marginBottom: '1rem' }}>
       <Subtitle3>나의 채팅</Subtitle3>
       <br />
       <SpeechBubble type='mine' {...args} />
+    </div>
+    <div style={{ marginBottom: '1rem' }}>
+      <Subtitle3>공지</Subtitle3>
+      <br />
+      <SpeechBubble type='notice' {...args} />
     </div>
   </div>
 );
@@ -48,4 +53,12 @@ WithAvatar.args = {
   nickname: 'hyun9mac',
   time: '10:51AM',
   children: '안녕하세요~~ \n같이 롤하실?~~~ ',
+};
+
+export const Notice = SpeechBubbleTemplate.bind({});
+
+Notice.args = {
+  size: 'small',
+  time: '10:51AM',
+  children: '피터 님이 입장하셨습니다.',
 };
