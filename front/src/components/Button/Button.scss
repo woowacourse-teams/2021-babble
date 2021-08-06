@@ -12,6 +12,8 @@
 }
 
 button {
+  min-width: max-content;
+
   &.tiny {
     padding: m.button-padding(tiny);
   }

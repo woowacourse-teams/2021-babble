@@ -1,8 +1,9 @@
 import { Modal, ModalMinimized } from '../components';
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useRef, useState } from 'react';
 
 import { MODAL_TYPE_CHATTING } from '../constants/chat';
 import PropTypes from 'prop-types';
+import useUpdateEffect from '../hooks/useUpdateEffect';
 
 const ChattingModalContext = createContext();
 
@@ -10,6 +11,7 @@ const ChattingModalProvider = ({ children }) => {
   const [isChattingModalOpen, setIsChattingModalOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [modalInner, setModalInner] = useState(null);
+  const modalRef = useRef(null);
 
   const openChatting = (modalInner) => {
     setIsChattingModalOpen(true);
@@ -40,6 +42,18 @@ const ChattingModalProvider = ({ children }) => {
     setIsMinimized(false);
   };
 
+  const onEscapeKeyDown = (e) => {
+    if (isChattingModalOpen && e.key === 'Escape') {
+      setIsMinimized(true);
+    }
+  };
+
+  useUpdateEffect(() => {
+    if (isChattingModalOpen && !isMinimized) {
+      modalRef.current.querySelector('textarea').focus();
+    }
+  }, [isMinimized]);
+
   // TODO: 데모데이 이후 isChattingModalOpen 없애기
   return (
     <ChattingModalContext.Provider
@@ -47,7 +61,12 @@ const ChattingModalProvider = ({ children }) => {
     >
       {children}
       {isChattingModalOpen && (
-        <Modal type={MODAL_TYPE_CHATTING} isMinimized={isMinimized}>
+        <Modal
+          type={MODAL_TYPE_CHATTING}
+          isMinimized={isMinimized}
+          onEscapeKeyDown={onEscapeKeyDown}
+          ref={modalRef}
+        >
           {modalInner}
         </Modal>
       )}

@@ -35,6 +35,7 @@ const ChattingRoom = ({ tags, roomId, createdAt }) => {
   const { closeChatting, minimize } = useChattingModal();
   const {
     user: { nickname, id: userId },
+    changeCurrentRoomNumber,
   } = useUser();
 
   const waitForConnectionReady = (callback) => {
@@ -47,12 +48,12 @@ const ChattingRoom = ({ tags, roomId, createdAt }) => {
     }, 1);
   };
 
-  const sendMessage = (content) => {
+  const sendMessage = (content, type) => {
     waitForConnectionReady(() => {
       stompClient.current.send(
         `/ws/rooms/${roomId}/chat`,
         {},
-        JSON.stringify({ userId, content })
+        JSON.stringify({ userId, content, type })
       );
     });
   };
@@ -63,7 +64,7 @@ const ChattingRoom = ({ tags, roomId, createdAt }) => {
     const content = e.target.chat.value;
     if (!content) return;
 
-    sendMessage(content);
+    sendMessage(content, 'chat');
     e.target.reset();
   };
 
@@ -97,11 +98,17 @@ const ChattingRoom = ({ tags, roomId, createdAt }) => {
         chat_subscription.current = stompClient.current.subscribe(
           `/topic/rooms/${roomId}/chat`,
           (message) => {
+            const receivedTime = new Date().toLocaleTimeString([], {
+              timeStyle: 'short',
+            });
+
             setChattings((prevChattings) => [
               ...prevChattings,
               {
                 user: JSON.parse(message.body).user,
                 content: JSON.parse(message.body).content,
+                type: JSON.parse(message.body).type,
+                receivedTime,
               },
             ]);
           }
@@ -115,7 +122,9 @@ const ChattingRoom = ({ tags, roomId, createdAt }) => {
           );
         });
 
-        sendMessage(`${nickname}님이 입장했습니다!`);
+        sendMessage(`${nickname}님이 입장했습니다!`, 'notice');
+
+        changeCurrentRoomNumber(roomId);
       },
       (error) => {
         const errorStrings = error.headers.message.split(':');
@@ -135,8 +144,10 @@ const ChattingRoom = ({ tags, roomId, createdAt }) => {
           if (chat_subscription.current) {
             chat_subscription.current.unsubscribe();
           }
+          isConnected.current = false;
+
+          changeCurrentRoomNumber(-1);
         });
-        isConnected.current = false;
       }
     };
   }, []);
@@ -165,18 +176,29 @@ const ChattingRoom = ({ tags, roomId, createdAt }) => {
         </div>
         <div className='modal-chatbox-container'>
           <Chatbox roomId={roomId} createdAt={createdAt} onSubmit={onSubmit}>
-            {chattings.map((chatting, index) =>
-              chatting.user.id === userId ? (
-                <SpeechBubble key={index}>{chatting.content}</SpeechBubble>
-              ) : (
-                <SpeechBubbleWithAvatar
-                  key={index}
-                  nickname={chatting.user.nickname}
-                >
+            {chattings.map((chatting, index) => {
+              if (chatting.type === 'chat') {
+                return chatting.user.id === userId ? (
+                  <SpeechBubble key={index} time={chatting.receivedTime}>
+                    {chatting.content}
+                  </SpeechBubble>
+                ) : (
+                  <SpeechBubbleWithAvatar
+                    key={index}
+                    time={chatting.receivedTime}
+                    nickname={chatting.user.nickname}
+                  >
+                    {chatting.content}
+                  </SpeechBubbleWithAvatar>
+                );
+              }
+
+              return (
+                <SpeechBubble key={index} type={chatting.type}>
                   {chatting.content}
-                </SpeechBubbleWithAvatar>
-              )
-            )}
+                </SpeechBubble>
+              );
+            })}
           </Chatbox>
         </div>
       </div>

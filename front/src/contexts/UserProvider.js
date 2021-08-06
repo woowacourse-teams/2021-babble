@@ -11,10 +11,15 @@ const UserProvider = ({ children }) => {
     id: -1,
     nickname: '',
     avatar: '',
+    currentRoomNumber: -1,
   });
 
   const changeUser = (user) => {
     setUser((prevState) => ({ ...prevState, ...user }));
+  };
+
+  const changeCurrentRoomNumber = (currentRoomNumber) => {
+    setUser((prevState) => ({ ...prevState, currentRoomNumber }));
   };
 
   return (
@@ -22,6 +27,7 @@ const UserProvider = ({ children }) => {
       value={{
         user,
         changeUser,
+        changeCurrentRoomNumber,
         isNicknameChanged,
         setIsNicknameChanged,
       }}

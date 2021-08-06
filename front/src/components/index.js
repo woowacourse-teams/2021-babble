@@ -9,6 +9,7 @@ export { default as ChattingForm } from './ChattingForm/ChattingForm';
 export { default as GameCard } from './GameCard/GameCard';
 export { default as MainImage } from './MainImage/MainImage';
 export { default as Modal } from './Modal/Modal';
+export { default as Footer } from './Footer/Footer';
 export { default as ModalError } from './Modal/ModalError';
 export { default as ModalMinimized } from './Modal/ModalMinimized';
 export { default as NicknameSection } from './NicknameSection/NicknameSection';
