@@ -92,7 +92,7 @@ public class GameApiDocumentTest extends ApplicationTest {
             .andExpect(jsonPath("$[2].gameId").value(3L))
             .andExpect(jsonPath("$[2].image").value("https://static-cdn.jtvnw.net/ttv-static/404_boxart-1080x1436.jpg"))
 
-            .andDo(document("read-game-image",
+            .andDo(document("read-game-images",
                 responseFields(fieldWithPath("[].gameId").description("게임 Id"),
                     fieldWithPath("[].image").description("이미지 URL"))
                 )
