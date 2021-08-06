@@ -19,6 +19,7 @@ import PropTypes from 'prop-types';
 import TagList from '../../chunks/TagList/TagList';
 import axios from 'axios';
 import getKorRegExp from '../../components/SearchInput/service/getKorRegExp';
+import { getRandomNickname } from '@woowa-babble/random-nickname';
 import { useChattingModal } from '../../contexts/ChattingModalProvider';
 import useInterval from '../../hooks/useInterval';
 import { useUser } from '../../contexts/UserProvider';
@@ -29,7 +30,7 @@ const RoomList = ({ match }) => {
   const [tagList, setTagList] = useState([]);
   const [selectedTagList, setSelectedTagList] = useState([]);
   const [roomList, setRoomList] = useState([]);
-  const { changeUser } = useUser();
+  const { user, changeUser } = useUser();
   const { openChatting, closeChatting } = useChattingModal();
 
   // TODO: 임시 방편. onChangeInput을 SearchInput 내부로 집어넣으면서 사라질 운명
@@ -129,20 +130,12 @@ const RoomList = ({ match }) => {
     setAutoCompleteTagList(searchResults);
   };
 
-  const generateSixDigits = () => {
-    // 닉네임에만 쓰일 숫자(userId와 관련 없음) 익명#84729384
-    // TODO: 지금은 숫자로 퉁치지만, 시간 나면 바로 형용사 + 명사 랜덤 매칭
-    // { noun: '너구리', image: '너구리 사진' }
-    // 라이브러리 npm 배포 가능
-    return Math.floor(100000 + Math.random() * 90000);
-  };
-
   const getUserId = async () => {
     const newUser = { id: -1, nickname: '' };
     newUser.nickname = getLocalStorage('nickname');
 
     if (!newUser.nickname) {
-      newUser.nickname = `익명#${generateSixDigits()}`;
+      newUser.nickname = `${getRandomNickname('characters')}`;
       setLocalStorage('nickname', newUser.nickname);
     }
 
@@ -158,7 +151,10 @@ const RoomList = ({ match }) => {
     getImage();
     getRooms('');
     getTags();
-    getUserId();
+
+    if (user.id === -1) {
+      getUserId();
+    }
   }, []);
 
   // TODO: 데모데이 이후 삭제될 운명
