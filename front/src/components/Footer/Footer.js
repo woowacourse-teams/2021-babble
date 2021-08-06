@@ -5,7 +5,7 @@ import React from 'react';
 const Footer = () => {
   return (
     <footer>
-      <span>상호명: Babble, Inc</span>
+      <span>상호명: Babble</span>
       <span>대표자: Hyun Cheol An, CEO</span>
       <span>
         주소: 서울특별시 송파구 올림픽로35다길 42 루터회관 (지번 주소 | 신천동
