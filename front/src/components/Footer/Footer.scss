@@ -1,0 +1,19 @@
+@use '../../../style/mixins' as m;
+@use '../../../style/variables' as v;
+
+footer {
+  bottom: 0;
+  background: m.grey-scale(1);
+  width: 100%;
+  padding: 3rem;
+  font-size: 1.2rem;
+  margin-top: 10rem;
+
+  & > * {
+    display: block;
+
+    &:not(:last-child) {
+      margin-bottom: 0.5rem;
+    }
+  }
+}
