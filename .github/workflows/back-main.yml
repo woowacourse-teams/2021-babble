@@ -29,9 +29,7 @@ jobs:
       working-directory: ./back/babble
       run: ./gradlew sonarqube -Dsonar.projectKey=babble-sonarqube -Dsonar.host.url=${{ secrets.SONARQUBE_SERVER_URL }} -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}
 
-jobs:
   build:
-
     runs-on: deploy
 
     steps:
