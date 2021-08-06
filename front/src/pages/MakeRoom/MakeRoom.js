@@ -26,7 +26,7 @@ const MakeRoom = ({ match }) => {
   const [tagList, setTagList] = useState([]);
   const [selectedTagList, setSelectedTagList] = useState([]);
   const [maxHeadCount, setMaxHeadCount] = useState(0);
-  const { openChatting } = useChattingModal();
+  const { openChatting, closeChatting } = useChattingModal();
 
   // TODO: 임시 방편. onChangeInput을 SearchInput 내부로 집어넣으면서 사라질 운명
   const [autoCompleteTagList, setAutoCompleteTagList] = useState([]);
@@ -113,6 +113,7 @@ const MakeRoom = ({ match }) => {
       );
       const { tags, roomId, createdDate } = response.data;
 
+      closeChatting();
       openChatting(
         <ChattingRoom tags={tags} roomId={roomId} createdAt={createdDate} />
       );
