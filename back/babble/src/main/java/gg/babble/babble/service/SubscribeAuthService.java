@@ -1,7 +1,7 @@
 package gg.babble.babble.service;
 
-import gg.babble.babble.util.UrlParser;
 import gg.babble.babble.exception.BabbleIllegalStatementException;
+import gg.babble.babble.util.UrlParser;
 import org.springframework.stereotype.Service;
 
 @Service
