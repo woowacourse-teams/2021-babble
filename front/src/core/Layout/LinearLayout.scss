@@ -1,0 +1,16 @@
+section {
+  &.linear-layout {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100%;
+
+    &.col {
+      flex-direction: column;
+    }
+
+    &.row {
+      flex-direction: row;
+    }
+  }
+}

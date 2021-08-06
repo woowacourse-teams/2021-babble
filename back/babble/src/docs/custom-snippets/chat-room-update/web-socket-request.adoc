@@ -1,0 +1,10 @@
+[source,http,options="nowrap"]
+----
+SEND /ws/rooms/1/users
+Content-Type: application/json
+
+{
+    "userId": 1,
+    "sessionId": "35B1UD9A"
+}
+----

@@ -1,0 +1,27 @@
+@use '../../../style/mixins' as m;
+
+.chatting-form {
+  display: flex;
+  width: 100%;
+  height: 6rem;
+
+  .chat-area {
+    resize: none;
+    background-color: m.grey-scale(2);
+    padding: 1.5rem;
+    margin-right: 0.5rem;
+    width: 100%;
+    height: 100%;
+    flex-basis: 85%;
+    border-radius: 1rem;
+    font-size: 1.3rem;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  button {
+    flex-basis: 20%;
+  }
+}

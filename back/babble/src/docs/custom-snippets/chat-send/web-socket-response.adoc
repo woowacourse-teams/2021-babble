@@ -1,0 +1,15 @@
+[source,http,options="nowrap"]
+----
+SUBSCRIBE /topic/rooms/1/chat
+Content-Type: application/json
+
+{
+    "user": {
+        "id": 1,
+        "nickname": "그루밍",
+        "avatar" : https://d2bidcnq0n74fu.cloudfront.net/1.jpg
+    },
+    "content": "그루밍은 졸려",
+    "type" : "chat"
+}
+----

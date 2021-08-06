@@ -1,0 +1,4 @@
+[source,http,options="nowrap"]
+----
+GET /connection HTTP/1.1
+----

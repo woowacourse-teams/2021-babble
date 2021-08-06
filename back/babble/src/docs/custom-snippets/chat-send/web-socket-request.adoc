@@ -1,0 +1,11 @@
+[source,http,options="nowrap"]
+----
+/ws/rooms/1/chat
+Content-Type: application/json
+
+{
+    "userId": 1,
+    "content": "그루밍은 졸려",
+    "type" : "chat"
+}
+----

@@ -1,0 +1,55 @@
+@use '../../../style/mixins' as m;
+
+.speech-bubble-container {
+  margin-bottom: 0.5rem;
+
+  section {
+    &.row,
+    &.col {
+      align-items: flex-start;
+
+      span {
+        margin-bottom: 0.3rem;
+      }
+
+      img {
+        margin-right: 1rem;
+      }
+    }
+  }
+
+  .speech-bubble {
+    width: fit-content;
+
+    .text {
+      background: white;
+      border-radius: m.border-radius(speech-bubble);
+      border: 1px solid m.grey-scale(6);
+      height: fit-content;
+      width: fit-content;
+      max-width: 30rem;
+      padding: 1.2rem 2rem;
+      font-size: 1.3rem;
+      word-break: break-word;
+      white-space: pre-wrap;
+    }
+
+    .time {
+      display: inline-block;
+      margin-top: 0.3rem;
+      color: m.grey-scale(11);
+    }
+
+    &.mine {
+      .text {
+        border: 1px solid m.primary(babble-pink);
+      }
+
+      .time {
+        display: block;
+        text-align: right;
+        color: m.grey-scale(11);
+      }
+    }
+  }
+}

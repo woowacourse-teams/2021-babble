@@ -1,0 +1,57 @@
+@use '../../../style/mixins' as m;
+@use '../../../style/variables' as v;
+
+.modal-chatting-room {
+  width: 100%;
+  height: calc(100% - 5.45rem);
+
+  .modal-header-container {
+    width: 100%;
+    padding: 1.2rem 2rem;
+    border-bottom: 1px solid m.grey-scale(8);
+
+    & > section {
+      justify-content: space-between;
+
+      h5 {
+        word-break: keep-all;
+        margin-right: 2rem;
+      }
+
+      button {
+        margin-left: 0.5rem;
+
+        &:hover {
+          color: m.primary(babble-pink);
+        }
+      }
+
+      .tag-list-container {
+        width: 45rem;
+        overflow-x: auto;
+
+        &::-webkit-scrollbar {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+.modal-body-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+
+  .modal-aside-container {
+    padding: 3rem 2rem;
+    border-right: 1px solid m.grey-scale(8);
+  }
+
+  .modal-chatbox-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+  }
+}

@@ -1,0 +1,25 @@
+[source,http,options="nowrap"]
+----
+SUBSCRIBE /topic/rooms/1/users
+Content-Type: application/json
+
+{
+  "host" : {
+		"id": 1,
+		"nickname": "wilder",
+		"avatar" : https://d2bidcnq0n74fu.cloudfront.net/avatar-1.jpg
+	},
+  "guests": [
+		{
+			"id" : 2,
+			"nickname": "hyeon9mak",
+			"avatar" : https://d2bidcnq0n74fu.cloudfront.net/avatar-2.jpg
+		},
+		{
+			"id" : 3,
+			"nickname": "jason",
+			"avatar" : https://d2bidcnq0n74fu.cloudfront.net/avatar-3.jpg
+		}
+  ]
+}
+----

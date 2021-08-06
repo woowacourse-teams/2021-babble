@@ -1,0 +1,96 @@
+@use '../../../style/mixins' as m;
+@use '../../../style/variables' as v;
+
+.modal-container {
+  position: fixed;
+  z-index: m.z-index(layer-modal-dimmer);
+
+  &.default {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(2px);
+    background-color: m.grey-scale(black-opacity-light);
+
+    .linear-layout {
+      justify-content: center;
+      z-index: m.z-index(layer-modal-default);
+
+      .default-container {
+        position: relative;
+        width: 48rem;
+        height: 24rem;
+        background-color: m.grey-scale(white);
+        border-radius: m.border-radius(modal);
+        padding: 3rem;
+        justify-content: center;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        box-shadow: v.$box-shadow;
+      }
+    }
+  }
+
+  &.chatting {
+    width: 60rem;
+    height: 60rem;
+    right: 2rem;
+    bottom: 0.2rem;
+
+    background-color: m.grey-scale(white);
+    border: 1px solid m.grey-scale(8);
+    border-radius: m.border-radius(modal);
+    box-shadow: v.$box-shadow;
+    z-index: m.z-index(layer-modal-chatting);
+
+    & > section {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &.minimized {
+    display: none;
+  }
+}
+
+.modal-minimized-container {
+  width: 22rem;
+  height: 4rem;
+  position: fixed;
+  right: 2rem;
+  bottom: -0.5rem;
+  cursor: pointer;
+  z-index: m.z-index(layer-modal-chatting);
+
+  background: linear-gradient(
+    60deg,
+    m.primary(babble-pink-1) 0%,
+    m.primary(babble-pink-light) 100%
+  );
+
+  background-color: m.primary(babble-pink-1);
+  border-radius: m.border-radius(modal-minimize);
+  color: m.grey-scale(white);
+  box-shadow: v.$button-box-shadow;
+
+  &:hover {
+    transform: translateY(-0.5rem);
+    transition: all 0.2s ease-in;
+  }
+
+  .modal-button-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+  }
+}

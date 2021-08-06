@@ -1,0 +1,96 @@
+@use '../../../style/variables' as v;
+@use '../../../style/mixins' as m;
+
+.input-container {
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+  width: 100%;
+  height: fit-content;
+  padding: 1rem 1.6rem 1rem 1.4rem;
+  border: 2px solid m.grey-scale(5);
+  transition: 0.2s linear;
+  border-radius: 0.8rem;
+
+  input[type='text'] {
+    text-align: center;
+  }
+
+  input[type='number'] {
+    cursor: pointer;
+  }
+
+  svg {
+    cursor: pointer;
+  }
+
+  &.focused {
+    border: 2px solid m.primary(babble-pink);
+  }
+
+  .input-inner {
+    width: 100%;
+    font-size: 1.8rem;
+    margin-left: 1rem;
+  }
+
+  .keyword-list-container {
+    position: absolute;
+    display: none;
+    transition: 0.5s linear;
+    top: 5rem;
+    left: 0;
+    margin: 0 auto;
+
+    width: 100%;
+    height: fit-content;
+    max-height: 25rem;
+    border-radius: 0.6rem;
+    box-shadow: 0 0 4px 2px rgba(0, 0, 0, 20%);
+    background-color: m.grey-scale(white);
+
+    overflow-y: auto;
+    z-index: m.z-index(layer-front-1);
+
+    &.show {
+      display: block;
+    }
+
+    &::-webkit-scrollbar {
+      width: 1.5rem;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: m.grey-scale(3);
+      border-radius: 1rem;
+      background-clip: padding-box;
+      border: 0.3rem solid transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: m.grey-scale(8);
+      border-radius: 1rem;
+      background-clip: padding-box;
+      border: 0.3rem solid transparent;
+    }
+
+    &::-webkit-scrollbar-thumb:active {
+      background-color: m.grey-scale(10);
+    }
+
+    .keyword-button {
+      width: 100%;
+      text-align: left;
+      height: fit-content;
+      padding: 1rem 1.5rem;
+
+      &:hover {
+        background-color: m.grey-scale(2);
+      }
+    }
+
+    .result-not-found {
+      padding: 1rem 1.5rem;
+    }
+  }
+}

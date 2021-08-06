@@ -1,0 +1,97 @@
+@use '../../../style/variables' as v;
+@use '../../../style/mixins' as m;
+
+.game-card-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 21.6rem;
+  height: 32rem;
+  cursor: pointer;
+
+  .thumbnail {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    margin-bottom: 0.2rem;
+
+    &.left {
+      img {
+        transform: skewY(-1.5deg) translate(0, -0.8rem);
+      }
+    }
+
+    &.right {
+      img {
+        transform: skewY(1.5deg) translate(0, -0.8rem);
+      }
+    }
+
+    &.center {
+      img {
+        transform: translate(0, -0.8rem);
+      }
+    }
+
+    &.active {
+      img {
+        transform: translate(0, 0);
+      }
+    }
+
+    &:before {
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
+
+    &:hover {
+      &:before {
+        content: ' ';
+        border-radius: 0.8rem;
+        bottom: 0;
+        top: auto;
+        background-color: m.primary(babble-pink);
+        transform: translate(0, 0);
+      }
+    }
+
+    img {
+      position: relative;
+      border-radius: 0.8rem;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.1s ease-out;
+    }
+  }
+
+  figcaption {
+    width: 100%;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+
+    & > * {
+      margin-bottom: 0.2rem;
+    }
+
+    .body2 {
+      font-weight: 600;
+      color: m.grey-scale(12);
+
+      &:hover {
+        color: m.primary(babble-pink);
+      }
+    }
+  }
+
+  .participant-count {
+    color: m.primary(babble-pink);
+    font-weight: 600;
+  }
+}

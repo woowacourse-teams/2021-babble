@@ -1,0 +1,40 @@
+# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
+# For more information see: https://help.github.com/actions/language-and-framework-guides/publishing-nodejs-packages
+
+name: Node.js Package
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'front/**'
+
+jobs:
+  build:
+    runs-on: deploy
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: 패키지 설치
+        working-directory: ./front
+        run: npm install
+
+      - name: 빌드
+        working-directory: ./front
+        run: npm run prod
+
+      - name: Semantic Release 실행
+        uses: go-semantic-release/action@v1
+        with:
+          github-token: ${{ secrets.SEMANTIC_RELEASE_GH_TOKEN }}
+
+      - name: 배포
+        working-directory: ./front
+        run: aws s3 sync ./dist s3://bucket-babble-front/ --delete
+
+      - name: 캐시 무효화
+        working-directory: ./front
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.DISTRIBUTION_ID }} --paths "/index.html" "/bundle.js"

@@ -1,0 +1,96 @@
+= Babble API Docs
+Wilder<gyuhanKang@gmail.com>
+1.0.0, 15/07/2021
+:toc: left
+:sectnums:
+
+[width="15%"]
+[cols="^,^",options="headers"]
+|===
+| Method | Content
+
+| `GET`
+| 읽기
+
+| `POST`
+| 추가
+
+| `PUT`
+| 수정
+
+| `DELETE`
+| 삭제
+|===
+
+== 방 생성 API
+
+=== HTTP Request
+
+include::{snippets}/create-room-test/http-request.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/create-room/request-fields.adoc[]
+
+=== HTTP Response
+
+include::{snippets}/create-room-test/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/create-room/response-fields.adoc[]
+
+== 방 조회 API
+
+=== HTTP Request
+
+include::{snippets}/read-room-test/http-request.adoc[]
+
+=== HTTP Response
+
+include::{snippets}/read-room-test/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/read-room/response-fields.adoc[]
+
+== 방 입장 API
+
+=== HTTP Request
+
+include::{snippets}/../../src/docs/custom-snippets/chat-room-connect/web-socket-request.adoc[]
+
+=== HTTP Response
+
+include::{snippets}/../../src/docs/custom-snippets/chat-room-connect/web-socket-response.adoc[]
+
+== 방 입장 정보 업데이트 API
+
+=== WebSocket Send
+
+include::{snippets}/../../src/docs/custom-snippets/chat-room-update/web-socket-request.adoc[]
+
+=== WebSocket Subscribe
+
+include::{snippets}/../../src/docs/custom-snippets/user-list/web-socket-response.adoc[]
+
+== 채팅 전송 API
+
+=== WebSocket Send
+
+include::{snippets}/../../src/docs/custom-snippets/chat-send/web-socket-request.adoc[]
+
+=== WebSocket Subscribe
+
+include::{snippets}/../../src/docs/custom-snippets/chat-send/web-socket-response.adoc[]
+
+== 태그 전체 수신 API
+
+=== HTTP Request
+
+include::{snippets}/tags-get-test/http-request.adoc[]
+
+=== HTTP Response
+
+include::{snippets}/tags-get-test/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/tags-get/response-fields.adoc[]
+

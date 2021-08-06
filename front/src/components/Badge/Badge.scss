@@ -1,0 +1,14 @@
+@use '../../../style/mixins' as m;
+@use '../../../style/variables' as v;
+
+.badge-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 0.5rem;
+  color: m.grey-scale(10);
+
+  &.colored {
+    color: m.primary(babble-pink);
+  }
+}

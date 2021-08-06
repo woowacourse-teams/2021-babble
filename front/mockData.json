@@ -1,0 +1,39 @@
+{
+  "roomInfo": {
+    "roomId": 1,
+    "createdDate": "2021-07-05T00:00:00.000Z",
+    "game": {
+      "id": 10,
+      "name": "Apex Legend"
+    },
+    "host": {
+      "id": 1234,
+      "name": "wilder",
+      "avatar": "https://i.pinimg.com/474x/1c/4b/f0/1c4bf0cdcc3102126b7caeb8749f5c55.jpg"
+    },
+    "tags": [
+      "실버",
+      "2시간",
+      "솔로랭크",
+      "음성채팅 가능",
+      "3대 500",
+      "문신 있음",
+      "흡연자",
+      "75kg"
+    ]
+  },
+  "guests": [
+    {
+      "avatar": "https://i.pinimg.com/474x/1c/4b/f0/1c4bf0cdcc3102126b7caeb8749f5c55.jpg",
+      "nickName": "Hyeon9mak"
+    },
+    {
+      "avatar": "https://i.pinimg.com/474x/1c/4b/f0/1c4bf0cdcc3102126b7caeb8749f5c55.jpg",
+      "nickName": "root"
+    },
+    {
+      "avatar": "https://i.pinimg.com/474x/1c/4b/f0/1c4bf0cdcc3102126b7caeb8749f5c55.jpg",
+      "nickName": "fortune"
+    }
+  ]
+}

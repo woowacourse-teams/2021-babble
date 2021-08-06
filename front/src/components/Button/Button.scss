@@ -1,0 +1,75 @@
+@use '../../../style/variables' as v;
+@use '../../../style/mixins' as m;
+
+.round-button {
+  border-radius: 50rem;
+  height: fit-content;
+}
+
+.square-button {
+  border-radius: 1rem;
+  height: fit-content;
+}
+
+button {
+  &.tiny {
+    padding: m.button-padding(tiny);
+  }
+
+  &.small {
+    padding: m.button-padding(small);
+  }
+
+  &.medium {
+    padding: m.button-padding(medium);
+  }
+
+  &.large {
+    padding: m.button-padding(large);
+  }
+
+  &.block {
+    width: 100%;
+    height: 100%;
+  }
+
+  &.colored {
+    background: linear-gradient(
+      150deg,
+      m.primary(babble-pink) 0%,
+      m.primary(babble-pink-light) 100%
+    );
+    box-shadow: v.$button-box-shadow;
+    color: m.grey-scale(0);
+    border: 1px solid m.primary(babble-pink);
+
+    &:hover {
+      background: linear-gradient(
+        60deg,
+        m.primary(babble-pink-1) 0%,
+        m.primary(babble-pink-light) 100%
+      );
+      background-color: m.primary(babble-pink-1);
+    }
+
+    &:active {
+      background: m.primary(babble-pink-3);
+      background-color: m.primary(babble-pink-2);
+    }
+  }
+
+  &.line {
+    background-color: m.grey-scale(0);
+    border: 1px solid m.primary(babble-pink);
+
+    &:hover {
+      background-color: m.grey-scale(1);
+      border-color: m.primary(babble-pink-1);
+    }
+
+    &:active {
+      background-color: m.grey-scale(2);
+      border-color: m.primary(babble-pink-2);
+    }
+  }
+}
