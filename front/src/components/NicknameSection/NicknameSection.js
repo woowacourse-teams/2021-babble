@@ -23,12 +23,14 @@ const NicknameSection = () => {
 
   return (
     <section className='nickname-section-container'>
-      {!isNicknameChanged && (
-        <div className='notice-bubble'>
-          <Caption2>닉네임을 변경해주세요!</Caption2>
-        </div>
-      )}
-      <Body2>{nickname}</Body2>
+      <Body2>
+        {!isNicknameChanged && (
+          <span className='notice-bubble'>
+            <Caption2>닉네임을 변경해주세요!</Caption2>
+          </span>
+        )}
+        {nickname}
+      </Body2>
       <button
         className='edit'
         onClick={openNicknameModal}
