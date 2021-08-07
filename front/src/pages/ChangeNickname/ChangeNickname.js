@@ -7,7 +7,7 @@ import { RoundButton, TextInput } from '../../components';
 import { IoCloseOutline } from 'react-icons/io5';
 import React from 'react';
 import axios from 'axios';
-import { setLocalStorage } from '../../utils/localStorage';
+import { setSessionStorage } from '../../utils/storage';
 import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 import { useUser } from '../../contexts/UserProvider';
 
@@ -24,7 +24,7 @@ const ChangeNickname = () => {
     });
     const generatedUser = response.data;
 
-    setLocalStorage('nickname', generatedUser.nickname);
+    setSessionStorage('nickname', generatedUser.nickname);
 
     setIsNicknameChanged(true);
     changeUser({ id: generatedUser.id, nickname: generatedUser.nickname });

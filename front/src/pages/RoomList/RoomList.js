@@ -10,7 +10,7 @@ import {
   SquareButton,
 } from '../../components';
 import React, { useEffect, useState } from 'react';
-import { getLocalStorage, setLocalStorage } from '../../utils/localStorage';
+import { getSessionStorage, setSessionStorage } from '../../utils/storage';
 
 import ChattingRoom from '../ChattingRoom/ChattingRoom';
 import PATH from '../../constants/path';
@@ -130,11 +130,11 @@ const RoomList = ({ match }) => {
 
   const getUserId = async () => {
     const newUser = { id: -1, nickname: '' };
-    newUser.nickname = getLocalStorage('nickname');
+    newUser.nickname = getSessionStorage('nickname');
 
     if (!newUser.nickname) {
       newUser.nickname = `${getRandomNickname('characters')}`;
-      setLocalStorage('nickname', newUser.nickname);
+      setSessionStorage('nickname', newUser.nickname);
     }
 
     const response = await axios.post('https://test-api.babble.gg/api/users', {
