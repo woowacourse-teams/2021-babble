@@ -4,8 +4,8 @@ module.exports = {
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     '@storybook/preset-scss',
-    '@storybook/addon-viewport/register',
-    '@storybook/addon-knobs/register',
+    '@storybook/addon-viewport',
+    '@storybook/addon-knobs',
     '@storybook/addon-a11y',
   ],
   core: {

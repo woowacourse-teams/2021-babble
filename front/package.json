@@ -10,7 +10,8 @@
     "test": "jest --watch",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "chromatic": "npx chromatic --project-token=14ddad158733"
   },
   "contributors": [
     "iborymagic <mlch8023@gmail.com>",
@@ -38,6 +39,7 @@
     "@testing-library/react": "^12.0.0",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.2",
+    "chromatic": "^5.10.0-canary.0",
     "clean-webpack-plugin": "^4.0.0-alpha.0",
     "css-loader": "^5.2.6",
     "error-overlay-webpack-plugin": "^0.4.2",

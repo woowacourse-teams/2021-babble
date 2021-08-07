@@ -1,6 +1,7 @@
 import DropdownInput from './DropdownInput';
 import React from 'react';
 import SearchInput from './SearchInput';
+import { Subtitle3 } from '../../core/Typography';
 import TextInput from './TextInput';
 
 export default {
@@ -10,9 +11,17 @@ export default {
 
 const DefaultTemplate = ({ autoCompleteKeywords, dropdownKeywords }) => (
   <div>
+    <Subtitle3>Auto Complete Search Input</Subtitle3>
+    <br />
     <SearchInput autoCompleteKeywords={autoCompleteKeywords} />
     <br />
+    <br />
+    <Subtitle3>Dropdown Input</Subtitle3>
+    <br />
     <DropdownInput dropdownKeywords={dropdownKeywords} />
+    <br />
+    <br />
+    <Subtitle3>Text Input</Subtitle3>
     <br />
     <TextInput />
   </div>

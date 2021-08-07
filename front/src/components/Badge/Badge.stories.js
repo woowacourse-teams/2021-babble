@@ -1,10 +1,10 @@
 import { Caption2, Subtitle3 } from '../../core/Typography';
 
 import Avatar from '../Avatar/Avatar';
-import AvatarWithBadge from '../Avatar/AvatarWithBadge';
 import Badge from './Badge';
 import React from 'react';
-import TagErasable from '../Tag/TagErasable';
+import { RiVipCrown2Fill } from 'react-icons/ri';
+import { VscCircleFilled } from 'react-icons/vsc';
 
 export default {
   title: 'components/Badge',
@@ -12,27 +12,27 @@ export default {
 };
 
 const BadgeTemplate = () => (
-  <div style={{ width: '25rem' }}>
-    <Subtitle3>태그와 함께 사용되는 배지</Subtitle3>
+  <div style={{ width: '30rem' }}>
+    <Subtitle3>Badges used with participants</Subtitle3>
     <br />
-    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+    <div style={{ display: 'flex' }}>
       <Avatar direction='row'>
-        <Caption2>hyun9mac</Caption2>
+        <Caption2>jason</Caption2>
       </Avatar>
       <Badge>
-        <Caption2>ME</Caption2>
+        <RiVipCrown2Fill size='12px' />
       </Badge>
     </div>
     <br />
-
-    <AvatarWithBadge direction='row' badgeText='host' colored>
-      <Caption2>peter</Caption2>
-    </AvatarWithBadge>
-
+    <div style={{ display: 'flex' }}>
+      <Avatar direction='row'>
+        <Caption2>wilder</Caption2>
+      </Avatar>
+      <Badge>
+        <VscCircleFilled size='12px' />
+      </Badge>
+    </div>
     <br />
-    <TagErasable>
-      <Caption2>실버</Caption2>
-    </TagErasable>
   </div>
 );
 
