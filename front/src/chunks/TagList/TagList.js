@@ -1,30 +1,15 @@
 import './TagList.scss';
 
-import React, { useRef } from 'react';
 import { Tag, TagErasable } from '../../components';
 
 import { Caption1 } from '../../core/Typography';
 import LinearLayout from '../../core/Layout/LinearLayout';
 import PropTypes from 'prop-types';
-import { SCROLL } from '../../constants/event';
+import React from 'react';
 
-const TagList = ({ tags, onDeleteTag, erasable = false, useWheel = false }) => {
-  const tagListRef = useRef();
-
-  const onWheel = (e) => {
-    if (e.deltaY > SCROLL.NEUTRAL) {
-      tagListRef.current.scrollLeft += SCROLL.STEP;
-    } else {
-      tagListRef.current.scrollLeft -= SCROLL.STEP;
-    }
-  };
-
+const TagList = ({ tags, onDeleteTag, erasable = false }) => {
   return (
-    <div
-      className={`${useWheel ? '' : SCROLL.BLOCKED} tag-list-container`}
-      onWheel={useWheel ? onWheel : null}
-      ref={tagListRef}
-    >
+    <div className='tag-list-container'>
       <LinearLayout direction='row'>
         {erasable
           ? tags.map((tag, index) => (
