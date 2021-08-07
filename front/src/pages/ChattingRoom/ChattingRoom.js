@@ -1,5 +1,6 @@
 import './ChattingRoom.scss';
 
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import {
   ModalError,
   SpeechBubble,
@@ -22,9 +23,10 @@ import { useChattingModal } from '../../contexts/ChattingModalProvider';
 import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 import { useUser } from '../../contexts/UserProvider';
 
-const ChattingRoom = ({ tags, roomId, createdAt }) => {
+const ChattingRoom = ({ tags, game, roomId }) => {
   const [chattings, setChattings] = useState([]);
   const [participants, setParticipants] = useState({});
+  const [isTagsVisible, setIsTagsVisible] = useState(false);
 
   const stompClient = useRef(null);
   const user_subscription = useRef(null);
@@ -37,6 +39,10 @@ const ChattingRoom = ({ tags, roomId, createdAt }) => {
     user: { nickname, id: userId },
     changeCurrentRoomNumber,
   } = useUser();
+
+  const toggleTags = () => {
+    setIsTagsVisible((wasTagsVisible) => !wasTagsVisible);
+  };
 
   const waitForConnectionReady = (callback) => {
     setTimeout(() => {
@@ -154,28 +160,40 @@ const ChattingRoom = ({ tags, roomId, createdAt }) => {
 
   return (
     <div className='modal-chatting-room'>
-      <div className='modal-header-container'>
-        <LinearLayout direction='row'>
-          <LinearLayout direction='row'>
-            <Subtitle3>태그</Subtitle3>
-            <TagList tags={tags} useWheel={true} />
-          </LinearLayout>
-          <LinearLayout direction='row'>
-            <button className='room-minimize' onClick={minimize}>
-              <IoRemove size='24px' />
-            </button>
-            <button className='room-exit' onClick={closeChatting}>
-              <IoCloseOutline size='24px' />
-            </button>
-          </LinearLayout>
-        </LinearLayout>
+      <div className={`modal-header-container ${isTagsVisible ? 'open' : ''}`}>
+        <div className='room-info'>
+          <div className='room-nav'>
+            <LinearLayout direction='row'>
+              <Subtitle3>{`${roomId}번 방`}</Subtitle3>
+              <Subtitle3>{game.name}</Subtitle3>
+            </LinearLayout>
+            <LinearLayout direction='row'>
+              <button className='room-minimize' onClick={minimize}>
+                <IoRemove size='24px' />
+              </button>
+              <button className='room-exit' onClick={closeChatting}>
+                <IoCloseOutline size='24px' />
+              </button>
+            </LinearLayout>
+          </div>
+          <div className={`tags ${isTagsVisible ? 'show' : ''}`}>
+            <TagList tags={tags} />
+          </div>
+          <button className='show-tags' onClick={toggleTags}>
+            {isTagsVisible ? (
+              <FaChevronUp color='#9ca0a5' />
+            ) : (
+              <FaChevronDown color='#9ca0a5' />
+            )}
+          </button>
+        </div>
       </div>
       <div className='modal-body-container'>
         <div className='modal-aside-container'>
           <Participants participants={participants} />
         </div>
         <div className='modal-chatbox-container'>
-          <Chatbox roomId={roomId} createdAt={createdAt} onSubmit={onSubmit}>
+          <Chatbox onSubmit={onSubmit}>
             {chattings.map((chatting, index) => {
               if (chatting.type === 'chat') {
                 return chatting.user.id === userId ? (
@@ -213,8 +231,11 @@ ChattingRoom.propTypes = {
       name: PropTypes.string,
     })
   ),
+  game: PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+  }),
   roomId: PropTypes.number,
-  createdAt: PropTypes.string,
 };
 
 export default ChattingRoom;
