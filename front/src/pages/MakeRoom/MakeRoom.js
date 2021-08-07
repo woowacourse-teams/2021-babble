@@ -111,12 +111,10 @@ const MakeRoom = ({ match }) => {
           tags: tagIds,
         }
       );
-      const { tags, roomId, createdDate } = response.data;
+      const { tags, game, roomId } = response.data;
 
       closeChatting();
-      openChatting(
-        <ChattingRoom tags={tags} roomId={roomId} createdAt={createdDate} />
-      );
+      openChatting(<ChattingRoom tags={tags} game={game} roomId={roomId} />);
 
       history.push({
         pathname: `${PATH.ROOM_LIST}/${gameId}`,

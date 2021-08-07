@@ -95,12 +95,10 @@ const RoomList = ({ match }) => {
         `https://test-api.babble.gg/api/rooms/${selectedRoomId}`
       );
 
-      const { tags, roomId, createdDate } = response.data;
+      const { tags, game, roomId } = response.data;
 
       closeChatting();
-      openChatting(
-        <ChattingRoom tags={tags} roomId={roomId} createdAt={createdDate} />
-      );
+      openChatting(<ChattingRoom game={game} tags={tags} roomId={roomId} />);
     } catch (error) {
       alert('방이 존재하지 않습니다.');
       console.error(error);
