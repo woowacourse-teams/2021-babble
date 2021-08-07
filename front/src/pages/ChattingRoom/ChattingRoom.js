@@ -69,7 +69,7 @@ const ChattingRoom = ({ tags, roomId, createdAt }) => {
   };
 
   useEffect(() => {
-    const socket = new SockJS('https://babble-test.o-r.kr/connection');
+    const socket = new SockJS('https://test-api.babble.gg/connection');
     stompClient.current = Stomp.over(socket);
 
     if (isConnected.current) {

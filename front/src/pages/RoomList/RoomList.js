@@ -41,7 +41,7 @@ const RoomList = ({ match }) => {
 
   const getImage = async () => {
     const response = await axios.get(
-      `https://babble-test.o-r.kr/api/games/${gameId}/images`
+      `https://test-api.babble.gg/api/games/${gameId}/images`
     );
     const image = response.data.image;
 
@@ -49,7 +49,7 @@ const RoomList = ({ match }) => {
   };
 
   const getTags = async () => {
-    const response = await axios.get('https://babble-test.o-r.kr/api/tags');
+    const response = await axios.get('https://test-api.babble.gg/api/tags');
     const tags = response.data;
 
     setTagList(tags);
@@ -57,7 +57,7 @@ const RoomList = ({ match }) => {
   };
 
   const getRooms = async (tagIds) => {
-    const response = await axios.get('https://babble-test.o-r.kr/api/rooms', {
+    const response = await axios.get('https://test-api.babble.gg/api/rooms', {
       params: { gameId, tagIds, page: 1 },
     });
     const rooms = response.data;
@@ -92,7 +92,7 @@ const RoomList = ({ match }) => {
 
     try {
       const response = await axios.get(
-        `https://babble-test.o-r.kr/api/rooms/${selectedRoomId}`
+        `https://test-api.babble.gg/api/rooms/${selectedRoomId}`
       );
 
       const { tags, roomId, createdDate } = response.data;
@@ -139,7 +139,7 @@ const RoomList = ({ match }) => {
       setLocalStorage('nickname', newUser.nickname);
     }
 
-    const response = await axios.post('https://babble-test.o-r.kr/api/users', {
+    const response = await axios.post('https://test-api.babble.gg/api/users', {
       nickname: newUser.nickname,
     });
     newUser.id = response.data.id;

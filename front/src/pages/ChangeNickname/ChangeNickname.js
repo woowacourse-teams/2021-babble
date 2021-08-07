@@ -19,7 +19,7 @@ const ChangeNickname = () => {
     e.preventDefault();
     const nicknameInput = e.target.nickname.value;
 
-    const response = await axios.post('https://babble-test.o-r.kr/api/users', {
+    const response = await axios.post('https://test-api.babble.gg/api/users', {
       nickname: nicknameInput,
     });
     const generatedUser = response.data;

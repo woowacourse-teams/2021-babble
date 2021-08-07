@@ -42,6 +42,12 @@ const UserProvider = ({
 
 UserProvider.propTypes = {
   children: PropTypes.node,
+  defaultValue: PropTypes.shape({
+    id: PropTypes.number,
+    nickname: PropTypes.string,
+    avatar: PropTypes.string,
+    currentRoomNumber: PropTypes.number,
+  }),
 };
 
 export const useUser = () => {

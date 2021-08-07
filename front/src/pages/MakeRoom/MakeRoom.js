@@ -36,7 +36,7 @@ const MakeRoom = ({ match }) => {
 
   const getImage = async () => {
     const response = await axios.get(
-      `https://babble-test.o-r.kr/api/games/${gameId}/images`
+      `https://test-api.babble.gg/api/games/${gameId}/images`
     );
     const image = response.data.image;
 
@@ -44,7 +44,7 @@ const MakeRoom = ({ match }) => {
   };
 
   const getTags = async () => {
-    const response = await axios.get('https://babble-test.o-r.kr/api/tags');
+    const response = await axios.get('https://test-api.babble.gg/api/tags');
     const tags = response.data;
 
     setTagList(tags);
@@ -104,7 +104,7 @@ const MakeRoom = ({ match }) => {
       // TODO: 테스트 서버에서 실제 배포 서버로 변경하기
       const tagIds = selectedTagList.map(({ id }) => ({ id }));
       const response = await axios.post(
-        'https://babble-test.o-r.kr/api/rooms',
+        'https://test-api.babble.gg/api/rooms',
         {
           gameId,
           maxHeadCount,
