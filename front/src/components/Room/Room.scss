@@ -56,6 +56,10 @@
         }
       }
 
+      .headcount-container {
+        min-width: fit-content;
+      }
+
       strong {
         color: m.primary(babble-pink);
         font-weight: 500;
