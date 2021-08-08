@@ -59,7 +59,10 @@ const GameList = () => {
   };
 
   const onChangeGameInput = (e) => {
-    const inputValue = e.target.value;
+    const inputValue = e.target.value.replace(
+      /[^0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|a-z|A-Z]+/g,
+      ''
+    );
 
     const searchResults = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]+/g.test(inputValue)
       ? gameList.filter((game) => {
