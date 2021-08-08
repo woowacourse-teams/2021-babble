@@ -1,7 +1,7 @@
 import './GameList.scss';
 
 import { GameCard, SearchInput, Slider } from '../../components';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Headline2 } from '../../core/Typography';
 import { Link } from 'react-router-dom';
@@ -14,6 +14,7 @@ const GameList = () => {
   // const [sliderImageList, setSliderImageList] = useState([]);
   const [gameList, setGameList] = useState([]);
   const [selectedGames, setSelectedGames] = useState([]);
+  const searchRef = useRef(null);
 
   const dummyImage = [
     {
@@ -85,8 +86,20 @@ const GameList = () => {
   };
 
   useEffect(() => {
+    const stickyObserver = new IntersectionObserver(
+      ([entry]) => {
+        entry.target.classList.toggle('stuck', entry.intersectionRatio < 1);
+      },
+      { threshold: 1 }
+    );
+    stickyObserver.observe(searchRef.current);
+
     // getSliderImages();
     getGames();
+
+    return () => {
+      stickyObserver && stickyObserver.disconnect();
+    };
   }, []);
 
   return (
@@ -94,17 +107,19 @@ const GameList = () => {
       <Slider imageList={dummyImage} />
       <PageLayout>
         <Headline2>게임 목록</Headline2>
-        <section className='search-section'>
-          <SearchInput
-            placeholder='게임을 검색해주세요.'
-            autoCompleteKeywords={selectedGames.map(({ name }) => ({
-              name,
-            }))}
-            onClickKeyword={selectGame}
-            onChangeInput={onChangeGameInput}
-            isResetable={false}
-          />
-        </section>
+        <div className='search-container' ref={searchRef}>
+          <section className='search-section'>
+            <SearchInput
+              placeholder='게임을 검색해주세요.'
+              autoCompleteKeywords={selectedGames.map(({ name }) => ({
+                name,
+              }))}
+              onClickKeyword={selectGame}
+              onChangeInput={onChangeGameInput}
+              isResetable={false}
+            />
+          </section>
+        </div>
         <div className='game-list'>
           {selectedGames.map(({ id, name, headCount, thumbnail }) => (
             <Link to={`${PATH.ROOM_LIST}/${id}`} key={id}>

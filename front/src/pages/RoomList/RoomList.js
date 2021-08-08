@@ -8,7 +8,7 @@ import {
   SearchInput,
   SquareButton,
 } from '../../components';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { getSessionStorage, setSessionStorage } from '../../utils/storage';
 
 import ChattingRoom from '../ChattingRoom/ChattingRoom';
@@ -39,6 +39,7 @@ const RoomList = ({ match }) => {
 
   // TODO: 임시 방편. onChangeInput을 SearchInput 내부로 집어넣으면서 사라질 운명
   const [autoCompleteTagList, setAutoCompleteTagList] = useState([]);
+  const searchRef = useRef(null);
 
   const { gameId } = match.params;
 
@@ -184,6 +185,14 @@ const RoomList = ({ match }) => {
   };
 
   useEffect(() => {
+    const stickyObserver = new IntersectionObserver(
+      ([entry]) => {
+        entry.target.classList.toggle('stuck', entry.intersectionRatio < 1);
+      },
+      { threshold: 1 }
+    );
+    stickyObserver.observe(searchRef.current);
+
     getRooms('');
     getTags();
     getGame();
@@ -191,6 +200,10 @@ const RoomList = ({ match }) => {
     if (user.id === -1) {
       getUserId();
     }
+
+    return () => {
+      stickyObserver && stickyObserver.disconnect();
+    };
   }, []);
 
   // TODO: 데모데이 이후 삭제될 운명
@@ -221,16 +234,16 @@ const RoomList = ({ match }) => {
             </SquareButton>
           </div>
         </section>
-
-        <section className='search-section'>
-          <SearchInput
-            autoCompleteKeywords={autoCompleteTagList}
-            onClickKeyword={selectTag}
-            onChangeInput={onChangeTagInput}
-          />
-          <TagList tags={selectedTagList} onDeleteTag={eraseTag} erasable />
-        </section>
-
+        <div className='search-container' ref={searchRef}>
+          <section className='search-section'>
+            <SearchInput
+              autoCompleteKeywords={autoCompleteTagList}
+              onClickKeyword={selectTag}
+              onChangeInput={onChangeTagInput}
+            />
+            <TagList tags={selectedTagList} onDeleteTag={eraseTag} erasable />
+          </section>
+        </div>
         <section className='room-list-section'>
           {roomList.map((room, index) => (
             <Room
