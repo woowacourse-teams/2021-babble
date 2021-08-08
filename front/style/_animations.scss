@@ -148,30 +148,17 @@
     box-shadow: none;
   }
 
-  // 70% {
-  //   background: linear-gradient(
-  //     60deg,
-  //     m.primary(babble-pink-1) 0%,
-  //     m.primary(babble-pink-light) 100%
-  //   );
-  // }
-
   100% {
-    // background: linear-gradient(
-    //   60deg,
-    //   m.primary(babble-pink-1) 0%,
-    //   m.primary(babble-pink-light) 100%
-    // );
     box-shadow: none;
     border: 1px solid m.grey-scale(8);
-    width: 22rem;
+    width: 30rem;
     height: 4rem;
   }
 }
 
 @keyframes maximize {
   0% {
-    width: 22rem;
+    width: 30rem;
     height: 4rem;
   }
   100% {
