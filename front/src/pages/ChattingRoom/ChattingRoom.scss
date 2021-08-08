@@ -36,6 +36,16 @@
       border-radius: 0 0 0.8rem 0.8rem;
       cursor: pointer;
       z-index: m.z-index(layer-modal-show-tag-button);
+
+      svg {
+        color: m.grey-scale(9);
+      }
+
+      &:hover {
+        svg {
+          color: m.primary(babble-pink);
+        }
+      }
     }
 
     .room-info {

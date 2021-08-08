@@ -180,11 +180,7 @@ const ChattingRoom = ({ tags, game, roomId }) => {
             <TagList tags={tags} />
           </div>
           <button className='show-tags' onClick={toggleTags}>
-            {isTagsVisible ? (
-              <FaChevronUp color='#9ca0a5' />
-            ) : (
-              <FaChevronDown color='#9ca0a5' />
-            )}
+            {isTagsVisible ? <FaChevronUp /> : <FaChevronDown />}
           </button>
         </div>
       </div>
