@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import gg.babble.babble.ApplicationTest;
+import gg.babble.babble.dto.request.GameRequest;
 import gg.babble.babble.dto.response.GameImageResponse;
 import gg.babble.babble.dto.response.GameWithImageResponse;
 import gg.babble.babble.dto.response.IndexPageGameResponse;
@@ -80,5 +81,22 @@ class GameServiceTest extends ApplicationTest {
         // then
         assertThat(gameService.findGame(1L)).usingRecursiveComparison()
             .isEqualTo(expectedResponse);
+    }
+
+    @DisplayName("단일 게임을 추가한다.")
+    @Test
+    void insertGame() {
+        // given
+        String 너구리_게임 = "너구리 게임";
+        String 너구리_게임_썸네일 = "image.png";
+        GameRequest request = new GameRequest(너구리_게임, 너구리_게임_썸네일);
+
+        // when
+        GameWithImageResponse response = gameService.insertGame(request);
+
+        // then
+        assertThat(response.getId()).isNotNull();
+        assertThat(response.getName()).isEqualTo(너구리_게임);
+        assertThat(response.getThumbnail()).isEqualTo(너구리_게임_썸네일);
     }
 }

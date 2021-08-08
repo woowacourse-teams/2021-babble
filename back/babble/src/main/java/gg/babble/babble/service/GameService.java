@@ -3,6 +3,7 @@ package gg.babble.babble.service;
 import gg.babble.babble.domain.Game;
 import gg.babble.babble.domain.Games;
 import gg.babble.babble.domain.repository.GameRepository;
+import gg.babble.babble.dto.request.GameRequest;
 import gg.babble.babble.dto.response.GameImageResponse;
 import gg.babble.babble.dto.response.GameWithImageResponse;
 import gg.babble.babble.dto.response.IndexPageGameResponse;
@@ -49,7 +50,12 @@ public class GameService {
             .collect(Collectors.toList());
     }
 
-    public GameWithImageResponse findGame(Long id) {
+    public GameWithImageResponse findGame(final Long id) {
         return GameWithImageResponse.from(findById(id));
+    }
+
+    public GameWithImageResponse insertGame(final GameRequest request) {
+        Game game = gameRepository.save(request.toEntity());
+        return GameWithImageResponse.from(game);
     }
 }
