@@ -1,7 +1,6 @@
 import './RoomList.scss';
 
 import { Body2, Headline2 } from '../../core/Typography';
-import { Link, useLocation } from 'react-router-dom';
 import {
   MainImage,
   NicknameSection,
@@ -11,8 +10,10 @@ import {
 } from '../../components';
 import React, { useEffect, useState } from 'react';
 import { getSessionStorage, setSessionStorage } from '../../utils/storage';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import ChattingRoom from '../ChattingRoom/ChattingRoom';
+import ModalConfirm from '../../components/Modal/ModalConfirm';
 import PATH from '../../constants/path';
 import PageLayout from '../../core/Layout/PageLayout';
 import PropTypes from 'prop-types';
@@ -21,17 +22,21 @@ import axios from 'axios';
 import getKorRegExp from '../../components/SearchInput/service/getKorRegExp';
 import { getRandomNickname } from '@woowa-babble/random-nickname';
 import { useChattingModal } from '../../contexts/ChattingModalProvider';
+import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 import useInterval from '../../hooks/useInterval';
 import { useUser } from '../../contexts/UserProvider';
 
 const RoomList = ({ match }) => {
   const location = useLocation();
+  const history = useHistory();
   const [imageUrl, setImageUrl] = useState('');
   const [tagList, setTagList] = useState([]);
   const [selectedTagList, setSelectedTagList] = useState([]);
   const [roomList, setRoomList] = useState([]);
   const { user, changeUser } = useUser();
-  const { openChatting, closeChatting } = useChattingModal();
+  const { openChatting, closeChatting, isChattingModalOpen } =
+    useChattingModal();
+  const { openModal } = useDefaultModal();
 
   // TODO: 임시 방편. onChangeInput을 SearchInput 내부로 집어넣으면서 사라질 운명
   const [autoCompleteTagList, setAutoCompleteTagList] = useState([]);
@@ -94,15 +99,44 @@ const RoomList = ({ match }) => {
       const response = await axios.get(
         `https://test-api.babble.gg/api/rooms/${selectedRoomId}`
       );
-
       const { tags, game, roomId } = response.data;
 
-      closeChatting();
+      if (isChattingModalOpen) {
+        closeChatting();
+      }
       openChatting(<ChattingRoom game={game} tags={tags} roomId={roomId} />);
     } catch (error) {
       alert('방이 존재하지 않습니다.');
       console.error(error);
     }
+  };
+
+  const enterMakeRoomPage = () => {
+    if (isChattingModalOpen) {
+      closeChatting();
+    }
+
+    history.push({
+      pathname: `${PATH.ROOM_LIST}/${gameId}${PATH.MAKE_ROOM}`,
+      state: {
+        gameName,
+      },
+    });
+  };
+
+  // TODO: Custom Confirm 로직을 개선할 방법에 대해 고려(우선순위 높음)
+  const onConfirm = (callback) => {
+    if (isChattingModalOpen) {
+      openModal(
+        <ModalConfirm confirmCallback={callback}>
+          입장중인 방에서 퇴장하시겠습니까?
+        </ModalConfirm>
+      );
+
+      return;
+    }
+
+    callback();
   };
 
   const onChangeTagInput = (e) => {
@@ -174,18 +208,13 @@ const RoomList = ({ match }) => {
           <Headline2>{gameName}</Headline2>
           <div className='side'>
             <NicknameSection />
-            <Link
-              to={{
-                pathname: `${PATH.ROOM_LIST}/${gameId}${PATH.MAKE_ROOM}`,
-                state: {
-                  gameName,
-                },
-              }}
+            <SquareButton
+              size='medium'
+              onClick={() => onConfirm(() => enterMakeRoomPage())}
+              colored
             >
-              <SquareButton size='medium' colored>
-                <Body2>방 생성하기</Body2>
-              </SquareButton>
-            </Link>
+              <Body2>방 생성하기</Body2>
+            </SquareButton>
           </div>
         </section>
 
@@ -200,7 +229,11 @@ const RoomList = ({ match }) => {
 
         <section className='room-list-section'>
           {roomList.map((room, index) => (
-            <Room room={room} key={index} onClickRoom={joinChatting} />
+            <Room
+              room={room}
+              key={index}
+              onClickRoom={(e) => onConfirm(() => joinChatting(e))}
+            />
           ))}
         </section>
       </PageLayout>
