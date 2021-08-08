@@ -104,13 +104,7 @@ const GameList = () => {
         </section>
         <div className='game-list'>
           {selectedGames.map(({ id, name, headCount, thumbnail }) => (
-            <Link
-              to={{
-                pathname: `${PATH.ROOM_LIST}/${id}`,
-                state: { gameName: name },
-              }}
-              key={id}
-            >
+            <Link to={`${PATH.ROOM_LIST}/${id}`} key={id}>
               <GameCard
                 gameName={name}
                 imageSrc={thumbnail}

@@ -10,7 +10,6 @@ import {
 } from '../../components';
 import React, { useEffect, useState } from 'react';
 import { getSessionStorage, setSessionStorage } from '../../utils/storage';
-import { useHistory, useLocation } from 'react-router-dom';
 
 import ChattingRoom from '../ChattingRoom/ChattingRoom';
 import ModalConfirm from '../../components/Modal/ModalConfirm';
@@ -23,16 +22,16 @@ import getKorRegExp from '../../components/SearchInput/service/getKorRegExp';
 import { getRandomNickname } from '@woowa-babble/random-nickname';
 import { useChattingModal } from '../../contexts/ChattingModalProvider';
 import { useDefaultModal } from '../../contexts/DefaultModalProvider';
+import { useHistory } from 'react-router-dom';
 import useInterval from '../../hooks/useInterval';
 import { useUser } from '../../contexts/UserProvider';
 
 const RoomList = ({ match }) => {
-  const location = useLocation();
   const history = useHistory();
-  const [imageUrl, setImageUrl] = useState('');
   const [tagList, setTagList] = useState([]);
   const [selectedTagList, setSelectedTagList] = useState([]);
   const [roomList, setRoomList] = useState([]);
+  const [currentGame, setCurrentGame] = useState({});
   const { user, changeUser } = useUser();
   const { openChatting, closeChatting, isChattingModalOpen } =
     useChattingModal();
@@ -42,15 +41,17 @@ const RoomList = ({ match }) => {
   const [autoCompleteTagList, setAutoCompleteTagList] = useState([]);
 
   const { gameId } = match.params;
-  const { gameName } = location.state;
 
-  const getImage = async () => {
-    const response = await axios.get(
-      `https://test-api.babble.gg/api/games/${gameId}/images`
-    );
-    const image = response.data.image;
+  const getGame = async () => {
+    try {
+      const response = await axios.get(
+        `https://test-api.babble.gg/api/games/${gameId}`
+      );
 
-    setImageUrl(image);
+      setCurrentGame(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const getTags = async () => {
@@ -119,7 +120,7 @@ const RoomList = ({ match }) => {
     history.push({
       pathname: `${PATH.ROOM_LIST}/${gameId}${PATH.MAKE_ROOM}`,
       state: {
-        gameName,
+        gameName: currentGame.name,
       },
     });
   };
@@ -180,9 +181,9 @@ const RoomList = ({ match }) => {
   };
 
   useEffect(() => {
-    getImage();
     getRooms('');
     getTags();
+    getGame();
 
     if (user.id === -1) {
       getUserId();
@@ -202,10 +203,10 @@ const RoomList = ({ match }) => {
 
   return (
     <div className='room-list-container'>
-      <MainImage imageSrc={imageUrl} />
+      <MainImage imageSrc={currentGame.thumbnail} />
       <PageLayout>
         <section className='room-list-header'>
-          <Headline2>{gameName}</Headline2>
+          <Headline2>{currentGame.name}</Headline2>
           <div className='side'>
             <NicknameSection />
             <SquareButton
