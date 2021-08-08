@@ -15,6 +15,21 @@ public class GameRepositoryTest {
     @Autowired
     private GameRepository gameRepository;
 
+    @DisplayName("게임 추가를 수행한다.")
+    @Test
+    void saveGame() {
+        // given
+        Game game = new Game("게임 이름", "게임 이미지");
+
+        // when
+        Game savedGame = gameRepository.save(game);
+
+        // then
+        assertThat(savedGame.getId()).isNotNull();
+        assertThat(savedGame.getName()).isEqualTo(game.getName());
+        assertThat(savedGame.getImage()).isEqualTo(game.getImage());
+    }
+
     @DisplayName("게임 정보 편집을 수행한다.")
     @Test
     void updateGame() {
