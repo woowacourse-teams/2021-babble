@@ -32,6 +32,13 @@ const MakeRoom = ({ match }) => {
   const [autoCompleteTagList, setAutoCompleteTagList] = useState([]);
 
   const { gameId } = match.params;
+
+  // TODO: Modal로 바꾼 후 사라질 운명
+  if (!location.state) {
+    history.replace(`/games/${gameId}`);
+    return null;
+  }
+
   const { gameName } = location.state;
 
   const getImage = async () => {
@@ -153,12 +160,7 @@ const MakeRoom = ({ match }) => {
             <TagList tags={selectedTagList} onDeleteTag={eraseTag} erasable />
           </section>
           <section className='buttons'>
-            <Link
-              to={{
-                pathname: `${PATH.ROOM_LIST}/${gameId}`,
-                state: { gameName },
-              }}
-            >
+            <Link to={`${PATH.ROOM_LIST}/${gameId}`}>
               <RoundButton size='small'>
                 <Body2>취소하기</Body2>
               </RoundButton>
