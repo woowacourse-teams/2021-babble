@@ -1,6 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const path = require('path');
@@ -51,6 +52,11 @@ module.exports = (env, options) => {
       new ESLintPlugin(),
       new HtmlWebpackPlugin({
         template: 'index.html',
+        favicon: './public/favicon.ico',
+      }),
+      new WebpackManifestPlugin({
+        fileName: 'manifest.json',
+        basePath: './public/',
       }),
     ],
 
