@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class UserServiceTest extends ApplicationTest {
 
     private static final String FORTUNE = "fortune";
-    private static final String DEFAULT_URL = "https://hyeon9mak.github.io/assets/images/9vatar.png";
+    private static final String FORTUNE_AVATAR = "https://bucket-babble-front.s3.ap-northeast-2.amazonaws.com/img/users/profiles/profile57.png";
     @Autowired
     private UserService userService;
 
@@ -34,6 +34,6 @@ public class UserServiceTest extends ApplicationTest {
         // then
         assertThat(response.getId()).isNotNull();
         assertThat(response.getNickname()).isEqualTo(FORTUNE);
-        assertThat(response.getAvatar()).isEqualTo(DEFAULT_URL);
+        assertThat(response.getAvatar()).isEqualTo(FORTUNE_AVATAR);
     }
 }
