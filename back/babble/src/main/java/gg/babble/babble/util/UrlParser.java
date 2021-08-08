@@ -22,7 +22,7 @@ public enum UrlParser {
     }
 
     private static void urlParsingValidate(final String url) {
-        if(!PATH_MATCHER.match(ROOM_SUBSCRIBE_URL_PATTERN.urlPattern, url)){
+        if (!PATH_MATCHER.match(ROOM_SUBSCRIBE_URL_PATTERN.urlPattern, url)) {
             throw new BabbleIllegalStatementException("roomId를 파싱할 수 없는 url 입니다.");
         }
     }
