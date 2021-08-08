@@ -75,7 +75,7 @@
 
     .search-section {
       max-width: 100%;
-      min-width: 15rem;
+      min-width: 40rem;
       padding: 1rem 0;
       margin-bottom: 1rem;
       display: flex;
@@ -83,6 +83,8 @@
 
       .input-container {
         flex-basis: 40%;
+        min-width: 40rem;
+        max-width: 40rem;
         margin-right: 1.5rem;
       }
     }

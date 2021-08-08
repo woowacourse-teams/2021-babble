@@ -29,13 +29,14 @@
 
     .search-section {
       max-width: 100%;
-      min-width: 15rem;
+      min-width: 40rem;
       padding: 1rem 0;
       margin-bottom: 1rem;
       display: flex;
       background-color: m.grey-scale(white);
 
       .input-container {
+        min-width: 40rem;
         max-width: 40rem;
       }
     }
