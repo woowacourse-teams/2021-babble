@@ -3,46 +3,104 @@
 
 .modal-chatting-room {
   width: 100%;
-  height: calc(100% - 5.45rem);
+  height: 100%;
+  position: relative;
 
   .modal-header-container {
+    position: relative;
     width: 100%;
-    padding: 1.2rem 2rem;
+    height: 5.4rem;
+    padding: 1.2rem 1.2rem 1.2rem 2rem;
+    background-color: m.grey-scale(white);
+    border-radius: 0.8rem 0.8rem 0 0;
     border-bottom: 1px solid m.grey-scale(8);
+    z-index: 9;
 
-    & > section {
-      justify-content: space-between;
+    &.open {
+      height: fit-content;
+    }
 
-      h5 {
-        word-break: keep-all;
-        margin-right: 2rem;
+    .show-tags {
+      text-align: center;
+      display: inline-block;
+      position: absolute;
+      background: m.grey-scale(white);
+      width: 6rem;
+      height: 1.6rem;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: -1.6rem;
+      border-left: 1px solid #9ca0a5;
+      border-bottom: 1px solid #9ca0a5;
+      border-right: 1px solid #9ca0a5;
+      border-radius: 0 0 0.8rem 0.8rem;
+      cursor: pointer;
+      z-index: m.z-index(layer-modal-show-tag-button);
+
+      svg {
+        color: m.grey-scale(9);
       }
 
-      button {
-        margin-left: 0.5rem;
-
-        &:hover {
+      &:hover {
+        svg {
           color: m.primary(babble-pink);
         }
       }
+    }
 
-      .tag-list-container {
-        width: 45rem;
-        overflow-x: auto;
-        padding-left: 0.5rem;
+    .room-info {
+      .room-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        line-height: 1;
 
-        &::-webkit-scrollbar {
-          display: none;
+        h5 {
+          word-break: keep-all;
+          margin-right: 1.5rem;
+        }
+
+        button {
+          margin-left: 0.5rem;
+
+          &:hover {
+            color: m.primary(babble-pink);
+          }
         }
       }
+    }
+  }
+
+  .tags {
+    visibility: hidden;
+    max-height: 0;
+
+    .tag-list-container {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      background: m.grey-scale(white);
+      padding: 1rem 0 0 0;
+    }
+
+    &.show {
+      visibility: visible;
+      height: fit-content;
+      max-height: 20rem;
+      width: 100%;
+      transition: max-height 0.2s ease-in;
+      overflow: hidden;
+      z-index: m.z-index(layer-front-1);
     }
   }
 }
 
 .modal-body-container {
   display: flex;
+  position: absolute;
+  bottom: 0;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 5.2rem);
 
   .modal-aside-container {
     padding: 3rem 2rem;

@@ -26,17 +26,24 @@ const MakeRoom = ({ match }) => {
   const [tagList, setTagList] = useState([]);
   const [selectedTagList, setSelectedTagList] = useState([]);
   const [maxHeadCount, setMaxHeadCount] = useState(0);
-  const { openChatting } = useChattingModal();
+  const { openChatting, closeChatting } = useChattingModal();
 
   // TODO: 임시 방편. onChangeInput을 SearchInput 내부로 집어넣으면서 사라질 운명
   const [autoCompleteTagList, setAutoCompleteTagList] = useState([]);
 
   const { gameId } = match.params;
+
+  // TODO: Modal로 바꾼 후 사라질 운명
+  if (!location.state) {
+    history.replace(`/games/${gameId}`);
+    return null;
+  }
+
   const { gameName } = location.state;
 
   const getImage = async () => {
     const response = await axios.get(
-      `https://babble-test.o-r.kr/api/games/${gameId}/images`
+      `https://test-api.babble.gg/api/games/${gameId}/images`
     );
     const image = response.data.image;
 
@@ -44,7 +51,7 @@ const MakeRoom = ({ match }) => {
   };
 
   const getTags = async () => {
-    const response = await axios.get('https://babble-test.o-r.kr/api/tags');
+    const response = await axios.get('https://test-api.babble.gg/api/tags');
     const tags = response.data;
 
     setTagList(tags);
@@ -104,18 +111,17 @@ const MakeRoom = ({ match }) => {
       // TODO: 테스트 서버에서 실제 배포 서버로 변경하기
       const tagIds = selectedTagList.map(({ id }) => ({ id }));
       const response = await axios.post(
-        'https://babble-test.o-r.kr/api/rooms',
+        'https://test-api.babble.gg/api/rooms',
         {
           gameId,
           maxHeadCount,
           tags: tagIds,
         }
       );
-      const { tags, roomId, createdDate } = response.data;
+      const { tags, game, roomId } = response.data;
 
-      openChatting(
-        <ChattingRoom tags={tags} roomId={roomId} createdAt={createdDate} />
-      );
+      closeChatting();
+      openChatting(<ChattingRoom tags={tags} game={game} roomId={roomId} />);
 
       history.push({
         pathname: `${PATH.ROOM_LIST}/${gameId}`,
@@ -154,12 +160,7 @@ const MakeRoom = ({ match }) => {
             <TagList tags={selectedTagList} onDeleteTag={eraseTag} erasable />
           </section>
           <section className='buttons'>
-            <Link
-              to={{
-                pathname: `${PATH.ROOM_LIST}/${gameId}`,
-                state: { gameName },
-              }}
-            >
+            <Link to={`${PATH.ROOM_LIST}/${gameId}`}>
               <RoundButton size='small'>
                 <Body2>취소하기</Body2>
               </RoundButton>

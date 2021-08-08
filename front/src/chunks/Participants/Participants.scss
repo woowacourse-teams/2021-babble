@@ -9,6 +9,8 @@
   position: relative;
 
   .avatar-container {
+    text-align: left;
+
     &:hover {
       color: m.primary(babble-pink);
       cursor: pointer;

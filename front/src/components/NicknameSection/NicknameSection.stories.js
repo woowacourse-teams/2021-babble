@@ -6,9 +6,10 @@ export default {
   component: NicknameSection,
 };
 
-const NicknameSectionTemplate = (args) => <NicknameSection {...args} />;
+const NicknameSectionTemplate = () => (
+  <div style={{ marginTop: '10rem' }}>
+    <NicknameSection />
+  </div>
+);
 
 export const Default = NicknameSectionTemplate.bind({});
-Default.args = {
-  nickname: 'fortune',
-};

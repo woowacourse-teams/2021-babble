@@ -1,4 +1,4 @@
-import { Body1, Body2, Caption2 } from '../../core/Typography';
+import { Body1, Body2, Caption2, Subtitle3 } from '../../core/Typography';
 
 import React from 'react';
 import RoundButton from './RoundButton';
@@ -11,6 +11,7 @@ export default {
 
 const SquareButtonTemplate = () => (
   <>
+    <Subtitle3>Filled Button</Subtitle3>
     <div
       style={{
         display: 'flex',
@@ -39,6 +40,8 @@ const SquareButtonTemplate = () => (
       </SquareButton>
     </div>
     <br />
+    <br />
+    <Subtitle3>Line Button</Subtitle3>
     <div
       style={{
         display: 'flex',

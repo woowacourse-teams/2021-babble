@@ -1,7 +1,6 @@
 import './RoomList.scss';
 
 import { Body2, Headline2 } from '../../core/Typography';
-import { Link, useLocation } from 'react-router-dom';
 import {
   MainImage,
   NicknameSection,
@@ -9,10 +8,11 @@ import {
   SearchInput,
   SquareButton,
 } from '../../components';
-import React, { useEffect, useState } from 'react';
-import { getLocalStorage, setLocalStorage } from '../../utils/localStorage';
+import React, { useEffect, useRef, useState } from 'react';
+import { getSessionStorage, setSessionStorage } from '../../utils/storage';
 
 import ChattingRoom from '../ChattingRoom/ChattingRoom';
+import ModalConfirm from '../../components/Modal/ModalConfirm';
 import PATH from '../../constants/path';
 import PageLayout from '../../core/Layout/PageLayout';
 import PropTypes from 'prop-types';
@@ -21,35 +21,42 @@ import axios from 'axios';
 import getKorRegExp from '../../components/SearchInput/service/getKorRegExp';
 import { getRandomNickname } from '@woowa-babble/random-nickname';
 import { useChattingModal } from '../../contexts/ChattingModalProvider';
+import { useDefaultModal } from '../../contexts/DefaultModalProvider';
+import { useHistory } from 'react-router-dom';
 import useInterval from '../../hooks/useInterval';
 import { useUser } from '../../contexts/UserProvider';
 
 const RoomList = ({ match }) => {
-  const location = useLocation();
-  const [imageUrl, setImageUrl] = useState('');
+  const history = useHistory();
   const [tagList, setTagList] = useState([]);
   const [selectedTagList, setSelectedTagList] = useState([]);
   const [roomList, setRoomList] = useState([]);
+  const [currentGame, setCurrentGame] = useState({});
   const { user, changeUser } = useUser();
-  const { openChatting, closeChatting } = useChattingModal();
+  const { openChatting, closeChatting, isChattingModalOpen } =
+    useChattingModal();
+  const { openModal } = useDefaultModal();
 
   // TODO: 임시 방편. onChangeInput을 SearchInput 내부로 집어넣으면서 사라질 운명
   const [autoCompleteTagList, setAutoCompleteTagList] = useState([]);
+  const searchRef = useRef(null);
 
   const { gameId } = match.params;
-  const { gameName } = location.state;
 
-  const getImage = async () => {
-    const response = await axios.get(
-      `https://babble-test.o-r.kr/api/games/${gameId}/images`
-    );
-    const image = response.data.image;
+  const getGame = async () => {
+    try {
+      const response = await axios.get(
+        `https://test-api.babble.gg/api/games/${gameId}`
+      );
 
-    setImageUrl(image);
+      setCurrentGame(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const getTags = async () => {
-    const response = await axios.get('https://babble-test.o-r.kr/api/tags');
+    const response = await axios.get('https://test-api.babble.gg/api/tags');
     const tags = response.data;
 
     setTagList(tags);
@@ -57,7 +64,7 @@ const RoomList = ({ match }) => {
   };
 
   const getRooms = async (tagIds) => {
-    const response = await axios.get('https://babble-test.o-r.kr/api/rooms', {
+    const response = await axios.get('https://test-api.babble.gg/api/rooms', {
       params: { gameId, tagIds, page: 1 },
     });
     const rooms = response.data;
@@ -92,23 +99,53 @@ const RoomList = ({ match }) => {
 
     try {
       const response = await axios.get(
-        `https://babble-test.o-r.kr/api/rooms/${selectedRoomId}`
+        `https://test-api.babble.gg/api/rooms/${selectedRoomId}`
       );
+      const { tags, game, roomId } = response.data;
 
-      const { tags, roomId, createdDate } = response.data;
-
-      closeChatting();
-      openChatting(
-        <ChattingRoom tags={tags} roomId={roomId} createdAt={createdDate} />
-      );
+      if (isChattingModalOpen) {
+        closeChatting();
+      }
+      openChatting(<ChattingRoom game={game} tags={tags} roomId={roomId} />);
     } catch (error) {
       alert('방이 존재하지 않습니다.');
       console.error(error);
     }
   };
 
+  const enterMakeRoomPage = () => {
+    if (isChattingModalOpen) {
+      closeChatting();
+    }
+
+    history.push({
+      pathname: `${PATH.ROOM_LIST}/${gameId}${PATH.MAKE_ROOM}`,
+      state: {
+        gameName: currentGame.name,
+      },
+    });
+  };
+
+  // TODO: Custom Confirm 로직을 개선할 방법에 대해 고려(우선순위 높음)
+  const onConfirm = (callback) => {
+    if (isChattingModalOpen) {
+      openModal(
+        <ModalConfirm confirmCallback={callback}>
+          입장중인 방에서 퇴장하시겠습니까?
+        </ModalConfirm>
+      );
+
+      return;
+    }
+
+    callback();
+  };
+
   const onChangeTagInput = (e) => {
-    const inputValue = e.target.value;
+    const inputValue = e.target.value.replace(
+      /[^0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|a-z|A-Z]+/g,
+      ''
+    );
 
     const searchResults = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]+/g.test(inputValue)
       ? tagList.filter((tag) => {
@@ -132,14 +169,14 @@ const RoomList = ({ match }) => {
 
   const getUserId = async () => {
     const newUser = { id: -1, nickname: '' };
-    newUser.nickname = getLocalStorage('nickname');
+    newUser.nickname = getSessionStorage('nickname');
 
     if (!newUser.nickname) {
       newUser.nickname = `${getRandomNickname('characters')}`;
-      setLocalStorage('nickname', newUser.nickname);
+      setSessionStorage('nickname', newUser.nickname);
     }
 
-    const response = await axios.post('https://babble-test.o-r.kr/api/users', {
+    const response = await axios.post('https://test-api.babble.gg/api/users', {
       nickname: newUser.nickname,
     });
     newUser.id = response.data.id;
@@ -148,13 +185,25 @@ const RoomList = ({ match }) => {
   };
 
   useEffect(() => {
-    getImage();
+    const stickyObserver = new IntersectionObserver(
+      ([entry]) => {
+        entry.target.classList.toggle('stuck', entry.intersectionRatio < 1);
+      },
+      { threshold: 1 }
+    );
+    stickyObserver.observe(searchRef.current);
+
     getRooms('');
     getTags();
+    getGame();
 
     if (user.id === -1) {
       getUserId();
     }
+
+    return () => {
+      stickyObserver && stickyObserver.disconnect();
+    };
   }, []);
 
   // TODO: 데모데이 이후 삭제될 운명
@@ -170,39 +219,38 @@ const RoomList = ({ match }) => {
 
   return (
     <div className='room-list-container'>
-      <MainImage imageSrc={imageUrl} />
+      <MainImage imageSrc={currentGame.thumbnail} />
       <PageLayout>
         <section className='room-list-header'>
-          <Headline2>{gameName}</Headline2>
+          <Headline2>{currentGame.name}</Headline2>
           <div className='side'>
             <NicknameSection />
-            <Link
-              to={{
-                pathname: `${PATH.ROOM_LIST}/${gameId}${PATH.MAKE_ROOM}`,
-                state: {
-                  gameName,
-                },
-              }}
+            <SquareButton
+              size='medium'
+              onClick={() => onConfirm(() => enterMakeRoomPage())}
+              colored
             >
-              <SquareButton size='medium' colored>
-                <Body2>방 생성하기</Body2>
-              </SquareButton>
-            </Link>
+              <Body2>방 생성하기</Body2>
+            </SquareButton>
           </div>
         </section>
-
-        <section className='search-section'>
-          <SearchInput
-            autoCompleteKeywords={autoCompleteTagList}
-            onClickKeyword={selectTag}
-            onChangeInput={onChangeTagInput}
-          />
-          <TagList tags={selectedTagList} onDeleteTag={eraseTag} erasable />
-        </section>
-
+        <div className='search-container' ref={searchRef}>
+          <section className='search-section'>
+            <SearchInput
+              autoCompleteKeywords={autoCompleteTagList}
+              onClickKeyword={selectTag}
+              onChangeInput={onChangeTagInput}
+            />
+            <TagList tags={selectedTagList} onDeleteTag={eraseTag} erasable />
+          </section>
+        </div>
         <section className='room-list-section'>
           {roomList.map((room, index) => (
-            <Room room={room} key={index} onClickRoom={joinChatting} />
+            <Room
+              room={room}
+              key={index}
+              onClickRoom={(e) => onConfirm(() => joinChatting(e))}
+            />
           ))}
         </section>
       </PageLayout>

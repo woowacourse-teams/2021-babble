@@ -1,4 +1,4 @@
-import './ModalError.scss';
+import './ModalCustom.scss';
 
 import { Body2, Caption1, Subtitle2 } from '../../core/Typography';
 

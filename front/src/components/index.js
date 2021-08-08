@@ -1,6 +1,5 @@
 export { default as Avatar } from './Avatar/Avatar';
 export { default as AvatarImage } from './Avatar/AvatarImage';
-export { default as AvatarWithBadge } from './Avatar/AvatarWithBadge';
 export { default as Badge } from './Badge/Badge';
 export { default as BadgeClickable } from './Badge/BadgeClickable';
 export { default as RoundButton } from './Button/RoundButton';
