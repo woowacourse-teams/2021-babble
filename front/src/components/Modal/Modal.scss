@@ -21,7 +21,7 @@
       justify-content: center;
       z-index: m.z-index(layer-modal-default);
 
-      animation: scaleUp 150ms cubic-bezier(0.15, 0.91, 0.15, 0.9);
+      animation: bounceScaleUp 150ms cubic-bezier(0.15, 0.91, 0.15, 0.9);
 
       .default-container {
         position: relative;
@@ -52,7 +52,8 @@
     box-shadow: v.$box-shadow;
     z-index: m.z-index(layer-modal-chatting);
 
-    animation: maximize 300ms cubic-bezier(0.92, -0.03, 0.15, 0.96);
+    animation: scaleUp 200ms cubic-bezier(0.74, 0.12, 0.86, 0.21),
+      blurUp 110ms ease-in;
 
     & > section {
       width: 100%;
@@ -66,8 +67,8 @@
 }
 
 .modal-minimized-container {
-  width: 22rem;
-  height: 4rem;
+  width: 30rem;
+  height: 5rem;
   position: fixed;
   right: 2rem;
   bottom: -0.5rem;
@@ -84,8 +85,6 @@
   border-radius: m.border-radius(modal-minimize);
   color: m.grey-scale(white);
   box-shadow: v.$button-box-shadow;
-
-  animation: minimize 300ms cubic-bezier(0.92, -0.03, 0.15, 0.96);
 
   &:hover {
     transform: translateY(-0.5rem);

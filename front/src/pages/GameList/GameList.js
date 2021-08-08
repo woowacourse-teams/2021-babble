@@ -1,7 +1,7 @@
 import './GameList.scss';
 
 import { GameCard, SearchInput, Slider } from '../../components';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Headline2 } from '../../core/Typography';
 import { Link } from 'react-router-dom';
@@ -14,6 +14,7 @@ const GameList = () => {
   // const [sliderImageList, setSliderImageList] = useState([]);
   const [gameList, setGameList] = useState([]);
   const [selectedGames, setSelectedGames] = useState([]);
+  const searchRef = useRef(null);
 
   const dummyImage = [
     {
@@ -51,7 +52,7 @@ const GameList = () => {
   // };
 
   const getGames = async () => {
-    const response = await axios.get('https://babble-test.o-r.kr/api/games');
+    const response = await axios.get('https://test-api.babble.gg/api/games');
     const games = response.data;
 
     setGameList(games);
@@ -59,7 +60,10 @@ const GameList = () => {
   };
 
   const onChangeGameInput = (e) => {
-    const inputValue = e.target.value;
+    const inputValue = e.target.value.replace(
+      /[^0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|a-z|A-Z]+/g,
+      ''
+    );
 
     const searchResults = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]+/g.test(inputValue)
       ? gameList.filter((game) => {
@@ -82,8 +86,20 @@ const GameList = () => {
   };
 
   useEffect(() => {
+    const stickyObserver = new IntersectionObserver(
+      ([entry]) => {
+        entry.target.classList.toggle('stuck', entry.intersectionRatio < 1);
+      },
+      { threshold: 1 }
+    );
+    stickyObserver.observe(searchRef.current);
+
     // getSliderImages();
     getGames();
+
+    return () => {
+      stickyObserver && stickyObserver.disconnect();
+    };
   }, []);
 
   return (
@@ -91,26 +107,22 @@ const GameList = () => {
       <Slider imageList={dummyImage} />
       <PageLayout>
         <Headline2>게임 목록</Headline2>
-        <section className='search-section'>
-          <SearchInput
-            placeholder='게임을 검색해주세요.'
-            autoCompleteKeywords={selectedGames.map(({ name }) => ({
-              name,
-            }))}
-            onClickKeyword={selectGame}
-            onChangeInput={onChangeGameInput}
-            isResetable={false}
-          />
-        </section>
+        <div className='search-container' ref={searchRef}>
+          <section className='search-section'>
+            <SearchInput
+              placeholder='게임을 검색해주세요.'
+              autoCompleteKeywords={selectedGames.map(({ name }) => ({
+                name,
+              }))}
+              onClickKeyword={selectGame}
+              onChangeInput={onChangeGameInput}
+              isResetable={false}
+            />
+          </section>
+        </div>
         <div className='game-list'>
           {selectedGames.map(({ id, name, headCount, thumbnail }) => (
-            <Link
-              to={{
-                pathname: `${PATH.ROOM_LIST}/${id}`,
-                state: { gameName: name },
-              }}
-              key={id}
-            >
+            <Link to={`${PATH.ROOM_LIST}/${id}`} key={id}>
               <GameCard
                 gameName={name}
                 imageSrc={thumbnail}
