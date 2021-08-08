@@ -50,12 +50,22 @@ public class GameService {
             .collect(Collectors.toList());
     }
 
-    public GameWithImageResponse findGame(final Long id) {
-        return GameWithImageResponse.from(findById(id));
+    public GameWithImageResponse findGame(final Long gameId) {
+        return GameWithImageResponse.from(findById(gameId));
     }
 
+    @Transactional
     public GameWithImageResponse insertGame(final GameRequest request) {
         Game game = gameRepository.save(request.toEntity());
+
+        return GameWithImageResponse.from(game);
+    }
+
+    @Transactional
+    public GameWithImageResponse updateGame(final Long gameId, final GameRequest request) {
+        Game game = findById(gameId);
+        game.update(request.toEntity());
+
         return GameWithImageResponse.from(game);
     }
 }

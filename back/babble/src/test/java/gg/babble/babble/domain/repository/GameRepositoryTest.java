@@ -2,24 +2,33 @@ package gg.babble.babble.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.domain.Game;
-import java.util.List;
+import gg.babble.babble.exception.BabbleNotFoundException;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-public class GameRepositoryTest extends ApplicationTest {
+@DataJpaTest
+public class GameRepositoryTest {
 
     @Autowired
     private GameRepository gameRepository;
 
-    @DisplayName("게임 더미 데이터를 확인한다.")
-    @ParameterizedTest
-    @ValueSource(strings = {"League Of Legends", "Overwatch", "Apex Legend"})
-    void dummyGameTest(final String gameName) {
-        List<Game> game = gameRepository.findByName(gameName);
-        assertThat(game).isNotEmpty();
+    @DisplayName("게임 정보 편집을 수행한다.")
+    @Test
+    void updateGame() {
+        // given
+        Game game = gameRepository.save(new Game("오래된 게임", "오래된 이미지"));
+        Game target = new Game("새로운 게임", "새로운 이미지");
+
+        // when
+        game.update(target);
+        Game foundGame = gameRepository.findById(game.getId())
+            .orElseThrow(BabbleNotFoundException::new);
+
+        // then
+        assertThat(game).usingRecursiveComparison()
+            .isEqualTo(foundGame);
     }
 }

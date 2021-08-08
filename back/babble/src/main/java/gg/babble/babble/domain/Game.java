@@ -50,6 +50,11 @@ public class Game {
         return rooms.totalHeadCount();
     }
 
+    public void update(final Game target) {
+        this.name = target.name;
+        this.image = target.image;
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) {

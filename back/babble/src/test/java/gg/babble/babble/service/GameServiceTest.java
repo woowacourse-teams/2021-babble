@@ -87,16 +87,30 @@ class GameServiceTest extends ApplicationTest {
     @Test
     void insertGame() {
         // given
-        String 너구리_게임 = "너구리 게임";
-        String 너구리_게임_썸네일 = "image.png";
-        GameRequest request = new GameRequest(너구리_게임, 너구리_게임_썸네일);
+        GameRequest request = new GameRequest("너구리 게임", "image.png");
 
         // when
         GameWithImageResponse response = gameService.insertGame(request);
 
         // then
         assertThat(response.getId()).isNotNull();
-        assertThat(response.getName()).isEqualTo(너구리_게임);
-        assertThat(response.getThumbnail()).isEqualTo(너구리_게임_썸네일);
+        assertThat(response.getName()).isEqualTo(request.getName());
+        assertThat(response.getThumbnail()).isEqualTo(request.getThumbnail());
+    }
+
+    @DisplayName("단일 게임 정보를 편집한다.")
+    @Test
+    void updateGame() {
+        // given
+        GameWithImageResponse insertGameResponse = gameService.insertGame(new GameRequest("너구리 게임", "썸네일"));
+        GameRequest updateRequest = new GameRequest("너구리 게임 - 너굴맨!", "썸네일");
+
+        // when
+        GameWithImageResponse updateGameResponse = gameService.updateGame(insertGameResponse.getId(), updateRequest);
+
+        // then
+        assertThat(updateGameResponse.getId()).isEqualTo(insertGameResponse.getId());
+        assertThat(updateGameResponse.getName()).isEqualTo(updateRequest.getName());
+        assertThat(updateGameResponse.getThumbnail()).isEqualTo(updateRequest.getThumbnail());
     }
 }
