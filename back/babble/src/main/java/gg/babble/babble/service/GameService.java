@@ -23,17 +23,8 @@ public class GameService {
         this.gameRepository = gameRepository;
     }
 
-    public Game findById(final Long id) {
-        return gameRepository.findById(id)
-            .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 게임 Id 입니다."));
-    }
-
-    public List<Game> findByName(final String name) {
-        return gameRepository.findByName(name);
-    }
-
     public List<IndexPageGameResponse> findSortedGames() {
-        Games games = new Games(gameRepository.findAll());
+        Games games = new Games(gameRepository.findByDeletedFalse());
         games.sortedByHeadCount();
 
         return IndexPageGameResponse.listFrom(games);
@@ -43,15 +34,24 @@ public class GameService {
         return GameImageResponse.from(findById(gameId));
     }
 
+    public GameWithImageResponse findGame(final Long gameId) {
+        return GameWithImageResponse.from(findById(gameId));
+    }
+
+    public Game findById(final Long id) {
+        return gameRepository.findByIdAndDeletedFalse(id)
+            .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 게임 Id 입니다."));
+    }
+
+    public List<Game> findByName(final String name) {
+        return gameRepository.findByNameAndDeletedFalse(name);
+    }
+
     public List<GameImageResponse> findAllGameImages() {
-        return gameRepository.findAll()
+        return gameRepository.findByDeletedFalse()
             .stream()
             .map(GameImageResponse::from)
             .collect(Collectors.toList());
-    }
-
-    public GameWithImageResponse findGame(final Long gameId) {
-        return GameWithImageResponse.from(findById(gameId));
     }
 
     @Transactional
@@ -67,5 +67,11 @@ public class GameService {
         game.update(request.toEntity());
 
         return GameWithImageResponse.from(game);
+    }
+
+    @Transactional
+    public void deleteGame(final Long gameId) {
+        Game game = findById(gameId);
+        game.delete();
     }
 }

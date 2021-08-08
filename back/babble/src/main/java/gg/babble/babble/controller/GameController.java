@@ -7,6 +7,7 @@ import gg.babble.babble.dto.response.IndexPageGameResponse;
 import gg.babble.babble.service.GameService;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,5 +54,11 @@ public class GameController {
     @PutMapping(value = "/{gameId}")
     public ResponseEntity<GameWithImageResponse> updateGame(@PathVariable final Long gameId, @RequestBody final GameRequest request) {
         return ResponseEntity.ok(gameService.updateGame(gameId, request));
+    }
+
+    @DeleteMapping(value = "/{gameId}")
+    public ResponseEntity<Void> deleteGame(@PathVariable final Long gameId) {
+        gameService.deleteGame(gameId);
+        return ResponseEntity.noContent().build();
     }
 }

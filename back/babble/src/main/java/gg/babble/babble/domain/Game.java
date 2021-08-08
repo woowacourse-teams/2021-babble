@@ -2,6 +2,7 @@ package gg.babble.babble.domain;
 
 import gg.babble.babble.domain.room.Rooms;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,12 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Game {
@@ -31,6 +30,9 @@ public class Game {
     @NotNull(message = "게임 이미지는 Null 일 수 없습니다.")
     private String image;
 
+    @Column(nullable = false)
+    private boolean deleted = false;
+
     @Embedded
     private final Rooms rooms = new Rooms();
 
@@ -46,6 +48,12 @@ public class Game {
         this(null, name, image);
     }
 
+    public Game(final Long id, final String name, final String image) {
+        this.id = id;
+        this.name = name;
+        this.image = image;
+    }
+
     public int userHeadCount() {
         return rooms.totalHeadCount();
     }
@@ -53,6 +61,10 @@ public class Game {
     public void update(final Game target) {
         this.name = target.name;
         this.image = target.image;
+    }
+
+    public void delete() {
+        this.deleted = true;
     }
 
     @Override

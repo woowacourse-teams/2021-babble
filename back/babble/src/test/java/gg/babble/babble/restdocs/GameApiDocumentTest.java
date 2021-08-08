@@ -197,4 +197,16 @@ public class GameApiDocumentTest extends ApplicationTest {
 //                )
 //            ));
     }
+
+    // TODO: DataLoader에 의존적인 구조를 가지고 있어 테스트 작성이 불가능한 상태.
+    @DisplayName("게임을 삭제한다")
+    @Test
+    void deleteGame() {
+        // given
+
+        // when
+
+        // then
+
+    }
 }

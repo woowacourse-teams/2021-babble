@@ -22,4 +22,17 @@ class GameTest {
         assertThat(game.getName()).isEqualTo(target.getName());
         assertThat(game.getImage()).isEqualTo(target.getImage());
     }
+
+    @DisplayName("게임 삭제")
+    @Test
+    void deleteGame() {
+        // given
+        Game game = new Game(1L, "게임 이름", "게임 이미지");
+
+        // when
+        game.delete();
+
+        // then
+        assertThat(game.isDeleted()).isTrue();
+    }
 }
