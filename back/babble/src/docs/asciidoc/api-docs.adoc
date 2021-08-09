@@ -4,6 +4,8 @@ Wilder<gyuhanKang@gmail.com>
 :toc: left
 :sectnums:
 
+== Common Http Method
+
 [width="15%"]
 [cols="^,^",options="headers"]
 |===
@@ -22,125 +24,155 @@ Wilder<gyuhanKang@gmail.com>
 | 삭제
 |===
 
-== 게임 리스트 조회 API
+== Common Exceptions
 
-=== HTTP Request
+```
+# 클라이언트 입력 예외
+## status code: 400
 
-include::{snippets}/read-games/http-request.adoc[]
+# NotFound 예외
+## status code: 404
 
-=== HTTP Response
+# Duplicate 예외
+## status code: 409
 
-include::{snippets}/read-games/http-response.adoc[]
+# 서버 내부 예외
+## status code: 500
+```
+
+```json
+{
+  "message": "에러 내용"
+}
+```
+
+== 게임
+
+=== 게임 리스트 조회 API
+
+==== HTTP Request
+
+include::{snippets}/find-all-games/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/find-all-games/http-response.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
 include::{snippets}/read-games/response-fields.adoc[]
 
-== 게임 단일 조회 API
+=== 게임 단일 조회 API
 
-=== HTTP Request
+==== HTTP Request
 
-include::{snippets}/read-game/http-request.adoc[]
+include::{snippets}/find-game-by-id/http-request.adoc[]
 
-=== HTTP Response
+==== HTTP Response
 
-include::{snippets}/read-game/http-response.adoc[]
+include::{snippets}/find-game-by-id/http-response.adoc[]
 include::{snippets}/read-game/response-fields.adoc[]
 
-== 게임 이미지 리스트 조회 API
+=== 게임 이미지 리스트 조회 API
 
-=== HTTP Request
+==== HTTP Request
 
-include::{snippets}/read-game-images/http-request.adoc[]
+include::{snippets}/find-game-images/http-request.adoc[]
 
-=== HTTP Response
+==== HTTP Response
 
-include::{snippets}/read-game-images/http-response.adoc[]
+include::{snippets}/find-game-images/http-response.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
 include::{snippets}/read-game-images/response-fields.adoc[]
 
-== 단일 게임 이미지 조회 API
+=== 단일 게임 이미지 조회 API
 
-=== HTTP Request
+==== HTTP Request
 
-include::{snippets}/read-game-image/http-request.adoc[]
+include::{snippets}/find-game-image-by-id/http-request.adoc[]
 
-=== HTTP Response
+==== HTTP Response
 
-include::{snippets}/read-game-image/http-response.adoc[]
+include::{snippets}/find-game-image-by-id/http-response.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
 include::{snippets}/read-game-image/response-fields.adoc[]
 
-== 방 조회 API
+== 방
 
-=== HTTP Request
+=== 방 조회 API
+
+==== HTTP Request
 
 include::{snippets}/read-room-test/http-request.adoc[]
 
-=== HTTP Response
+==== HTTP Response
 
 include::{snippets}/read-room-test/http-response.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
 include::{snippets}/read-room/response-fields.adoc[]
 
-== 방 생성 API
+=== 방 생성 API
 
-=== HTTP Request
+==== HTTP Request
 
 include::{snippets}/create-room-test/http-request.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
 include::{snippets}/create-room/request-fields.adoc[]
 
-=== HTTP Response
+==== HTTP Response
 
 include::{snippets}/create-room-test/http-response.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
 include::{snippets}/create-room/response-fields.adoc[]
 
-== 태그 전체 수신 API
+== 태그
 
-=== HTTP Request
+=== 태그 전체 수신 API
+
+==== HTTP Request
 
 include::{snippets}/tags-get-test/http-request.adoc[]
 
-=== HTTP Response
+==== HTTP Response
 
 include::{snippets}/tags-get-test/http-response.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
 include::{snippets}/tags-get/response-fields.adoc[]
 
-== 방 입장 API
+== WebSocket
 
-=== HTTP Request
+=== 방 입장 API
+
+==== HTTP Request
 
 include::{snippets}/../../src/docs/custom-snippets/chat-room-connect/web-socket-request.adoc[]
 
-=== HTTP Response
+==== HTTP Response
 
 include::{snippets}/../../src/docs/custom-snippets/chat-room-connect/web-socket-response.adoc[]
 
-== 방 입장 정보 업데이트 API
+=== 방 입장 정보 업데이트 API
 
-=== WebSocket Send
+==== WebSocket Send
 
 include::{snippets}/../../src/docs/custom-snippets/chat-room-update/web-socket-request.adoc[]
 
-=== WebSocket Subscribe
+==== WebSocket Subscribe
 
 include::{snippets}/../../src/docs/custom-snippets/user-list/web-socket-response.adoc[]
 
-== 채팅 전송 API
+=== 채팅 전송 API
 
-=== WebSocket Send
+==== WebSocket Send
 
 include::{snippets}/../../src/docs/custom-snippets/chat-send/web-socket-request.adoc[]
 
-=== WebSocket Subscribe
+==== WebSocket Subscribe
 
 include::{snippets}/../../src/docs/custom-snippets/chat-send/web-socket-response.adoc[]
 

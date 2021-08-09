@@ -448,71 +448,40 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_게임_리스트_조회_api">1. 게임 리스트 조회 API</a>
+<li><a href="#_common_http_method">1. Common Http Method</a></li>
+<li><a href="#_common_exceptions">2. Common Exceptions</a></li>
+<li><a href="#_게임">3. 게임</a>
 <ul class="sectlevel2">
-<li><a href="#_http_request">1.1. HTTP Request</a></li>
-<li><a href="#_http_response">1.2. HTTP Response</a></li>
+<li><a href="#_게임_리스트_조회_api">3.1. 게임 리스트 조회 API</a></li>
+<li><a href="#_게임_단일_조회_api">3.2. 게임 단일 조회 API</a></li>
+<li><a href="#_게임_이미지_리스트_조회_api">3.3. 게임 이미지 리스트 조회 API</a></li>
+<li><a href="#_단일_게임_이미지_조회_api">3.4. 단일 게임 이미지 조회 API</a></li>
 </ul>
 </li>
-<li><a href="#_게임_단일_조회_api">2. 게임 단일 조회 API</a>
+<li><a href="#_방">4. 방</a>
 <ul class="sectlevel2">
-<li><a href="#_http_request_2">2.1. HTTP Request</a></li>
-<li><a href="#_http_response_2">2.2. HTTP Response</a></li>
+<li><a href="#_방_조회_api">4.1. 방 조회 API</a></li>
+<li><a href="#_방_생성_api">4.2. 방 생성 API</a></li>
 </ul>
 </li>
-<li><a href="#_게임_이미지_리스트_조회_api">3. 게임 이미지 리스트 조회 API</a>
+<li><a href="#_태그">5. 태그</a>
 <ul class="sectlevel2">
-<li><a href="#_http_request_3">3.1. HTTP Request</a></li>
-<li><a href="#_http_response_3">3.2. HTTP Response</a></li>
+<li><a href="#_태그_전체_수신_api">5.1. 태그 전체 수신 API</a></li>
 </ul>
 </li>
-<li><a href="#_단일_게임_이미지_조회_api">4. 단일 게임 이미지 조회 API</a>
+<li><a href="#_websocket">6. WebSocket</a>
 <ul class="sectlevel2">
-<li><a href="#_http_request_4">4.1. HTTP Request</a></li>
-<li><a href="#_http_response_4">4.2. HTTP Response</a></li>
-</ul>
-</li>
-<li><a href="#_방_조회_api">5. 방 조회 API</a>
-<ul class="sectlevel2">
-<li><a href="#_http_request_5">5.1. HTTP Request</a></li>
-<li><a href="#_http_response_5">5.2. HTTP Response</a></li>
-</ul>
-</li>
-<li><a href="#_방_생성_api">6. 방 생성 API</a>
-<ul class="sectlevel2">
-<li><a href="#_http_request_6">6.1. HTTP Request</a></li>
-<li><a href="#_http_response_6">6.2. HTTP Response</a></li>
-</ul>
-</li>
-<li><a href="#_태그_전체_수신_api">7. 태그 전체 수신 API</a>
-<ul class="sectlevel2">
-<li><a href="#_http_request_7">7.1. HTTP Request</a></li>
-<li><a href="#_http_response_7">7.2. HTTP Response</a></li>
-</ul>
-</li>
-<li><a href="#_방_입장_api">8. 방 입장 API</a>
-<ul class="sectlevel2">
-<li><a href="#_http_request_8">8.1. HTTP Request</a></li>
-<li><a href="#_http_response_8">8.2. HTTP Response</a></li>
-</ul>
-</li>
-<li><a href="#_방_입장_정보_업데이트_api">9. 방 입장 정보 업데이트 API</a>
-<ul class="sectlevel2">
-<li><a href="#_websocket_send">9.1. WebSocket Send</a></li>
-<li><a href="#_websocket_subscribe">9.2. WebSocket Subscribe</a></li>
-</ul>
-</li>
-<li><a href="#_채팅_전송_api">10. 채팅 전송 API</a>
-<ul class="sectlevel2">
-<li><a href="#_websocket_send_2">10.1. WebSocket Send</a></li>
-<li><a href="#_websocket_subscribe_2">10.2. WebSocket Subscribe</a></li>
+<li><a href="#_방_입장_api">6.1. 방 입장 API</a></li>
+<li><a href="#_방_입장_정보_업데이트_api">6.2. 방 입장 정보 업데이트 API</a></li>
+<li><a href="#_채팅_전송_api">6.3. 채팅 전송 API</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 <div id="content">
-<div id="preamble">
+<div class="sect1">
+<h2 id="_common_http_method">1. Common Http Method</h2>
 <div class="sectionbody">
 <table class="tableblock frame-all grid-all" style="width: 15%;">
 <colgroup>
@@ -547,10 +516,39 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="_게임_리스트_조회_api">1. 게임 리스트 조회 API</h2>
+<h2 id="_common_exceptions">2. Common Exceptions</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code># 클라이언트 입력 예외
+## status code: 400
+
+# NotFound 예외
+## status code: 404
+
+# Duplicate 예외
+## status code: 409
+
+# 서버 내부 예외
+## status code: 500</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "message": "에러 내용"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_게임">3. 게임</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_http_request">1.1. HTTP Request</h3>
+<h3 id="_게임_리스트_조회_api">3.1. 게임 리스트 조회 API</h3>
+<div class="sect3">
+<h4 id="_http_request">3.1.1. HTTP Request</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/games HTTP/1.1
@@ -559,8 +557,8 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_http_response">1.2. HTTP Response</h3>
+<div class="sect3">
+<h4 id="_http_response">3.1.2. HTTP Response</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
@@ -568,9 +566,24 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 386
+Content-Length: 453
 
-[{"id":1,"name":"League Of Legends","headCount":20,"thumbnail":"https://static-cdn.jtvnw.net/ttv-boxart/League%20of%20Legends-1080x1436.jpg"},{"id":2,"name":"Overwatch","headCount":0,"thumbnail":"https://static-cdn.jtvnw.net/ttv-static/404_boxart-1080x1436.jpg"},{"id":3,"name":"Apex Legend","headCount":0,"thumbnail":"https://static-cdn.jtvnw.net/ttv-static/404_boxart-1080x1436.jpg"}]</code></pre>
+[ {
+  "id" : 1,
+  "name" : "League Of Legends",
+  "headCount" : 20,
+  "thumbnail" : "https://static-cdn.jtvnw.net/ttv-boxart/League%20of%20Legends-1080x1436.jpg"
+}, {
+  "id" : 2,
+  "name" : "Overwatch",
+  "headCount" : 0,
+  "thumbnail" : "https://static-cdn.jtvnw.net/ttv-static/404_boxart-1080x1436.jpg"
+}, {
+  "id" : 3,
+  "name" : "Apex Legend",
+  "headCount" : 0,
+  "thumbnail" : "https://static-cdn.jtvnw.net/ttv-static/404_boxart-1080x1436.jpg"
+} ]</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 40%;">
@@ -611,12 +624,10 @@ Content-Length: 386
 </table>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_게임_단일_조회_api">2. 게임 단일 조회 API</h2>
-<div class="sectionbody">
 <div class="sect2">
-<h3 id="_http_request_2">2.1. HTTP Request</h3>
+<h3 id="_게임_단일_조회_api">3.2. 게임 단일 조회 API</h3>
+<div class="sect3">
+<h4 id="_http_request_2">3.2.1. HTTP Request</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/games/1 HTTP/1.1
@@ -625,8 +636,8 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_http_response_2">2.2. HTTP Response</h3>
+<div class="sect3">
+<h4 id="_http_response_2">3.2.2. HTTP Response</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
@@ -634,9 +645,13 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 125
+Content-Length: 141
 
-{"id":1,"name":"League Of Legends","thumbnail":"https://static-cdn.jtvnw.net/ttv-boxart/League%20of%20Legends-1080x1436.jpg"}</code></pre>
+{
+  "id" : 1,
+  "name" : "League Of Legends",
+  "thumbnail" : "https://static-cdn.jtvnw.net/ttv-boxart/League%20of%20Legends-1080x1436.jpg"
+}</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -672,12 +687,10 @@ Content-Length: 125
 </table>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_게임_이미지_리스트_조회_api">3. 게임 이미지 리스트 조회 API</h2>
-<div class="sectionbody">
 <div class="sect2">
-<h3 id="_http_request_3">3.1. HTTP Request</h3>
+<h3 id="_게임_이미지_리스트_조회_api">3.3. 게임 이미지 리스트 조회 API</h3>
+<div class="sect3">
+<h4 id="_http_request_3">3.3.1. HTTP Request</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/games/images HTTP/1.1
@@ -686,8 +699,8 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_http_response_3">3.2. HTTP Response</h3>
+<div class="sect3">
+<h4 id="_http_response_3">3.3.2. HTTP Response</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
@@ -695,9 +708,18 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 276
+Content-Length: 313
 
-[{"gameId":1,"image":"https://static-cdn.jtvnw.net/ttv-boxart/League%20of%20Legends-1080x1436.jpg"},{"gameId":2,"image":"https://static-cdn.jtvnw.net/ttv-static/404_boxart-1080x1436.jpg"},{"gameId":3,"image":"https://static-cdn.jtvnw.net/ttv-static/404_boxart-1080x1436.jpg"}]</code></pre>
+[ {
+  "gameId" : 1,
+  "image" : "https://static-cdn.jtvnw.net/ttv-boxart/League%20of%20Legends-1080x1436.jpg"
+}, {
+  "gameId" : 2,
+  "image" : "https://static-cdn.jtvnw.net/ttv-static/404_boxart-1080x1436.jpg"
+}, {
+  "gameId" : 3,
+  "image" : "https://static-cdn.jtvnw.net/ttv-static/404_boxart-1080x1436.jpg"
+} ]</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 40%;">
@@ -728,12 +750,10 @@ Content-Length: 276
 </table>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_단일_게임_이미지_조회_api">4. 단일 게임 이미지 조회 API</h2>
-<div class="sectionbody">
 <div class="sect2">
-<h3 id="_http_request_4">4.1. HTTP Request</h3>
+<h3 id="_단일_게임_이미지_조회_api">3.4. 단일 게임 이미지 조회 API</h3>
+<div class="sect3">
+<h4 id="_http_request_4">3.4.1. HTTP Request</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/games/1/images HTTP/1.1
@@ -742,8 +762,8 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_http_response_4">4.2. HTTP Response</h3>
+<div class="sect3">
+<h4 id="_http_response_4">3.4.2. HTTP Response</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
@@ -751,9 +771,12 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 98
+Content-Length: 109
 
-{"gameId":1,"image":"https://static-cdn.jtvnw.net/ttv-boxart/League%20of%20Legends-1080x1436.jpg"}</code></pre>
+{
+  "gameId" : 1,
+  "image" : "https://static-cdn.jtvnw.net/ttv-boxart/League%20of%20Legends-1080x1436.jpg"
+}</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 40%;">
@@ -785,11 +808,14 @@ Content-Length: 98
 </div>
 </div>
 </div>
+</div>
 <div class="sect1">
-<h2 id="_방_조회_api">5. 방 조회 API</h2>
+<h2 id="_방">4. 방</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_http_request_5">5.1. HTTP Request</h3>
+<h3 id="_방_조회_api">4.1. 방 조회 API</h3>
+<div class="sect3">
+<h4 id="_http_request_5">4.1.1. HTTP Request</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/rooms/1 HTTP/1.1
@@ -798,8 +824,8 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_http_response_5">5.2. HTTP Response</h3>
+<div class="sect3">
+<h4 id="_http_response_5">4.1.2. HTTP Response</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
@@ -807,11 +833,11 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 414
+Content-Length: 454
 
 {
   "roomId" : 1,
-  "createdDate" : "2021-08-07T01:37:22.021",
+  "createdDate" : "2021-08-09T21:45:26.261",
   "game" : {
     "id" : 1,
     "name" : "League Of Legends"
@@ -819,7 +845,7 @@ Content-Length: 414
   "host" : {
     "id" : 7,
     "nickname" : "user0",
-    "avatar" : "https://hyeon9mak.github.io/assets/images/9vatar.png"
+    "avatar" : "https://bucket-babble-front.s3.ap-northeast-2.amazonaws.com/img/users/profiles/profile23.png"
   },
   "headCount" : {
     "current" : 1,
@@ -908,12 +934,10 @@ Content-Length: 414
 </table>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_방_생성_api">6. 방 생성 API</h2>
-<div class="sectionbody">
 <div class="sect2">
-<h3 id="_http_request_6">6.1. HTTP Request</h3>
+<h3 id="_방_생성_api">4.2. 방 생성 API</h3>
+<div class="sect3">
+<h4 id="_http_request_6">4.2.1. HTTP Request</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/rooms HTTP/1.1
@@ -967,8 +991,8 @@ Host: localhost:8080
 </tbody>
 </table>
 </div>
-<div class="sect2">
-<h3 id="_http_response_6">6.2. HTTP Response</h3>
+<div class="sect3">
+<h4 id="_http_response_6">4.2.2. HTTP Response</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
@@ -981,7 +1005,7 @@ Content-Length: 303
 
 {
   "roomId" : 21,
-  "createdDate" : "2021-08-07T01:37:25.021",
+  "createdDate" : "2021-08-09T21:45:30.295",
   "game" : {
     "id" : 1,
     "name" : "League Of Legends"
@@ -1054,11 +1078,14 @@ Content-Length: 303
 </div>
 </div>
 </div>
+</div>
 <div class="sect1">
-<h2 id="_태그_전체_수신_api">7. 태그 전체 수신 API</h2>
+<h2 id="_태그">5. 태그</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_http_request_7">7.1. HTTP Request</h3>
+<h3 id="_태그_전체_수신_api">5.1. 태그 전체 수신 API</h3>
+<div class="sect3">
+<h4 id="_http_request_7">5.1.1. HTTP Request</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/tags HTTP/1.1
@@ -1067,8 +1094,8 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_http_response_7">7.2. HTTP Response</h3>
+<div class="sect3">
+<h4 id="_http_response_7">5.1.2. HTTP Response</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
@@ -1119,19 +1146,22 @@ Content-Length: 120
 </div>
 </div>
 </div>
+</div>
 <div class="sect1">
-<h2 id="_방_입장_api">8. 방 입장 API</h2>
+<h2 id="_websocket">6. WebSocket</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_http_request_8">8.1. HTTP Request</h3>
+<h3 id="_방_입장_api">6.1. 방 입장 API</h3>
+<div class="sect3">
+<h4 id="_http_request_8">6.1.1. HTTP Request</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /connection HTTP/1.1</code></pre>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_http_response_8">8.2. HTTP Response</h3>
+<div class="sect3">
+<h4 id="_http_response_8">6.1.2. HTTP Response</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK</code></pre>
@@ -1139,12 +1169,10 @@ Content-Length: 120
 </div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_방_입장_정보_업데이트_api">9. 방 입장 정보 업데이트 API</h2>
-<div class="sectionbody">
 <div class="sect2">
-<h3 id="_websocket_send">9.1. WebSocket Send</h3>
+<h3 id="_방_입장_정보_업데이트_api">6.2. 방 입장 정보 업데이트 API</h3>
+<div class="sect3">
+<h4 id="_websocket_send">6.2.1. WebSocket Send</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">SEND /ws/rooms/1/users
@@ -1157,8 +1185,8 @@ Content-Type: application/json
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_websocket_subscribe">9.2. WebSocket Subscribe</h3>
+<div class="sect3">
+<h4 id="_websocket_subscribe">6.2.2. WebSocket Subscribe</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">SUBSCRIBE /topic/rooms/1/users
@@ -1187,12 +1215,10 @@ Content-Type: application/json
 </div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_채팅_전송_api">10. 채팅 전송 API</h2>
-<div class="sectionbody">
 <div class="sect2">
-<h3 id="_websocket_send_2">10.1. WebSocket Send</h3>
+<h3 id="_채팅_전송_api">6.3. 채팅 전송 API</h3>
+<div class="sect3">
+<h4 id="_websocket_send_2">6.3.1. WebSocket Send</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">/ws/rooms/1/chat
@@ -1206,8 +1232,8 @@ Content-Type: application/json
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_websocket_subscribe_2">10.2. WebSocket Subscribe</h3>
+<div class="sect3">
+<h4 id="_websocket_subscribe_2">6.3.2. WebSocket Subscribe</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">SUBSCRIBE /topic/rooms/1/chat
@@ -1228,10 +1254,11 @@ Content-Type: application/json
 </div>
 </div>
 </div>
+</div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2021-08-07 01:36:21 +0900
+Last updated 2021-08-09 21:43:37 +0900
 </div>
 </div>
 </body>
