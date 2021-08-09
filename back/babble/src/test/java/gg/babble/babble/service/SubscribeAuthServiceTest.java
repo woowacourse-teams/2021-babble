@@ -12,6 +12,7 @@ import gg.babble.babble.domain.repository.UserRepository;
 import gg.babble.babble.domain.room.MaxHeadCount;
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.tag.Tag;
+import gg.babble.babble.domain.user.Nickname;
 import gg.babble.babble.domain.user.User;
 import gg.babble.babble.exception.BabbleIllegalStatementException;
 import java.util.Collections;
@@ -56,7 +57,7 @@ public class SubscribeAuthServiceTest extends ApplicationTest {
     @Test
     void overcrowdExceptionTest() {
         Room room = prepareDummyRoom();
-        User guest = userRepository.findByNickname(포츈).get(0);
+        User guest = userRepository.findByNickname(new Nickname(포츈)).get(0);
 
         room.join(guest);
         roomRepository.save(room);
@@ -68,7 +69,7 @@ public class SubscribeAuthServiceTest extends ApplicationTest {
 
     private Room prepareDummyRoom() {
         Game game = gameRepository.findByNameAndDeletedFalse(APEX_LEGEND).get(0);
-        User host = userRepository.findByNickname(현구막).get(0);
+        User host = userRepository.findByNickname(new Nickname(현구막)).get(0);
         List<Tag> tags = Collections.singletonList(tagRepository.findByName(실버).get(0));
 
         Room room = new Room(game, tags, new MaxHeadCount(2));

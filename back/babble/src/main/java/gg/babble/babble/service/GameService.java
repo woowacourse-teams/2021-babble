@@ -40,7 +40,7 @@ public class GameService {
 
     public Game findById(final Long id) {
         return gameRepository.findByIdAndDeletedFalse(id)
-            .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 게임 Id 입니다."));
+            .orElseThrow(() -> new BabbleNotFoundException(String.format("존재하지 않는 게임 Id(%d) 입니다.", id)));
     }
 
     public List<Game> findByName(final String name) {

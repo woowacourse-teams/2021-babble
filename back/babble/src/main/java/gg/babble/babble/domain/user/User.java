@@ -4,6 +4,7 @@ import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,7 +25,8 @@ public class User {
     private static final int NUMBER_OF_AVATAR = 70;
 
     @NotNull(message = "닉네임은 Null 이어서는 안됩니다.")
-    private String nickname;
+    @Embedded
+    private Nickname nickname;
 
     @ManyToOne
     @JoinColumn(name = "room_id")
@@ -52,7 +54,7 @@ public class User {
 
     public User(final Long id, final String nickname, final Room room) {
         this.id = id;
-        this.nickname = nickname;
+        this.nickname = new Nickname(nickname);
         this.room = room;
         this.avatar = avatarByNickname(nickname);
     }
@@ -77,7 +79,7 @@ public class User {
 
     public void leave(final Room room) {
         if (Objects.isNull(this.room) || !this.room.equals(room)) {
-            throw new BabbleIllegalArgumentException("해당 방을 나갈 수 없습니다.");
+            throw new BabbleIllegalArgumentException(String.format("%s 방에 %s 유저가 존재하지 않습니다.", room.getId(), id));
         }
 
         this.room = null;
@@ -97,6 +99,10 @@ public class User {
 
     public boolean hasNotRoom(final Room room) {
         return Objects.isNull(this.room) || !this.room.equals(room);
+    }
+
+    public String getNickname() {
+        return nickname.getValue();
     }
 
     @Override
