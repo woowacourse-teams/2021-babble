@@ -42,6 +42,7 @@ public class Session {
     @JoinColumn(name = "user_id")
     private User user;
 
+    // TODO: User <-> Session <-> Room 연관관계 리팩토링 후 진행
     @Column(nullable = false)
     private boolean deleted = false;
 

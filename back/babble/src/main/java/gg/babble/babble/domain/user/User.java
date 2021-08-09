@@ -39,6 +39,12 @@ public class User {
 
     private LocalDateTime joinedAt;
 
+    /*
+    TODO: User <-> Session <-> Room 연관관계 리팩토링 후 진행
+    @Column(nullable = false)
+    private boolean deleted = false;
+    */
+
     public User(final String nickname) {
         this(null, nickname);
     }
