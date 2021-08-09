@@ -2,6 +2,7 @@ package gg.babble.babble.domain.user;
 
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
 import java.util.regex.Pattern;
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ public class Nickname {
     public static final String NICKNAME_REGEXP = "[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9\\s]+";
     private static final Pattern NICKNAME_PATTERN = Pattern.compile(NICKNAME_REGEXP);
 
+    @Column(name = "nickname")
     private String value;
 
     public Nickname(String value) {

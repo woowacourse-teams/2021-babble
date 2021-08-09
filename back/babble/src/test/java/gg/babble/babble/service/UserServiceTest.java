@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.dto.request.UserRequest;
 import gg.babble.babble.dto.response.UserResponse;
+import gg.babble.babble.exception.BabbleIllegalArgumentException;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import javax.validation.ConstraintViolationException;
 import org.junit.jupiter.api.DisplayName;
@@ -52,7 +53,7 @@ public class UserServiceTest extends ApplicationTest {
     @Test
     void nicknameWithSpecialCharacter() {
         assertThatThrownBy(() -> userService.save(new UserRequest("루트가짱*")))
-            .isExactlyInstanceOf(ConstraintViolationException.class);
+            .isExactlyInstanceOf(BabbleIllegalArgumentException.class);
     }
 
     @DisplayName("유저 닉네임의 길이가 1이상 20이하가 아니면 예외를 던진다.")
@@ -60,6 +61,6 @@ public class UserServiceTest extends ApplicationTest {
     @ValueSource(strings = {"", "  ", "abcdefghijklmnopqrstuvwxyz"})
     void nicknameLength(String nickname) {
         assertThatThrownBy(() -> userService.save(new UserRequest(nickname)))
-            .isExactlyInstanceOf(ConstraintViolationException.class);
+            .isExactlyInstanceOf(BabbleIllegalArgumentException.class);
     }
 }

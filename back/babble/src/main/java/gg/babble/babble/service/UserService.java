@@ -1,6 +1,7 @@
 package gg.babble.babble.service;
 
 import gg.babble.babble.domain.repository.UserRepository;
+import gg.babble.babble.domain.user.Nickname;
 import gg.babble.babble.domain.user.User;
 import gg.babble.babble.dto.request.UserRequest;
 import gg.babble.babble.dto.response.UserResponse;
@@ -25,7 +26,7 @@ public class UserService {
     }
 
     public List<User> findByNickname(final String name) {
-        return userRepository.findByNickname(name);
+        return userRepository.findByNickname(new Nickname(name));
     }
 
     @Transactional
