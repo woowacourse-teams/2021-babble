@@ -4,6 +4,7 @@ import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,8 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,14 +23,10 @@ public class User {
 
     private static final String AVATAR_FORMAT = "https://bucket-babble-front.s3.ap-northeast-2.amazonaws.com/img/users/profiles/profile%d.png";
     private static final int NUMBER_OF_AVATAR = 70;
-    public static final int MIN_NICKNAME_LENGTH = 1;
-    public static final int MAX_NICKNAME_LENGTH = 24;
-    public static final String NICKNAME_REGEXP = "[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9\\s]+";
 
     @NotNull(message = "닉네임은 Null 이어서는 안됩니다.")
-    @Size(min = MIN_NICKNAME_LENGTH, max = MAX_NICKNAME_LENGTH, message = "유저 닉네임은 {min}자 이상 {max}자 이하입니다. 현재 닉네임: ${validatedValue}")
-    @Pattern(regexp = NICKNAME_REGEXP, message = "닉네임은 한글, 영어, 숫자, 공백만 포함 가능합니다. 현재 닉네임: ${validatedValue}")
-    private String nickname;
+    @Embedded
+    private Nickname nickname;
 
     @ManyToOne
     @JoinColumn(name = "room_id")
@@ -59,7 +54,7 @@ public class User {
 
     public User(final Long id, final String nickname, final Room room) {
         this.id = id;
-        this.nickname = nickname.trim();
+        this.nickname = new Nickname(nickname);
         this.room = room;
         this.avatar = avatarByNickname(nickname);
     }
@@ -104,6 +99,10 @@ public class User {
 
     public boolean hasNotRoom(final Room room) {
         return Objects.isNull(this.room) || !this.room.equals(room);
+    }
+
+    public String getNickname(){
+        return nickname.getValue();
     }
 
     @Override
