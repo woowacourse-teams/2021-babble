@@ -56,10 +56,9 @@ public class GameRepositoryTest {
         // given
         Game game = gameRepository.save(new Game("게임 이름", "게임 이미지"));
 
-        // when
-        game.delete();
-
         // then
+        assertThat(gameRepository.findByIdAndDeletedFalse(game.getId())).isPresent();
+        game.delete();
         assertThat(gameRepository.findByIdAndDeletedFalse(game.getId())).isNotPresent();
     }
     
