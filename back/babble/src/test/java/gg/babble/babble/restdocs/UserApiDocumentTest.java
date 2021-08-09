@@ -60,7 +60,7 @@ public class UserApiDocumentTest extends ApplicationTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.nickname").value("fortune"))
             .andExpect(jsonPath("$.id").isNumber())
-            .andExpect(jsonPath("$.avatar").value("https://hyeon9mak.github.io/assets/images/9vatar.png"))
+            .andExpect(jsonPath("$.avatar").value("https://bucket-babble-front.s3.ap-northeast-2.amazonaws.com/img/users/profiles/profile57.png"))
 
             .andDo(document("create-user",
                 requestFields(fieldWithPath("nickname").description("닉네임")),
