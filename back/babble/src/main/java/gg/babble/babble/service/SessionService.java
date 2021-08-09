@@ -33,7 +33,7 @@ public class SessionService {
 
     private Session findSessionOrElseThrow(final String sessionId) {
         return sessionRepository.findSessionBySessionId(sessionId)
-            .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 세션 Id 입니다."));
+            .orElseThrow(() -> new BabbleNotFoundException(String.format("존재하지 않는 세션 Id(%s) 입니다.", sessionId) ));
     }
 
     public User findUserBySessionId(final String sessionId) {

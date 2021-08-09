@@ -6,6 +6,7 @@ import gg.babble.babble.domain.user.RoomUsers;
 import gg.babble.babble.domain.user.User;
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
+import gg.babble.babble.exception.BabbleIllegalStatementException;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -78,7 +79,7 @@ public class Room {
     public void join(final User user) {
 
         if (users.hasUser(user)) {
-            throw new BabbleDuplicatedException("이미 해당 방에 참여 중입니다.");
+            throw new BabbleDuplicatedException(String.format("%s 방에 %s 유저는 이미 참여 중입니다.", id, user.getId()));
         }
 
         users.add(user);
@@ -106,7 +107,7 @@ public class Room {
 
     private void validateToLeave(final User user) {
         if (hasNotUser(user)) {
-            throw new BabbleNotFoundException("해당 방에 해당 유저가 존재하지 않습니다.");
+            throw new BabbleNotFoundException(String.format("%s 방에 %s 유저가 존재하지 않습니다.", id, user.getId()));
         }
     }
 
@@ -119,11 +120,19 @@ public class Room {
     }
 
     public User getHost() {
+        validateGetUser();
         return users.host();
     }
 
     public List<User> getGuests() {
+        validateGetUser();
         return users.guests();
+    }
+
+    private void validateGetUser() {
+        if (users.isEmpty()) {
+            throw new BabbleIllegalStatementException(String.format("%s 방은 현재 비어있습니다.", id));
+        }
     }
 
     public boolean isEmpty() {

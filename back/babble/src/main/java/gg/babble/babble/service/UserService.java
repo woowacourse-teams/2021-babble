@@ -21,7 +21,7 @@ public class UserService {
 
     public User findById(final Long id) {
         return userRepository.findById(id)
-            .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 유저 Id 입니다."));
+            .orElseThrow(() -> new BabbleNotFoundException(String.format("존재하지 않는 유저 Id(%s) 입니다.", id)));
     }
 
     public List<User> findByNickname(final String name) {

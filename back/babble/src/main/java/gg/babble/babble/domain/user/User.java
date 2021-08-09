@@ -77,7 +77,7 @@ public class User {
 
     public void leave(final Room room) {
         if (Objects.isNull(this.room) || !this.room.equals(room)) {
-            throw new BabbleIllegalArgumentException("해당 방을 나갈 수 없습니다.");
+            throw new BabbleIllegalArgumentException(String.format("%s 방에 %s 유저가 존재하지 않습니다.", room.getId(), id));
         }
 
         this.room = null;

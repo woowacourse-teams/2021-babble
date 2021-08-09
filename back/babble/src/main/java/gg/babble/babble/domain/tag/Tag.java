@@ -17,6 +17,9 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Tag {
 
+    private static final int MAX_NAME_LENGTH = 20;
+    private static final int MIN_NAME_LENGTH = 1;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -39,8 +42,10 @@ public class Tag {
     }
 
     private static void validateToConstruct(final String name) {
-        if (Objects.isNull(name) || name.length() < 1 || name.length() > 8) {
-            throw new BabbleLengthException("이름의 길이는 1자 이상 8자 이하입니다.");
+        if (Objects.isNull(name) || name.length() < MIN_NAME_LENGTH || name.length() > MAX_NAME_LENGTH) {
+            throw new BabbleLengthException(
+                String.format("이름의 길이는 %d자 이상 %d자 이하입니다. 현재 이름 길이(%d)", MIN_NAME_LENGTH, MAX_NAME_LENGTH, name.length())
+            );
         }
     }
 
