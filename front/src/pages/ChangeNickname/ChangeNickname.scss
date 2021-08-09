@@ -1,3 +1,7 @@
+@use '../../../style/functions' as f;
+@use '../../../style/variables' as v;
+@use '../../../style/mixins' as m;
+
 .nickname-container {
   display: flex;
   flex-direction: column;

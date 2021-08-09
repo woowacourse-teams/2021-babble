@@ -1,5 +1,6 @@
 @use '../../../style/variables' as v;
 @use '../../../style/functions' as f;
+@use '../../../style/mixins' as m;
 
 .main-image-container {
   width: 100%;
@@ -26,5 +27,15 @@
     height: 100%;
     object-fit: cover;
     background-position: center;
+  }
+}
+
+@include m.media(mobile-down, mobile) {
+  .main-image-container {
+    height: 20rem;
+
+    .gradient {
+      height: calc(100% + 2px);
+    }
   }
 }

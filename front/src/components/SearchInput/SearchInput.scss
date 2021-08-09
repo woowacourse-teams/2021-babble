@@ -1,4 +1,5 @@
 @use '../../../style/variables' as v;
+@use '../../../style/mixins' as m;
 @use '../../../style/functions' as f;
 
 .input-container {
@@ -48,9 +49,9 @@
     border-radius: 0.6rem;
     box-shadow: 0 0 4px 2px rgba(0, 0, 0, 20%);
     background-color: f.grey-scale(white);
+    z-index: f.z-index(layer-front-10);
 
     overflow-y: auto;
-    z-index: f.z-index(layer-front-1);
 
     &.show {
       display: block;
@@ -91,6 +92,19 @@
 
     .result-not-found {
       padding: 1rem 1.5rem;
+    }
+  }
+}
+
+@include m.media(mobile-down, mobile) {
+  .input-container {
+    .input-inner {
+      font-size: 1.5rem;
+      margin-left: 0.7rem;
+    }
+
+    svg {
+      height: 18px;
     }
   }
 }

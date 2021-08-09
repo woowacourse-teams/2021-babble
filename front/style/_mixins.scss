@@ -7,7 +7,7 @@
   position: sticky;
   top: -1px;
   background: transparent;
-  z-index: 5;
+  z-index: f.z-index(layer-front-10);
 }
 
 @mixin search-section {
@@ -25,4 +25,30 @@
   padding: 1rem;
   width: 95%;
   margin: 0 auto;
+}
+
+@mixin mobile-cancel-confirm {
+  button:not(:last-child) {
+    margin-right: 1.8rem;
+  }
+
+  .round-button {
+    width: fit-content;
+    min-width: 0;
+    max-width: inherit;
+    padding: 1rem 2.2rem;
+
+    &.line {
+      border: none;
+      background-color: transparent;
+    }
+  }
+}
+
+@mixin media($keys...) {
+  @each $key in $keys {
+    @media (max-width: map-get($breakpoints, $key)) {
+      @content;
+    }
+  }
 }

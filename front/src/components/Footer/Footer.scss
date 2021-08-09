@@ -1,5 +1,6 @@
 @use '../../../style/functions' as f;
 @use '../../../style/variables' as v;
+@use '../../../style/mixins' as m;
 
 footer {
   bottom: 0;
@@ -15,5 +16,17 @@ footer {
     &:not(:last-child) {
       margin-bottom: 0.5rem;
     }
+  }
+}
+
+@include m.media(tablet) {
+  footer {
+    margin-top: 8rem;
+  }
+}
+
+@include m.media(mobile-down, mobile) {
+  footer {
+    margin-top: 5rem;
   }
 }

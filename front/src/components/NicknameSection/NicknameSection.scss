@@ -1,5 +1,6 @@
 @use '../../../style/variables' as v;
 @use '../../../style/functions' as f;
+@use '../../../style/mixins' as m;
 @use '../../../style/animations';
 
 .nickname-section-container {
@@ -110,5 +111,50 @@
 
   .caption1 {
     color: f.grey-scale(black);
+  }
+}
+
+@include m.media(mobile-down, mobile) {
+  .nickname-section-container {
+    .edit {
+      &:disabled {
+        &:hover {
+          cursor: default;
+
+          &:after {
+            content: '채팅 중에는 닉네임을 바꿀 수 없어요.';
+            position: absolute;
+            background-color: f.grey-scale(5);
+            color: f.grey-scale(black);
+            padding: 1rem 1.2rem;
+            border-radius: 0.6rem;
+            line-height: 1;
+
+            width: max-content;
+            height: fit-content;
+            display: inline-block;
+
+            top: -4.4rem;
+            left: -20rem;
+          }
+
+          &:before {
+            content: '';
+            position: absolute;
+            background-color: transparent;
+
+            width: 0;
+            height: 0;
+            border-top: 0.8rem solid f.grey-scale(5);
+            border-right: 0.8rem solid transparent;
+            border-left: 0.8rem solid transparent;
+            border-bottom: 0.8rem solid none;
+
+            top: -1.2rem;
+            left: 0%;
+          }
+        }
+      }
+    }
   }
 }

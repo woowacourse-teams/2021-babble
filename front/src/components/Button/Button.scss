@@ -1,5 +1,6 @@
 @use '../../../style/variables' as v;
 @use '../../../style/functions' as f;
+@use '../../../style/mixins' as m;
 
 .round-button {
   border-radius: 50rem;
@@ -73,5 +74,19 @@ button {
       background-color: f.grey-scale(2);
       border-color: f.primary(babble-pink-2);
     }
+  }
+}
+
+@include m.media(mobile-down, mobile) {
+  .round-button {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  .square-button {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
   }
 }

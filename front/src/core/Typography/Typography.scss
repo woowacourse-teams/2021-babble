@@ -1,3 +1,5 @@
+@use '../../../style/mixins' as m;
+
 h1.headline1 {
   font-size: 5.2rem;
   font-weight: 700;
@@ -47,4 +49,55 @@ h5.subtitle3 {
 .caption2 {
   font-size: 1.2rem;
   display: inline-block;
+}
+
+@include m.media(mobile-down, mobile) {
+  h1.headline1 {
+    font-size: 4rem;
+
+    &.bold {
+      font-weight: 800;
+    }
+  }
+
+  h2.headline2 {
+    font-size: 3.6rem;
+
+    &.bold {
+      font-weight: 800;
+    }
+  }
+
+  h3.subtitle1 {
+    font-size: 3rem;
+    font-weight: 600;
+  }
+
+  h4.subtitle2 {
+    font-size: 2.4rem;
+    font-weight: 600;
+  }
+
+  h5.subtitle3 {
+    font-size: 2rem;
+    font-weight: 500;
+  }
+
+  .body1 {
+    font-size: 1.8rem;
+  }
+
+  .body2 {
+    font-size: 1.4rem;
+  }
+
+  .caption1 {
+    font-size: 1.3rem;
+    display: inline-block;
+  }
+
+  .caption2 {
+    font-size: 1.1rem;
+    display: inline-block;
+  }
 }

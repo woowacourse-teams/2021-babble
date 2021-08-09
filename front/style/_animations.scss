@@ -141,3 +141,13 @@
     filter: blur(0);
   }
 }
+
+@keyframes downToUp {
+  0% {
+    bottom: -100%;
+  }
+
+  100% {
+    bottom: 0;
+  }
+}
