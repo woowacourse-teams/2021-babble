@@ -1,0 +1,73 @@
+@import './variables';
+
+@function border-radius($key) {
+  @if map-has-key($border-radius, $key) {
+    @return map-get($border-radius, $key);
+  }
+
+  @warn "Unknown `#{$key}` in $border-radius!";
+  @return null;
+}
+
+@function button-padding($key) {
+  @if map-has-key($button-padding, $key) {
+    @return map-get($button-padding, $key);
+  }
+
+  @warn "Unknown `#{$key}` in $button-padding!";
+  @return null;
+}
+
+@function avatar-size($key) {
+  @if map-has-key($avatar-size, $key) {
+    @return map-get($avatar-size, $key);
+  }
+
+  @warn "Unknown `#{$key}` in $avatar-size!";
+  @return null;
+}
+
+@function grey-scale($key) {
+  @if map-has-key($grey-scale, $key) {
+    @return map-get($grey-scale, $key);
+  }
+
+  @warn "Unknown `#{$key}` in $grey-scale!";
+  @return null;
+}
+
+@function primary($key) {
+  @if map-has-key($primary, $key) {
+    @return map-get($primary, $key);
+  }
+
+  @warn "Unknown `#{$key}` in $primary!";
+  @return null;
+}
+
+@function shadow($key) {
+  @if map-has-key($shadow, $key) {
+    @return map-get($shadow, $key);
+  }
+
+  @warn "Unknown `#{$key}` in $shadow!";
+  @return null;
+}
+
+@function z-index($key) {
+  @if map-has-key($z-index, $key) {
+    @return map-get($z-index, $key);
+  }
+
+  @warn "Unknown `#{$key}` in $z-index!";
+  @return null;
+}
+
+@function chatting($key) {
+  @if map-has-key($chatting, $key) {
+    @return map-get($chatting, $key);
+  }
+
+  @warn "Unknown `#{$key}` in $chatting!";
+  @return null;
+}

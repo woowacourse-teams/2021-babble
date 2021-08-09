@@ -1,4 +1,4 @@
-@use '../../../style/mixins' as m;
+@use '../../../style/functions' as f;
 
 .chatting-form {
   display: flex;
@@ -7,7 +7,7 @@
 
   .chat-area {
     resize: none;
-    background-color: m.grey-scale(2);
+    background-color: f.grey-scale(2);
     padding: 1.5rem;
     margin-right: 0.5rem;
     width: 100%;

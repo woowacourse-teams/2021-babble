@@ -1,9 +1,9 @@
-@use '../../../style/mixins' as m;
+@use '../../../style/functions' as f;
 @use '../../../style/variables' as v;
 
 footer {
   bottom: 0;
-  background: m.grey-scale(1);
+  background: f.grey-scale(1);
   width: 100%;
   padding: 3rem;
   font-size: 1.2rem;

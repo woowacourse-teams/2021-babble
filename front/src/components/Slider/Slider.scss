@@ -1,4 +1,4 @@
-@use '../../../style/mixins' as m;
+@use '../../../style/functions' as f;
 @use '../../../style/variables' as v;
 
 .slider-container {
@@ -20,7 +20,7 @@
       justify-content: flex-start;
       align-items: center;
       border-radius: 2rem;
-      background: m.grey-scale(black-opacity);
+      background: f.grey-scale(black-opacity);
       padding: 0 1rem;
       margin-right: 1.5rem;
       position: absolute;
@@ -29,7 +29,7 @@
       top: 1rem;
 
       .index {
-        color: m.grey-scale(1);
+        color: f.grey-scale(1);
         padding: 0 0.5rem;
         text-align: center;
         width: 4rem;
@@ -66,9 +66,9 @@
 
     .dots-container {
       display: flex;
-      background: m.grey-scale(3);
+      background: f.grey-scale(3);
       padding: 0 1rem;
-      border-radius: m.border-radius(dots-container);
+      border-radius: f.border-radius(dots-container);
       transition: transform 200ms ease-in-out;
       cursor: pointer;
 
@@ -83,8 +83,8 @@
         .dot {
           width: 0.3rem;
           height: 0.3rem;
-          background-color: m.grey-scale(8);
-          border-radius: m.border-radius(dot);
+          background-color: f.grey-scale(8);
+          border-radius: f.border-radius(dot);
 
           &:not(:last-child) {
             margin-right: 1.7rem;
@@ -92,7 +92,7 @@
 
           &.current {
             transform: scale(1.4);
-            background-color: m.grey-scale(10);
+            background-color: f.grey-scale(10);
             box-shadow: v.$dot-box-shadow;
           }
         }
@@ -100,7 +100,7 @@
         &:hover {
           .dot:not(.current) {
             transform: scale(1.96);
-            background-color: m.grey-scale(10);
+            background-color: f.grey-scale(10);
           }
         }
       }

@@ -1,4 +1,4 @@
-@use '../../../style/mixins' as m;
+@use '../../../style/functions' as f;
 
 .error-container,
 .confirm-container {
@@ -11,7 +11,7 @@
   align-items: center;
 
   .subtitle2 {
-    color: m.primary(babble-pink);
+    color: f.primary(babble-pink);
   }
 
   .linear-layout {

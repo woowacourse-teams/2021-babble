@@ -1,4 +1,4 @@
-@use './mixins' as m;
+@use './functions' as f;
 
 @keyframes bounce {
   from {
@@ -84,7 +84,7 @@
   }
 
   100% {
-    fill: m.primary(babble-pink);
+    fill: f.primary(babble-pink);
   }
 }
 

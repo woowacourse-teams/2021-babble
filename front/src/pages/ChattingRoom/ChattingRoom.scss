@@ -1,4 +1,4 @@
-@use '../../../style/mixins' as m;
+@use '../../../style/functions' as f;
 @use '../../../style/variables' as v;
 
 .modal-chatting-room {
@@ -11,9 +11,9 @@
     width: 100%;
     height: 5.4rem;
     padding: 1.2rem 1.2rem 1.2rem 2rem;
-    background-color: m.grey-scale(white);
+    background-color: f.grey-scale(white);
     border-radius: 0.8rem 0.8rem 0 0;
-    border-bottom: 1px solid m.grey-scale(8);
+    border-bottom: 1px solid f.grey-scale(8);
     z-index: 9;
 
     &.open {
@@ -24,7 +24,7 @@
       text-align: center;
       display: inline-block;
       position: absolute;
-      background: m.grey-scale(white);
+      background: f.grey-scale(white);
       width: 6rem;
       height: 1.6rem;
       left: 50%;
@@ -35,15 +35,15 @@
       border-right: 1px solid #9ca0a5;
       border-radius: 0 0 0.8rem 0.8rem;
       cursor: pointer;
-      z-index: m.z-index(layer-modal-show-tag-button);
+      z-index: f.z-index(layer-modal-show-tag-button);
 
       svg {
-        color: m.grey-scale(9);
+        color: f.grey-scale(9);
       }
 
       &:hover {
         svg {
-          color: m.primary(babble-pink);
+          color: f.primary(babble-pink);
         }
       }
     }
@@ -64,7 +64,7 @@
           margin-left: 0.5rem;
 
           &:hover {
-            color: m.primary(babble-pink);
+            color: f.primary(babble-pink);
           }
         }
       }
@@ -79,7 +79,7 @@
       width: 100%;
       display: flex;
       flex-wrap: wrap;
-      background: m.grey-scale(white);
+      background: f.grey-scale(white);
       padding: 1rem 0 0 0;
     }
 
@@ -90,7 +90,7 @@
       width: 100%;
       transition: max-height 0.2s ease-in;
       overflow: hidden;
-      z-index: m.z-index(layer-front-1);
+      z-index: f.z-index(layer-front-1);
     }
   }
 }
@@ -104,7 +104,7 @@
 
   .modal-aside-container {
     padding: 3rem 2rem;
-    border-right: 1px solid m.grey-scale(8);
+    border-right: 1px solid f.grey-scale(8);
   }
 
   .modal-chatbox-container {
