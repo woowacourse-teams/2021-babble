@@ -59,7 +59,7 @@ public class User {
 
     public User(final Long id, final String nickname, final Room room) {
         this.id = id;
-        this.nickname = nickname;
+        this.nickname = nickname.trim();
         this.room = room;
         this.avatar = avatarByNickname(nickname);
     }
