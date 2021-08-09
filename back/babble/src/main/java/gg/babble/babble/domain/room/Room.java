@@ -98,15 +98,15 @@ public class Room {
         }
     }
 
-    private void delegateToLeave(final User user) {
-        if (user.hasRoom(this)) {
-            user.leave(this);
-        }
-    }
-
     private void validateToLeave(final User user) {
         if (hasNotUser(user)) {
             throw new BabbleNotFoundException("해당 방에 해당 유저가 존재하지 않습니다.");
+        }
+    }
+
+    private void delegateToLeave(final User user) {
+        if (user.hasRoom(this)) {
+            user.leave(this);
         }
     }
 
