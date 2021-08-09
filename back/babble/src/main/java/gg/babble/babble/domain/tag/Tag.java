@@ -1,5 +1,6 @@
 package gg.babble.babble.domain.tag;
 
+import gg.babble.babble.exception.BabbleIllegalArgumentException;
 import gg.babble.babble.exception.BabbleLengthException;
 import java.util.Objects;
 import javax.persistence.Embedded;
@@ -42,7 +43,10 @@ public class Tag {
     }
 
     private static void validateToConstruct(final String name) {
-        if (Objects.isNull(name) || name.length() < MIN_NAME_LENGTH || name.length() > MAX_NAME_LENGTH) {
+        if (Objects.isNull(name)) {
+            throw new BabbleIllegalArgumentException("태그 이름은 Null 일 수 없습니다.");
+        }
+        if (name.length() < MIN_NAME_LENGTH || name.length() > MAX_NAME_LENGTH) {
             throw new BabbleLengthException(
                 String.format("이름의 길이는 %d자 이상 %d자 이하입니다. 현재 이름 길이(%d)", MIN_NAME_LENGTH, MAX_NAME_LENGTH, name.length())
             );
