@@ -13,17 +13,41 @@ export const Default = ParticipantsTemplate.bind({});
 Default.args = {
   participants: {
     host: {
-      id: 1,
-      nickname: 'wilder',
+      id: 3,
+      nickname: 'jason',
+      profileImg:
+        'https://ca.slack-edge.com/TFELTJB7V-UJ71JS7K7-3d5b71944c85-512',
     },
     guests: [
       {
         id: 2,
         nickname: 'hyeon9mak',
+        profileImg: 'https://avatars.githubusercontent.com/u/37354145?v=4',
       },
       {
-        id: 3,
-        nickname: 'jason',
+        id: 1,
+        nickname: 'wilder',
+        profileImg: 'https://avatars.githubusercontent.com/u/49058669?v=4',
+      },
+      {
+        id: 4,
+        nickname: 'root',
+        profileImg: 'https://avatars.githubusercontent.com/u/4648244?v=4',
+      },
+      {
+        id: 5,
+        nickname: 'grooming',
+        profileImg: 'https://avatars.githubusercontent.com/u/26598561?v=4',
+      },
+      {
+        id: 6,
+        nickname: 'fortune',
+        profileImg: 'https://avatars.githubusercontent.com/u/43930419?v=4',
+      },
+      {
+        id: 7,
+        nickname: 'peter',
+        profileImg: 'https://avatars.githubusercontent.com/u/42052110?v=4',
       },
     ],
   },

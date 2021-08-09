@@ -23,31 +23,6 @@
     }
   }
 
-  .chatting-room-info {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 0rem;
-    padding: 1rem 0 2.5rem 0;
-    color: m.grey-scale(8);
-    user-select: none;
-    z-index: m.z-index(layer-back-1);
-
-    span {
-      display: block;
-      font-size: 1.2rem;
-      font-weight: 400;
-      text-align: center;
-    }
-
-    time {
-      display: block;
-      font-size: 1rem;
-      font-weight: 400;
-      text-align: center;
-    }
-  }
-
   .chatting-contents {
     display: flex;
     flex-direction: column;

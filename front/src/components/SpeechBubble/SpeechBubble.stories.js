@@ -18,19 +18,22 @@ const SpeechBubbleTemplate = (args) => (
     }}
   >
     <div style={{ margin: '20rem 0 1rem 0' }}>
-      <Subtitle3>상대방의 채팅</Subtitle3>
+      <Subtitle3>Others' Chattings</Subtitle3>
       <br />
       <SpeechBubbleWithAvatar {...args} />
     </div>
     <div style={{ marginBottom: '1rem' }}>
-      <Subtitle3>나의 채팅</Subtitle3>
+      <Subtitle3>My Chatting</Subtitle3>
       <br />
-      <SpeechBubble type='mine' {...args} />
+      <SpeechBubble type='mine'>
+        {`아니요 ㅋㅋ;
+전 오버워치 하러 갈건데;`}
+      </SpeechBubble>
     </div>
     <div style={{ marginBottom: '1rem' }}>
-      <Subtitle3>공지</Subtitle3>
+      <Subtitle3>Notice</Subtitle3>
       <br />
-      <SpeechBubble type='notice' {...args} />
+      <SpeechBubble type='notice'>피터님이 입장하셨습니다.</SpeechBubble>
     </div>
   </div>
 );
@@ -40,25 +43,4 @@ export const Default = SpeechBubbleTemplate.bind({});
 Default.args = {
   time: '10:51AM',
   children: '안녕하세요~~ \n같이 롤하실?~~~ ',
-};
-
-const SpeechBubbleWithAvatarTemplate = (args) => (
-  <SpeechBubbleWithAvatar {...args} />
-);
-
-export const WithAvatar = SpeechBubbleWithAvatarTemplate.bind({});
-
-WithAvatar.args = {
-  size: 'small',
-  nickname: 'hyun9mac',
-  time: '10:51AM',
-  children: '안녕하세요~~ \n같이 롤하실?~~~ ',
-};
-
-export const Notice = SpeechBubbleTemplate.bind({});
-
-Notice.args = {
-  size: 'small',
-  time: '10:51AM',
-  children: '피터 님이 입장하셨습니다.',
 };

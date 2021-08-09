@@ -8,18 +8,37 @@
   padding-bottom: 5rem;
 
   .headline2 {
-    margin: 5rem 0;
+    margin: 5rem 0 3rem 0;
   }
 
-  .search-section {
-    max-width: 50rem;
-    min-width: 15rem;
-    margin-bottom: 3rem;
-    display: flex;
-    gap: 1rem;
+  .search-container {
+    max-width: 100%;
+    padding: 1rem 0;
+    position: sticky;
+    top: -1px;
+    background: transparent;
+    z-index: 5;
 
-    .input-container {
-      flex-basis: 80%;
+    &.stuck {
+      .search-section {
+        border-radius: 1rem;
+        box-shadow: 0 0 0.6rem 0.2rem #929090ab;
+        padding: 1rem;
+      }
+    }
+
+    .search-section {
+      max-width: 100%;
+      min-width: 40rem;
+      padding: 1rem 0;
+      margin-bottom: 1rem;
+      display: flex;
+      background-color: m.grey-scale(white);
+
+      .input-container {
+        min-width: 40rem;
+        max-width: 40rem;
+      }
     }
   }
 

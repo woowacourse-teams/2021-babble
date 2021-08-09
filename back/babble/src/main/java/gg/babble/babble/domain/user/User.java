@@ -20,18 +20,22 @@ import lombok.NoArgsConstructor;
 @Entity
 public class User {
 
-    @NotNull(message = "아바타는 Null 이어서는 안됩니다.")
-    private final String avatar = "https://hyeon9mak.github.io/assets/images/9vatar.png";
-    // TODO: 기본 경로 프론트에게 받아오기
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private static final String AVATAR_FORMAT = "https://bucket-babble-front.s3.ap-northeast-2.amazonaws.com/img/users/profiles/profile%d.png";
+    private static final int NUMBER_OF_AVATAR = 70;
+
     @NotNull(message = "닉네임은 Null 이어서는 안됩니다.")
     private String nickname;
+
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Room room;
 
+    @NotNull(message = "아바타는 Null 이어서는 안됩니다.")
+    private String avatar;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private LocalDateTime joinedAt;
 
     public User(final String nickname) {
@@ -50,6 +54,12 @@ public class User {
         this.id = id;
         this.nickname = nickname;
         this.room = room;
+        this.avatar = avatarByNickname(nickname);
+    }
+
+    public static String avatarByNickname(final String nickname) {
+        long avatarIndex = ((long) nickname.hashCode() - Integer.MIN_VALUE) % NUMBER_OF_AVATAR;
+        return String.format(AVATAR_FORMAT, avatarIndex);
     }
 
     public void join(final Room room) {
