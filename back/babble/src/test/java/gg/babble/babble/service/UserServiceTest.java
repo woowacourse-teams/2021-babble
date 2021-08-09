@@ -54,4 +54,12 @@ public class UserServiceTest extends ApplicationTest {
         assertThatThrownBy(() -> userService.save(new UserRequest("루트가짱*")))
             .isExactlyInstanceOf(ConstraintViolationException.class);
     }
+
+    @DisplayName("유저 닉네임의 길이가 1이상 20이하가 아니면 예외를 던진다.")
+    @ParameterizedTest
+    @ValueSource(strings = {"", "  ", "abcdefghijklmnopqrstuvwxyz"})
+    void nicknameLength(String nickname) {
+        assertThatThrownBy(() -> userService.save(new UserRequest(nickname)))
+            .isExactlyInstanceOf(ConstraintViolationException.class);
+    }
 }
