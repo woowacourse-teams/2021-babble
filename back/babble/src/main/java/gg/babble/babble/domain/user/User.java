@@ -4,6 +4,7 @@ import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,18 +21,23 @@ import lombok.NoArgsConstructor;
 @Entity
 public class User {
 
-    @NotNull(message = "아바타는 Null 이어서는 안됩니다.")
-    private final String avatar = "https://hyeon9mak.github.io/assets/images/9vatar.png";
-    // TODO: 기본 경로 프론트에게 받아오기
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private static final String AVATAR_FORMAT = "https://bucket-babble-front.s3.ap-northeast-2.amazonaws.com/img/users/profiles/profile%d.png";
+    private static final int NUMBER_OF_AVATAR = 70;
+
     @NotNull(message = "닉네임은 Null 이어서는 안됩니다.")
-    private String nickname;
+    @Embedded
+    private Nickname nickname;
+
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Room room;
 
+    @NotNull(message = "아바타는 Null 이어서는 안됩니다.")
+    private String avatar;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private LocalDateTime joinedAt;
 
     public User(final String nickname) {
@@ -48,8 +54,14 @@ public class User {
 
     public User(final Long id, final String nickname, final Room room) {
         this.id = id;
-        this.nickname = nickname;
+        this.nickname = new Nickname(nickname);
         this.room = room;
+        this.avatar = avatarByNickname(nickname);
+    }
+
+    public static String avatarByNickname(final String nickname) {
+        long avatarIndex = ((long) nickname.hashCode() - Integer.MIN_VALUE) % NUMBER_OF_AVATAR;
+        return String.format(AVATAR_FORMAT, avatarIndex);
     }
 
     public void join(final Room room) {
@@ -67,7 +79,7 @@ public class User {
 
     public void leave(final Room room) {
         if (Objects.isNull(this.room) || !this.room.equals(room)) {
-            throw new BabbleIllegalArgumentException("해당 방을 나갈 수 없습니다.");
+            throw new BabbleIllegalArgumentException(String.format("%s 방에 %s 유저가 존재하지 않습니다.", room.getId(), id));
         }
 
         this.room = null;
@@ -87,6 +99,10 @@ public class User {
 
     public boolean hasNotRoom(final Room room) {
         return Objects.isNull(this.room) || !this.room.equals(room);
+    }
+
+    public String getNickname() {
+        return nickname.getValue();
     }
 
     @Override

@@ -88,7 +88,10 @@ const GameList = () => {
   useEffect(() => {
     const stickyObserver = new IntersectionObserver(
       ([entry]) => {
-        entry.target.classList.toggle('stuck', entry.intersectionRatio < 1);
+        entry.target.classList.toggle(
+          'stuck',
+          entry.intersectionRatio < 1 && entry.boundingClientRect.top <= 50
+        );
       },
       { threshold: 1 }
     );

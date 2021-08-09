@@ -23,8 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class RoomService {
 
-    private static final int PAGE_SIZE = 16;
-
     private final RoomRepository roomRepository;
     private final GameService gameService;
     private final UserService userService;
@@ -67,7 +65,7 @@ public class RoomService {
 
     private Room findRoomOrElseThrow(final Long id) {
         return roomRepository.findById(id)
-            .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 방 Id 입니다."));
+            .orElseThrow(() -> new BabbleNotFoundException(String.format("존재하지 않는 게임 Id(%d) 입니다.", id)));
     }
 
     @Transactional

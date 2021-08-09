@@ -14,6 +14,6 @@ public class BabbleLengthException extends BabbleException {
 
     @Override
     public HttpStatus status() {
-        return HttpStatus.CONFLICT;
+        return HttpStatus.BAD_REQUEST;
     }
 }

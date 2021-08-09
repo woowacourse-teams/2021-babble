@@ -1,6 +1,6 @@
 import './ChattingRoom.scss';
 
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { FaChevronDown, FaChevronUp, FaUsers } from 'react-icons/fa';
 import {
   ModalError,
   SpeechBubble,
@@ -27,6 +27,7 @@ const ChattingRoom = ({ tags, game, roomId }) => {
   const [chattings, setChattings] = useState([]);
   const [participants, setParticipants] = useState({});
   const [isTagsVisible, setIsTagsVisible] = useState(false);
+  const [isParticipantsVisible, setIsParticipantsVisible] = useState(false);
 
   const stompClient = useRef(null);
   const user_subscription = useRef(null);
@@ -39,6 +40,13 @@ const ChattingRoom = ({ tags, game, roomId }) => {
     user: { nickname, id: userId },
     changeCurrentRoomNumber,
   } = useUser();
+
+  // mobile
+  const toggleParticipants = () => {
+    setIsParticipantsVisible(
+      (wasParticipantsVisible) => !wasParticipantsVisible
+    );
+  };
 
   const toggleTags = () => {
     setIsTagsVisible((wasTagsVisible) => !wasTagsVisible);
@@ -164,7 +172,10 @@ const ChattingRoom = ({ tags, game, roomId }) => {
         <div className='room-info'>
           <div className='room-nav'>
             <LinearLayout direction='row'>
-              <Subtitle3>{`${roomId}번 방`}</Subtitle3>
+              <Subtitle3>
+                {roomId}
+                <span className='room-number-text'>번 방</span>
+              </Subtitle3>
               <Subtitle3>{game.name}</Subtitle3>
             </LinearLayout>
             <LinearLayout direction='row'>
@@ -185,9 +196,24 @@ const ChattingRoom = ({ tags, game, roomId }) => {
         </div>
       </div>
       <div className='modal-body-container'>
-        <div className='modal-aside-container'>
+        <button
+          className={`show-participants ${isParticipantsVisible ? 'show' : ''}`}
+          onClick={toggleParticipants}
+        >
+          {isParticipantsVisible ? (
+            <IoCloseOutline size='26px' />
+          ) : (
+            <FaUsers size='26px' />
+          )}
+        </button>
+        <div
+          className={`modal-aside-container ${
+            isParticipantsVisible ? 'show' : ''
+          }`}
+        >
           <Participants participants={participants} />
         </div>
+
         <div className='modal-chatbox-container'>
           <Chatbox onSubmit={onSubmit}>
             {chattings.map((chatting, index) => {

@@ -71,3 +71,12 @@
   @warn "Unknown `#{$key}` in $chatting!";
   @return null;
 }
+
+@function breakpoints($key) {
+  @if map-has-key($breakpoints, $key) {
+    @return map-get($breakpoints, $key);
+  }
+
+  @warn "Unknown `#{$key}` in $breakpoints!";
+  @return null;
+}

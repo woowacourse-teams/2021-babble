@@ -17,7 +17,7 @@ const Chatbox = ({ onSubmit, children }) => {
       <section className='chattings' ref={chattingsRef}>
         <article className='chatting-contents'>{children}</article>
       </section>
-      <section className='chatting-form'>
+      <section className='chatting-form-container'>
         <ChattingForm onSubmit={onSubmit} />
       </section>
     </section>

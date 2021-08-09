@@ -1,4 +1,5 @@
 @use '../../../style/functions' as f;
+@use '../../../style/mixins' as m;
 
 .chatting-form {
   display: flex;
@@ -23,5 +24,13 @@
 
   button {
     flex-basis: 20%;
+  }
+}
+
+@include m.media(mobile-down, mobile) {
+  .chatting-form {
+    button {
+      min-width: fit-content;
+    }
   }
 }

@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.domain.repository.UserRepository;
+import gg.babble.babble.domain.user.Nickname;
 import gg.babble.babble.domain.user.User;
 import gg.babble.babble.dto.request.UserJoinRequest;
 import gg.babble.babble.dto.response.UserListUpdateResponse;
@@ -78,9 +79,9 @@ public class WebSocketRoomUpdateTest extends ApplicationTest {
 //        user2 = userRepository.findByNickname("user0").get(0);
 //        user3 = userRepository.findByNickname("와일더").get(0);
 //        user4 = userRepository.findByNickname("현구막").get(0);
-        host = userRepository.findByNickname("user0").get(0);
-        guest1 = userRepository.findByNickname("루트").get(0);
-        guest2 = userRepository.findByNickname("user2").get(0);
+        host = userRepository.findByNickname(new Nickname("user0")).get(0);
+        guest1 = userRepository.findByNickname(new Nickname("루트")).get(0);
+        guest2 = userRepository.findByNickname(new Nickname("user2")).get(0);
         expectedUserListUpdateResponse = new UserListUpdateResponse(
             UserResponse.from(host),
             Collections.singletonList(

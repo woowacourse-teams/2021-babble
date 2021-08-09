@@ -1,4 +1,5 @@
 $box-shadow: 0 0.08rem 0.5rem rgba(0, 0, 0, 0.18);
+$dark-box-shadow: 0 0.08rem 0.5rem 0.05rem rgba(0, 0, 0, 0.25);
 $room-box-shadow: 0 0 0.6rem rgba(134, 134, 134, 0.35);
 $button-box-shadow: 1px 3px 10px rgba(255, 56, 82, 0.35);
 $dot-box-shadow: 0 0 0 1px rgb(118, 123, 131);
@@ -63,13 +64,28 @@ $z-index: (
   layer-back-1: -1,
   layer-middle: 0,
   layer-front-1: 1,
+  layer-front-2: 2,
+  layer-front-5: 5,
+  layer-front-9: 9,
+  layer-front-10: 10,
+  layer-slider: 100,
+  // exists on modal
+  layer-modal-header: 9,
   layer-modal-show-tag-button: 10,
-  layer-modal-dimmer: 9998,
   layer-modal-chatting: 9997,
+  layer-modal-dimmer: 9998,
   layer-modal-default: 9999,
 );
 
 $chatting: (
   others-background: rgb(227, 227, 227),
   mine-background: rgb(255, 229, 229),
+);
+
+$breakpoints: (
+  mobile-down: 280px,
+  mobile: 576px,
+  tablet: 768px,
+  desktop: 1024px,
+  big-desktop: 1200px,
 );

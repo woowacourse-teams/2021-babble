@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import gg.babble.babble.ApplicationTest;
+import gg.babble.babble.dto.request.GameRequest;
 import gg.babble.babble.dto.response.GameImageResponse;
 import gg.babble.babble.dto.response.GameWithImageResponse;
 import gg.babble.babble.dto.response.IndexPageGameResponse;
@@ -80,5 +81,50 @@ class GameServiceTest extends ApplicationTest {
         // then
         assertThat(gameService.findGame(1L)).usingRecursiveComparison()
             .isEqualTo(expectedResponse);
+    }
+
+    @DisplayName("단일 게임을 추가한다.")
+    @Test
+    void insertGame() {
+        // given
+        GameRequest request = new GameRequest("너구리 게임", "image.png");
+
+        // when
+        GameWithImageResponse response = gameService.insertGame(request);
+
+        // then
+        assertThat(response.getId()).isNotNull();
+        assertThat(response.getName()).isEqualTo(request.getName());
+        assertThat(response.getThumbnail()).isEqualTo(request.getThumbnail());
+    }
+
+    @DisplayName("단일 게임 정보를 편집한다.")
+    @Test
+    void updateGame() {
+        // given
+        GameWithImageResponse insertGameResponse = gameService.insertGame(new GameRequest("너구리 게임", "썸네일"));
+        GameRequest updateRequest = new GameRequest("너구리 게임 - 너굴맨!", "썸네일");
+
+        // when
+        GameWithImageResponse updateGameResponse = gameService.updateGame(insertGameResponse.getId(), updateRequest);
+
+        // then
+        assertThat(updateGameResponse.getId()).isEqualTo(insertGameResponse.getId());
+        assertThat(updateGameResponse.getName()).isEqualTo(updateRequest.getName());
+        assertThat(updateGameResponse.getThumbnail()).isEqualTo(updateRequest.getThumbnail());
+    }
+
+    @DisplayName("단일 게임을 삭제한다.")
+    @Test
+    void deleteGame() {
+        // given
+        GameWithImageResponse insertGameResponse = gameService.insertGame(new GameRequest("너구리 게임", "썸네일"));
+
+        // when
+        gameService.deleteGame(insertGameResponse.getId());
+
+        // then
+        assertThatThrownBy(() -> gameService.findGame(insertGameResponse.getId()))
+            .isInstanceOf(BabbleNotFoundException.class);
     }
 }

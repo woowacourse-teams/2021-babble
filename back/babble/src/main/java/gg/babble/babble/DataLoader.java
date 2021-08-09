@@ -8,6 +8,7 @@ import gg.babble.babble.domain.repository.UserRepository;
 import gg.babble.babble.domain.room.MaxHeadCount;
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.tag.Tag;
+import gg.babble.babble.domain.user.Nickname;
 import gg.babble.babble.domain.user.User;
 import java.util.Arrays;
 import java.util.List;
@@ -91,8 +92,8 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private Room createAndJoinRoom(int userIndex) {
-        Game game = gameRepository.findByName(LEAGUE_OF_LEGENDS).get(FIRST_DATA_INDEX);
-        User user = userRepository.findByNickname("user" + userIndex).get(FIRST_DATA_INDEX);
+        Game game = gameRepository.findByNameAndDeletedFalse(LEAGUE_OF_LEGENDS).get(FIRST_DATA_INDEX);
+        User user = userRepository.findByNickname(new Nickname("user" + userIndex)).get(FIRST_DATA_INDEX);
         List<Tag> tags = Arrays.asList(tagRepository.findByName(실버).get(0), tagRepository.findByName(_2시간).get(0));
 
         Room room = new Room(game, tags, new MaxHeadCount(4));
