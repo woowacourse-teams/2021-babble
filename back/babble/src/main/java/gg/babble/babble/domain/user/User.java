@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -25,9 +26,11 @@ public class User {
     private static final int NUMBER_OF_AVATAR = 70;
     public static final int MIN_NICKNAME_LENGTH = 1;
     public static final int MAX_NICKNAME_LENGTH = 24;
+    public static final String NICKNAME_REGEXP = "[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9\\s]+";
 
     @NotNull(message = "닉네임은 Null 이어서는 안됩니다.")
-    @Size(min = MIN_NICKNAME_LENGTH, max = MAX_NICKNAME_LENGTH)
+    @Size(min = MIN_NICKNAME_LENGTH, max = MAX_NICKNAME_LENGTH, message = "유저 닉네임은 {min}자 이상 {max}자 이하입니다. 현재 닉네임: ${validatedValue}")
+    @Pattern(regexp = NICKNAME_REGEXP, message = "닉네임은 한글, 영어, 숫자, 공백만 포함 가능합니다. 현재 닉네임: ${validatedValue}")
     private String nickname;
 
     @ManyToOne
