@@ -23,19 +23,20 @@ public class User {
     private static final String AVATAR_FORMAT = "https://bucket-babble-front.s3.ap-northeast-2.amazonaws.com/img/users/profiles/profile%d.png";
     private static final int NUMBER_OF_AVATAR = 70;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @NotNull(message = "닉네임은 Null 이어서는 안됩니다.")
     private String nickname;
+
+    @NotNull(message = "아바타는 Null 이어서는 안됩니다.")
+    private String avatar;
 
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Room room;
 
-    @NotNull(message = "아바타는 Null 이어서는 안됩니다.")
-    private String avatar;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private LocalDateTime joinedAt;
 
     public User(final String nickname) {
