@@ -91,7 +91,7 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private Room createAndJoinRoom(int userIndex) {
-        Game game = gameRepository.findByName(LEAGUE_OF_LEGENDS).get(FIRST_DATA_INDEX);
+        Game game = gameRepository.findByNameAndDeletedFalse(LEAGUE_OF_LEGENDS).get(FIRST_DATA_INDEX);
         User user = userRepository.findByNickname("user" + userIndex).get(FIRST_DATA_INDEX);
         List<Tag> tags = Arrays.asList(tagRepository.findByName(실버).get(0), tagRepository.findByName(_2시간).get(0));
 

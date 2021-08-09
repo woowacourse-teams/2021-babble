@@ -3,29 +3,41 @@ package gg.babble.babble.restdocs;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import gg.babble.babble.ApplicationTest;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
 public class GameApiDocumentTest extends ApplicationTest {
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     private MockMvc mockMvc;
 
@@ -112,5 +124,89 @@ public class GameApiDocumentTest extends ApplicationTest {
                 responseFields(fieldWithPath("id").description("게임 Id"),
                     fieldWithPath("name").description("게임 이름"),
                     fieldWithPath("thumbnail").description("썸네일"))));
+    }
+
+    @DisplayName("게임을 추가한다.")
+    @Test
+    void insertGame() throws Exception {
+        String gameName = "League Of Legends";
+        String thumbnail = "image.png";
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("name", gameName);
+        body.put("thumbnail", thumbnail);
+
+        mockMvc.perform(post("/api/games")
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(body)).characterEncoding("utf-8"))
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").isNumber())
+            .andExpect(jsonPath("$.name").value(gameName))
+            .andExpect(jsonPath("$.thumbnail").value(thumbnail))
+
+            .andDo(document("insert-game",
+                requestFields(
+                    fieldWithPath("name").description("게임 이름"),
+                    fieldWithPath("thumbnail").description("게임 썸네일 URL")
+                ),
+                responseFields(
+                    fieldWithPath("id").description("게임 ID"),
+                    fieldWithPath("name").description("게임 이름"),
+                    fieldWithPath("thumbnail").description("게임 썸네일 URL")
+                )
+            ));
+    }
+
+    // TODO: DataLoader에 의존적인 구조를 가지고 있어 테스트 작성이 불가능한 상태.
+    @DisplayName("게임을 편집한다.")
+    @Test
+    void updateGame() throws Exception {
+        String gameName = "League Of Legends";
+        String thumbnail = "image.png";
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("name", gameName);
+        body.put("thumbnail", thumbnail);
+
+        mockMvc.perform(post("/api/games")
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(objectMapper.writeValueAsString(body)).characterEncoding("utf-8"));
+
+//        mockMvc.perform(put("/api/games/" + )
+//                .accept(MediaType.APPLICATION_JSON_VALUE)
+//                .contentType(MediaType.APPLICATION_JSON_VALUE)
+//                .content(objectMapper.writeValueAsString(body)).characterEncoding("utf-8"))
+//            .andDo(MockMvcResultHandlers.print())
+//            .andExpect(status().isOk())
+//            .andExpect(jsonPath("$.id").isNumber())
+//            .andExpect(jsonPath("$.name").value(gameName))
+//            .andExpect(jsonPath("$.thumbnail").value(thumbnail))
+//
+//            .andDo(document("insert-game",
+//                requestFields(
+//                    fieldWithPath("name").description("게임 이름"),
+//                    fieldWithPath("thumbnail").description("게임 썸네일 URL")
+//                ),
+//                responseFields(
+//                    fieldWithPath("id").description("게임 ID"),
+//                    fieldWithPath("name").description("게임 이름"),
+//                    fieldWithPath("thumbnail").description("게임 썸네일 URL")
+//                )
+//            ));
+    }
+
+    // TODO: DataLoader에 의존적인 구조를 가지고 있어 테스트 작성이 불가능한 상태.
+    @DisplayName("게임을 삭제한다")
+    @Test
+    void deleteGame() {
+        // given
+
+        // when
+
+        // then
+
     }
 }

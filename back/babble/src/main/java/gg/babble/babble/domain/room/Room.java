@@ -54,7 +54,7 @@ public class Room {
     private LocalDateTime createdDate;
 
     @Column(nullable = false)
-    private boolean isDeleted;
+    private boolean deleted = false;
 
     public Room(final Game game, final List<Tag> tags, final MaxHeadCount maxHeadCount) {
         this(null, game, tags, maxHeadCount);
@@ -65,7 +65,6 @@ public class Room {
         this.id = id;
         this.game = game;
         this.users = new RoomUsers();
-        this.isDeleted = false;
         this.tagRegistrationsOfRoom = new TagRegistrationsOfRoom(this, tags);
         this.maxHeadCount = maxHeadCount;
     }
@@ -95,7 +94,7 @@ public class Room {
         delegateToLeave(user);
 
         if (users.isEmpty()) {
-            isDeleted = true;
+            deleted = true;
         }
     }
 

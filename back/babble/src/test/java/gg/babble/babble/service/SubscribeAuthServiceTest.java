@@ -67,7 +67,7 @@ public class SubscribeAuthServiceTest extends ApplicationTest {
     }
 
     private Room prepareDummyRoom() {
-        Game game = gameRepository.findByName(APEX_LEGEND).get(0);
+        Game game = gameRepository.findByNameAndDeletedFalse(APEX_LEGEND).get(0);
         User host = userRepository.findByNickname(현구막).get(0);
         List<Tag> tags = Collections.singletonList(tagRepository.findByName(실버).get(0));
 
