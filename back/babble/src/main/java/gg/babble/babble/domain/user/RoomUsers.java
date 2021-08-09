@@ -22,19 +22,21 @@ public class RoomUsers {
     }
 
     public User host() {
-        if (users.isEmpty()) {
-            throw new BabbleIllegalStatementException("유저가 존재하지 않습니다.");
-        }
+        validateGetUser();
         users.sort(Comparator.comparing(User::getJoinedAt));
         return users.get(0);
     }
 
     public List<User> guests() {
+        validateGetUser();
+        users.sort(Comparator.comparing(User::getJoinedAt));
+        return users.subList(1, users.size());
+    }
+
+    private void validateGetUser() {
         if (users.isEmpty()) {
             throw new BabbleIllegalStatementException("유저가 존재하지 않습니다.");
         }
-        users.sort(Comparator.comparing(User::getJoinedAt));
-        return users.subList(1, users.size());
     }
 
     public int headCount() {

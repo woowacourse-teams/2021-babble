@@ -25,24 +25,26 @@ public class BabbleAdvice {
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ExceptionDto> unexpectedException(Exception e) {
-        logger.warn(String.format(ERROR_LOG, e.getClass().getSimpleName(), e.getMessage()));
+    public ResponseEntity<ExceptionDto> unexpectedException(final Exception exception) {
+        logger.error(String.format(ERROR_LOG, exception.getClass().getSimpleName(), exception.getMessage()));
         return ResponseEntity.badRequest().body(new ExceptionDto("unexpected exception"));
     }
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ExceptionDto> unexpectedRuntimeException(RuntimeException e) {
-        logger.warn(String.format(ERROR_LOG, e.getClass().getSimpleName(), e.getMessage()));
+    public ResponseEntity<ExceptionDto> unexpectedRuntimeException(final RuntimeException exception) {
+        logger.error(String.format(ERROR_LOG, exception.getClass().getSimpleName(), exception.getMessage()));
         return ResponseEntity.badRequest().body(new ExceptionDto("unexpected runtime exception"));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<List<ExceptionDto>> methodArgumentValidException(final MethodArgumentNotValidException exception) {
+        logger.info(String.format(ERROR_LOG, exception.getClass().getSimpleName(), exception.getMessage()));
         return ResponseEntity.badRequest().body(extractErrorMessages(exception));
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<List<ExceptionDto>> constraintViolationException(final ConstraintViolationException exception) {
+        logger.info(String.format(ERROR_LOG, exception.getClass().getSimpleName(), exception.getMessage()));
         return ResponseEntity.badRequest().body(extractErrorMessages(exception));
     }
 
