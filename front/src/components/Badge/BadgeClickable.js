@@ -6,7 +6,7 @@ import React from 'react';
 
 const BadgeClickable = ({ onClickBadge, ariaLabel, children }) => {
   return (
-    <button onClick={onClickBadge} aria-label={ariaLabel}>
+    <button type='button' onClick={onClickBadge} aria-label={ariaLabel}>
       <Badge>{children}</Badge>
     </button>
   );
