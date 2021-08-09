@@ -31,11 +31,6 @@ public class SessionService {
         return session.getRoom();
     }
 
-    private Session findSessionOrElseThrow(final String sessionId) {
-        return sessionRepository.findSessionBySessionId(sessionId)
-            .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 세션 Id 입니다."));
-    }
-
     public User findUserBySessionId(final String sessionId) {
         Session session = findSessionOrElseThrow(sessionId);
 
@@ -43,7 +38,14 @@ public class SessionService {
     }
 
     @Transactional
-    public void delete(final String sessionId) {
-        sessionRepository.deleteBySessionId(sessionId);
+    public void deleteSessionBySessionId(final String sessionId) {
+        Session session = findSessionOrElseThrow(sessionId);
+
+        session.delete();
+    }
+
+    private Session findSessionOrElseThrow(final String sessionId) {
+        return sessionRepository.findBySessionIdAndDeletedFalse(sessionId)
+            .orElseThrow(() -> new BabbleNotFoundException(String.format("[%s]는 존재하지 않는 sessionId 입니다.", sessionId)));
     }
 }

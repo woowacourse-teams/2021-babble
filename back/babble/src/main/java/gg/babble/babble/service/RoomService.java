@@ -100,7 +100,7 @@ public class RoomService {
         User user = sessionService.findUserBySessionId(sessionId);
 
         room.leave(user);
-        sessionService.delete(sessionId);
+        sessionService.deleteSessionBySessionId(sessionId);
 
         if (room.isEmpty()) {
             return UserListUpdateResponse.empty();

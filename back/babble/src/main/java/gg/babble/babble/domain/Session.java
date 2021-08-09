@@ -3,6 +3,7 @@ package gg.babble.babble.domain;
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.user.User;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
@@ -20,7 +21,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @EntityListeners(AuditingEntityListener.class)
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Session {
@@ -42,8 +42,22 @@ public class Session {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(nullable = false)
+    private boolean deleted = false;
+
     public Session(final String sessionId, final Room room, final User user) {
         this(null, sessionId, room, user);
+    }
+
+    public Session(final Long id, final String sessionId, final Room room, final User user) {
+        this.id = id;
+        this.sessionId = sessionId;
+        this.room = room;
+        this.user = user;
+    }
+
+    public void delete() {
+        deleted = true;
     }
 
     @Override
