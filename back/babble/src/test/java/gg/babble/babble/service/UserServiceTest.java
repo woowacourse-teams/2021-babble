@@ -9,7 +9,6 @@ import gg.babble.babble.dto.request.UserRequest;
 import gg.babble.babble.dto.response.UserResponse;
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
 import gg.babble.babble.exception.BabbleNotFoundException;
-import javax.validation.ConstraintViolationException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

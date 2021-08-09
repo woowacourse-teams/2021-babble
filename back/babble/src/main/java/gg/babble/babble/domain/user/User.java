@@ -101,7 +101,7 @@ public class User {
         return Objects.isNull(this.room) || !this.room.equals(room);
     }
 
-    public String getNickname(){
+    public String getNickname() {
         return nickname.getValue();
     }
 
