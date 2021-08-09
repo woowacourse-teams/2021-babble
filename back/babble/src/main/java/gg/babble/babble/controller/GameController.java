@@ -49,9 +49,9 @@ public class GameController {
 
     @PostMapping
     public ResponseEntity<GameWithImageResponse> insertGame(@RequestBody final GameRequest request) {
-        GameWithImageResponse gameWithImageResponse = gameService.insertGame(request);
-        return ResponseEntity.created(URI.create(String.format("api/games/%s", gameWithImageResponse.getId())))
-            .body(gameWithImageResponse);
+        GameWithImageResponse response = gameService.insertGame(request);
+        return ResponseEntity.created(URI.create(String.format("api/games/%s", response.getId())))
+            .body(response);
     }
 
     @PutMapping(value = "/{gameId}")
