@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,8 +23,11 @@ public class User {
 
     private static final String AVATAR_FORMAT = "https://bucket-babble-front.s3.ap-northeast-2.amazonaws.com/img/users/profiles/profile%d.png";
     private static final int NUMBER_OF_AVATAR = 70;
+    public static final int MIN_NICKNAME_LENGTH = 1;
+    public static final int MAX_NICKNAME_LENGTH = 20;
 
     @NotNull(message = "닉네임은 Null 이어서는 안됩니다.")
+    @Size(min = MIN_NICKNAME_LENGTH, max = MAX_NICKNAME_LENGTH)
     private String nickname;
 
     @ManyToOne
