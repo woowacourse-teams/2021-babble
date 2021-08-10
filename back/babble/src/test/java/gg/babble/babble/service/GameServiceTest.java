@@ -4,6 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import gg.babble.babble.ApplicationTest;
+import gg.babble.babble.domain.Game;
+import gg.babble.babble.domain.repository.GameRepository;
+import gg.babble.babble.domain.repository.UserRepository;
+import gg.babble.babble.domain.user.User;
 import gg.babble.babble.dto.request.GameRequest;
 import gg.babble.babble.dto.response.GameImageResponse;
 import gg.babble.babble.dto.response.GameWithImageResponse;
@@ -11,6 +15,7 @@ import gg.babble.babble.dto.response.IndexPageGameResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.Arrays;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +27,41 @@ class GameServiceTest extends ApplicationTest {
     private static final String APEX_LEGEND = "Apex Legend";
     private static final String LEAGUE_OF_LEGENDS_URL = "https://static-cdn.jtvnw.net/ttv-boxart/League%20of%20Legends-1080x1436.jpg";
     private static final String DEFAULT_URL = "https://static-cdn.jtvnw.net/ttv-static/404_boxart-1080x1436.jpg";
+    private static final String 루트 = "루트";
+    private static final String 와일더 = "와일더";
+    private static final String 현구막 = "현구막";
+    private static final String 포츈 = "포츈";
+    private static final String 그루밍 = "그루밍";
+    private static final String 피터 = "피터";
+    private static final int MAX_USER_INDEX = 20;
 
     @Autowired
     private GameService gameService;
+
+    @Autowired
+    private GameRepository gameRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    private void prepareDummyGames() {
+        gameRepository.save(new Game(LEAGUE_OF_LEGENDS, "https://static-cdn.jtvnw.net/ttv-boxart/League%20of%20Legends-1080x1436.jpg"));
+        gameRepository.save(new Game(OVERWATCH));
+        gameRepository.save(new Game(APEX_LEGEND));
+    }
+
+    private void prepareDummyUsers() {
+        userRepository.save(new User(루트));
+        userRepository.save(new User(와일더));
+        userRepository.save(new User(현구막));
+        userRepository.save(new User(포츈));
+        userRepository.save(new User(그루밍));
+        userRepository.save(new User(피터));
+
+        for (int userIndex = 0; userIndex < MAX_USER_INDEX; userIndex++) {
+            userRepository.save(new User("user" + userIndex));
+        }
+    }
 
     @DisplayName("게임 Id가 없을 경우 예외를 던진다.")
     @Test
@@ -36,6 +73,9 @@ class GameServiceTest extends ApplicationTest {
     @DisplayName("게임에 해당하는 이미지를 반환한다.")
     @Test
     void findGameImageById() {
+        prepareDummyGames();
+        prepareDummyUsers();
+
         // given
         GameImageResponse expectedResponse = new GameImageResponse(1L, LEAGUE_OF_LEGENDS_URL);
 
@@ -47,6 +87,9 @@ class GameServiceTest extends ApplicationTest {
     @DisplayName("전체 게임 이미지 목록을 반환한다.")
     @Test
     void gameImages() {
+        prepareDummyGames();
+        prepareDummyUsers();
+
         // given
         List<GameImageResponse> expectedResponses = Arrays.asList(
             new GameImageResponse(1L, LEAGUE_OF_LEGENDS_URL),
@@ -62,20 +105,27 @@ class GameServiceTest extends ApplicationTest {
     @DisplayName("전체 게임 리스트를 반환한다.")
     @Test
     void findAllGames() {
+        prepareDummyGames();
+        prepareDummyUsers();
+
         // when
         List<IndexPageGameResponse> expectedResponses = Arrays.asList(
-            new IndexPageGameResponse(1L, LEAGUE_OF_LEGENDS, 20, LEAGUE_OF_LEGENDS_URL),
+            new IndexPageGameResponse(1L, LEAGUE_OF_LEGENDS, 0, LEAGUE_OF_LEGENDS_URL),
             new IndexPageGameResponse(2L, OVERWATCH, 0, DEFAULT_URL),
             new IndexPageGameResponse(3L, APEX_LEGEND, 0, DEFAULT_URL)
         );
+        List<IndexPageGameResponse> sortedGames = gameService.findSortedGames();
         // then
-        assertThat(gameService.findSortedGames()).usingRecursiveComparison()
+        assertThat(sortedGames).usingRecursiveComparison()
             .isEqualTo(expectedResponses);
     }
 
     @DisplayName("단일 게임을 반환한다.")
     @Test
     void findGame() {
+        prepareDummyGames();
+        prepareDummyUsers();
+
         // when
         GameWithImageResponse expectedResponse = new GameWithImageResponse(1L, LEAGUE_OF_LEGENDS, LEAGUE_OF_LEGENDS_URL);
         // then
