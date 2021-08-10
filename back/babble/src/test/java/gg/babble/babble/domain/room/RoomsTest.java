@@ -39,8 +39,8 @@ class RoomsTest {
         for (int i = 0; i < 5; i++) {
             Room room = 게임에_해당하는_방을_생성한다(game);
             User user = new User("익명의 누군가");
-            Session session = new Session((long) i, Integer.toString(i), room, user);
-            room.addSession(session);
+            Session session = new Session(Integer.toString(i), room, user);
+            room.enterSession(session);
             roomList.add(room);
         }
 

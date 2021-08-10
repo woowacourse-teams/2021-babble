@@ -1,4 +1,4 @@
-package gg.babble.babble.domain;
+package gg.babble.babble.domain.room;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

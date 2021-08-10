@@ -8,6 +8,7 @@ import gg.babble.babble.domain.user.User;
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
 import gg.babble.babble.exception.BabbleIllegalStatementException;
+import gg.babble.babble.exception.BabbleNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -77,7 +78,7 @@ public class Room {
         }
     }
 
-    public void addSession(final Session session) {
+    public void enterSession(final Session session) {
         if (sessions.contains(session)) {
             Long userId = session.getUser().getId();
             Long roomId = session.getRoom().getId();
@@ -87,11 +88,11 @@ public class Room {
         sessions.add(session);
     }
 
-    public void removeSession(final Session session) {
+    public void exitSession(final Session session) {
         if (sessions.noContains(session)) {
             Long userId = session.getUser().getId();
             Long roomId = session.getRoom().getId();
-            throw new BabbleIllegalStatementException(String.format("[%d] 유저는 [%d] 방에 참여하지 않아 퇴장이 불가능 합니다.", userId, roomId));
+            throw new BabbleNotFoundException(String.format("[%d] 유저는 [%d] 방에 참여하지 않아 퇴장이 불가능 합니다.", userId, roomId));
         }
 
         sessions.remove(session);
