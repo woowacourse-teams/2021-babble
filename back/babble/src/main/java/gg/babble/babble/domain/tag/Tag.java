@@ -19,6 +19,7 @@ public class Tag {
 
     private static final int MIN_LENGTH = 1;
     private static final int MAX_LENGTH = 8;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,10 +35,10 @@ public class Tag {
     }
 
     public Tag(final Long id, final String name) {
-        validateToConstruct(name);
         this.id = id;
         this.name = name;
         this.tagRegistrations = new TagRegistrationsOfTag();
+        validateToConstruct(this.name);
     }
 
     private static void validateToConstruct(final String name) {
