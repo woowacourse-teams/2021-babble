@@ -5,6 +5,7 @@ import gg.babble.babble.dto.response.GameImageResponse;
 import gg.babble.babble.dto.response.GameWithImageResponse;
 import gg.babble.babble.dto.response.IndexPageGameResponse;
 import gg.babble.babble.service.GameService;
+import java.net.URI;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -48,7 +49,9 @@ public class GameController {
 
     @PostMapping
     public ResponseEntity<GameWithImageResponse> insertGame(@RequestBody final GameRequest request) {
-        return ResponseEntity.ok(gameService.insertGame(request));
+        GameWithImageResponse response = gameService.insertGame(request);
+        return ResponseEntity.created(URI.create(String.format("api/games/%s", response.getId())))
+            .body(response);
     }
 
     @PutMapping(value = "/{gameId}")

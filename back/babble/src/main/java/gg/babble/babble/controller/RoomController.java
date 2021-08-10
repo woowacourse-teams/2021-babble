@@ -30,7 +30,7 @@ public class RoomController {
     @PostMapping
     public ResponseEntity<CreatedRoomResponse> createRoom(@Valid @RequestBody final RoomRequest request) {
         CreatedRoomResponse response = roomService.create(request);
-        return ResponseEntity.created(URI.create("api/rooms/" + response.getRoomId()))
+        return ResponseEntity.created(URI.create(String.format("api/rooms/%s", response.getRoomId())))
             .body(response);
     }
 
@@ -41,9 +41,9 @@ public class RoomController {
     }
 
     @GetMapping
-    public ResponseEntity<List<FoundRoomResponse>> readRoomByTags(@RequestParam Long gameId,
-                                                                  @RequestParam(defaultValue = "") List<Long> tagIds,
-                                                                  Pageable pageable) {
+    public ResponseEntity<List<FoundRoomResponse>> readRoomByTags(@RequestParam final Long gameId,
+                                                                  @RequestParam(defaultValue = "") final List<Long> tagIds,
+                                                                  final Pageable pageable) {
         return ResponseEntity.ok(roomService.findGamesByGameIdAndTagIds(gameId, tagIds, pageable));
     }
 }
