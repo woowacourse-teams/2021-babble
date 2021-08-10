@@ -71,6 +71,7 @@
 
       &:hover {
         cursor: default;
+        z-index: f.z-index(layer-front-2);
 
         &:after {
           content: '채팅 중에는 닉네임을 바꿀 수 없어요.';
