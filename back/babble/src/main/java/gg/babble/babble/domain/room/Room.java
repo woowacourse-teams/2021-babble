@@ -131,7 +131,7 @@ public class Room {
 
     private void validateGetUser() {
         if (users.isEmpty()) {
-            throw new BabbleIllegalStatementException(String.format("%s 방은 현재 비어있습니다.", id));
+            throw new BabbleIllegalStatementException(String.format("%s번 방은 현재 비어있습니다.", id));
         }
     }
 
