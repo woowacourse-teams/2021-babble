@@ -2,10 +2,12 @@
 
 @keyframes bounce {
   from {
-    transform: translate(0, -160%);
+    left: 50%;
+    transform: translate(-50%, -160%);
   }
   to {
-    transform: translate(0, -120%);
+    left: 50%;
+    transform: translate(-50%, -120%);
   }
 }
 

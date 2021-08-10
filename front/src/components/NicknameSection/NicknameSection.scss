@@ -13,6 +13,7 @@
     display: inline-block;
     font-weight: 500;
     color: f.primary(babble-pink);
+    word-break: keep-all;
 
     .notice-bubble {
       display: inline-block;
@@ -26,8 +27,8 @@
 
       position: absolute;
       top: 0;
-      left: 0;
-      transform: translate(0, -160%);
+      left: 50%;
+      transform: translate(-50%, -160%);
       z-index: f.z-index(layer-front-1);
 
       animation: 0.8s cubic-bezier(0.65, 0.04, 0.87, 0.24) 1s infinite alternate
@@ -46,7 +47,8 @@
         border-bottom: 0.8rem solid none;
 
         position: absolute;
-        transform: translate(12%, 54%);
+        left: 50%;
+        transform: translate(-50%, 54%);
       }
 
       .caption2 {
