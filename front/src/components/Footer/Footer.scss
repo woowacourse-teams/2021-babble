@@ -3,18 +3,39 @@
 @use '../../../style/mixins' as m;
 
 footer {
-  bottom: 0;
-  background: f.grey-scale(1);
+  color: f.grey-scale(11);
+  border-top: 1px solid f.grey-scale(4);
   width: 100%;
   padding: 3rem;
-  font-size: 1.2rem;
-  margin-top: 20rem;
+  font-size: 1rem;
+  margin-top: 10rem;
 
   & > * {
     display: block;
 
     &:not(:last-child) {
       margin-bottom: 0.5rem;
+    }
+  }
+
+  .goal {
+    margin-bottom: 1rem;
+  }
+
+  .company {
+    display: flex;
+
+    & > *:not(:last-child) {
+      margin-right: 0.5rem;
+    }
+  }
+
+  .footer-logo-image {
+    width: 3rem;
+    display: inline-block;
+
+    img {
+      width: 100%;
     }
   }
 }
