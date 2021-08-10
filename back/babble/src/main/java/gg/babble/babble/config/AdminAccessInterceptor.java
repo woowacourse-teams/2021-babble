@@ -1,16 +1,16 @@
 package gg.babble.babble.config;
 
-import gg.babble.babble.service.auth.AdminAuthService;
+import gg.babble.babble.service.auth.AdministratorService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 public class AdminAccessInterceptor implements HandlerInterceptor {
 
-    private final AdminAuthService adminAuthService;
+    private final AdministratorService administratorService;
 
-    public AdminAccessInterceptor(final AdminAuthService adminAuthService) {
-        this.adminAuthService = adminAuthService;
+    public AdminAccessInterceptor(final AdministratorService administratorService) {
+        this.administratorService = administratorService;
     }
 
     @Override
@@ -19,7 +19,7 @@ public class AdminAccessInterceptor implements HandlerInterceptor {
             return true;
         }
         String clientIp = request.getRemoteAddr();
-        adminAuthService.validateIp(clientIp);
+        administratorService.validateIp(clientIp);
         return true;
     }
 }
