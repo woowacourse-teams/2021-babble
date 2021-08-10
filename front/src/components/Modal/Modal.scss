@@ -1,10 +1,11 @@
-@use '../../../style/mixins' as m;
+@use '../../../style/functions' as f;
 @use '../../../style/variables' as v;
+@use '../../../style/mixins' as m;
 @use '../../../style/animations';
 
 .modal-container {
   position: fixed;
-  z-index: m.z-index(layer-modal-dimmer);
+  z-index: f.z-index(layer-modal-dimmer);
 
   &.default {
     width: 100%;
@@ -15,11 +16,11 @@
     justify-content: center;
     align-items: center;
     backdrop-filter: blur(2px);
-    background-color: m.grey-scale(black-opacity-light);
+    background-color: f.grey-scale(black-opacity-light);
 
     .linear-layout {
       justify-content: center;
-      z-index: m.z-index(layer-modal-default);
+      z-index: f.z-index(layer-modal-default);
 
       animation: bounceScaleUp 150ms cubic-bezier(0.15, 0.91, 0.15, 0.9);
 
@@ -27,8 +28,8 @@
         position: relative;
         width: 48rem;
         height: 24rem;
-        background-color: m.grey-scale(white);
-        border-radius: m.border-radius(modal);
+        background-color: f.grey-scale(white);
+        border-radius: f.border-radius(modal);
         padding: 3rem;
         justify-content: center;
         display: flex;
@@ -46,11 +47,11 @@
     right: 2rem;
     bottom: 0.2rem;
 
-    background-color: m.grey-scale(white);
-    border: 1px solid m.grey-scale(8);
-    border-radius: m.border-radius(modal);
+    background-color: f.grey-scale(white);
+    border: 1px solid f.grey-scale(8);
+    border-radius: f.border-radius(modal);
     box-shadow: v.$box-shadow;
-    z-index: m.z-index(layer-modal-chatting);
+    z-index: f.z-index(layer-modal-chatting);
 
     animation: scaleUp 200ms cubic-bezier(0.74, 0.12, 0.86, 0.21),
       blurUp 110ms ease-in;
@@ -68,22 +69,22 @@
 
 .modal-minimized-container {
   width: 30rem;
-  height: 5rem;
+  height: 4.5rem;
   position: fixed;
   right: 2rem;
   bottom: -0.5rem;
   cursor: pointer;
-  z-index: m.z-index(layer-modal-chatting);
+  z-index: f.z-index(layer-modal-chatting);
 
   background: linear-gradient(
     60deg,
-    m.primary(babble-pink-1) 0%,
-    m.primary(babble-pink-light) 100%
+    f.primary(babble-pink-1) 0%,
+    f.primary(babble-pink-light) 100%
   );
 
-  background-color: m.primary(babble-pink-1);
-  border-radius: m.border-radius(modal-minimize);
-  color: m.grey-scale(white);
+  background-color: f.primary(babble-pink-1);
+  border-radius: f.border-radius(modal-minimize);
+  color: f.grey-scale(white);
   box-shadow: v.$button-box-shadow;
 
   &:hover {
@@ -98,5 +99,58 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 1rem;
+  }
+}
+
+@include m.media(mobile-down, mobile) {
+  .modal-container {
+    &.chatting {
+      margin: 0 auto;
+      width: 100%;
+      height: 85%;
+      bottom: 0px;
+      right: 0px;
+      background-color: #fff;
+      border: 0;
+      border-radius: 0.8rem 0.8rem 0 0;
+      box-shadow: 0 0.08rem 0.5rem rgb(0 0 0 / 53%);
+      z-index: f.z-index(layer-modal-chatting);
+
+      animation: downToUp 300ms cubic-bezier(0, 0.94, 0.45, 0.99);
+    }
+
+    &.default {
+      .linear-layout {
+        position: absolute;
+        width: 100%;
+        justify-content: flex-end;
+        animation: downToUp 200ms cubic-bezier(0.15, 0.91, 0.15, 0.9);
+
+        .default-container {
+          width: 100%;
+          height: 35%;
+          border-radius: 0.8rem 0.8rem 0 0;
+          max-height: 30rem;
+
+          .nickname-container {
+            width: 100%;
+            max-width: 40rem;
+
+            .control-inputs {
+              width: 100%;
+            }
+
+            .control-buttons {
+              @include m.mobile-cancel-confirm;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .modal-minimized-container {
+    width: 100%;
+    right: 0;
   }
 }

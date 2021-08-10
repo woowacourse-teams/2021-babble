@@ -1,5 +1,5 @@
 @use '../../../style/variables' as v;
-@use '../../../style/mixins' as m;
+@use '../../../style/functions' as f;
 
 .tag-container {
   display: inline-flex;
@@ -7,8 +7,8 @@
   padding: 0.5rem 1.2rem;
   align-items: center;
   justify-content: center;
-  border: 1px solid m.primary(babble-pink);
-  border-radius: m.border-radius(tag);
+  border: 1px solid f.primary(babble-pink);
+  border-radius: f.border-radius(tag);
   user-select: none;
   white-space: pre;
   word-break: keep-all;
@@ -21,7 +21,7 @@
     margin-left: 0.6rem;
 
     :hover {
-      color: m.primary(babble-pink);
+      color: f.primary(babble-pink);
     }
   }
 }

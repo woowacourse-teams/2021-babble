@@ -25,7 +25,7 @@ jobs:
 
       - name: 배포
         working-directory: ./front
-        run: aws s3 sync ./dist s3://bucket-babble-front/ --delete
+        run: aws s3 sync ./dist s3://bucket-babble-front/
 
       - name: 캐시 무효화
         working-directory: ./front

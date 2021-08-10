@@ -1,4 +1,4 @@
-@use '../../../style/mixins' as m;
+@use '../../../style/functions' as f;
 @use '../../../style/variables' as v;
 
 .avatar-container {
@@ -32,22 +32,22 @@
 
 .avatar-image {
   border-radius: 40%;
-  border: 1px solid m.grey-scale(4);
+  border: 1px solid f.grey-scale(4);
   box-shadow: v.$box-shadow;
 
   &.small {
-    width: m.avatar-size(small);
-    height: m.avatar-size(small);
+    width: f.avatar-size(small);
+    height: f.avatar-size(small);
   }
 
   &.medium {
-    width: m.avatar-size(medium);
-    height: m.avatar-size(medium);
+    width: f.avatar-size(medium);
+    height: f.avatar-size(medium);
   }
 
   &.large {
-    width: m.avatar-size(large);
-    height: m.avatar-size(large);
+    width: f.avatar-size(large);
+    height: f.avatar-size(large);
   }
 }
 

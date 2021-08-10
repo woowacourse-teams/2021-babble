@@ -1,4 +1,5 @@
 @use '../../../style/variables' as v;
+@use '../../../style/functions' as f;
 @use '../../../style/mixins' as m;
 
 .game-card-container {
@@ -6,7 +7,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  width: 21.6rem;
+  width: 100%;
   height: 32rem;
   cursor: pointer;
 
@@ -56,7 +57,7 @@
         border-radius: 0.8rem;
         bottom: 0;
         top: auto;
-        background-color: m.primary(babble-pink);
+        background-color: f.primary(babble-pink);
         transform: translate(0, 0);
       }
     }
@@ -83,16 +84,36 @@
 
     .body2 {
       font-weight: 600;
-      color: m.grey-scale(12);
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      color: f.grey-scale(12);
 
       &:hover {
-        color: m.primary(babble-pink);
+        color: f.primary(babble-pink);
       }
     }
   }
 
   .participant-count {
-    color: m.primary(babble-pink);
+    color: f.primary(babble-pink);
     font-weight: 600;
+  }
+}
+
+@include m.media(mobile-down, mobile) {
+  .game-card-container {
+    width: 100%;
+    height: fit-content;
+    margin-bottom: 1rem;
+
+    .thumbnail {
+      min-height: 20rem;
+      height: 21rem;
+
+      img {
+        border-radius: 0.6rem;
+      }
+    }
   }
 }

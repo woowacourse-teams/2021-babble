@@ -1,73 +1,54 @@
+@use './functions' as f;
 @import './variables';
 
-@function border-radius($key) {
-  @if map-has-key($border-radius, $key) {
-    @return map-get($border-radius, $key);
-  }
-
-  @warn "Unknown `#{$key}` in $border-radius!";
-  @return null;
+@mixin search-container {
+  max-width: 100%;
+  padding: 1rem 0;
+  position: sticky;
+  top: -1px;
+  background: transparent;
+  z-index: f.z-index(layer-front-10);
 }
 
-@function button-padding($key) {
-  @if map-has-key($button-padding, $key) {
-    @return map-get($button-padding, $key);
-  }
-
-  @warn "Unknown `#{$key}` in $button-padding!";
-  @return null;
+@mixin search-section {
+  max-width: 100%;
+  min-width: 40rem;
+  padding: 1rem 0;
+  margin-bottom: 1rem;
+  display: flex;
+  background-color: f.grey-scale(white);
 }
 
-@function avatar-size($key) {
-  @if map-has-key($avatar-size, $key) {
-    @return map-get($avatar-size, $key);
-  }
-
-  @warn "Unknown `#{$key}` in $avatar-size!";
-  @return null;
+@mixin stuck-search-section {
+  border-radius: 1rem;
+  box-shadow: 0 0 0.6rem 0.1rem f.shadow(search-bar-shadow);
+  padding: 1rem;
+  width: 95%;
+  margin: 0 auto;
 }
 
-@function grey-scale($key) {
-  @if map-has-key($grey-scale, $key) {
-    @return map-get($grey-scale, $key);
+@mixin mobile-cancel-confirm {
+  button:not(:last-child) {
+    margin-right: 1.8rem;
   }
 
-  @warn "Unknown `#{$key}` in $grey-scale!";
-  @return null;
+  .round-button {
+    width: fit-content;
+    min-width: 0;
+    max-width: inherit;
+    padding: 1rem 2.2rem;
+
+    &.line {
+      border: none;
+      background-color: transparent;
+    }
+  }
 }
 
-@function primary($key) {
-  @if map-has-key($primary, $key) {
-    @return map-get($primary, $key);
+@mixin media($keys...) {
+  @each $key in $keys {
+    @media (max-width: map-get($breakpoints, $key)) {
+      @content;
+    }
   }
-
-  @warn "Unknown `#{$key}` in $primary!";
-  @return null;
-}
-
-@function shadow($key) {
-  @if map-has-key($shadow, $key) {
-    @return map-get($shadow, $key);
-  }
-
-  @warn "Unknown `#{$key}` in $shadow!";
-  @return null;
-}
-
-@function z-index($key) {
-  @if map-has-key($z-index, $key) {
-    @return map-get($z-index, $key);
-  }
-
-  @warn "Unknown `#{$key}` in $z-index!";
-  @return null;
-}
-
-@function chatting($key) {
-  @if map-has-key($chatting, $key) {
-    @return map-get($chatting, $key);
-  }
-
-  @warn "Unknown `#{$key}` in $chatting!";
-  @return null;
 }

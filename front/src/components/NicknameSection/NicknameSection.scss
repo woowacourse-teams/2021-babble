@@ -1,4 +1,5 @@
 @use '../../../style/variables' as v;
+@use '../../../style/functions' as f;
 @use '../../../style/mixins' as m;
 @use '../../../style/animations';
 
@@ -11,11 +12,12 @@
     position: relative;
     display: inline-block;
     font-weight: 500;
-    color: m.primary(babble-pink);
+    color: f.primary(babble-pink);
+    word-break: keep-all;
 
     .notice-bubble {
       display: inline-block;
-      background-color: m.primary(babble-pink);
+      background-color: f.primary(babble-pink);
       border-radius: 0.6rem;
       line-height: 1;
 
@@ -25,30 +27,32 @@
 
       position: absolute;
       top: 0;
-      left: 0;
-      transform: translate(0, -160%);
+      left: 50%;
+      transform: translate(-50%, -160%);
+      z-index: f.z-index(layer-front-1);
 
       animation: 0.8s cubic-bezier(0.65, 0.04, 0.87, 0.24) 1s infinite alternate
         bounce;
 
-      :after {
+      &:after {
         content: '';
         display: block;
         background-color: transparent;
 
         width: 0;
         height: 0;
-        border-top: 0.8rem solid m.primary(babble-pink);
+        border-top: 0.8rem solid f.primary(babble-pink);
         border-right: 0.8rem solid transparent;
         border-left: 0.8rem solid transparent;
         border-bottom: 0.8rem solid none;
 
         position: absolute;
-        transform: translate(12%, 54%);
+        left: 50%;
+        transform: translate(-50%, 54%);
       }
 
       .caption2 {
-        color: m.grey-scale(white);
+        color: f.grey-scale(white);
       }
     }
   }
@@ -57,20 +61,104 @@
     margin: 0 1rem 0 0.5rem;
     display: flex;
     align-items: center;
+    position: relative;
 
     &:disabled {
       svg {
-        color: m.grey-scale(5);
+        color: f.grey-scale(5);
         cursor: default;
+      }
+
+      &:hover {
+        cursor: default;
+        z-index: f.z-index(layer-front-2);
+
+        &:after {
+          content: '채팅 중에는 닉네임을 바꿀 수 없어요.';
+          position: absolute;
+          background-color: f.grey-scale(5);
+          color: f.grey-scale(black);
+          padding: 1rem 1.2rem;
+          border-radius: 0.6rem;
+          line-height: 1;
+
+          width: max-content;
+          height: fit-content;
+          display: inline-block;
+
+          top: -4.4rem;
+          left: -10rem;
+        }
+
+        &:before {
+          content: '';
+          position: absolute;
+          background-color: transparent;
+
+          width: 0;
+          height: 0;
+          border-top: 0.8rem solid f.grey-scale(5);
+          border-right: 0.8rem solid transparent;
+          border-left: 0.8rem solid transparent;
+          border-bottom: 0.8rem solid none;
+
+          top: -1.2rem;
+          left: 0%;
+        }
       }
     }
 
     svg {
-      color: m.grey-scale(12);
+      color: f.grey-scale(12);
     }
   }
 
   .caption1 {
-    color: m.grey-scale(black);
+    color: f.grey-scale(black);
+  }
+}
+
+@include m.media(mobile-down, mobile) {
+  .nickname-section-container {
+    .edit {
+      &:disabled {
+        &:hover {
+          cursor: default;
+
+          &:after {
+            content: '채팅 중에는 닉네임을 바꿀 수 없어요.';
+            position: absolute;
+            background-color: f.grey-scale(5);
+            color: f.grey-scale(black);
+            padding: 1rem 1.2rem;
+            border-radius: 0.6rem;
+            line-height: 1;
+
+            width: max-content;
+            height: fit-content;
+            display: inline-block;
+
+            top: -4.4rem;
+            left: -20rem;
+          }
+
+          &:before {
+            content: '';
+            position: absolute;
+            background-color: transparent;
+
+            width: 0;
+            height: 0;
+            border-top: 0.8rem solid f.grey-scale(5);
+            border-right: 0.8rem solid transparent;
+            border-left: 0.8rem solid transparent;
+            border-bottom: 0.8rem solid none;
+
+            top: -1.2rem;
+            left: 0%;
+          }
+        }
+      }
+    }
   }
 }
