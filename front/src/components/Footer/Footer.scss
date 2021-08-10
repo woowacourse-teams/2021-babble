@@ -1,13 +1,14 @@
-@use '../../../style/mixins' as m;
+@use '../../../style/functions' as f;
 @use '../../../style/variables' as v;
+@use '../../../style/mixins' as m;
 
 footer {
-  bottom: 0;
-  background: m.grey-scale(1);
+  color: f.grey-scale(11);
+  border-top: 1px solid f.grey-scale(4);
   width: 100%;
   padding: 3rem;
-  font-size: 1.2rem;
-  margin-top: 20rem;
+  font-size: 1rem;
+  margin-top: 10rem;
 
   & > * {
     display: block;
@@ -15,5 +16,38 @@ footer {
     &:not(:last-child) {
       margin-bottom: 0.5rem;
     }
+  }
+
+  .goal {
+    margin-bottom: 1rem;
+  }
+
+  .company {
+    display: flex;
+
+    & > *:not(:last-child) {
+      margin-right: 0.5rem;
+    }
+  }
+
+  .footer-logo-image {
+    width: 3rem;
+    display: inline-block;
+
+    img {
+      width: 100%;
+    }
+  }
+}
+
+@include m.media(tablet) {
+  footer {
+    margin-top: 8rem;
+  }
+}
+
+@include m.media(mobile-down, mobile) {
+  footer {
+    margin-top: 5rem;
   }
 }

@@ -1,4 +1,5 @@
 @use '../../../style/variables' as v;
+@use '../../../style/functions' as f;
 @use '../../../style/mixins' as m;
 
 .round-button {
@@ -15,19 +16,19 @@ button {
   min-width: max-content;
 
   &.tiny {
-    padding: m.button-padding(tiny);
+    padding: f.button-padding(tiny);
   }
 
   &.small {
-    padding: m.button-padding(small);
+    padding: f.button-padding(small);
   }
 
   &.medium {
-    padding: m.button-padding(medium);
+    padding: f.button-padding(medium);
   }
 
   &.large {
-    padding: m.button-padding(large);
+    padding: f.button-padding(large);
   }
 
   &.block {
@@ -38,40 +39,54 @@ button {
   &.colored {
     background: linear-gradient(
       150deg,
-      m.primary(babble-pink) 0%,
-      m.primary(babble-pink-light) 100%
+      f.primary(babble-pink) 0%,
+      f.primary(babble-pink-light) 100%
     );
     box-shadow: v.$button-box-shadow;
-    color: m.grey-scale(0);
-    border: 1px solid m.primary(babble-pink);
+    color: f.grey-scale(0);
+    border: 1px solid f.primary(babble-pink);
 
     &:hover {
       background: linear-gradient(
         60deg,
-        m.primary(babble-pink-1) 0%,
-        m.primary(babble-pink-light) 100%
+        f.primary(babble-pink-1) 0%,
+        f.primary(babble-pink-light) 100%
       );
-      background-color: m.primary(babble-pink-1);
+      background-color: f.primary(babble-pink-1);
     }
 
     &:active {
-      background: m.primary(babble-pink-3);
-      background-color: m.primary(babble-pink-2);
+      background: f.primary(babble-pink-3);
+      background-color: f.primary(babble-pink-2);
     }
   }
 
   &.line {
-    background-color: m.grey-scale(0);
-    border: 1px solid m.primary(babble-pink);
+    background-color: f.grey-scale(0);
+    border: 1px solid f.primary(babble-pink);
 
     &:hover {
-      background-color: m.grey-scale(1);
-      border-color: m.primary(babble-pink-1);
+      background-color: f.grey-scale(1);
+      border-color: f.primary(babble-pink-1);
     }
 
     &:active {
-      background-color: m.grey-scale(2);
-      border-color: m.primary(babble-pink-2);
+      background-color: f.grey-scale(2);
+      border-color: f.primary(babble-pink-2);
     }
+  }
+}
+
+@include m.media(mobile-down, mobile) {
+  .round-button {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  .square-button {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
   }
 }

@@ -1,5 +1,5 @@
 @use '../../../style/variables' as v;
-@use '../../../style/mixins' as m;
+@use '../../../style/functions' as f;
 
 .room-wrapper {
   position: relative;
@@ -7,11 +7,12 @@
   .room-container {
     cursor: pointer;
     padding: 1.2rem 2.6rem;
-    background: m.grey-scale(white);
-    border: 1px solid m.grey-scale(1);
+    background: f.grey-scale(white);
+    border: 1px solid f.grey-scale(1);
     box-shadow: v.$room-box-shadow;
     border-radius: 1rem;
     transition: ease-in 0.1s;
+    z-index: f.z-index(layer-middle);
 
     &:hover {
       transform: scale(1.01);
@@ -43,7 +44,7 @@
 
         .room-number {
           margin-right: 2rem;
-          color: m.grey-scale(11);
+          color: f.grey-scale(11);
         }
 
         .avatar {
@@ -58,10 +59,11 @@
 
       .headcount-container {
         min-width: fit-content;
+        color: f.grey-scale(11);
       }
 
       strong {
-        color: m.primary(babble-pink);
+        color: f.primary(babble-pink);
         font-weight: 500;
       }
     }
@@ -79,6 +81,6 @@
     backdrop-filter: grayscale(1) brightness(0.97);
     width: 100%;
     height: 100%;
-    z-index: 5;
+    z-index: f.z-index(layer-front-1);
   }
 }
