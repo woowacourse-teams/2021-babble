@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import gg.babble.babble.ApplicationTest;
+import gg.babble.babble.domain.repository.TagRepository;
+import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.dto.response.TagResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.Arrays;
@@ -15,8 +17,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class TagServiceTest extends ApplicationTest {
 
+    private static final String 실버 = "실버";
+    private static final String _2시간 = "2시간";
+    private static final String 솔로랭크 = "솔로랭크";
+
     @Autowired
     private TagService tagService;
+
+    @Autowired
+    private TagRepository tagRepository;
 
     //    // data Loader class 호출을 없애길 희망.
 //    // TODO : 프로필에 테스트 data Loader에서만 처리하게 하거나, 모여서 할 이야기라서 일단 keep
@@ -50,6 +59,8 @@ public class TagServiceTest extends ApplicationTest {
     @Test
     void getAllTags() {
 
+        prepareDummyTags();
+
         // given
         List<String> expectedTags = Arrays.asList("실버", "2시간", "솔로랭크");
 
@@ -61,5 +72,11 @@ public class TagServiceTest extends ApplicationTest {
 
         // then
         assertThat(expectedTags).usingRecursiveComparison().isEqualTo(allTags);
+    }
+
+    private void prepareDummyTags() {
+        tagRepository.save(new Tag(실버));
+        tagRepository.save(new Tag(_2시간));
+        tagRepository.save(new Tag(솔로랭크));
     }
 }
