@@ -109,7 +109,7 @@ const GameList = () => {
     <div className='game-list-container'>
       <Slider imageList={dummyImage} />
       <PageLayout>
-        <Headline2>게임 목록</Headline2>
+        <Headline2>전체 게임</Headline2>
         <div className='search-container' ref={searchRef}>
           <section className='search-section'>
             <SearchInput
