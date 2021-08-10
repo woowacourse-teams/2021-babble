@@ -139,7 +139,7 @@ public class GameApiDocumentTest extends ApplicationTest {
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .content(objectMapper.writeValueAsString(body)).characterEncoding("utf-8"))
             .andDo(MockMvcResultHandlers.print())
-            .andExpect(status().isOk())
+            .andExpect(status().isCreated())
             .andExpect(jsonPath("$.id").isNumber())
             .andExpect(jsonPath("$.name").value(gameName))
             .andExpect(jsonPath("$.thumbnail").value(thumbnail))
