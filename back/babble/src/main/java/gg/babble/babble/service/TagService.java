@@ -25,10 +25,6 @@ public class TagService {
             .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 태그입니다."));
     }
 
-    public List<Tag> findByName(final String name) {
-        return tagRepository.findByName(name);
-    }
-
     public List<Tag> findAllById(final List<TagRequest> tagRequests) {
         return tagRequests.stream()
             .map(tagRequest -> findById(tagRequest.getId()))
