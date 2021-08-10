@@ -29,7 +29,10 @@ public class RoomTest {
         tags = Arrays.asList(new Tag("실버"), new Tag("2시간"));
         room = generateEmptyRoom();
 
-        room.join(host);
+        Session session = new Session("1234", room, host);
+
+        room.addSession(session);
+        host.linkSession(session);
     }
 
     private Room generateEmptyRoom() {
@@ -40,22 +43,26 @@ public class RoomTest {
     @Test
     void joinRoom() {
         User guest = new User(2L, "손님");
+        Session session = new Session("1234", room, guest);
+        guest.linkSession(session);
 
-        room.join(guest);
+        room.addSession(session);
 
         assertThat(room.getGuests()).hasSize(1);
         assertThat(room.getGuests()).contains(guest);
-        assertThat(guest.getRoom()).isEqualTo(room);
+        assertThat(guest.getSession()).isEqualTo(room);
     }
 
     @DisplayName("유저가 이미 방에 있을 때 다시 유저가 방 입장을 요청하면 예외가 발생한다.")
     @Test
     void alreadyJoin() {
         User guest = new User(2L, "손님");
+        Session session = new Session("1234", room, guest);
+        guest.linkSession(session);
 
-        room.join(guest);
+        room.addSession(session);
 
-        assertThatThrownBy(() -> room.join(guest)).isInstanceOf(BabbleDuplicatedException.class);
+        assertThatThrownBy(() -> room.addSession(session)).isInstanceOf(BabbleDuplicatedException.class);
     }
 
     @DisplayName("유저가 방에서 나간다.")
@@ -64,20 +71,30 @@ public class RoomTest {
         User guest1 = new User(2L, "손님");
         User guest2 = new User(3L, "손님");
 
-        room.join(guest1);
-        room.join(guest2);
-        room.leave(guest1);
+        Session session1 = new Session("1234", room, guest1);
+        Session session2 = new Session("2345", room, guest2);
+        guest1.linkSession(session1);
+        guest2.linkSession(session2);
+
+        room.addSession(session1);
+        room.addSession(session2);
+
+        room.removeSession(session1);
+        guest1.unlinkSession(session1);
+        session1.delete();
 
         assertThat(room.getGuests()).hasSize(1);
-        assertThat(guest1.getRoom()).isNull();
+        assertThat(guest1.getSession()).isNull();
     }
 
     @DisplayName("존재하지 않는 유저가 방을 나갈 때 예외 처리한다.")
     @Test
     void leavingUserNotFoundInRoom() {
         User user = new User(2L, "외부자");
+        Session session = new Session("1234", room, user);
+        user.linkSession(session);
 
-        assertThatThrownBy(() -> room.leave(user))
+        assertThatThrownBy(() -> room.removeSession(session))
             .isInstanceOf(BabbleNotFoundException.class);
     }
 
@@ -88,14 +105,20 @@ public class RoomTest {
         User guest2 = new User(3L, "게스트");
         User host = room.getHost();
 
-        room.join(guest1);
-        room.join(guest2);
-        room.leave(host);
+        Session session1 = new Session("1234", room, guest1);
+        Session session2 = new Session("2345", room, guest2);
+        guest1.linkSession(session1);
+        guest2.linkSession(session2);
+
+        room.addSession(session1);
+        room.addSession(session2);
+
+        room.removeSession(session1);
 
         assertThat(room.getGuests()).hasSize(1);
         assertThat(room.getHost()).isEqualTo(guest1);
-        assertThat(host.getRoom()).isNull();
-        assertThat(guest1.getRoom()).isEqualTo(room);
+        assertThat(host.getSession()).isNull();
+        assertThat(guest1.getSession()).isEqualTo(room);
     }
 
     @DisplayName("호스트를 조회한다.")

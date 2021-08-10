@@ -82,7 +82,7 @@ class SessionRepositoryTest {
         Game game = gameRepository.save(new Game("게임 이름", "게임 이미지"));
         MaxHeadCount maxHeadCount = new MaxHeadCount(4);
         Room room = roomRepository.save(new Room(game, tags, maxHeadCount));
-        User user = userRepository.save(new User("코 파는 알리스타", room));
+        User user = userRepository.save(new User("코 파는 알리스타"));
 
         return new Session("1A2B3C4D", room, user);
     }

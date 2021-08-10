@@ -54,7 +54,7 @@ public class TagServiceTest extends ApplicationTest {
         List<String> expectedTags = Arrays.asList("실버", "2시간", "솔로랭크");
 
         // when
-        List<String> allTags = tagService.getAllTags()
+        List<String> allTags = tagService.findAll()
             .stream()
             .map(TagResponse::getName)
             .collect(Collectors.toList());

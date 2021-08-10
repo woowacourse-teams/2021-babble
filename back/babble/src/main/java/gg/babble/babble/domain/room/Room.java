@@ -1,12 +1,13 @@
 package gg.babble.babble.domain.room;
 
 import gg.babble.babble.domain.Game;
+import gg.babble.babble.domain.Session;
+import gg.babble.babble.domain.Sessions;
 import gg.babble.babble.domain.tag.Tag;
-import gg.babble.babble.domain.user.RoomUsers;
 import gg.babble.babble.domain.user.User;
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
-import gg.babble.babble.exception.BabbleNotFoundException;
+import gg.babble.babble.exception.BabbleIllegalStatementException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -45,7 +46,7 @@ public class Room {
     private TagRegistrationsOfRoom tagRegistrationsOfRoom;
 
     @Embedded
-    private RoomUsers users;
+    private Sessions sessions;
 
     @Embedded
     private MaxHeadCount maxHeadCount;
@@ -65,54 +66,43 @@ public class Room {
         validateToConstruct(tags);
         this.id = id;
         this.game = game;
-        this.users = new RoomUsers();
+        this.sessions = new Sessions();
         this.tagRegistrationsOfRoom = new TagRegistrationsOfRoom(this, tags);
         this.maxHeadCount = maxHeadCount;
     }
 
     private static void validateToConstruct(final List<Tag> tags) {
         if (Objects.isNull(tags) || tags.isEmpty()) {
-            throw new BabbleIllegalArgumentException("방의 태그는 1개 이상이어야 합니다.");
+            throw new BabbleIllegalArgumentException("방의 태그가 입력되지 않았습니다.");
         }
     }
 
-    public void join(final User user) {
-
-        if (users.hasUser(user)) {
-            throw new BabbleDuplicatedException("이미 해당 방에 참여 중입니다.");
+    public void addSession(final Session session) {
+        if (sessions.contains(session)) {
+            Long userId = session.getUser().getId();
+            Long roomId = session.getRoom().getId();
+            throw new BabbleDuplicatedException(String.format("[%d] 유저는 이미 [%d] 방에 참여 중이라 입장이 불가능 합니다.", userId, roomId));
         }
 
-        users.add(user);
-
-        if (user.hasNotRoom(this)) {
-            user.join(this);
-        }
+        sessions.add(session);
     }
 
-    public void leave(final User user) {
-        validateToLeave(user);
-        users.remove(user);
-        delegateToLeave(user);
+    public void removeSession(final Session session) {
+        if (sessions.noContains(session)) {
+            Long userId = session.getUser().getId();
+            Long roomId = session.getRoom().getId();
+            throw new BabbleIllegalStatementException(String.format("[%d] 유저는 [%d] 방에 참여하지 않아 퇴장이 불가능 합니다.", userId, roomId));
+        }
 
-        if (users.isEmpty()) {
+        sessions.remove(session);
+
+        if (sessions.isEmpty()) {
             deleted = true;
         }
     }
 
-    private void validateToLeave(final User user) {
-        if (hasNotUser(user)) {
-            throw new BabbleNotFoundException("해당 방에 해당 유저가 존재하지 않습니다.");
-        }
-    }
-
-    private void delegateToLeave(final User user) {
-        if (user.hasRoom(this)) {
-            user.leave(this);
-        }
-    }
-
     public int currentHeadCount() {
-        return users.headCount();
+        return sessions.headCount();
     }
 
     public int maxHeadCount() {
@@ -120,23 +110,19 @@ public class Room {
     }
 
     public User getHost() {
-        return users.host();
+        List<User> users = sessions.sortedUsersByEnteredTime();
+
+        return users.get(0);
     }
 
     public List<User> getGuests() {
-        return users.guests();
+        List<User> users = sessions.sortedUsersByEnteredTime();
+
+        return users.subList(1, users.size());
     }
 
     public boolean isEmpty() {
-        return users.isEmpty();
-    }
-
-    public boolean hasUser(final User user) {
-        return users.hasUser(user);
-    }
-
-    public boolean hasNotUser(final User user) {
-        return !users.hasUser(user);
+        return sessions.isEmpty();
     }
 
     public boolean isFull() {
@@ -159,5 +145,4 @@ public class Room {
     public int hashCode() {
         return Objects.hash(id);
     }
-
 }

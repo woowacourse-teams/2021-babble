@@ -29,13 +29,13 @@ public class TagService {
         return tagRepository.findByName(name);
     }
 
-    public List<Tag> findById(final List<TagRequest> tagRequests) {
+    public List<Tag> findAllById(final List<TagRequest> tagRequests) {
         return tagRequests.stream()
             .map(tagRequest -> findById(tagRequest.getId()))
             .collect(Collectors.toList());
     }
 
-    public List<TagResponse> getAllTags() {
+    public List<TagResponse> findAll() {
         List<Tag> tags = tagRepository.findAll();
         return tags.stream()
             .map(TagResponse::from)

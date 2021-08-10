@@ -2,6 +2,7 @@ package gg.babble.babble.domain;
 
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.user.User;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,9 +15,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @EntityListeners(AuditingEntityListener.class)
@@ -42,6 +43,9 @@ public class Session {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @CreatedDate
+    private LocalDateTime createdDate;
+
     // TODO: User <-> Session <-> Room 연관관계 리팩토링 후 진행
     @Column(nullable = false)
     private boolean deleted = false;
@@ -55,6 +59,13 @@ public class Session {
         this.sessionId = sessionId;
         this.room = room;
         this.user = user;
+
+        add(room, user);
+    }
+
+    public void add(Room room, User user) {
+        room.addSession(this);
+        user.linkSession(this);
     }
 
     public void delete() {

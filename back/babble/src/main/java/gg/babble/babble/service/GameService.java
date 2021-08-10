@@ -31,14 +31,14 @@ public class GameService {
     }
 
     public GameImageResponse findGameImageById(final Long gameId) {
-        return GameImageResponse.from(findById(gameId));
+        return GameImageResponse.from(findGameById(gameId));
     }
 
     public GameWithImageResponse findGame(final Long gameId) {
-        return GameWithImageResponse.from(findById(gameId));
+        return GameWithImageResponse.from(findGameById(gameId));
     }
 
-    public Game findById(final Long id) {
+    public Game findGameById(final Long id) {
         return gameRepository.findByIdAndDeletedFalse(id)
             .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 게임 Id 입니다."));
     }
@@ -63,7 +63,7 @@ public class GameService {
 
     @Transactional
     public GameWithImageResponse updateGame(final Long gameId, final GameRequest request) {
-        Game game = findById(gameId);
+        Game game = findGameById(gameId);
         game.update(request.toEntity());
 
         return GameWithImageResponse.from(game);
@@ -71,7 +71,7 @@ public class GameService {
 
     @Transactional
     public void deleteGame(final Long gameId) {
-        Game game = findById(gameId);
+        Game game = findGameById(gameId);
         game.delete();
     }
 }

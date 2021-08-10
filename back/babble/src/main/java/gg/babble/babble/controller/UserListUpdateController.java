@@ -22,9 +22,9 @@ public class UserListUpdateController {
     }
 
     @MessageMapping("/rooms/{roomId}/users")
-    public void join(@DestinationVariable final Long roomId, @Valid final UserJoinRequest userJoinRequest) {
+    public void enter(@DestinationVariable final Long roomId, @Valid final UserJoinRequest userJoinRequest) {
         template.convertAndSend(String.format("/topic/rooms/%s/users", roomId),
-            roomService.sendJoinRoom(roomId, userJoinRequest));
+            roomService.sendEnterRoom(roomId, userJoinRequest));
     }
 
     @EventListener

@@ -11,5 +11,4 @@ public class BabbleApplication {
     public static void main(final String[] args) {
         SpringApplication.run(BabbleApplication.class, args);
     }
-
 }

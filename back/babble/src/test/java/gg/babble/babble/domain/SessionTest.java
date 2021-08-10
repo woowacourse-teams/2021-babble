@@ -21,10 +21,12 @@ class SessionTest {
         List<Tag> tags = Collections.singletonList(new Tag(1L, "초보만"));
         MaxHeadCount maxHeadCount = new MaxHeadCount(4);
         Room room = new Room(1L, game, tags, maxHeadCount);
-        User user = new User(1L, "코 파는 알리스타", room);
+        User user = new User(1L, "코 파는 알리스타");
         Session session = new Session(1L, "1A2B3C4D", room, user);
 
         // when
+        room.removeSession(session);
+        user.unlinkSession(session);
         session.delete();
 
         // then

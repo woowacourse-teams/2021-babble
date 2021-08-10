@@ -29,7 +29,7 @@ class GameServiceTest extends ApplicationTest {
     @DisplayName("게임 Id가 없을 경우 예외를 던진다.")
     @Test
     void gameNotFoundTest() {
-        assertThatThrownBy(() -> gameService.findById(Long.MAX_VALUE))
+        assertThatThrownBy(() -> gameService.findGameById(Long.MAX_VALUE))
             .isInstanceOf(BabbleNotFoundException.class);
     }
 

@@ -19,10 +19,19 @@ public class SessionService {
     }
 
     @Transactional
-    public void create(final Room room, final String sessionId, final User user) {
-        Session session = new Session(sessionId, room, user);
+    public void userEnterRoom(final String sessionId, final Room room, final User user) {
+        Session session = sessionRepository.save(new Session(sessionId, room, user));
+    }
 
-        sessionRepository.save(session);
+    @Transactional
+    public void userExitRoom(final String sessionId, final Room room, final User user) {
+        Session session = findSessionBySessionId(sessionId);
+        session.delete();
+    }
+
+    private Session findSessionBySessionId(final String id) {
+        return sessionRepository.findBySessionIdAndDeletedFalse(id)
+            .orElseThrow(() -> new BabbleNotFoundException(String.format("[%s]는 존재하지 않는 세션 ID 입니다.", id)));
     }
 
     public Room findRoomBySessionId(final String sessionId) {

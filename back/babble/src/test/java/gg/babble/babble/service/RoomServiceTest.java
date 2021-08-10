@@ -63,7 +63,7 @@ class RoomServiceTest extends ApplicationTest {
             )
         );
 
-        roomService.sendJoinRoom(savedRoom.getRoomId(), new UserJoinRequest(1L, "1234"));
+        roomService.sendEnterRoom(savedRoom.getRoomId(), new UserJoinRequest(1L, "1234"));
     }
 
     @DisplayName("요청한 Id의 방 정보를 반환한다.")

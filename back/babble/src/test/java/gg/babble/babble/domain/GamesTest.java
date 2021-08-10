@@ -43,7 +43,9 @@ class GamesTest {
     }
 
     private void 게임_방에_유저를_입장_시킨다(Room room, User user) {
-        room.join(user);
+        Session session = new Session("1234", room, user);
+        room.addSession(session);
+        user.linkSession(session);
     }
 
     private Room 게임에_해당하는_방을_생성한다(final Game game) {

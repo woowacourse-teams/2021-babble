@@ -1,5 +1,6 @@
 package gg.babble.babble.domain.user;
 
+import gg.babble.babble.domain.Session;
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
 import java.time.LocalDateTime;
@@ -8,8 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -33,11 +33,8 @@ public class User {
     @NotNull(message = "아바타는 Null 이어서는 안됩니다.")
     private String avatar;
 
-    @ManyToOne
-    @JoinColumn(name = "room_id")
-    private Room room;
-
-    private LocalDateTime joinedAt;
+    @OneToOne(mappedBy = "user")
+    private Session session;
 
     /*
     TODO: User <-> Session <-> Room 연관관계 리팩토링 후 진행
@@ -53,14 +50,14 @@ public class User {
         this(id, nickname, null);
     }
 
-    public User(final String nickname, final Room room) {
-        this(null, nickname, room);
+    public User(final String nickname, final Session session) {
+        this(null, nickname, session);
     }
 
-    public User(final Long id, final String nickname, final Room room) {
+    public User(final Long id, final String nickname, final Session session) {
         this.id = id;
         this.nickname = nickname;
-        this.room = room;
+        this.session = session;
         this.avatar = avatarByNickname(nickname);
     }
 
@@ -69,41 +66,29 @@ public class User {
         return String.format(AVATAR_FORMAT, avatarIndex);
     }
 
-    public void join(final Room room) {
-        if (Objects.nonNull(this.room) && !this.room.equals(room)) {
-            this.room.leave(this);
+    public void linkSession(final Session session) {
+        if (isAlreadyLinkWithAnotherSession(session)) {
+            this.session.delete();
         }
 
-        joinedAt = LocalDateTime.now();
-        this.room = room;
+        this.session = session;
+    }
 
-        if (room.hasNotUser(this)) {
-            this.room.join(this);
+    private boolean isAlreadyLinkWithAnotherSession(final Session session) {
+        return Objects.nonNull(this.session) && !session.equals(this.session);
+    }
+
+    public void unlinkSession(final Session session) {
+        if (isNotLinkedSession(session)) {
+            Long roomId = session.getRoom().getId();
+            throw new BabbleIllegalArgumentException(String.format("[%d]번 유저는 [%d]번 방을 나갈 수 없습니다.", id, roomId));
         }
+
+        this.session = null;
     }
 
-    public void leave(final Room room) {
-        if (Objects.isNull(this.room) || !this.room.equals(room)) {
-            throw new BabbleIllegalArgumentException("해당 방을 나갈 수 없습니다.");
-        }
-
-        this.room = null;
-        this.joinedAt = null;
-        delegateToLeave(room);
-    }
-
-    private void delegateToLeave(final Room room) {
-        if (room.hasUser(this)) {
-            room.leave(this);
-        }
-    }
-
-    public boolean hasRoom(final Room room) {
-        return !hasNotRoom(room);
-    }
-
-    public boolean hasNotRoom(final Room room) {
-        return Objects.isNull(this.room) || !this.room.equals(room);
+    private boolean isNotLinkedSession(final Session session) {
+        return Objects.isNull(this.session) || !this.session.equals(session);
     }
 
     @Override

@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.domain.Game;
+import gg.babble.babble.domain.Session;
 import gg.babble.babble.domain.repository.GameRepository;
 import gg.babble.babble.domain.repository.RoomRepository;
 import gg.babble.babble.domain.repository.TagRepository;
@@ -58,7 +59,9 @@ public class SubscribeAuthServiceTest extends ApplicationTest {
         Room room = prepareDummyRoom();
         User guest = userRepository.findByNickname(포츈).get(0);
 
-        room.join(guest);
+        Session session = new Session("1234", room, guest);
+
+        room.addSession(session);
         roomRepository.save(room);
 
         assertThatThrownBy(() -> {
@@ -73,7 +76,9 @@ public class SubscribeAuthServiceTest extends ApplicationTest {
 
         Room room = new Room(game, tags, new MaxHeadCount(2));
 
-        room.join(host);
+        Session session = new Session("1234", room, host);
+
+        room.addSession(session);
         return roomRepository.save(room);
     }
 }

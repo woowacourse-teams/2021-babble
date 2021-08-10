@@ -34,11 +34,11 @@ class SessionServiceTest extends ApplicationTest {
         List<Tag> tags = Collections.singletonList(new Tag(1L, "초보만"));
         MaxHeadCount maxHeadCount = new MaxHeadCount(4);
         Room room = new Room(1L, game, tags, maxHeadCount);
-        User user = new User(1L, "코 파는 알리스타", room);
+        User user = new User(1L, "코 파는 알리스타");
         String sessionId = "1A2B3C4D";
 
         // when
-        sessionService.create(room, sessionId, user);
+        sessionService.userEnterRoom(sessionId, room, user);
 
         // then
         Session createdSession = sessionRepository.findBySessionIdAndDeletedFalse(sessionId)
@@ -105,7 +105,7 @@ class SessionServiceTest extends ApplicationTest {
         List<Tag> tags = Collections.singletonList(new Tag(1L, "초보만"));
         MaxHeadCount maxHeadCount = new MaxHeadCount(4);
         Room room = new Room(1L, game, tags, maxHeadCount);
-        User user = new User(1L, "코 파는 알리스타", room);
+        User user = new User(1L, "코 파는 알리스타");
         String sessionId = "1A2B3C4D";
 
         return sessionRepository.save(new Session(sessionId, room, user));
