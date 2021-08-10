@@ -24,10 +24,6 @@ public class UserService {
             .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 유저 Id 입니다."));
     }
 
-    public List<User> findByNickname(final String name) {
-        return userRepository.findByNickname(name);
-    }
-
     @Transactional
     public UserResponse save(final UserRequest request) {
         User user = userRepository.save(new User(request.getNickname()));
