@@ -1,9 +1,7 @@
 package gg.babble.babble.domain.user;
 
 import gg.babble.babble.domain.Session;
-import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
-import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -68,7 +66,7 @@ public class User {
 
     public void linkSession(final Session session) {
         if (isAlreadyLinkWithAnotherSession(session)) {
-            this.session.delete();
+            this.session.userExitRoom();
         }
 
         this.session = session;

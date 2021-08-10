@@ -51,24 +51,25 @@ public class Session {
     private boolean deleted = false;
 
     public Session(final String sessionId, final Room room, final User user) {
-        this(null, sessionId, room, user);
+        this(null, sessionId, room, user, LocalDateTime.now());
     }
 
-    public Session(final Long id, final String sessionId, final Room room, final User user) {
+    public Session(final Long id, final String sessionId, final Room room, final User user, final LocalDateTime createdDate) {
         this.id = id;
         this.sessionId = sessionId;
         this.room = room;
         this.user = user;
-
-        add(room, user);
+        this.createdDate = createdDate;
     }
 
-    public void add(Room room, User user) {
-        room.addSession(this);
-        user.linkSession(this);
+    public void userEnterRoom() {
+        this.room.enterSession(this);
+        this.user.linkSession(this);
     }
 
-    public void delete() {
+    public void userExitRoom() {
+        room.exitSession(this);
+        user.unlinkSession(this);
         deleted = true;
     }
 

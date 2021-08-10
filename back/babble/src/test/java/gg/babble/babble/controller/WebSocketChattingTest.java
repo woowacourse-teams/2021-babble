@@ -5,9 +5,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.dto.request.MessageRequest;
-import gg.babble.babble.dto.request.UserJoinRequest;
+import gg.babble.babble.dto.request.SessionRequest;
 import gg.babble.babble.dto.response.MessageResponse;
-import gg.babble.babble.dto.response.UserListUpdateResponse;
+import gg.babble.babble.dto.response.SessionsResponse;
 import gg.babble.babble.dto.response.UserResponse;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class WebSocketChattingTest extends ApplicationTest {
     private static final String SEND_CHAT_UPDATE_ENDPOINT = "/ws/rooms/1/chat";
 
     private String URL;
-    private CompletableFuture<UserListUpdateResponse> completableFutureUsers;
+    private CompletableFuture<SessionsResponse> completableFutureUsers;
     private CompletableFuture<MessageResponse> completableFutureChat;
 
     @BeforeEach
@@ -76,7 +76,7 @@ public class WebSocketChattingTest extends ApplicationTest {
 
     private void joinRoom(StompSession stompSession) {
         stompSession.subscribe(SUBSCRIBE_ROOM_UPDATE_BROAD_ENDPOINT, new UserUpdateStompFrameHandler());
-        sendJoinMessage(stompSession, new UserJoinRequest(2L, "7777"));
+        sendJoinMessage(stompSession, new SessionRequest(2L, "7777"));
     }
 
     private List<Transport> createTransportClient() {
@@ -85,8 +85,8 @@ public class WebSocketChattingTest extends ApplicationTest {
         return transports;
     }
 
-    private void sendJoinMessage(StompSession stompSession, UserJoinRequest userJoinRequest) {
-        stompSession.send(SEND_ROOM_UPDATE_ENDPOINT, userJoinRequest);
+    private void sendJoinMessage(StompSession stompSession, SessionRequest sessionRequest) {
+        stompSession.send(SEND_ROOM_UPDATE_ENDPOINT, sessionRequest);
     }
 
     private class ChatUpdateStompFrameHandler implements StompFrameHandler {
@@ -107,13 +107,13 @@ public class WebSocketChattingTest extends ApplicationTest {
 
         @Override
         public Type getPayloadType(StompHeaders stompHeaders) {
-            return UserListUpdateResponse.class;
+            return SessionsResponse.class;
         }
 
         @Override
         public void handleFrame(StompHeaders stompHeaders, Object o) {
             System.out.println(o);
-            completableFutureUsers.complete((UserListUpdateResponse) o);
+            completableFutureUsers.complete((SessionsResponse) o);
         }
     }
 }

@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserJoinRequest {
+public class SessionRequest {
 
     @NotNull(message = "userId는 비어있을 수 없습니다.")
     @Positive(message = "userId는 음수일 수 없습니다.")

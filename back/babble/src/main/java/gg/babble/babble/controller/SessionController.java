@@ -1,7 +1,7 @@
 package gg.babble.babble.controller;
 
-import gg.babble.babble.dto.request.UserJoinRequest;
-import gg.babble.babble.service.RoomService;
+import gg.babble.babble.dto.request.SessionRequest;
+import gg.babble.babble.service.SessionService;
 import javax.validation.Valid;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -11,27 +11,27 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 @Controller
-public class UserListUpdateController {
+public class SessionController {
 
     private final SimpMessagingTemplate template;
-    private final RoomService roomService;
+    private final SessionService sessionService;
 
-    public UserListUpdateController(final SimpMessagingTemplate template, final RoomService roomService) {
+    public SessionController(final SimpMessagingTemplate template, final SessionService sessionService) {
         this.template = template;
-        this.roomService = roomService;
+        this.sessionService = sessionService;
     }
 
     @MessageMapping("/rooms/{roomId}/users")
-    public void enter(@DestinationVariable final Long roomId, @Valid final UserJoinRequest userJoinRequest) {
+    public void createSession(@DestinationVariable final Long roomId, @Valid final SessionRequest sessionRequest) {
         template.convertAndSend(String.format("/topic/rooms/%s/users", roomId),
-            roomService.sendEnterRoom(roomId, userJoinRequest));
+            sessionService.create(roomId, sessionRequest));
     }
 
     @EventListener
-    public void exit(final SessionDisconnectEvent event) {
+    public void deleteSession(final SessionDisconnectEvent event) {
         template.convertAndSend(
-            String.format("/topic/rooms/%s/users", roomService.findRoomIdBySessionId(event.getSessionId())),
-            roomService.sendExitRoom(event.getSessionId())
+            String.format("/topic/rooms/%s/users", sessionService.findRoomIdBySessionId(event.getSessionId())),
+            sessionService.delete(event.getSessionId())
         );
     }
 }

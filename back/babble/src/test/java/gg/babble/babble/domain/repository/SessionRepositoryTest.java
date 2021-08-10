@@ -58,13 +58,13 @@ class SessionRepositoryTest {
         Session session = sessionRepository.save(세션_객체를_생성한다());
 
         // when
-        session.delete();
+        session.userExitRoom();
 
         // then
         assertThat(sessionRepository.findBySessionIdAndDeletedFalse(session.getSessionId())).isNotPresent();
     }
 
-    @DisplayName("삭제된 세션은 조회되지 않는다.")
+    @DisplayName("sessionId로 조회를 시도할 때 삭제된 세션은 조회되지 않는다.")
     @Test
     void findByDeletedFalse() {
         // given
@@ -72,7 +72,7 @@ class SessionRepositoryTest {
 
         // then
         assertThat(sessionRepository.findBySessionIdAndDeletedFalse(session.getSessionId())).isPresent();
-        session.delete();
+        session.userExitRoom();
         assertThat(sessionRepository.findBySessionIdAndDeletedFalse(session.getSessionId())).isNotPresent();
     }
 
