@@ -4,14 +4,14 @@
 
 .slider-container {
   width: 100%;
-  height: 35rem;
+  height: 38rem;
   overflow: hidden;
   position: relative;
 
   .show {
     width: 100%;
     height: 100%;
-    max-height: 35rem;
+    max-height: 38rem;
     overflow: hidden;
 
     .page-index-container {
@@ -123,6 +123,6 @@
 
 @include m.media(mobile-down, mobile) {
   .slider-container {
-    height: 26rem;
+    height: 30rem;
   }
 }

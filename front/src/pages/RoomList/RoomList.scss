@@ -71,7 +71,6 @@
       @include m.search-section;
 
       .input-container {
-        flex-basis: 40%;
         min-width: 40rem;
         max-width: 40rem;
         margin-right: 1.5rem;
@@ -151,7 +150,7 @@
   .room-list-container {
     .room-list-header {
       display: block;
-      margin: 1rem 0 2rem 0;
+      margin: 1rem 0;
 
       .side {
         width: 100%;
@@ -183,21 +182,33 @@
     }
 
     .search-container {
-      padding: 0;
+      max-width: 100%;
+      padding: 1rem 0;
+      position: sticky;
+      top: -1px;
 
       .search-section {
         display: block;
         max-width: 100%;
         min-width: 100%;
         margin-bottom: 0;
-        padding: 1rem 0 0 0;
+        padding: 1rem 0;
 
         .input-container {
           min-width: 100%;
         }
 
         .tag-list-container {
-          margin: 1.5rem;
+          min-height: 0;
+          margin: 0;
+
+          .linear-layout {
+            gap: 0;
+
+            .tag-container {
+              margin-top: 1rem;
+            }
+          }
         }
       }
     }
