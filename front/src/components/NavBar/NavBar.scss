@@ -1,7 +1,21 @@
+@use '../../../style/mixins' as m;
+
 .navigation-container {
   padding: 2rem 0;
 
   .page-layout a {
     width: fit-content;
+  }
+}
+
+@include m.media(mobile-down, mobile) {
+  .navigation-container {
+    padding: 1rem 0;
+
+    .page-layout a {
+      svg {
+        width: 8rem;
+      }
+    }
   }
 }

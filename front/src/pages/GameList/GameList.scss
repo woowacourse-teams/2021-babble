@@ -1,5 +1,4 @@
 @use '../../../style/mixins' as m;
-@use '../../../style/variables' as v;
 
 .game-list-container {
   display: flex;
@@ -12,28 +11,16 @@
   }
 
   .search-container {
-    max-width: 100%;
-    padding: 1rem 0;
-    position: sticky;
-    top: -1px;
-    background: transparent;
-    z-index: 5;
+    @include m.search-container;
 
     &.stuck {
       .search-section {
-        border-radius: 1rem;
-        box-shadow: 0 0 0.6rem 0.2rem #929090ab;
-        padding: 1rem;
+        @include m.stuck-search-section;
       }
     }
 
     .search-section {
-      max-width: 100%;
-      min-width: 40rem;
-      padding: 1rem 0;
-      margin-bottom: 1rem;
-      display: flex;
-      background-color: m.grey-scale(white);
+      @include m.search-section;
 
       .input-container {
         min-width: 40rem;
@@ -43,8 +30,48 @@
   }
 
   .game-list {
+    max-width: 100%;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     grid-gap: 2rem;
+  }
+}
+
+@include m.media(tablet) {
+  .game-list-container {
+    .game-list {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+}
+
+@include m.media(mobile, mobile-down) {
+  .game-list-container {
+    .headline2 {
+      margin: 2rem 0 1rem 0;
+    }
+
+    .search-container {
+      margin-bottom: 1rem;
+
+      .search-section {
+        display: block;
+        max-width: 100%;
+        min-width: 100%;
+        margin-bottom: 0;
+        padding: 1rem 0;
+
+        .input-container {
+          min-width: 100%;
+        }
+      }
+    }
+
+    .game-list {
+      display: grid;
+      width: 100%;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-gap: 0.8rem;
+    }
   }
 }

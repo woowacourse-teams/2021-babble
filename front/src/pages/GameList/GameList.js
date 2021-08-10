@@ -88,7 +88,10 @@ const GameList = () => {
   useEffect(() => {
     const stickyObserver = new IntersectionObserver(
       ([entry]) => {
-        entry.target.classList.toggle('stuck', entry.intersectionRatio < 1);
+        entry.target.classList.toggle(
+          'stuck',
+          entry.intersectionRatio < 1 && entry.boundingClientRect.top <= 50
+        );
       },
       { threshold: 1 }
     );
@@ -106,7 +109,7 @@ const GameList = () => {
     <div className='game-list-container'>
       <Slider imageList={dummyImage} />
       <PageLayout>
-        <Headline2>게임 목록</Headline2>
+        <Headline2>전체 게임</Headline2>
         <div className='search-container' ref={searchRef}>
           <section className='search-section'>
             <SearchInput

@@ -1,4 +1,5 @@
 @use '../../../style/mixins' as m;
+@use '../../../style/functions' as f;
 
 .error-container,
 .confirm-container {
@@ -11,7 +12,7 @@
   align-items: center;
 
   .subtitle2 {
-    color: m.primary(babble-pink);
+    color: f.primary(babble-pink);
   }
 
   .linear-layout {
@@ -19,6 +20,29 @@
 
     button {
       margin: 0.5rem;
+    }
+  }
+}
+
+@include m.media(mobile-down, mobile) {
+  .modal-container {
+    &.default {
+      .error-container,
+      .confirm-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+
+        .linear-layout {
+          width: 100%;
+          position: relative;
+          justify-content: center;
+          display: flex;
+
+          @include m.mobile-cancel-confirm;
+        }
+      }
     }
   }
 }
