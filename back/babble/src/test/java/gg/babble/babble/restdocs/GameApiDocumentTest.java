@@ -15,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gg.babble.babble.ApplicationTest;
+import gg.babble.babble.domain.admin.Administrator;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
@@ -126,7 +127,7 @@ public class GameApiDocumentTest extends ApplicationTest {
 
     @DisplayName("게임을 추가한다.")
     @Test
-    void insertGame() throws Exception {
+    void createGame() throws Exception {
         String gameName = "League Of Legends";
         String thumbnail = "image.png";
 

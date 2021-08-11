@@ -1,6 +1,6 @@
 package gg.babble.babble.config;
 
-import gg.babble.babble.service.SubscribeAuthService;
+import gg.babble.babble.service.auth.SubscribeAuthService;
 import java.util.Objects;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;

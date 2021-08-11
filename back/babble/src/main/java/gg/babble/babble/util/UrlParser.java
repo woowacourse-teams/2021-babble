@@ -5,7 +5,8 @@ import java.util.Map;
 import org.springframework.util.AntPathMatcher;
 
 public enum UrlParser {
-    ROOM_SUBSCRIBE_URL_PATTERN("/topic/rooms/{roomId}/*");
+    ROOM_SUBSCRIBE_URL_PATTERN("/topic/rooms/{roomId}/*"),
+    AUTHENTICATION_URL_PATTERN("/api/admins/**");
 
     private static final AntPathMatcher PATH_MATCHER = new AntPathMatcher();
 
@@ -26,4 +27,9 @@ public enum UrlParser {
             throw new BabbleIllegalStatementException(String.format("%s은 roomId를 파싱할 수 없는 url 입니다.", url));
         }
     }
+
+    public static boolean isAuthenticationUrl(final String url) {
+        return PATH_MATCHER.match(AUTHENTICATION_URL_PATTERN.urlPattern, url);
+    }
+
 }

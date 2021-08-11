@@ -17,17 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class ApplicationTest {
+public class ApplicationWebSocketTest {
 
     @LocalServerPort
     protected int port;
 
-    @Autowired
-    protected AdministratorRepository administratorRepository;
-
     @BeforeEach
     protected void setUp() {
         RestAssured.port = port;
-        administratorRepository.save(new Administrator("127.0.0.1", "localhost"));
     }
 }

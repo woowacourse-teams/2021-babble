@@ -1,6 +1,7 @@
-package gg.babble.babble.service;
+package gg.babble.babble.service.auth;
 
 import gg.babble.babble.exception.BabbleIllegalStatementException;
+import gg.babble.babble.service.RoomService;
 import gg.babble.babble.util.UrlParser;
 import org.springframework.stereotype.Service;
 

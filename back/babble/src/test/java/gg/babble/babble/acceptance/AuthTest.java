@@ -1,33 +1,24 @@
-package gg.babble.babble;
+package gg.babble.babble.acceptance;
 
-import gg.babble.babble.domain.admin.Administrator;
-import gg.babble.babble.domain.repository.AdministratorRepository;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
 @ActiveProfiles("test")
-@Transactional
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class ApplicationTest {
+public class AuthTest {
 
     @LocalServerPort
     protected int port;
 
-    @Autowired
-    protected AdministratorRepository administratorRepository;
-
     @BeforeEach
     protected void setUp() {
         RestAssured.port = port;
-        administratorRepository.save(new Administrator("127.0.0.1", "localhost"));
     }
 }
