@@ -36,7 +36,7 @@ public class RoomController {
 
     @GetMapping("/{roomId}")
     public ResponseEntity<FoundRoomResponse> readRoom(@PathVariable final Long roomId) {
-        FoundRoomResponse response = roomService.findById(roomId);
+        FoundRoomResponse response = roomService.findRoomById(roomId);
         return ResponseEntity.ok(response);
     }
 
