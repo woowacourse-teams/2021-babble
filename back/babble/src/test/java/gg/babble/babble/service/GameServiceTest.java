@@ -98,34 +98,33 @@ class GameServiceTest extends ApplicationTest {
             .isEqualTo(expectedResponses);
     }
 
-    // TODO: 유저가 참가하는 enter가 수행되어도 게임 참여 유저수가 증가하지 않는다.
-//    @DisplayName("참가 유저수에 따라 정렬된 게임 리스트를 반환한다.")
-//    @Test
-//    void findAllGames() {
-//        prepareDummyGames();
-//
-//        Game game = gameRepository.findByIdAndDeletedFalse(3L).orElseThrow(BabbleNotFoundException::new);
-//        Tag tag = tagRepository.save(new Tag("2시간"));
-//        Room room = roomRepository.save(new Room(game, Collections.singletonList(tag), new MaxHeadCount(5)));
-//        User 루트 = userRepository.save(new User("루트"));
-//        User 와일더 = userRepository.save(new User("와일더"));
-//
-//        enterExitService.enter(room.getId(), new SessionRequest(루트.getId(), "1111"));
-//        enterExitService.enter(room.getId(), new SessionRequest(와일더.getId(), "2222"));
-//
-//        // when
-//        List<IndexPageGameResponse> expectedResponses = Arrays.asList(
-//            new IndexPageGameResponse(3L, APEX_LEGEND_NAME, 2, DEFAULT_THUMBNAIL),
-//            new IndexPageGameResponse(1L, LOL_NAME, 0, LOL_THUMBNAIL),
-//            new IndexPageGameResponse(2L, OVERWATCH_NAME, 0, DEFAULT_THUMBNAIL)
-//        );
-//
-//        List<IndexPageGameResponse> sortedGames = gameService.findSortedGames();
-//
-//        // then
-//        assertThat(sortedGames).usingRecursiveComparison()
-//            .isEqualTo(expectedResponses);
-//    }
+    @DisplayName("참가 유저수에 따라 정렬된 게임 리스트를 반환한다.")
+    @Test
+    void findAllGames() {
+        prepareDummyGames();
+
+        Game game = gameRepository.findByIdAndDeletedFalse(3L).orElseThrow(BabbleNotFoundException::new);
+        Tag tag = tagRepository.save(new Tag("2시간"));
+        Room room = roomRepository.save(new Room(game, Collections.singletonList(tag), new MaxHeadCount(5)));
+        User 루트 = userRepository.save(new User("루트"));
+        User 와일더 = userRepository.save(new User("와일더"));
+
+        enterExitService.enter(room.getId(), new SessionRequest(루트.getId(), "1111"));
+        enterExitService.enter(room.getId(), new SessionRequest(와일더.getId(), "2222"));
+
+        // when
+        List<IndexPageGameResponse> expectedResponses = Arrays.asList(
+            new IndexPageGameResponse(3L, APEX_LEGEND_NAME, 2, DEFAULT_THUMBNAIL),
+            new IndexPageGameResponse(1L, LOL_NAME, 0, LOL_THUMBNAIL),
+            new IndexPageGameResponse(2L, OVERWATCH_NAME, 0, DEFAULT_THUMBNAIL)
+        );
+
+        List<IndexPageGameResponse> sortedGames = gameService.findSortedGames();
+
+        // then
+        assertThat(sortedGames).usingRecursiveComparison()
+            .isEqualTo(expectedResponses);
+    }
 
     @DisplayName("ID에 해당되는 단일 게임을 반환한다.")
     @Test

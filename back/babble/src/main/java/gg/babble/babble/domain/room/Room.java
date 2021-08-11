@@ -67,6 +67,8 @@ public class Room {
         this.game = game;
         this.tagRegistrationsOfRoom = new TagRegistrationsOfRoom(this, tags);
         this.maxHeadCount = maxHeadCount;
+
+        game.addRoom(this);
     }
 
     private static void validateToConstruct(final List<Tag> tags) {

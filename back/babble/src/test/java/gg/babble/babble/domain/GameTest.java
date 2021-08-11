@@ -13,24 +13,23 @@ import org.junit.jupiter.api.Test;
 
 class GameTest {
 
-    // TODO: 유저가 참가하는 enter가 수행되어도 게임 참여 유저수가 증가하지 않는다.
-//    @DisplayName("게임에 참여 중인 유저 수 반환")
-//    @Test
-//    void headCount() {
-//        // given
-//        User host = new User(1L, "방장");
-//        Game game = new Game(1L, "게임 이름", "게임 이미지");
-//        List<Tag> tags = Arrays.asList(new Tag("실버"), new Tag("2시간"));
-//        Room room = new Room(1L, game, tags, new MaxHeadCount(4));
-//        Session session = new Session(1L, "1111", host, room);
-//        room.enterSession(session);
-//
-//        // when
-//        int count = game.userHeadCount();
-//
-//        // then
-//        assertThat(count).isEqualTo(1);
-//    }
+    @DisplayName("게임에 참여 중인 유저 수 반환")
+    @Test
+    void headCount() {
+        // given
+        User host = new User(1L, "방장");
+        Game game = new Game(1L, "게임 이름", "게임 이미지");
+        List<Tag> tags = Arrays.asList(new Tag("실버"), new Tag("2시간"));
+        Room room = new Room(1L, game, tags, new MaxHeadCount(4));
+        Session session = new Session(1L, "1111", host, room);
+        room.enterSession(session);
+
+        // when
+        int count = game.userHeadCount();
+
+        // then
+        assertThat(count).isEqualTo(1);
+    }
 
     @DisplayName("게임 정보 편집")
     @Test

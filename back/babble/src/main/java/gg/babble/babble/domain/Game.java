@@ -1,5 +1,6 @@
 package gg.babble.babble.domain;
 
+import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.room.Rooms;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -61,6 +62,10 @@ public class Game {
     public void update(final Game target) {
         this.name = target.name;
         this.image = target.image;
+    }
+
+    public void addRoom(Room room) {
+        rooms.addRoom(room);
     }
 
     public void delete() {
