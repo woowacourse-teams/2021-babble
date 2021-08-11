@@ -161,9 +161,9 @@ include::{snippets}/tags-get/response-fields.adoc[]
 
 == 관리자
 
-=== 관리자 전체 조회 API
-
 > Accessible only from allowed ip.
+
+=== 관리자 전체 조회 API
 
 ==== HTTP Request
 
