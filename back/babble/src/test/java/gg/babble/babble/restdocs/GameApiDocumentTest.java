@@ -13,9 +13,11 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.domain.Game;
+import gg.babble.babble.domain.admin.Administrator;
 import gg.babble.babble.domain.repository.GameRepository;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -140,6 +142,7 @@ public class GameApiDocumentTest extends ApplicationTest {
     @DisplayName("게임을 추가한다.")
     @Test
     void createGame() throws Exception {
+        administratorRepository.save(new Administrator("127.0.0.1", "localhost"));
         String gameName = "League Of Legends";
         String thumbnail = "image.png";
 
@@ -168,6 +171,24 @@ public class GameApiDocumentTest extends ApplicationTest {
                     fieldWithPath("thumbnail").description("게임 썸네일 URL")
                 )
             ));
+    }
+
+    @DisplayName("등록되어 있지 않은 관리자의 경우 게임을 추가할 수 없다.")
+    @Test
+    void createGameWithInvalidAdministrator() throws Exception {
+        String gameName = "League Of Legends";
+        String thumbnail = "image.png";
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("name", gameName);
+        body.put("thumbnail", thumbnail);
+
+        mockMvc.perform(post("/api/games")
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(objectMapper.writeValueAsString(body)).characterEncoding("utf-8"))
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isUnauthorized());
     }
 
     // TODO: DataLoader에 의존적인 구조를 가지고 있어 테스트 작성이 불가능한 상태.

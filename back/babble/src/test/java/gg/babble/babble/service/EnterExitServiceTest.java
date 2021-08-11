@@ -29,21 +29,6 @@ class EnterExitServiceTest extends ApplicationTest {
     @Autowired
     private EnterExitService enterExitService;
 
-    @Autowired
-    private SessionRepository sessionRepository;
-
-    @Autowired
-    private RoomRepository roomRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private GameRepository gameRepository;
-
-    @Autowired
-    private TagRepository tagRepository;
-
     @DisplayName("세션을 생성(방에 유저 입장)한다.")
     @Test
     void createSession() {

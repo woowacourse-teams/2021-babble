@@ -30,18 +30,6 @@ public class SubscribeAuthServiceTest extends ApplicationTest {
     @Autowired
     private EnterExitService enterExitService;
 
-    @Autowired
-    private GameRepository gameRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private TagRepository tagRepository;
-
-    @Autowired
-    private RoomRepository roomRepository;
-
     @DisplayName("새로운 유저가 방에 들어오더라도, 정원초과가 발생하지 않으면 예외가 발생하지 않는다.")
     @Test
     void userJoinTest() {

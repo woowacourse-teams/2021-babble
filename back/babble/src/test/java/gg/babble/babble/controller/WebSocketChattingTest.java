@@ -3,7 +3,6 @@ package gg.babble.babble.controller;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import gg.babble.babble.ApplicationWebSocketTest;
 import gg.babble.babble.dto.request.MessageRequest;
 import gg.babble.babble.dto.request.SessionRequest;
 import gg.babble.babble.dto.response.MessageResponse;

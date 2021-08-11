@@ -18,6 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gg.babble.babble.ApplicationTest;
+import gg.babble.babble.domain.admin.Administrator;
 import gg.babble.babble.dto.response.AdministratorResponse;
 import java.util.HashMap;
 import java.util.List;
@@ -46,10 +47,12 @@ public class AdministratorApiDocumentTest extends ApplicationTest {
 
     @BeforeEach
     public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
+        super.setUp();
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
             .apply(documentationConfiguration(restDocumentation))
             .alwaysDo(document("{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())))
             .build();
+        administratorRepository.save(new Administrator("127.0.0.1", "localhost"));
     }
 
     @DisplayName("관리자 전체 조회한다.")

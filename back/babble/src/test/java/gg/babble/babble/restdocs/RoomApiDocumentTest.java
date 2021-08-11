@@ -53,6 +53,7 @@ public class RoomApiDocumentTest extends ApplicationTest {
 
     private static final int COUNT_OF_ONE_PAGE = 16;
     private static final int ROOM_COUNT = 20;
+
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -246,7 +247,7 @@ public class RoomApiDocumentTest extends ApplicationTest {
     @DisplayName("page 번호 없이 게임과 태그에 해당하는 방 목록을 조회한다.")
     @Test
     public void readGameRoomsWithoutPageTest() throws Exception {
-        ResultActions actions = mockMvc.perform(get("/api/rooms?gameId=" + games.get(0).getId() + "&tagIds=1,2")
+        ResultActions actions = mockMvc.perform(get("/api/rooms?gameId=" + games.get(0).getId() + "&tagIds=" + tags.get(0).getId() + "," + tags.get(1).getId())
             .accept(MediaType.APPLICATION_JSON_VALUE));
 
         testRoomResponseOfOnePage(actions);
@@ -256,7 +257,7 @@ public class RoomApiDocumentTest extends ApplicationTest {
     @DisplayName("게임과 page 번호, 태그에 해당하는 방 목록을 조회한다.")
     @Test
     public void readGameRoomsTest() throws Exception {
-        ResultActions actions = mockMvc.perform(get("/api/rooms?gameId=" + games.get(0).getId() + "&tagIds=1,2&page=1")
+        ResultActions actions = mockMvc.perform(get("/api/rooms?gameId=" + games.get(0).getId() + "&tagIds=" + tags.get(0).getId() + "," + tags.get(1).getId() + "&page=1")
             .accept(MediaType.APPLICATION_JSON_VALUE));
 
         testRoomResponseOfOnePage(actions);

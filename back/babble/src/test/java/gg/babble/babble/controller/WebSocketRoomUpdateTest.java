@@ -4,7 +4,7 @@
 //import static org.assertj.core.api.Assertions.assertThat;
 //
 //import gg.babble.babble.ApplicationTest;
-//import gg.babble.babble.ApplicationWebSocketTest;
+//import gg.babble.babble.controller.ApplicationWebSocketTest;
 //import gg.babble.babble.domain.repository.UserRepository;
 //import gg.babble.babble.domain.user.Nickname;
 //import gg.babble.babble.domain.user.User;

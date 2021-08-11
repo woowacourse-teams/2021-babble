@@ -5,12 +5,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.domain.Game;
-import gg.babble.babble.domain.Session;
-import gg.babble.babble.domain.repository.GameRepository;
-import gg.babble.babble.domain.repository.RoomRepository;
-import gg.babble.babble.domain.repository.SessionRepository;
-import gg.babble.babble.domain.repository.TagRepository;
-import gg.babble.babble.domain.repository.UserRepository;
 import gg.babble.babble.domain.room.MaxHeadCount;
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.tag.Tag;
@@ -24,6 +18,7 @@ import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,33 +26,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 class GameServiceTest extends ApplicationTest {
 
     private static final String DEFAULT_THUMBNAIL = "https://static-cdn.jtvnw.net/ttv-static/404_boxart-1080x1436.jpg";
-    private static final String LOL_THUMBNAIL = "LOLOLOL";
     private static final String LOL_NAME = "LEAGUE_OF_LEGENDS";
     private static final String OVERWATCH_NAME = "OVERWATCH";
     private static final String APEX_LEGEND_NAME = "APEX_LEGEND";
+
+    private Game game1;
+    private Game game2;
+    private Game game3;
 
     @Autowired
     private GameService gameService;
 
     @Autowired
-    private GameRepository gameRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private RoomRepository roomRepository;
-
-    @Autowired
-    private TagRepository tagRepository;
-
-    @Autowired
     private EnterExitService enterExitService;
 
-    private void prepareDummyGames() {
-        gameRepository.save(new Game(LOL_NAME, LOL_THUMBNAIL));
-        gameRepository.save(new Game(OVERWATCH_NAME));
-        gameRepository.save(new Game(APEX_LEGEND_NAME));
+    @BeforeEach
+    public void setUp() {
+        game1 = gameRepository.save(new Game(LOL_NAME, DEFAULT_THUMBNAIL));
+        game2 = gameRepository.save(new Game(OVERWATCH_NAME, DEFAULT_THUMBNAIL));
+        game3 = gameRepository.save(new Game(APEX_LEGEND_NAME, DEFAULT_THUMBNAIL));
     }
 
     @DisplayName("게임 Id 조회에 실패할 경우 예외를 던진다.")
@@ -71,26 +58,22 @@ class GameServiceTest extends ApplicationTest {
     @Test
     void findGameImageById() {
         // given
-        prepareDummyGames();
-
-        // given
-        GameImageResponse expectedResponse = new GameImageResponse(1L, LOL_THUMBNAIL);
+        GameImageResponse expectedResponse = new GameImageResponse(game1.getId(), game1.getImage());
 
         // then
-        assertThat(gameService.findGameImageById(1L)).usingRecursiveComparison()
+        assertThat(gameService.findGameImageById(game1.getId())).usingRecursiveComparison()
             .isEqualTo(expectedResponse);
     }
 
     @DisplayName("전체 게임 이미지 목록을 반환한다.")
     @Test
     void gameImages() {
-        prepareDummyGames();
 
         // given
         List<GameImageResponse> expectedResponses = Arrays.asList(
-            new GameImageResponse(1L, LOL_THUMBNAIL),
-            new GameImageResponse(2L, DEFAULT_THUMBNAIL),
-            new GameImageResponse(3L, DEFAULT_THUMBNAIL)
+            new GameImageResponse(game1.getId(), game1.getImage()),
+            new GameImageResponse(game2.getId(), game2.getImage()),
+            new GameImageResponse(game3.getId(), game3.getImage())
         );
 
         // then
@@ -101,11 +84,8 @@ class GameServiceTest extends ApplicationTest {
     @DisplayName("참가 유저수에 따라 정렬된 게임 리스트를 반환한다.")
     @Test
     void findAllGames() {
-        prepareDummyGames();
-
-        Game game = gameRepository.findByIdAndDeletedFalse(3L).orElseThrow(BabbleNotFoundException::new);
         Tag tag = tagRepository.save(new Tag("2시간"));
-        Room room = roomRepository.save(new Room(game, Collections.singletonList(tag), new MaxHeadCount(5)));
+        Room room = roomRepository.save(new Room(game3, Collections.singletonList(tag), new MaxHeadCount(5)));
         User 루트 = userRepository.save(new User("루트"));
         User 와일더 = userRepository.save(new User("와일더"));
 
@@ -114,9 +94,9 @@ class GameServiceTest extends ApplicationTest {
 
         // when
         List<IndexPageGameResponse> expectedResponses = Arrays.asList(
-            new IndexPageGameResponse(3L, APEX_LEGEND_NAME, 2, DEFAULT_THUMBNAIL),
-            new IndexPageGameResponse(1L, LOL_NAME, 0, LOL_THUMBNAIL),
-            new IndexPageGameResponse(2L, OVERWATCH_NAME, 0, DEFAULT_THUMBNAIL)
+            new IndexPageGameResponse(game3.getId(), game3.getName(), 2, game3.getImage()),
+            new IndexPageGameResponse(game1.getId(), game1.getName(), 0, game1.getImage()),
+            new IndexPageGameResponse(game2.getId(), game2.getName(), 0, game2.getImage())
         );
 
         List<IndexPageGameResponse> sortedGames = gameService.findSortedGames();
@@ -129,12 +109,10 @@ class GameServiceTest extends ApplicationTest {
     @DisplayName("ID에 해당되는 단일 게임을 반환한다.")
     @Test
     void findGame() {
-        prepareDummyGames();
-
         // when
-        GameWithImageResponse expectedResponse = new GameWithImageResponse(1L, LOL_NAME, LOL_THUMBNAIL);
+        GameWithImageResponse expectedResponse = new GameWithImageResponse(game1.getId(), game1.getName(), game1.getImage());
         // then
-        assertThat(gameService.findGame(1L)).usingRecursiveComparison()
+        assertThat(gameService.findGame(game1.getId())).usingRecursiveComparison()
             .isEqualTo(expectedResponse);
     }
 

@@ -20,9 +20,6 @@ public class TagServiceTest extends ApplicationTest {
     @Autowired
     private TagService tagService;
 
-    @Autowired
-    private TagRepository tagRepository;
-
     @DisplayName("태그 전체를 불러오면, DB에 존재하는 모든 태그를 불러온다.")
     @Test
     void getAllTags() {

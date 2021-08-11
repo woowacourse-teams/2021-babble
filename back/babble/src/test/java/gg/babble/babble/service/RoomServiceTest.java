@@ -37,18 +37,6 @@ class RoomServiceTest extends ApplicationTest {
     private RoomService roomService;
 
     @Autowired
-    private RoomRepository roomRepository;
-
-    @Autowired
-    private GameRepository gameRepository;
-
-    @Autowired
-    private TagRepository tagRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private SessionRepository sessionRepository;
 
     @DisplayName("방을 생성한다")

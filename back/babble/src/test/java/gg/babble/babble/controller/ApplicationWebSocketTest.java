@@ -1,4 +1,4 @@
-package gg.babble.babble.acceptance;
+package gg.babble.babble.controller;
 
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class AuthTest {
+public class ApplicationWebSocketTest {
 
     @LocalServerPort
     protected int port;
