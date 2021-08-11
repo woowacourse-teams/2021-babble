@@ -126,7 +126,7 @@ const RoomList = ({ match }) => {
     });
   };
 
-  // TODO: Custom Confirm 로직을 개선할 방법에 대해 고려(우선순위 높음)
+  // TODO: Custom Confirm 로직을 개선할 방법에 대해 고려(우선순위 꽤나 높음)
   const onConfirm = (callback) => {
     if (isChattingModalOpen) {
       openModal(
