@@ -248,7 +248,7 @@ const RoomList = ({ match }) => {
           </section>
         </div>
         <section className='room-list-section'>
-          {roomList.map((room, index) => (
+          {roomList?.map((room, index) => (
             <Room
               room={room}
               key={index}
