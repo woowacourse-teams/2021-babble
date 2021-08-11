@@ -30,11 +30,11 @@ public class Game {
     @NotNull(message = "게임 이미지는 Null 일 수 없습니다.")
     private String image;
 
-    @Column(nullable = false)
-    private boolean deleted = false;
-
     @Embedded
     private final Rooms rooms = new Rooms();
+
+    @Column(nullable = false)
+    private boolean deleted = false;
 
     public Game(final String name) {
         this(null, name, DEFAULT_IMAGE);
