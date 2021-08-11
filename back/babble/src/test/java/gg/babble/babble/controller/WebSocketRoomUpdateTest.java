@@ -4,6 +4,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import gg.babble.babble.ApplicationTest;
+import gg.babble.babble.ApplicationWebSocketTest;
 import gg.babble.babble.domain.repository.UserRepository;
 import gg.babble.babble.domain.user.Nickname;
 import gg.babble.babble.domain.user.User;
@@ -33,7 +34,7 @@ import org.springframework.web.socket.sockjs.client.SockJsClient;
 import org.springframework.web.socket.sockjs.client.Transport;
 import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 
-public class WebSocketRoomUpdateTest extends ApplicationTest {
+public class WebSocketRoomUpdateTest extends ApplicationWebSocketTest {
 
     // TODO : 데이터로더에 비 의존적으로 리팩토링
 //    private static final int FIRST_DATA_INDEX = 0;

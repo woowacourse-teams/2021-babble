@@ -15,7 +15,7 @@ public class Ip {
     public static final String IP_REGEXP = "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
     private static final Pattern IP_PATTERN = Pattern.compile(IP_REGEXP);
 
-    @Column(name = "ip")
+    @Column(name = "ip", unique = true)
     private String value;
 
     public Ip(final String value) {
