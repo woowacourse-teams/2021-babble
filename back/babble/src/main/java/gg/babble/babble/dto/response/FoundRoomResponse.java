@@ -23,7 +23,7 @@ public class FoundRoomResponse {
     public static FoundRoomResponse from(final Room room) {
         return FoundRoomResponse.builder()
             .roomId(room.getId())
-            .createdDate(room.getCreatedDate().toString())
+            .createdDate(room.getCreatedAt().toString())
             .game(GameResponse.from(room.getGame()))
             .host(UserResponse.from(room.getHost()))
             .headCount(HeadCountResponse.from(room))
