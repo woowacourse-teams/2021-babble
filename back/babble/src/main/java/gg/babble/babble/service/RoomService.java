@@ -56,12 +56,12 @@ public class RoomService {
 
     private List<Room> findByGameIdAndTagIdsInRepository(final Long gameId, final List<Long> tagIds, final Pageable pageable) {
         if (tagIds.isEmpty()) {
-            return roomRepository.findAllByGameIdAndDeletedFalse(gameId, pageable);
+            return roomRepository.findByGameIdAndDeletedFalse(gameId, pageable);
         }
 
         Set<Long> distinctTagIds = new HashSet<>(tagIds);
 
-        return roomRepository.findAllByGameIdAndTagIdsAndDeletedFalse(gameId, distinctTagIds, (long) distinctTagIds.size(), pageable);
+        return roomRepository.findByGameIdAndTagIdsAndDeletedFalse(gameId, distinctTagIds, (long) distinctTagIds.size(), pageable);
     }
 
     public boolean isFullRoom(final Long id) {
