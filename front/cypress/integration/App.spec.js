@@ -25,15 +25,16 @@ describe('E2E 테스트', () => {
   });
 
   it('사용자는 찾은 게임을 클릭해 방 목록으로 들어갈 수 있다.', () => {
+    cy.intercept(
+      'GET',
+      'https://test-api.babble.gg/api/rooms?gameId=1&tagIds=&page=1',
+      {
+        fixture: 'example.json',
+      }
+    ).as('getRooms');
+
     cy.get('.game-list').within(() => {
-      cy.intercept(
-        'GET',
-        'https://test-api.babble.gg/api/rooms?gameId=1&tagIds=&page=1',
-        {
-          fixture: 'example.json',
-        }
-      );
-      cy.get('.game-card-container').first().click();
+      cy.get('.game-card-container').first().click().wait('@getRooms');
 
       cy.location().should((loc) => {
         expect(loc.pathname).to.eq('/games/1');
