@@ -26,9 +26,10 @@ jobs:
       - name: E2E 테스트
         uses: cypress-io/github-action@v2
         with:
+          headless: true
+          working-directory: front
           start: npm start
           wait-on: 'http://localhost:3000'
-          browser: chrome
 
       - name: 배포
         working-directory: ./front
