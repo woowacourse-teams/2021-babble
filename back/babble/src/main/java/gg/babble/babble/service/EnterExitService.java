@@ -37,8 +37,7 @@ public class EnterExitService {
         User user = userService.findById(request.getUserId());
         Session session = new Session(request.getSessionId(), user, room);
 
-        user.linkSession(session);
-        room.enterSession(session);
+        sessionRepository.save(session);
 
         return SessionsResponse.of(room.getHost(), room.getGuests());
     }
@@ -47,10 +46,7 @@ public class EnterExitService {
     public SessionsResponse exit(final String sessionId) {
         Session session = findBySessionId(sessionId);
         Room room = session.getRoom();
-        User user = session.getUser();
 
-        user.unLinkSession(session);
-        room.exitSession(session);
         session.delete();
 
         if (room.isDeleted()) {

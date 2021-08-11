@@ -40,8 +40,6 @@ class RoomsTest {
             Room room = 게임에_해당하는_방을_생성한다(game);
             User user = new User("익명의 누군가");
             Session session = new Session((long) i, Integer.toString(i), user, room);
-            user.linkSession(session);
-            room.enterSession(session);
             roomList.add(room);
         }
 

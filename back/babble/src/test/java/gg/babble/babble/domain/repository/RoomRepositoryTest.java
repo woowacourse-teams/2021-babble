@@ -24,6 +24,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 @ActiveProfiles("test")
 @DataJpaTest
@@ -40,6 +41,9 @@ public class RoomRepositoryTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private SessionRepository sessionRepository;
 
     @DisplayName("방을 생성한다.")
     @Test
@@ -90,11 +94,11 @@ public class RoomRepositoryTest {
         Game game = gameRepository.save(new Game("게임 이름", "게임 이미지"));
         List<Tag> tags = Collections.singletonList(tagRepository.save(new Tag("초보만")));
         MaxHeadCount maxHeadCount = new MaxHeadCount(4);
-        User user = new User("와일더");
+        User user = userRepository.save(new User("와일더"));
         Room room = roomRepository.save(new Room(game, tags, maxHeadCount));
 
         Session session = new Session("1234", user, room);
-        room.enterSession(session);
+        sessionRepository.save(session);
 
         // when
         room.exitSession(session);
@@ -148,7 +152,10 @@ public class RoomRepositoryTest {
 
     private Room createRoomWithGameAndTags(final Game game, final List<Tag> tags) {
         MaxHeadCount maxHeadCount = new MaxHeadCount(4);
+        User user = userRepository.save(new User("user"));
 
-        return roomRepository.save(new Room(game, tags, maxHeadCount));
+        Room room = roomRepository.save(new Room(game, tags, maxHeadCount));
+        sessionRepository.save(new Session(String.valueOf(user.getId()), user, room));
+        return room;
     }
 }

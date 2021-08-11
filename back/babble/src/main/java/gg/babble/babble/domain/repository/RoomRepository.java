@@ -12,7 +12,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     @Query("select tr.room "
         + "from TagRegistration tr "
-        + "where tr.room.deleted = false and tr.room.game.id = ?1 and tr.tag.id IN (?2) "
+        + "where tr.room.deleted = false and tr.room.sessions.sessions.size > 0 and tr.room.game.id = ?1 and tr.tag.id IN (?2) "
         + "group by tr.room.id "
         + "having count(tr.tag.id) = ?3 "
         + "order by tr.room.createdAt desc")
@@ -20,7 +20,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     @Query("select r "
         + "from Room r "
-        + "where r.deleted = false and r.game.id = ?1 order by r.createdAt desc")
+        + "where r.deleted = false and r.sessions.sessions.size > 0 and r.game.id = ?1 order by r.createdAt desc")
     List<Room> findByGameIdAndDeletedFalse(final Long gameId, final Pageable pageable);
 
     Optional<Room> findByIdAndDeletedFalse(final Long id);

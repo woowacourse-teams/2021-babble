@@ -3,7 +3,6 @@ package gg.babble.babble.controller;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.ApplicationWebSocketTest;
 import gg.babble.babble.dto.request.MessageRequest;
 import gg.babble.babble.dto.request.SessionRequest;
@@ -24,6 +23,8 @@ import org.springframework.messaging.simp.stomp.StompFrameHandler;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 import org.springframework.web.socket.sockjs.client.SockJsClient;
@@ -51,10 +52,11 @@ public class WebSocketChattingTest extends ApplicationWebSocketTest {
 
     // TODO: TimeoutException 발생.
     @DisplayName("1번방에 유저가 입장하고, 메시지를 보내면, 메시지가 1번방에 브로드 캐스팅된다.")
+    @Sql(value = "classpath:websocket-context.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
     @Test
     public void testUserUpdateEndpoint() throws InterruptedException, ExecutionException, TimeoutException {
         MessageResponse expectedMessageResponse = new MessageResponse(
-            new UserResponse(2L, "와일더", "https://bucket-babble-front.s3.ap-northeast-2.amazonaws.com/img/users/profiles/profile66.png"),
+            new UserResponse(1L, "와일더", "abc"),
             "철권 붐은 온다.", "chat"
         );
 
@@ -69,7 +71,7 @@ public class WebSocketChattingTest extends ApplicationWebSocketTest {
         joinRoom(stompSession);
 
         stompSession.subscribe(SUBSCRIBE_CHAT_UPDATE_BROAD_ENDPOINT, new ChatUpdateStompFrameHandler());
-        stompSession.send(SEND_CHAT_UPDATE_ENDPOINT, new MessageRequest(2L, "철권 붐은 온다.", "chat"));
+        stompSession.send(SEND_CHAT_UPDATE_ENDPOINT, new MessageRequest(1L, "철권 붐은 온다.", "chat"));
         MessageResponse messageResponse = completableFutureChat.get(5, SECONDS);
 
         //then
@@ -78,7 +80,7 @@ public class WebSocketChattingTest extends ApplicationWebSocketTest {
 
     private void joinRoom(StompSession stompSession) {
         stompSession.subscribe(SUBSCRIBE_ROOM_UPDATE_BROAD_ENDPOINT, new UserUpdateStompFrameHandler());
-        sendJoinMessage(stompSession, new SessionRequest(2L, "7777"));
+        sendJoinMessage(stompSession, new SessionRequest(1L, "7777"));
     }
 
     private List<Transport> createTransportClient() {

@@ -8,6 +8,7 @@ import gg.babble.babble.domain.Game;
 import gg.babble.babble.domain.Session;
 import gg.babble.babble.domain.repository.GameRepository;
 import gg.babble.babble.domain.repository.RoomRepository;
+import gg.babble.babble.domain.repository.SessionRepository;
 import gg.babble.babble.domain.repository.TagRepository;
 import gg.babble.babble.domain.repository.UserRepository;
 import gg.babble.babble.domain.room.MaxHeadCount;
@@ -46,6 +47,9 @@ class RoomServiceTest extends ApplicationTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private SessionRepository sessionRepository;
 
     @DisplayName("방을 생성한다")
     @Test
@@ -90,8 +94,7 @@ class RoomServiceTest extends ApplicationTest {
         Room room = roomRepository.save(new Room(game, Arrays.asList(tag1, tag2), new MaxHeadCount(maxHeadCount)));
 
         Session session = new Session("11112222", user, room);
-        user.linkSession(session);
-        room.enterSession(session);
+        sessionRepository.save(session);
 
         // when
         FoundRoomResponse roomResponse = roomService.findRoomById(room.getId());
@@ -127,13 +130,10 @@ class RoomServiceTest extends ApplicationTest {
         Room room = roomRepository.save(new Room(game, Arrays.asList(tag1, tag2), new MaxHeadCount(maxHeadCount)));
 
         Session session = new Session("11112222", user, room);
-        user.linkSession(session);
-        room.enterSession(session);
+        sessionRepository.save(session);
 
         assertThat(roomService.findRoomById(room.getId())).isInstanceOf(FoundRoomResponse.class);
 
-        room.exitSession(session);
-        user.unLinkSession(session);
         session.delete();
 
         assertThatThrownBy(() -> roomService.findRoomById(room.getId()))
@@ -182,9 +182,7 @@ class RoomServiceTest extends ApplicationTest {
             User user = userRepository.save(new User(Integer.toString(i)));
             Room room = roomRepository.save(new Room(game, tags, new MaxHeadCount(5)));
 
-            Session session = new Session(Integer.toString(i), user, room);
-            user.linkSession(session);
-            room.enterSession(session);
+            sessionRepository.save(new Session(Integer.toString(i), user, room));
         }
     }
 }

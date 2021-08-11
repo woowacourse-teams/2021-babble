@@ -22,6 +22,7 @@ public class Sessions {
 
     public void exit(final Session session) {
         sessions.remove(session);
+        session.delete();
     }
 
     public List<User> sortedUsersByEnteredTime() {

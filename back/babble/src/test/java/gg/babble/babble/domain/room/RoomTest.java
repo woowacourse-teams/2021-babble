@@ -31,7 +31,6 @@ public class RoomTest {
         tags = Arrays.asList(new Tag("실버"), new Tag("2시간"));
         room = new Room(1L, game, tags, new MaxHeadCount(4));
         session = new Session(1L, "1111", host, room);
-        room.enterSession(session);
     }
 
     @DisplayName("방장만 있는 방에 유저가 입장한다.")
@@ -40,9 +39,6 @@ public class RoomTest {
         // given
         User guest = new User(2L, "손님");
         Session session = new Session(2L, "2222", guest, room);
-
-        // when
-        room.enterSession(session);
 
         // then
         assertThat(room.getHost()).isEqualTo(host);
@@ -56,7 +52,6 @@ public class RoomTest {
         // given
         User guest = new User(2L, "손님");
         Session session = new Session(2L, "2222", guest, room);
-        room.enterSession(session);
 
         // when, then
         assertThatThrownBy(() -> room.enterSession(session)).isInstanceOf(BabbleDuplicatedException.class);
@@ -70,8 +65,6 @@ public class RoomTest {
         User guest2 = new User(3L, "손님");
         Session session1 = new Session(2L, "1234", guest1, room);
         Session session2 = new Session(3L, "2345", guest2, room);
-        room.enterSession(session1);
-        room.enterSession(session2);
 
         // when
         room.exitSession(session1);
@@ -86,8 +79,9 @@ public class RoomTest {
     @Test
     void leavingUserNotFoundInRoom() {
         // given
+        Room anotherRoom = new Room(game, tags, new MaxHeadCount(4));
         User user = new User(2L, "외부자");
-        Session session = new Session(2L,"1234", user, room);
+        Session session = new Session(2L, "1234", user, anotherRoom);
 
         // when, then
         assertThatThrownBy(() -> room.exitSession(session)).isInstanceOf(BabbleNotFoundException.class);
@@ -102,9 +96,6 @@ public class RoomTest {
 
         Session session1 = new Session(2L, "2222", guest1, room);
         Session session2 = new Session(3L, "3333", guest2, room);
-
-        room.enterSession(session1);
-        room.enterSession(session2);
 
         // when
         room.exitSession(session);
@@ -143,7 +134,6 @@ public class RoomTest {
         // given
         User guest = new User(2L, "손님");
         Session session = new Session(2L, "2222", guest, room);
-        room.enterSession(session);
 
         // when, then
         assertThat(room.getGuests()).containsExactly(guest);

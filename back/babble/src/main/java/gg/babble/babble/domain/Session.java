@@ -64,9 +64,18 @@ public class Session {
         this.user = user;
         this.room = room;
         this.createdAt = LocalDateTime.now();
+
+        user.linkSession(this);
+        room.enterSession(this);
     }
 
     public void delete() {
+        if (user.isLinkedSession(this)) {
+            user.unLinkSession(this);
+        }
+        if (room.containsSession(this)) {
+            room.exitSession(this);
+        }
         deletedAt = LocalDateTime.now();
         deleted = true;
     }

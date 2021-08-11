@@ -99,16 +99,13 @@ class EnterExitServiceTest extends ApplicationTest {
             .isNotPresent();
     }
 
-    Session 세션을_생성한다() {
+    private Session 세션을_생성한다() {
         Game game = gameRepository.save(new Game("게임 이름", "게임 이미지"));
         List<Tag> tags = Collections.singletonList(tagRepository.save(new Tag("초보만")));
         MaxHeadCount maxHeadCount = new MaxHeadCount(4);
         Room room = roomRepository.save(new Room(game, tags, maxHeadCount));
         User user = userRepository.save(new User("코 파는 알리스타"));
-        Session session = new Session("1A2B3C4D", user, room);
-        user.linkSession(session);
-        room.enterSession(session);
 
-        return sessionRepository.save(session);
+        return sessionRepository.save(new Session("1A2B3C4D", user, room));
     }
 }

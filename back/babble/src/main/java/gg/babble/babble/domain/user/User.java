@@ -63,10 +63,15 @@ public class User {
         }
 
         this.session = null;
+        session.delete();
     }
 
     public String getNickname(){
         return nickname.getValue();
+    }
+
+    public boolean isLinkedSession(final Session session) {
+        return !isNotLinkedSession(session);
     }
 
     private boolean isNotLinkedSession(final Session session) {

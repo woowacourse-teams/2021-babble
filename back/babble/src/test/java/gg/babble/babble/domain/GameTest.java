@@ -22,7 +22,6 @@ class GameTest {
         List<Tag> tags = Arrays.asList(new Tag("실버"), new Tag("2시간"));
         Room room = new Room(1L, game, tags, new MaxHeadCount(4));
         Session session = new Session(1L, "1111", host, room);
-        room.enterSession(session);
 
         // when
         int count = game.userHeadCount();

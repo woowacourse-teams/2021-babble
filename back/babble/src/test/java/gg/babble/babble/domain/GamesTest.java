@@ -50,7 +50,5 @@ class GamesTest {
 
     private void 게임_방에_유저를_입장_시킨다(Room room, User user) {
         Session session = new Session(user.getId(), "1234", user, room);
-        user.linkSession(session);
-        room.enterSession(session);
     }
 }

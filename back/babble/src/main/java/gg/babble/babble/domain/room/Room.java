@@ -96,6 +96,10 @@ public class Room {
         }
     }
 
+    public boolean containsSession(final Session session) {
+        return sessions.contains(session);
+    }
+
     public int currentHeadCount() {
         return sessions.headCount();
     }
