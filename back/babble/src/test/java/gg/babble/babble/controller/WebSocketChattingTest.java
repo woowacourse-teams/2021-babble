@@ -48,6 +48,7 @@ public class WebSocketChattingTest extends ApplicationTest {
         URL = "ws://localhost:" + port + "/connection";
     }
 
+    // TODO: TimeoutException 발생.
     @DisplayName("1번방에 유저가 입장하고, 메시지를 보내면, 메시지가 1번방에 브로드 캐스팅된다.")
     @Test
     public void testUserUpdateEndpoint() throws InterruptedException, ExecutionException, TimeoutException {
