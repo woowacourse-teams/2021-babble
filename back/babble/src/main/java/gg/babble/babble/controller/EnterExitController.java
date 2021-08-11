@@ -1,7 +1,7 @@
 package gg.babble.babble.controller;
 
 import gg.babble.babble.dto.request.SessionRequest;
-import gg.babble.babble.service.SessionService;
+import gg.babble.babble.service.EnterExitService;
 import javax.validation.Valid;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -11,27 +11,27 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 @Controller
-public class SessionController {
+public class EnterExitController {
 
     private final SimpMessagingTemplate template;
-    private final SessionService sessionService;
+    private final EnterExitService enterExitService;
 
-    public SessionController(final SimpMessagingTemplate template, final SessionService sessionService) {
+    public EnterExitController(final SimpMessagingTemplate template, final EnterExitService enterExitService) {
         this.template = template;
-        this.sessionService = sessionService;
+        this.enterExitService = enterExitService;
     }
 
     @MessageMapping("/rooms/{roomId}/users")
-    public void createSession(@DestinationVariable final Long roomId, @Valid final SessionRequest sessionRequest) {
+    public void enter(@DestinationVariable final Long roomId, @Valid final SessionRequest sessionRequest) {
         template.convertAndSend(String.format("/topic/rooms/%s/users", roomId),
-            sessionService.create(roomId, sessionRequest));
+            enterExitService.enter(roomId, sessionRequest));
     }
 
     @EventListener
-    public void deleteSession(final SessionDisconnectEvent event) {
+    public void exit(final SessionDisconnectEvent event) {
         template.convertAndSend(
-            String.format("/topic/rooms/%s/users", sessionService.findRoomIdBySessionId(event.getSessionId())),
-            sessionService.delete(event.getSessionId())
+            String.format("/topic/rooms/%s/users", enterExitService.findRoomIdBySessionId(event.getSessionId())),
+            enterExitService.exit(event.getSessionId())
         );
     }
 }

@@ -58,7 +58,7 @@ class SessionRepositoryTest {
         Session session = sessionRepository.save(세션_객체를_생성한다());
 
         // when
-        session.userExitRoom();
+        session.delete();
 
         // then
         assertThat(sessionRepository.findBySessionIdAndDeletedFalse(session.getSessionId())).isNotPresent();
@@ -72,7 +72,7 @@ class SessionRepositoryTest {
 
         // then
         assertThat(sessionRepository.findBySessionIdAndDeletedFalse(session.getSessionId())).isPresent();
-        session.userExitRoom();
+        session.delete();
         assertThat(sessionRepository.findBySessionIdAndDeletedFalse(session.getSessionId())).isNotPresent();
     }
 
@@ -84,6 +84,6 @@ class SessionRepositoryTest {
         Room room = roomRepository.save(new Room(game, tags, maxHeadCount));
         User user = userRepository.save(new User("코 파는 알리스타"));
 
-        return new Session("1A2B3C4D", room, user);
+        return new Session("1A2B3C4D", user, room);
     }
 }

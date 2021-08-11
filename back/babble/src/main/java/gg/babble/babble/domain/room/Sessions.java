@@ -1,5 +1,6 @@
-package gg.babble.babble.domain;
+package gg.babble.babble.domain.room;
 
+import gg.babble.babble.domain.Session;
 import gg.babble.babble.domain.user.User;
 import gg.babble.babble.exception.BabbleIllegalStatementException;
 import java.util.ArrayList;
@@ -15,11 +16,11 @@ public class Sessions {
     @OneToMany(mappedBy = "room")
     private final List<Session> sessions = new ArrayList<>();
 
-    public void add(final Session session) {
+    public void enter(final Session session) {
         sessions.add(session);
     }
 
-    public void remove(final Session session) {
+    public void exit(final Session session) {
         sessions.remove(session);
     }
 
@@ -29,7 +30,7 @@ public class Sessions {
         }
 
         return sessions.stream()
-            .sorted(Comparator.comparing(Session::getCreatedDate))
+            .sorted(Comparator.comparing(Session::getCreatedAt))
             .map(Session::getUser)
             .collect(Collectors.toList());
     }

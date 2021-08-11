@@ -44,8 +44,8 @@ public class RoomService {
         return CreatedRoomResponse.from(roomRepository.save(room));
     }
 
-    public FoundRoomResponse findById(final Long id) {
-        return FoundRoomResponse.from(findRoomOrElseThrow(id));
+    public FoundRoomResponse findRoomById(final Long id) {
+        return FoundRoomResponse.from(findById(id));
     }
 
     public List<FoundRoomResponse> findGamesByGameIdAndTagIds(final Long gameId, final List<Long> tagIds, final Pageable pageable) {
@@ -64,14 +64,14 @@ public class RoomService {
         return roomRepository.findAllByGameIdAndTagIdsAndDeletedFalse(gameId, distinctTagIds, (long) distinctTagIds.size(), pageable);
     }
 
-    public Room findRoomOrElseThrow(final Long id) {
-        return roomRepository.findById(id)
-            .orElseThrow(() -> new BabbleNotFoundException(String.format("[%d]는 존재하지 않는 방 ID 입니다.", id)));
-    }
-
     public boolean isFullRoom(final Long id) {
-        Room room = findRoomOrElseThrow(id);
+        Room room = findById(id);
 
         return room.isFull();
+    }
+
+    public Room findById(final Long id) {
+        return roomRepository.findByIdAndDeletedFalse(id)
+            .orElseThrow(() -> new BabbleNotFoundException(String.format("[%d]는 존재하지 않는 방 ID 입니다.", id)));
     }
 }

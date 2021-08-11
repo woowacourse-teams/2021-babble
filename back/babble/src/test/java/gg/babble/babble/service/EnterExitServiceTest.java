@@ -16,6 +16,7 @@ import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
 import gg.babble.babble.dto.request.SessionRequest;
+import gg.babble.babble.dto.response.SessionsResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.Collections;
 import java.util.List;
@@ -23,10 +24,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class SessionServiceTest extends ApplicationTest {
+class EnterExitServiceTest extends ApplicationTest {
 
     @Autowired
-    private SessionService sessionService;
+    private EnterExitService enterExitService;
 
     @Autowired
     private SessionRepository sessionRepository;
@@ -56,16 +57,11 @@ class SessionServiceTest extends ApplicationTest {
         SessionRequest request = new SessionRequest(user.getId(), "1A2B3C4D");
 
         // when
-        sessionService.create(room.getId(), request);
+        SessionsResponse response = enterExitService.enter(room.getId(), request);
 
         // then
-        Session createdSession = sessionRepository.findBySessionIdAndDeletedFalse(request.getSessionId())
-            .orElseThrow(BabbleNotFoundException::new);
-
-        assertThat(createdSession.getId()).isNotNull();
-        assertThat(createdSession.getSessionId()).isEqualTo(request.getSessionId());
-        assertThat(createdSession.getRoom()).isEqualTo(room);
-        assertThat(createdSession.getUser()).isEqualTo(user);
+        assertThat(response.getHost()).usingRecursiveComparison()
+            .isEqualTo(user);
     }
 
     @DisplayName("세션과 매핑된 방 ID를 조회한다.")
@@ -75,7 +71,7 @@ class SessionServiceTest extends ApplicationTest {
         Session session = 세션을_생성한다();
 
         // when
-        Long roomId = sessionService.findRoomIdBySessionId(session.getSessionId());
+        Long roomId = enterExitService.findRoomIdBySessionId(session.getSessionId());
 
         // then
         assertThat(roomId).isEqualTo(session.getRoom().getId());
@@ -85,7 +81,7 @@ class SessionServiceTest extends ApplicationTest {
     @Test
     void findSessionOrElseThrowException() {
         // then
-        assertThatThrownBy(() -> sessionService.findRoomIdBySessionId("아무거나아아"))
+        assertThatThrownBy(() -> enterExitService.findRoomIdBySessionId("아무거나아아"))
             .isInstanceOf(BabbleNotFoundException.class);
     }
 
@@ -94,10 +90,9 @@ class SessionServiceTest extends ApplicationTest {
     void deleteSession() {
         // given
         Session session = 세션을_생성한다();
-        session.userEnterRoom();
 
         // when
-        sessionService.delete(session.getSessionId());
+        enterExitService.exit(session.getSessionId());
 
         // then
         assertThat(sessionRepository.findBySessionIdAndDeletedFalse(session.getSessionId()))
@@ -110,8 +105,10 @@ class SessionServiceTest extends ApplicationTest {
         MaxHeadCount maxHeadCount = new MaxHeadCount(4);
         Room room = roomRepository.save(new Room(game, tags, maxHeadCount));
         User user = userRepository.save(new User("코 파는 알리스타"));
-        String sessionId = "1A2B3C4D";
+        Session session = new Session("1A2B3C4D", user, room);
+        user.linkSession(session);
+        room.enterSession(session);
 
-        return sessionRepository.save(new Session(sessionId, room, user));
+        return sessionRepository.save(session);
     }
 }

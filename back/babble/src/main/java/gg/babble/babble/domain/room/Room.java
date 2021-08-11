@@ -2,16 +2,15 @@ package gg.babble.babble.domain.room;
 
 import gg.babble.babble.domain.Game;
 import gg.babble.babble.domain.Session;
-import gg.babble.babble.domain.Sessions;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
-import gg.babble.babble.exception.BabbleIllegalStatementException;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -47,15 +46,14 @@ public class Room {
     private TagRegistrationsOfRoom tagRegistrationsOfRoom;
 
     @Embedded
-    private Sessions sessions;
+    private final Sessions sessions = new Sessions();
 
     @Embedded
     private MaxHeadCount maxHeadCount;
 
     @CreatedDate
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
 
-    // TODO: User <-> Session <-> Room 연관관계 리팩토링 후 진행
     @Column(nullable = false)
     private boolean deleted = false;
 
@@ -67,7 +65,6 @@ public class Room {
         validateToConstruct(tags);
         this.id = id;
         this.game = game;
-        this.sessions = new Sessions();
         this.tagRegistrationsOfRoom = new TagRegistrationsOfRoom(this, tags);
         this.maxHeadCount = maxHeadCount;
     }
@@ -80,22 +77,18 @@ public class Room {
 
     public void enterSession(final Session session) {
         if (sessions.contains(session)) {
-            Long userId = session.getUser().getId();
-            Long roomId = session.getRoom().getId();
-            throw new BabbleDuplicatedException(String.format("[%d] 유저는 이미 [%d] 방에 참여 중이라 입장이 불가능 합니다.", userId, roomId));
+            throw new BabbleDuplicatedException(String.format("[%d] 유저는 이미 [%d] 방에 참여 중이라 입장이 불가능 합니다.", session.getUserId(), id));
         }
 
-        sessions.add(session);
+        sessions.enter(session);
     }
 
     public void exitSession(final Session session) {
         if (sessions.noContains(session)) {
-            Long userId = session.getUser().getId();
-            Long roomId = session.getRoom().getId();
-            throw new BabbleNotFoundException(String.format("[%d] 유저는 [%d] 방에 참여하지 않아 퇴장이 불가능 합니다.", userId, roomId));
+            throw new BabbleNotFoundException(String.format("[%d] 유저는 [%d] 방에 참여하지 않아 퇴장이 불가능 합니다.", session.getUserId(), id));
         }
 
-        sessions.remove(session);
+        sessions.exit(session);
 
         if (sessions.isEmpty()) {
             deleted = true;
@@ -120,10 +113,6 @@ public class Room {
         List<User> users = sessions.sortedUsersByEnteredTime();
 
         return users.subList(1, users.size());
-    }
-
-    public boolean isEmpty() {
-        return sessions.isEmpty();
     }
 
     public boolean isFull() {

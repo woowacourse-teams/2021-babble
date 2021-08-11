@@ -4,6 +4,7 @@ import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.user.User;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -18,6 +19,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @EntityListeners(AuditingEntityListener.class)
@@ -33,44 +35,44 @@ public class Session {
     @NotNull(message = "세션 Id는 Null 일 수 없습니다.")
     private String sessionId;
 
-    @NotNull(message = "방은 Null 일 수 없습니다.")
-    @ManyToOne
-    @JoinColumn(name = "room_id")
-    private Room room;
-
     @NotNull(message = "유저는 Null 일 수 없습니다.")
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @CreatedDate
-    private LocalDateTime createdDate;
+    @NotNull(message = "방은 Null 일 수 없습니다.")
+    @ManyToOne
+    @JoinColumn(name = "room_id")
+    private Room room;
 
-    // TODO: User <-> Session <-> Room 연관관계 리팩토링 후 진행
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime deletedAt;
+
     @Column(nullable = false)
     private boolean deleted = false;
 
-    public Session(final String sessionId, final Room room, final User user) {
-        this(null, sessionId, room, user, LocalDateTime.now());
+    public Session(final String sessionId, final User user, final Room room) {
+        this(null, sessionId, user, room);
     }
 
-    public Session(final Long id, final String sessionId, final Room room, final User user, final LocalDateTime createdDate) {
+    public Session(final Long id, final String sessionId, final User user, final Room room) {
         this.id = id;
         this.sessionId = sessionId;
-        this.room = room;
         this.user = user;
-        this.createdDate = createdDate;
+        this.room = room;
+        this.createdAt = LocalDateTime.now();
     }
 
-    public void userEnterRoom() {
-        this.room.enterSession(this);
-        this.user.linkSession(this);
-    }
-
-    public void userExitRoom() {
-        room.exitSession(this);
-        user.unlinkSession(this);
+    public void delete() {
+        deletedAt = LocalDateTime.now();
         deleted = true;
+    }
+
+    public Long getUserId() {
+        return user.getId();
     }
 
     @Override

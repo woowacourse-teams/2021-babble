@@ -12,13 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(readOnly = true)
-public class SessionService {
+public class EnterExitService {
 
     private final SessionRepository sessionRepository;
     private final RoomService roomService;
     private final UserService userService;
 
-    public SessionService(final SessionRepository sessionRepository, final RoomService roomService, final UserService userService) {
+    public EnterExitService(final SessionRepository sessionRepository, final RoomService roomService, final UserService userService) {
         this.sessionRepository = sessionRepository;
         this.roomService = roomService;
         this.userService = userService;
@@ -32,24 +32,28 @@ public class SessionService {
     }
 
     @Transactional
-    public SessionsResponse create(final Long roomId, final SessionRequest request) {
-        Room room = roomService.findRoomOrElseThrow(roomId);
+    public SessionsResponse enter(final Long roomId, final SessionRequest request) {
+        Room room = roomService.findById(roomId);
         User user = userService.findById(request.getUserId());
+        Session session = new Session(request.getSessionId(), user, room);
 
-        Session session = sessionRepository.save(new Session(request.getSessionId(), room, user));
-        session.userEnterRoom();
+        user.linkSession(session);
+        room.enterSession(session);
 
         return SessionsResponse.of(room.getHost(), room.getGuests());
     }
 
     @Transactional
-    public SessionsResponse delete(final String sessionId) {
+    public SessionsResponse exit(final String sessionId) {
         Session session = findBySessionId(sessionId);
         Room room = session.getRoom();
+        User user = session.getUser();
 
-        session.userExitRoom();
+        user.unLinkSession(session);
+        room.exitSession(session);
+        session.delete();
 
-        if (room.isEmpty()) {
+        if (room.isDeleted()) {
             return SessionsResponse.empty();
         }
         return SessionsResponse.of(room.getHost(), room.getGuests());

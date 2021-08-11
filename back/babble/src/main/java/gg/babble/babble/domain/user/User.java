@@ -2,7 +2,10 @@ package gg.babble.babble.domain.user;
 
 import gg.babble.babble.domain.Session;
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -31,31 +34,16 @@ public class User {
     @NotNull(message = "아바타는 Null 이어서는 안됩니다.")
     private String avatar;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.PERSIST)
     private Session session;
-
-    /*
-    TODO: User <-> Session <-> Room 연관관계 리팩토링 후 진행
-    @Column(nullable = false)
-    private boolean deleted = false;
-    */
 
     public User(final String nickname) {
         this(null, nickname);
     }
 
     public User(final Long id, final String nickname) {
-        this(id, nickname, null);
-    }
-
-    public User(final String nickname, final Session session) {
-        this(null, nickname, session);
-    }
-
-    public User(final Long id, final String nickname, final Session session) {
         this.id = id;
         this.nickname = nickname;
-        this.session = session;
         this.avatar = avatarByNickname(nickname);
     }
 
@@ -65,21 +53,13 @@ public class User {
     }
 
     public void linkSession(final Session session) {
-        if (isAlreadyLinkWithAnotherSession(session)) {
-            this.session.userExitRoom();
-        }
-
         this.session = session;
     }
 
-    private boolean isAlreadyLinkWithAnotherSession(final Session session) {
-        return Objects.nonNull(this.session) && !session.equals(this.session);
-    }
-
-    public void unlinkSession(final Session session) {
+    public void unLinkSession(final Session session) {
         if (isNotLinkedSession(session)) {
             Long roomId = session.getRoom().getId();
-            throw new BabbleIllegalArgumentException(String.format("[%d]번 유저는 [%d]번 방을 나갈 수 없습니다.", id, roomId));
+            throw new BabbleIllegalArgumentException(String.format("[%d]번 유저는 [%d]번 방에 없으므로 나갈 수 없습니다.", id, roomId));
         }
 
         this.session = null;

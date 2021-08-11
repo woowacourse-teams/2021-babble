@@ -10,7 +10,6 @@ import gg.babble.babble.domain.user.User;
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleIllegalStatementException;
 import gg.babble.babble.exception.BabbleNotFoundException;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,7 +30,7 @@ public class RoomTest {
         game = new Game(1L, "게임");
         tags = Arrays.asList(new Tag("실버"), new Tag("2시간"));
         room = new Room(1L, game, tags, new MaxHeadCount(4));
-        session = new Session(1L, "1111", room, host, LocalDateTime.now());
+        session = new Session(1L, "1111", host, room);
         room.enterSession(session);
     }
 
@@ -40,7 +39,7 @@ public class RoomTest {
     void joinRoom() {
         // given
         User guest = new User(2L, "손님");
-        Session session = new Session(2L, "2222", room, guest, LocalDateTime.now());
+        Session session = new Session(2L, "2222", guest, room);
 
         // when
         room.enterSession(session);
@@ -56,7 +55,7 @@ public class RoomTest {
     void alreadyJoin() {
         // given
         User guest = new User(2L, "손님");
-        Session session = new Session(2L, "2222", room, guest, LocalDateTime.now());
+        Session session = new Session(2L, "2222", guest, room);
         room.enterSession(session);
 
         // when, then
@@ -69,8 +68,8 @@ public class RoomTest {
         // given
         User guest1 = new User(2L, "손님");
         User guest2 = new User(3L, "손님");
-        Session session1 = new Session(2L, "1234", room, guest1, LocalDateTime.now());
-        Session session2 = new Session(3L, "2345", room, guest2, LocalDateTime.now());
+        Session session1 = new Session(2L, "1234", guest1, room);
+        Session session2 = new Session(3L, "2345", guest2, room);
         room.enterSession(session1);
         room.enterSession(session2);
 
@@ -83,12 +82,12 @@ public class RoomTest {
         assertThat(room.currentHeadCount()).isEqualTo(2);
     }
 
-    @DisplayName("존재하지 않는 유저가 방을 나갈 때 예외 처리한다.")
+    @DisplayName("입장하지 않는 유저가 방을 나갈 때 예외 처리한다.")
     @Test
     void leavingUserNotFoundInRoom() {
         // given
         User user = new User(2L, "외부자");
-        Session session = new Session("1234", room, user);
+        Session session = new Session(2L,"1234", user, room);
 
         // when, then
         assertThatThrownBy(() -> room.exitSession(session)).isInstanceOf(BabbleNotFoundException.class);
@@ -101,8 +100,8 @@ public class RoomTest {
         User guest1 = new User(2L, "게스트");
         User guest2 = new User(3L, "게스트");
 
-        Session session1 = new Session(2L, "2222", room, guest1, LocalDateTime.now());
-        Session session2 = new Session(3L, "3333", room, guest2, LocalDateTime.now());
+        Session session1 = new Session(2L, "2222", guest1, room);
+        Session session2 = new Session(3L, "3333", guest2, room);
 
         room.enterSession(session1);
         room.enterSession(session2);
@@ -143,7 +142,7 @@ public class RoomTest {
 
         // given
         User guest = new User(2L, "손님");
-        Session session = new Session(2L, "2222", room, guest, LocalDateTime.now());
+        Session session = new Session(2L, "2222", guest, room);
         room.enterSession(session);
 
         // when, then

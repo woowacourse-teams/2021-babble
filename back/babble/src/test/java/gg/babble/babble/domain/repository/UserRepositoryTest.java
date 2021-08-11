@@ -17,7 +17,7 @@ public class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
-    @DisplayName("태그를 생성한다.")
+    @DisplayName("유저를 생성한다.")
     @Test
     void saveTag() {
         // given
