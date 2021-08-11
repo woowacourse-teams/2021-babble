@@ -61,7 +61,7 @@ public class GameRepositoryTest {
         game.delete();
         assertThat(gameRepository.findByIdAndDeletedFalse(game.getId())).isNotPresent();
     }
-    
+
     @DisplayName("전체 게임 조회시 게임 삭제된 게임은 조회하지 않는다.")
     @Test
     void findByDeletedFalse() {
@@ -74,7 +74,7 @@ public class GameRepositoryTest {
         List<Game> beforeDeleteGames = gameRepository.findByDeletedFalse();
         bpex_game.delete();
         List<Game> afterDeleteGames = gameRepository.findByDeletedFalse();
-        
+
         // then
         assertThat(beforeDeleteGames).containsExactly(apex_game, bpex_game, cpex_game);
         assertThat(afterDeleteGames).containsExactly(apex_game, cpex_game);
@@ -91,18 +91,5 @@ public class GameRepositoryTest {
 
         game.delete();
         assertThat(gameRepository.findByIdAndDeletedFalse(game.getId())).isNotPresent();
-    }
-
-    @DisplayName("이름으로 게임 조회시 게임 삭제된 게임은 조회하지 않는다.")
-    @Test
-    void findByNameAndDeletedFalse() {
-        // given
-        Game game = gameRepository.save(new Game("에이펙스", "에이펙스 이미지"));
-
-        // then
-        assertThat(gameRepository.findByNameAndDeletedFalse(game.getName())).isNotEmpty();
-
-        game.delete();
-        assertThat(gameRepository.findByNameAndDeletedFalse(game.getName())).isEmpty();
     }
 }

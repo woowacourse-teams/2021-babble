@@ -10,7 +10,6 @@ import gg.babble.babble.exception.BabbleNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;

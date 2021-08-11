@@ -1,5 +1,6 @@
 @use '../../../style/variables' as v;
 @use '../../../style/mixins' as m;
+@use '../../../style/functions' as f;
 
 .input-container {
   display: flex;
@@ -8,7 +9,7 @@
   width: 100%;
   height: fit-content;
   padding: 1rem 1.6rem 1rem 1.4rem;
-  border: 2px solid m.grey-scale(5);
+  border: 2px solid f.grey-scale(5);
   transition: 0.2s linear;
   border-radius: 0.8rem;
 
@@ -25,7 +26,7 @@
   }
 
   &.focused {
-    border: 2px solid m.primary(babble-pink);
+    border: 2px solid f.primary(babble-pink);
   }
 
   .input-inner {
@@ -47,10 +48,10 @@
     max-height: 25rem;
     border-radius: 0.6rem;
     box-shadow: 0 0 4px 2px rgba(0, 0, 0, 20%);
-    background-color: m.grey-scale(white);
+    background-color: f.grey-scale(white);
+    z-index: f.z-index(layer-front-10);
 
     overflow-y: auto;
-    z-index: m.z-index(layer-front-1);
 
     &.show {
       display: block;
@@ -61,21 +62,21 @@
     }
 
     &::-webkit-scrollbar-track {
-      background-color: m.grey-scale(3);
+      background-color: f.grey-scale(3);
       border-radius: 1rem;
       background-clip: padding-box;
       border: 0.3rem solid transparent;
     }
 
     &::-webkit-scrollbar-thumb {
-      background-color: m.grey-scale(8);
+      background-color: f.grey-scale(8);
       border-radius: 1rem;
       background-clip: padding-box;
       border: 0.3rem solid transparent;
     }
 
     &::-webkit-scrollbar-thumb:active {
-      background-color: m.grey-scale(10);
+      background-color: f.grey-scale(10);
     }
 
     .keyword-button {
@@ -85,12 +86,25 @@
       padding: 1rem 1.5rem;
 
       &:hover {
-        background-color: m.grey-scale(2);
+        background-color: f.grey-scale(2);
       }
     }
 
     .result-not-found {
       padding: 1rem 1.5rem;
+    }
+  }
+}
+
+@include m.media(mobile-down, mobile) {
+  .input-container {
+    .input-inner {
+      font-size: 1.5rem;
+      margin-left: 0.7rem;
+    }
+
+    svg {
+      height: 18px;
     }
   }
 }

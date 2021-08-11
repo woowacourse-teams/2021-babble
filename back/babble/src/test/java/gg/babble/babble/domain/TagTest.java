@@ -12,9 +12,9 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 class TagTest {
 
-    @DisplayName("태그 이름은 1자 이상 8자 이하다.")
+    @DisplayName("태그 이름은 1자 이상 20자 이하다.")
     @ParameterizedTest
-    @ValueSource(strings = {"힝", "태그길이여덟글자"})
+    @ValueSource(strings = {"힝", "태그길이가스무자이다태그길이가스무자이다"})
     void nameLengthTest(String name) {
         assertThatCode(() -> new Tag(name)).doesNotThrowAnyException();
     }
@@ -25,9 +25,9 @@ class TagTest {
         assertThatThrownBy(() -> new Tag("")).isInstanceOf(BabbleLengthException.class);
     }
 
-    @DisplayName("태그 이름은 8자 이상이면 예외가 발생한다.")
+    @DisplayName("태그 이름은 20자 이상이면 예외가 발생한다.")
     @Test
     void nameLengthOverTest() {
-        assertThatThrownBy(() -> new Tag("태그길이가아홉글자")).isInstanceOf(BabbleLengthException.class);
+        assertThatThrownBy(() -> new Tag("태그길이가스무자이다태그길이가스무자이다하")).isInstanceOf(BabbleLengthException.class);
     }
 }

@@ -45,6 +45,7 @@ const ChangeNickname = () => {
           maxLength={NICKNAME_MAX_LENGTH}
           minLength={NICKNAME_MIN_LENGTH}
           isContentSelected
+          autocomplete='off'
         />
       </div>
       <div className='control-buttons'>

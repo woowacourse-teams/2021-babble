@@ -2,10 +2,9 @@ package gg.babble.babble.domain.user;
 
 import gg.babble.babble.domain.Session;
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,7 +28,8 @@ public class User {
     private Long id;
 
     @NotNull(message = "닉네임은 Null 이어서는 안됩니다.")
-    private String nickname;
+    @Embedded
+    private Nickname nickname;
 
     @NotNull(message = "아바타는 Null 이어서는 안됩니다.")
     private String avatar;
@@ -43,7 +43,7 @@ public class User {
 
     public User(final Long id, final String nickname) {
         this.id = id;
-        this.nickname = nickname;
+        this.nickname = new Nickname(nickname);
         this.avatar = avatarByNickname(nickname);
     }
 
@@ -63,6 +63,10 @@ public class User {
         }
 
         this.session = null;
+    }
+
+    public String getNickname(){
+        return nickname.getValue();
     }
 
     private boolean isNotLinkedSession(final Session session) {

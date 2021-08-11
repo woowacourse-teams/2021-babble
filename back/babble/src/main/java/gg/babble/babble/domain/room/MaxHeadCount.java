@@ -25,7 +25,9 @@ public class MaxHeadCount {
 
     private static void validateToConstruct(final int value) {
         if (value < MIN_VALUE || MAX_VALUE < value) {
-            throw new BabbleIllegalArgumentException(String.format("방 참가인원은 %d명에서 %d명 사이여야 합니다.", MIN_VALUE, MAX_VALUE));
+            throw new BabbleIllegalArgumentException(
+                String.format("방 참가인원은 %d명에서 %d명 사이여야 합니다. 현재 생성하려고 한 방 인원 : %d", MIN_VALUE, MAX_VALUE, value)
+            );
         }
     }
 }

@@ -5,7 +5,6 @@ import gg.babble.babble.domain.user.User;
 import gg.babble.babble.dto.request.UserRequest;
 import gg.babble.babble.dto.response.UserResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
-import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +20,7 @@ public class UserService {
 
     public User findById(final Long id) {
         return userRepository.findById(id)
-            .orElseThrow(() -> new BabbleNotFoundException("존재하지 않는 유저 Id 입니다."));
+            .orElseThrow(() -> new BabbleNotFoundException(String.format("존재하지 않는 유저 Id(%s) 입니다.", id)));
     }
 
     @Transactional

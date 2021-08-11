@@ -1,4 +1,4 @@
-@use '../../../style/mixins' as m;
+@use '../../../style/functions' as f;
 @use '../../../style/animations';
 
 .participants-container {
@@ -12,7 +12,7 @@
     text-align: left;
 
     &:hover {
-      color: m.primary(babble-pink);
+      color: f.primary(babble-pink);
       cursor: pointer;
     }
 
@@ -45,7 +45,7 @@
     opacity: 0;
 
     bottom: 0;
-    color: m.primary(babble-pink);
+    color: f.primary(babble-pink);
     transition: 0.2s;
 
     &.copied {

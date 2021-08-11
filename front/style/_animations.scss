@@ -1,11 +1,13 @@
-@use './mixins' as m;
+@use './functions' as f;
 
 @keyframes bounce {
   from {
-    transform: translate(0, -160%);
+    left: 50%;
+    transform: translate(-50%, -160%);
   }
   to {
-    transform: translate(0, -120%);
+    left: 50%;
+    transform: translate(-50%, -120%);
   }
 }
 
@@ -84,7 +86,7 @@
   }
 
   100% {
-    fill: m.primary(babble-pink);
+    fill: f.primary(babble-pink);
   }
 }
 
@@ -139,5 +141,15 @@
   }
   100% {
     filter: blur(0);
+  }
+}
+
+@keyframes downToUp {
+  0% {
+    bottom: -100%;
+  }
+
+  100% {
+    bottom: 0;
   }
 }

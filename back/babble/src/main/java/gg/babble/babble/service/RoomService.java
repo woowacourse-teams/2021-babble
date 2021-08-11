@@ -21,8 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class RoomService {
 
-    private static final int PAGE_SIZE = 16;
-
     private final RoomRepository roomRepository;
     private final GameService gameService;
     private final TagService tagService;

@@ -1,3 +1,5 @@
+@use '../../../style/mixins' as m;
+
 .make-room-container {
   padding-bottom: 5rem;
 
@@ -6,22 +8,19 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 0;
+    margin: 0;
 
     .headline2 {
       margin: 4rem 0;
     }
 
     .inputs {
-      & .input-container {
+      .input-container {
         margin-bottom: 1rem;
       }
 
       margin-bottom: 1rem;
-    }
-
-    .make-room-form {
-      padding: 0;
-      margin: 0;
     }
 
     .tag-list-section {
@@ -40,6 +39,37 @@
 
       button {
         margin: 1rem;
+      }
+    }
+  }
+}
+
+@include m.media(mobile-down, mobile) {
+  .make-room-container {
+    .make-room-form {
+      .headline2 {
+        margin: 1rem 0 3rem 0;
+      }
+
+      .inputs {
+        margin-bottom: 0;
+      }
+
+      .tag-list-section {
+        min-height: 3rem;
+        margin-bottom: 2rem;
+      }
+
+      .buttons {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+
+        button {
+          width: 5rem;
+          margin: 0;
+          margin-bottom: 1rem;
+        }
       }
     }
   }

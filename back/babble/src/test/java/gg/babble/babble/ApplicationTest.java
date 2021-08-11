@@ -1,7 +1,10 @@
 package gg.babble.babble;
 
+import gg.babble.babble.domain.admin.Administrator;
+import gg.babble.babble.domain.repository.AdministratorRepository;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -19,8 +22,12 @@ public class ApplicationTest {
     @LocalServerPort
     protected int port;
 
+    @Autowired
+    protected AdministratorRepository administratorRepository;
+
     @BeforeEach
     protected void setUp() {
         RestAssured.port = port;
+        administratorRepository.save(new Administrator("127.0.0.1", "localhost"));
     }
 }

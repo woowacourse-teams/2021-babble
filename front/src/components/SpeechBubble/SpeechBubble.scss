@@ -1,4 +1,4 @@
-@use '../../../style/mixins' as m;
+@use '../../../style/functions' as f;
 
 .speech-bubble-container {
   margin-bottom: 0.5rem;
@@ -22,8 +22,8 @@
     width: fit-content;
 
     .text {
-      background: m.chatting(others-background);
-      border-radius: m.border-radius(speech-bubble);
+      background: f.chatting(others-background);
+      border-radius: f.border-radius(speech-bubble);
       height: fit-content;
       width: fit-content;
       max-width: 30rem;
@@ -36,19 +36,19 @@
     .time {
       display: inline-block;
       margin-top: 0.3rem;
-      color: m.grey-scale(11);
+      color: f.grey-scale(11);
     }
 
     &.mine {
       .text {
         border: none;
-        background: m.chatting(mine-background);
+        background: f.chatting(mine-background);
       }
 
       .time {
         display: block;
         text-align: right;
-        color: m.grey-scale(11);
+        color: f.grey-scale(11);
       }
     }
   }
@@ -57,7 +57,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: m.grey-scale(2);
+    background-color: f.grey-scale(2);
     width: 100%;
     margin-bottom: 1rem;
 
