@@ -98,6 +98,21 @@ include::{snippets}/find-game-image-by-id/http-response.adoc[]
 [cols="^,^,^",options="headers"]
 include::{snippets}/read-game-image/response-fields.adoc[]
 
+=== 게임 등록 API
+
+> Accessible only from allowed ip.
+
+==== HTTP Request
+
+include::{snippets}/create-game/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/create-game/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/insert-game/response-fields.adoc[]
+
 == 방
 
 === 방 조회 API
@@ -143,6 +158,47 @@ include::{snippets}/tags-get-test/http-response.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
 include::{snippets}/tags-get/response-fields.adoc[]
+
+== 관리자
+
+> Accessible only from allowed ip.
+
+=== 관리자 전체 조회 API
+
+==== HTTP Request
+
+include::{snippets}/find-all-administrator/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/find-all-administrator/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/read-administrators/response-fields.adoc[]
+
+=== 관리자 등록 API
+
+==== HTTP Request
+
+include::{snippets}/create-administrator//http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/create-administrator/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/insert-administrator/response-fields.adoc[]
+
+=== 관리자 삭제 API
+
+==== HTTP Request
+
+include::{snippets}/delete-administrators/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/delete-administrators/http-response.adoc[]
+
 
 == WebSocket
 
