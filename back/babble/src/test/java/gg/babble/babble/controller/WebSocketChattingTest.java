@@ -4,6 +4,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import gg.babble.babble.ApplicationTest;
+import gg.babble.babble.ApplicationWebSocketTest;
 import gg.babble.babble.dto.request.MessageRequest;
 import gg.babble.babble.dto.request.UserJoinRequest;
 import gg.babble.babble.dto.response.MessageResponse;
@@ -29,7 +30,7 @@ import org.springframework.web.socket.sockjs.client.SockJsClient;
 import org.springframework.web.socket.sockjs.client.Transport;
 import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 
-public class WebSocketChattingTest extends ApplicationTest {
+public class WebSocketChattingTest extends ApplicationWebSocketTest {
 
     private static final String SUBSCRIBE_ROOM_UPDATE_BROAD_ENDPOINT = "/topic/rooms/1/users";
     private static final String SEND_ROOM_UPDATE_ENDPOINT = "/ws/rooms/1/users";

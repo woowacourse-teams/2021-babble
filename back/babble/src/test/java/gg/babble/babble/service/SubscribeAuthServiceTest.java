@@ -15,6 +15,7 @@ import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.Nickname;
 import gg.babble.babble.domain.user.User;
 import gg.babble.babble.exception.BabbleIllegalStatementException;
+import gg.babble.babble.service.auth.SubscribeAuthService;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
