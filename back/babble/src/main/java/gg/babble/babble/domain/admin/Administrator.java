@@ -1,5 +1,7 @@
 package gg.babble.babble.domain.admin;
 
+import java.util.regex.Pattern;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,12 +23,13 @@ public class Administrator {
     private Long id;
 
     @NotNull
-    private String ip;
+    @Embedded
+    private Ip ip;
 
     @NotNull
     private String name;
 
     public Administrator(final String ip, final String name) {
-        this(null, ip, name);
+        this(null, new Ip(ip), name);
     }
 }

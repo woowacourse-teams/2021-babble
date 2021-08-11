@@ -15,6 +15,6 @@ public class AdministratorResponse {
     private String name;
 
     public static AdministratorResponse from (final Administrator administrator) {
-        return new AdministratorResponse(administrator.getId(), administrator.getIp(), administrator.getName());
+        return new AdministratorResponse(administrator.getId(), administrator.getIp().getValue(), administrator.getName());
     }
 }

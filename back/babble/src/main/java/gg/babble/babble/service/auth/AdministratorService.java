@@ -1,7 +1,9 @@
 package gg.babble.babble.service.auth;
 
 import gg.babble.babble.domain.admin.Administrator;
+import gg.babble.babble.domain.admin.Ip;
 import gg.babble.babble.domain.repository.AdministratorRepository;
+import gg.babble.babble.dto.request.AdministratorRequest;
 import gg.babble.babble.dto.response.AdministratorResponse;
 import gg.babble.babble.exception.BabbleAuthenticationException;
 import gg.babble.babble.exception.BabbleNotFoundException;
@@ -21,7 +23,7 @@ public class AdministratorService {
     }
 
     public void validateIp(final String ip) {
-        if(!administratorRepository.existsAdministratorByIp(ip)) {
+        if (!administratorRepository.existsAdministratorByIp(new Ip(ip))) {
             throw new BabbleAuthenticationException(String.format("허용되지 않는 Ip입니다. (현재 Ip: %s)", ip));
         }
     }
@@ -42,5 +44,9 @@ public class AdministratorService {
             .stream()
             .map(AdministratorResponse::from)
             .collect(Collectors.toList());
+    }
+
+    public AdministratorResponse insert(final AdministratorRequest request) {
+        return AdministratorResponse.from(administratorRepository.save(new Administrator(request.getIp(), request.getName())));
     }
 }
