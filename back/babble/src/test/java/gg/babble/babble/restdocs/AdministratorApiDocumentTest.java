@@ -42,9 +42,6 @@ import org.springframework.web.context.WebApplicationContext;
 public class AdministratorApiDocumentTest extends ApplicationTest {
 
     @Autowired
-    private AdministratorRepository administratorRepository;
-
-    @Autowired
     private ObjectMapper objectMapper;
 
     private MockMvc mockMvc;
@@ -55,8 +52,6 @@ public class AdministratorApiDocumentTest extends ApplicationTest {
             .apply(documentationConfiguration(restDocumentation))
             .alwaysDo(document("{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())))
             .build();
-
-        administratorRepository.save(new Administrator("127.0.0.1", "localhost"));
     }
 
     @DisplayName("관리자 전체 조회한다.")
@@ -129,9 +124,9 @@ public class AdministratorApiDocumentTest extends ApplicationTest {
     @Test
     void deleteAdministrator() throws Exception {
         String response = 관리자_전체_조회().andReturn().getResponse().getContentAsString();
-        Long idToDelete = objectMapper.readValue(response, new TypeReference<List<AdministratorResponse>>() {})
-            .get(0)
-            .getId();
+        Long idToDelete = objectMapper.readValue(
+            response, new TypeReference<List<AdministratorResponse>>() {
+            }).get(0).getId();
 
         mockMvc.perform(delete("/api/admins/" + idToDelete)
             .accept(MediaType.APPLICATION_JSON_VALUE))

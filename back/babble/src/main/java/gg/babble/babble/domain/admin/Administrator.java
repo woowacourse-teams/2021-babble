@@ -1,6 +1,5 @@
 package gg.babble.babble.domain.admin;
 
-import java.util.regex.Pattern;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
