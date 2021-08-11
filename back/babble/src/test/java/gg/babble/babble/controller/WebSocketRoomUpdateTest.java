@@ -6,8 +6,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.domain.repository.UserRepository;
 import gg.babble.babble.domain.user.User;
-import gg.babble.babble.dto.request.UserJoinRequest;
-import gg.babble.babble.dto.response.UserListUpdateResponse;
+import gg.babble.babble.dto.request.SessionRequest;
+import gg.babble.babble.dto.response.SessionsResponse;
 import gg.babble.babble.dto.response.UserResponse;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -64,30 +64,30 @@ public class WebSocketRoomUpdateTest extends ApplicationTest {
 //    private RoomRepository roomRepository;
 
     private String URL;
-    private CompletableFuture<UserListUpdateResponse> completableFuture;
-    private UserListUpdateResponse expectedUserListUpdateResponse;
+    private CompletableFuture<SessionsResponse> completableFuture;
+    private SessionsResponse expectedResponse;
 
-    @BeforeEach
-    protected void setup() {
-        // TODO : 데이터로더에 비 의존적으로 리팩토링
+//    @BeforeEach
+//    protected void setup() {
+//        // TODO : 데이터로더에 비 의존적으로 리팩토링
 //        dummyDataSet();
-
-        super.setUp();
-        completableFuture = new CompletableFuture<>();
-        URL = "ws://localhost:" + port + "/connection";
+//
+//        super.setUp();
+//        completableFuture = new CompletableFuture<>();
+//        URL = "ws://localhost:" + port + "/connection";
 //        user2 = userRepository.findByNickname("user0").get(0);
 //        user3 = userRepository.findByNickname("와일더").get(0);
 //        user4 = userRepository.findByNickname("현구막").get(0);
-        host = userRepository.findByNickname("user0").get(0);
-        guest1 = userRepository.findByNickname("루트").get(0);
-        guest2 = userRepository.findByNickname("user2").get(0);
-        expectedUserListUpdateResponse = new UserListUpdateResponse(
-            UserResponse.from(host),
-            Collections.singletonList(
-                UserResponse.from(guest1)
-            )
-        );
-    }
+//        host = userRepository.findByNickname("user0").get(0);
+//        guest1 = userRepository.findByNickname("루트").get(0);
+//        guest2 = userRepository.findByNickname("user2").get(0);
+//        SessionsResponse = new SessionsResponse(
+//            UserResponse.from(host),
+//            Collections.singletonList(
+//                UserResponse.from(guest1)
+//            )
+//        );
+//    }
 
     // TODO : 데이터로더에 비 의존적으로 리팩토링
 //    private void dummyDataSet() {
@@ -119,11 +119,11 @@ public class WebSocketRoomUpdateTest extends ApplicationTest {
         stompClient.setMessageConverter(new MappingJackson2MessageConverter());
 
         // Connection
-        userJoinAndBroadCasting(stompClient, new UserJoinRequest(guest1.getId(), "7777"));
-        UserListUpdateResponse userListUpdateResponse = completableFuture.get(5, SECONDS);
+        userJoinAndBroadCasting(stompClient, new SessionRequest(guest1.getId(), "7777"));
+        SessionsResponse response = completableFuture.get(5, SECONDS);
 
         //then
-        assertThat(userListUpdateResponse).usingRecursiveComparison().isEqualTo(expectedUserListUpdateResponse);
+        assertThat(response).usingRecursiveComparison().isEqualTo(expectedResponse);
     }
 
     @Disabled
@@ -136,34 +136,34 @@ public class WebSocketRoomUpdateTest extends ApplicationTest {
         // user1 입장.
         StompSession stompSession1 = stompClient.connect(URL, new StompSessionHandlerAdapter() {
         }).get(120, SECONDS);
-        userJoinAndBroadCastingUseSession(stompSession1, new UserJoinRequest(guest1.getId(), "7777"));
+        userJoinAndBroadCastingUseSession(stompSession1, new SessionRequest(guest1.getId(), "7777"));
 
         // user2 입장
         StompSession stompSession2 = stompClient.connect(URL, new StompSessionHandlerAdapter() {
         }).get(120, SECONDS);
-        userJoinAndBroadCastingUseSession(stompSession1, new UserJoinRequest(guest2.getId(), "8888"));
+        userJoinAndBroadCastingUseSession(stompSession1, new SessionRequest(guest2.getId(), "8888"));
 
         // 연결끊기, user2 퇴장
         stompSession2.disconnect();
 
-        UserListUpdateResponse userListUpdateResponse = completableFuture.get(5, SECONDS);  // 현구막 퇴장
+        SessionsResponse response = completableFuture.get(5, SECONDS);  // 현구막 퇴장
 
         //then
-        assertThat(userListUpdateResponse).usingRecursiveComparison().isEqualTo(expectedUserListUpdateResponse);
+        assertThat(response).usingRecursiveComparison().isEqualTo(expectedResponse);
     }
 
-    private void userJoinAndBroadCastingUseSession(final StompSession stompSession, final UserJoinRequest userJoinRequest) {
+    private void userJoinAndBroadCastingUseSession(final StompSession stompSession, final SessionRequest request) {
         stompSession.subscribe(SUBSCRIBE_ROOM_UPDATE_BROAD_ENDPOINT, new UserUpdateStompFrameHandler());
-        sendJoinMessage(stompSession, userJoinRequest);
+        sendJoinMessage(stompSession, request);
     }
 
-    private void userJoinAndBroadCasting(WebSocketStompClient stompClient, UserJoinRequest userJoinRequest)
+    private void userJoinAndBroadCasting(WebSocketStompClient stompClient, SessionRequest request)
         throws InterruptedException, ExecutionException, TimeoutException {
         StompSession stompSession = stompClient.connect(URL, new StompSessionHandlerAdapter() {
         }).get(120, SECONDS);
 
         stompSession.subscribe(SUBSCRIBE_ROOM_UPDATE_BROAD_ENDPOINT, new UserUpdateStompFrameHandler());
-        sendJoinMessage(stompSession, userJoinRequest);
+        sendJoinMessage(stompSession, request);
     }
 
     private void joinRoom(StompSession stompSession) {
@@ -176,21 +176,21 @@ public class WebSocketRoomUpdateTest extends ApplicationTest {
         return transports;
     }
 
-    private void sendJoinMessage(StompSession stompSession, UserJoinRequest userJoinRequest) {
-        stompSession.send(SEND_ROOM_UPDATE_ENDPOINT, userJoinRequest);
+    private void sendJoinMessage(StompSession stompSession, SessionRequest request) {
+        stompSession.send(SEND_ROOM_UPDATE_ENDPOINT, request);
     }
 
     private class UserUpdateStompFrameHandler implements StompFrameHandler {
 
         @Override
         public Type getPayloadType(StompHeaders stompHeaders) {
-            return UserListUpdateResponse.class;
+            return SessionsResponse.class;
         }
 
         @Override
         public void handleFrame(StompHeaders stompHeaders, Object o) {
             System.out.println(o);
-            completableFuture.complete((UserListUpdateResponse) o);
+            completableFuture.complete((SessionsResponse) o);
         }
     }
 }
