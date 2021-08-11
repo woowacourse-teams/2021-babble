@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.domain.Game;
-import gg.babble.babble.domain.Session;
 import gg.babble.babble.domain.repository.GameRepository;
 import gg.babble.babble.domain.repository.RoomRepository;
 import gg.babble.babble.domain.repository.TagRepository;
@@ -14,22 +13,20 @@ import gg.babble.babble.domain.room.MaxHeadCount;
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
+import gg.babble.babble.dto.request.SessionRequest;
 import gg.babble.babble.exception.BabbleIllegalStatementException;
 import java.util.Collections;
-import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class SubscribeAuthServiceTest extends ApplicationTest {
 
-    private static final String APEX_LEGEND = "Apex Legend";
-    private static final String 현구막 = "현구막";
-    private static final String 포츈 = "포츈";
-    private static final String 실버 = "실버";
-
     @Autowired
     private SubscribeAuthService subscribeAuthService;
+
+    @Autowired
+    private EnterExitService enterExitService;
 
     @Autowired
     private GameRepository gameRepository;
@@ -46,9 +43,12 @@ public class SubscribeAuthServiceTest extends ApplicationTest {
     @DisplayName("새로운 유저가 방에 들어오더라도, 정원초과가 발생하지 않으면 예외가 발생하지 않는다.")
     @Test
     void userJoinTest() {
-        prepareDummyRoom();
+        // given
+        Room room = prepareDummyRoom();
+
+        // when, then
         assertThatCode(() -> {
-            subscribeAuthService.validate("/topic/rooms/2/users");
+            subscribeAuthService.validate(String.format("/topic/rooms/%d/users", room.getId()));
         }).doesNotThrowAnyException();
     }
 
@@ -56,29 +56,25 @@ public class SubscribeAuthServiceTest extends ApplicationTest {
     @DisplayName("방 인원수보다 더 많은 인원이 입장하려고 하는경우, 예외가 발생한다.")
     @Test
     void overcrowdExceptionTest() {
+        // given
         Room room = prepareDummyRoom();
-        User guest = userRepository.findByNickname(포츈).get(0);
+        User 포츈 = userRepository.save(new User("포츈"));
+        enterExitService.enter(room.getId(), new SessionRequest(포츈.getId(), "1111"));
 
-        Session session = new Session("1234", room, guest);
-
-        room.addSession(session);
-        roomRepository.save(room);
-
-        assertThatThrownBy(() -> {
-            subscribeAuthService.validate(String.format("/topic/rooms/%s/users", room.getId()));
-        }).isInstanceOf(BabbleIllegalStatementException.class);
+        // when, then
+        assertThatThrownBy(
+            () -> subscribeAuthService.validate(String.format("/topic/rooms/%d/users", room.getId()))
+        ).isInstanceOf(BabbleIllegalStatementException.class);
     }
 
     private Room prepareDummyRoom() {
-        Game game = gameRepository.findByNameAndDeletedFalse(APEX_LEGEND).get(0);
-        User host = userRepository.findByNickname(현구막).get(0);
-        List<Tag> tags = Collections.singletonList(tagRepository.findByName(실버).get(0));
+        Game game = gameRepository.save(new Game("APEX_LEGEND"));
+        Tag tag = tagRepository.save(new Tag("2시간"));
+        Room room = roomRepository.save(new Room(game, Collections.singletonList(tag), new MaxHeadCount(2)));
+        User 루트 = userRepository.save(new User("루트"));
 
-        Room room = new Room(game, tags, new MaxHeadCount(2));
+        enterExitService.enter(room.getId(), new SessionRequest(루트.getId(), "1111"));
 
-        Session session = new Session("1234", room, host);
-
-        room.addSession(session);
-        return roomRepository.save(room);
+        return room;
     }
 }

@@ -17,48 +17,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class TagServiceTest extends ApplicationTest {
 
-    private static final String 실버 = "실버";
-    private static final String _2시간 = "2시간";
-    private static final String 솔로랭크 = "솔로랭크";
-
     @Autowired
     private TagService tagService;
 
     @Autowired
     private TagRepository tagRepository;
 
-    //    // data Loader class 호출을 없애길 희망.
-//    // TODO : 프로필에 테스트 data Loader에서만 처리하게 하거나, 모여서 할 이야기라서 일단 keep
-//    @Autowired
-//    private TagRepository tagRepository;
-//
-//    @BeforeEach
-//    private void prepareDummyTags() {
-//        tagRepository.save(Tag.builder()
-//                .name("2시간")
-//                .build()
-//        );
-//        tagRepository.save(Tag.builder()
-//                .name("솔로랭크")
-//                .build()
-//        );
-//        tagRepository.save(Tag.builder()
-//                .name("실버")
-//                .build()
-//        );
-//    }
-//
-    @DisplayName("존재하지 않는 태그면 예외 처리한다.")
-    @Test
-    void tagNotFoundTest() {
-        assertThatThrownBy(() -> tagService.findById(Long.MAX_VALUE))
-            .isInstanceOf(BabbleNotFoundException.class);
-    }
-
     @DisplayName("태그 전체를 불러오면, DB에 존재하는 모든 태그를 불러온다.")
     @Test
     void getAllTags() {
-
         prepareDummyTags();
 
         // given
@@ -75,8 +42,8 @@ public class TagServiceTest extends ApplicationTest {
     }
 
     private void prepareDummyTags() {
-        tagRepository.save(new Tag(실버));
-        tagRepository.save(new Tag(_2시간));
-        tagRepository.save(new Tag(솔로랭크));
+        tagRepository.save(new Tag("실버"));
+        tagRepository.save(new Tag("2시간"));
+        tagRepository.save(new Tag("솔로랭크"));
     }
 }
