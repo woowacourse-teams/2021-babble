@@ -2,8 +2,10 @@ package gg.babble.babble.restdocs;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
@@ -13,7 +15,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.domain.Game;
@@ -91,7 +92,7 @@ public class GameApiDocumentTest extends ApplicationTest {
     @DisplayName("단일 게임 이미지 조회")
     @Test
     void findGameImageById() throws Exception {
-        mockMvc.perform(get("/api/games/" + games.get(0).getId() +"/images")
+        mockMvc.perform(get("/api/games/" + games.get(0).getId() + "/images")
             .accept(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.gameId").value(games.get(0).getId()))
@@ -191,54 +192,77 @@ public class GameApiDocumentTest extends ApplicationTest {
             .andExpect(status().isUnauthorized());
     }
 
-    // TODO: DataLoader에 의존적인 구조를 가지고 있어 테스트 작성이 불가능한 상태.
-    @DisplayName("게임을 편집한다.")
+    @DisplayName("게임을 수정한다.")
     @Test
-    void updateGame() throws Exception {
-        String gameName = "League Of Legends";
+    void editGame() throws Exception {
+        administratorRepository.save(new Administrator("127.0.0.1", "localhost"));
+        String gameName = "League Of Legeno";
         String thumbnail = "image.png";
 
         Map<String, Object> body = new HashMap<>();
         body.put("name", gameName);
         body.put("thumbnail", thumbnail);
 
-        mockMvc.perform(post("/api/games")
+        mockMvc.perform(put("/api/games/" + games.get(0).getId())
             .accept(MediaType.APPLICATION_JSON_VALUE)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .content(objectMapper.writeValueAsString(body)).characterEncoding("utf-8"));
+            .content(objectMapper.writeValueAsString(body)).characterEncoding("utf-8"))
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").isNumber())
+            .andExpect(jsonPath("$.name").value(gameName))
+            .andExpect(jsonPath("$.thumbnail").value(thumbnail))
 
-//        mockMvc.perform(put("/api/games/" + )
-//                .accept(MediaType.APPLICATION_JSON_VALUE)
-//                .contentType(MediaType.APPLICATION_JSON_VALUE)
-//                .content(objectMapper.writeValueAsString(body)).characterEncoding("utf-8"))
-//            .andDo(MockMvcResultHandlers.print())
-//            .andExpect(status().isOk())
-//            .andExpect(jsonPath("$.id").isNumber())
-//            .andExpect(jsonPath("$.name").value(gameName))
-//            .andExpect(jsonPath("$.thumbnail").value(thumbnail))
-//
-//            .andDo(document("insert-game",
-//                requestFields(
-//                    fieldWithPath("name").description("게임 이름"),
-//                    fieldWithPath("thumbnail").description("게임 썸네일 URL")
-//                ),
-//                responseFields(
-//                    fieldWithPath("id").description("게임 ID"),
-//                    fieldWithPath("name").description("게임 이름"),
-//                    fieldWithPath("thumbnail").description("게임 썸네일 URL")
-//                )
-//            ));
+            .andDo(document("update-game",
+                requestFields(
+                    fieldWithPath("name").description("게임 이름"),
+                    fieldWithPath("thumbnail").description("게임 썸네일 URL")
+                ),
+                responseFields(
+                    fieldWithPath("id").description("게임 ID"),
+                    fieldWithPath("name").description("게임 이름"),
+                    fieldWithPath("thumbnail").description("게임 썸네일 URL")
+                )
+            ));
     }
 
-    // TODO: DataLoader에 의존적인 구조를 가지고 있어 테스트 작성이 불가능한 상태.
+    @DisplayName("등록되어 있지 않은 관리자의 경우 게임을 수정할 수 없다.")
+    @Test
+    void editGameWithInvalidIp() throws Exception {
+        String gameName = "League Of Legeno";
+        String thumbnail = "image.png";
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("name", gameName);
+        body.put("thumbnail", thumbnail);
+
+        mockMvc.perform(put("/api/games/" + games.get(0).getId())
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(objectMapper.writeValueAsString(body)).characterEncoding("utf-8"))
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isUnauthorized());
+    }
+
     @DisplayName("게임을 삭제한다")
     @Test
-    void deleteGame() {
-        // given
+    void removeGame() throws Exception {
+        administratorRepository.save(new Administrator("127.0.0.1", "localhost"));
+        mockMvc.perform(delete("/api/games/" + games.get(0).getId()).
+            accept(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isNoContent())
+            .andDo(document("delete-game"));
 
-        // when
+        mockMvc.perform(get("/api/games/" + games.get(0).getId())
+            .accept(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isNotFound());
+    }
 
-        // then
-
+    @DisplayName("등록되어 있지 않은 관리자의 경우 게임을 삭제할 수 없다.")
+    @Test
+    void removeGameWithInvalidIp() throws Exception {
+        mockMvc.perform(delete("/api/games/" + games.get(0).getId()).
+            accept(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isUnauthorized());
     }
 }
