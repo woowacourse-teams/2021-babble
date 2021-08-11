@@ -26,7 +26,7 @@ jobs:
       - name: E2E 테스트
         uses: cypress-io/github-action@v2
         with:
-          start: npm run start
+          browser: chrome
 
       - name: 배포
         working-directory: ./front
