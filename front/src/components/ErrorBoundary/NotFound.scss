@@ -1,0 +1,32 @@
+@use '../../../style/functions' as f;
+
+.not-found-container {
+  width: 100%;
+  height: calc(100vh - 15rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+
+    .headline1 {
+      margin: 1rem;
+    }
+
+    .body2 {
+      margin: 0.2rem 1rem;
+
+      .path {
+        color: f.primary(babble-pink);
+      }
+    }
+  }
+
+  img {
+    width: 50rem;
+  }
+}
