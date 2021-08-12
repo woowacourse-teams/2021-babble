@@ -5,7 +5,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import GameList from './pages/GameList/GameList';
 import MakeRoom from './pages/MakeRoom/MakeRoom';
-import NotFound from './components/ErrorBoundary/NotFound';
+import NotFound from './components/NotFound/NotFound';
 import PATH from './constants/path';
 import React from 'react';
 import RoomList from './pages/RoomList/RoomList';
