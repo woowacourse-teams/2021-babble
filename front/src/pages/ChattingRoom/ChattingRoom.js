@@ -226,7 +226,7 @@ const ChattingRoom = ({ tags, game, roomId }) => {
                   <SpeechBubbleWithAvatar
                     key={index}
                     time={chatting.receivedTime}
-                    nickname={chatting.user.nickname}
+                    user={chatting.user}
                   >
                     {chatting.content}
                   </SpeechBubbleWithAvatar>

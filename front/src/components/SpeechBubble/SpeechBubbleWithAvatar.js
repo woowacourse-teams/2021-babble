@@ -5,18 +5,13 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import SpeechBubble from './SpeechBubble';
 
-const SpeechBubbleWithAvatar = ({
-  size = 'small',
-  time,
-  nickname,
-  children,
-}) => {
+const SpeechBubbleWithAvatar = ({ size = 'small', time, user, children }) => {
   return (
     <div className='speech-bubble-container'>
       <LinearLayout direction='row'>
-        <AvatarImage size={size} />
+        <AvatarImage imageSrc={user.avatar} size={size} />
         <LinearLayout direction='col'>
-          <Caption2>{nickname}</Caption2>
+          <Caption2>{user.nickname}</Caption2>
           <SpeechBubble type='others' time={time}>
             {children}
           </SpeechBubble>
@@ -29,7 +24,11 @@ const SpeechBubbleWithAvatar = ({
 SpeechBubbleWithAvatar.propTypes = {
   size: PropTypes.string,
   time: PropTypes.string,
-  nickname: PropTypes.string,
+  user: PropTypes.shape({
+    id: PropTypes.number,
+    nickname: PropTypes.string,
+    avatar: PropTypes.string,
+  }),
   children: PropTypes.node,
 };
 

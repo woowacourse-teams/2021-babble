@@ -34,6 +34,7 @@
   border-radius: 40%;
   border: 1px solid f.grey-scale(4);
   box-shadow: v.$box-shadow;
+  background: f.grey-scale(10);
 
   &.small {
     width: f.avatar-size(small);
