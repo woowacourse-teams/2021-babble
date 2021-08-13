@@ -90,7 +90,7 @@ const GameList = () => {
       ([entry]) => {
         entry.target.classList.toggle(
           'stuck',
-          entry.intersectionRatio < 1 && entry.boundingClientRect.top <= 50
+          entry.intersectionRatio < 1 && !entry.isIntersecting
         );
       },
       { threshold: 1 }

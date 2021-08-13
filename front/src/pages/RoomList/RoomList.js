@@ -189,7 +189,7 @@ const RoomList = ({ match }) => {
       ([entry]) => {
         entry.target.classList.toggle(
           'stuck',
-          entry.intersectionRatio < 1 && entry.boundingClientRect.top <= 50
+          entry.intersectionRatio < 1 && !entry.isIntersecting
         );
       },
       { threshold: 1 }
@@ -250,8 +250,8 @@ const RoomList = ({ match }) => {
         <section className='room-list-section'>
           {roomList?.map((room, index) => (
             <Room
-              room={room}
               key={index}
+              room={room}
               onClickRoom={(e) => onConfirm(() => joinChatting(e))}
             />
           ))}
