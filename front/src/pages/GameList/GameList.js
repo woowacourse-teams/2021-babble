@@ -19,23 +19,18 @@ const GameList = () => {
   const dummyImage = [
     {
       id: 0,
-      info: 'Teamfight Tactics',
-      src: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/c2d19d4a-860f-4736-aaee-9671677c1bee/ddd8djc-68b444e6-738d-4428-822c-aac14e42c134.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2MyZDE5ZDRhLTg2MGYtNDczNi1hYWVlLTk2NzE2NzdjMWJlZVwvZGRkOGRqYy02OGI0NDRlNi03MzhkLTQ0MjgtODIyYy1hYWMxNGU0MmMxMzQuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.o-JsRdvyVURnwfQIS1C0b20UgfotvKZ3I6HR56_gDOY',
+      info: 'Kartrider Rush Plus',
+      src: 'https://babble.gg/img/banners/kartrider.png',
     },
     {
       id: 1,
-      info: 'Unrailed',
-      src: 'https://static3.srcdn.com/wordpress/wp-content/uploads/2020/09/Unrailed-Review-Logo.jpg',
+      info: 'APEX LEGENDS',
+      src: 'https://babble.gg/img/banners/apexlegends.png',
     },
     {
       id: 2,
-      info: 'Escape From Tarkov',
-      src: 'https://www.mrpcgamer.com/wp-content/uploads/2020/11/EFT-1.jpg',
-    },
-    {
-      id: 3,
-      info: 'Pokemon Unite',
-      src: 'https://www.videogamer.com/wp-content/uploads/Pokemon_UNITE_-_Gameplay_Trailer_-_Hero_Image.jpg',
+      info: 'Fortnite',
+      src: 'https://babble.gg/img/banners/fortnite.png',
     },
   ];
 
@@ -90,7 +85,8 @@ const GameList = () => {
       ([entry]) => {
         entry.target.classList.toggle(
           'stuck',
-          entry.intersectionRatio < 1 && !entry.isIntersecting
+          // entry.intersectionRatio <= 0.99 && !entry.isIntersecting
+          entry.boundingClientRect.top <= 0 && !entry.isIntersecting
         );
       },
       { threshold: 1 }
