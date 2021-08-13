@@ -7,7 +7,7 @@ import React from 'react';
 import TagList from '../../chunks/TagList/TagList';
 import { useUser } from '../../contexts/UserProvider';
 
-const Room = ({ imageSrc, room, onClickRoom }) => {
+const Room = ({ room, onClickRoom }) => {
   const { roomId, host, headCount, tags } = room;
   const { current, max } = headCount;
   const {
@@ -30,7 +30,7 @@ const Room = ({ imageSrc, room, onClickRoom }) => {
               <Body2>{roomId}</Body2>
             </div>
             <div className='avatar'>
-              <Avatar size='small' imageSrc={imageSrc} direction='row'>
+              <Avatar size='small' imageSrc={host.avatar} direction='row'>
                 <Body2>{host.nickname}</Body2>
               </Avatar>
             </div>
@@ -54,6 +54,7 @@ Room.propTypes = {
     host: PropTypes.shape({
       id: PropTypes.number,
       nickname: PropTypes.string,
+      avatar: PropTypes.string,
     }),
     headCount: PropTypes.shape({
       current: PropTypes.number,
