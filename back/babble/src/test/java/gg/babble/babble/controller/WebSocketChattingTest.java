@@ -53,7 +53,7 @@ public class WebSocketChattingTest extends ApplicationWebSocketTest {
     @Test
     public void testUserUpdateEndpoint() throws InterruptedException, ExecutionException, TimeoutException {
         MessageResponse expectedMessageResponse = new MessageResponse(
-            new UserResponse(2L, "와일더", "https://bucket-babble-front.s3.ap-northeast-2.amazonaws.com/img/users/profiles/profile66.png"),
+            new UserResponse(2L, "와일더", "https://d2bidcnq0n74fu.cloudfront.net/img/users/profiles/profile66.png"),
             "철권 붐은 온다.", "chat"
         );
 
