@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 public class User {
 
-    private static final String AVATAR_FORMAT = "https://bucket-babble-front.s3.ap-northeast-2.amazonaws.com/img/users/profiles/profile%d.png";
+    private static final String AVATAR_FORMAT = "https://d2bidcnq0n74fu.cloudfront.net/img/users/profiles/profile%d.png";
     private static final int NUMBER_OF_AVATAR = 70;
 
     @Id

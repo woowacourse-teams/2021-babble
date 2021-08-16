@@ -3,6 +3,7 @@ import './global.scss';
 import App from './src/App';
 import ChattingModalProvider from './src/contexts/ChattingModalProvider';
 import DefaultModalProvider from './src/contexts/DefaultModalProvider';
+import ErrorBoundary from './src/components/ErrorBoundary/ErrorBoundary';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -13,10 +14,12 @@ ReactDOM.render(
   <UserProvider>
     <DefaultModalProvider>
       <ChattingModalProvider>
-        <Router>
-          <ScrollToTop />
-          <App />
-        </Router>
+        <ErrorBoundary>
+          <Router>
+            <ScrollToTop />
+            <App />
+          </Router>
+        </ErrorBoundary>
       </ChattingModalProvider>
     </DefaultModalProvider>
   </UserProvider>,

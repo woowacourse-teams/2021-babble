@@ -5,6 +5,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import GameList from './pages/GameList/GameList';
 import MakeRoom from './pages/MakeRoom/MakeRoom';
+import NotFound from './components/NotFound/NotFound';
 import PATH from './constants/path';
 import React from 'react';
 import RoomList from './pages/RoomList/RoomList';
@@ -21,6 +22,7 @@ const App = () => {
             component={MakeRoom}
           />
           <Route path={`${PATH.ROOM_LIST}/:gameId`} component={RoomList} />
+          <Route component={NotFound} />
         </Switch>
       </Main>
       <Footer />

@@ -26,6 +26,14 @@ jobs:
         working-directory: ./front
         run: npm run prod
 
+      - name: 크롬 E2E 테스트
+        uses: cypress-io/github-action@v2
+        with:
+          headless: true
+          working-directory: front
+          start: npm start
+          wait-on: 'http://localhost:3000'
+
       - name: Semantic Release 실행
         uses: go-semantic-release/action@v1
         with:

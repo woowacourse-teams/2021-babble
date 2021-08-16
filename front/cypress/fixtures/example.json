@@ -1,0 +1,52 @@
+[
+  {
+    "roomId": 0,
+    "createdDate": "2021-08-07T01:37:22.021",
+    "game": {
+      "id": 1,
+      "name": "League Of Legends"
+    },
+    "host": {
+      "id": 7,
+      "nickname": "user0",
+      "avatar": "https://hyeon9mak.github.io/assets/images/9vatar.png"
+    },
+    "headCount": {
+      "current": 1,
+      "max": 4
+    },
+    "tags": [
+      {
+        "id": 1,
+        "name": "실버"
+      },
+      {
+        "id": 2,
+        "name": "2시간"
+      }
+    ]
+  },
+  {
+    "roomId": 1,
+    "createdDate": "2021-08-11T01:37:22.021",
+    "game": {
+      "id": 1,
+      "name": "League Of Legends"
+    },
+    "host": {
+      "id": 10,
+      "nickname": "user1",
+      "avatar": "https://hyeon9mak.github.io/assets/images/9vatar.png"
+    },
+    "headCount": {
+      "current": 10,
+      "max": 20
+    },
+    "tags": [
+      {
+        "id": 1,
+        "name": "다이아몬드"
+      }
+    ]
+  }
+]

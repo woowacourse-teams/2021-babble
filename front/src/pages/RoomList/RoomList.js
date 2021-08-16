@@ -126,7 +126,7 @@ const RoomList = ({ match }) => {
     });
   };
 
-  // TODO: Custom Confirm 로직을 개선할 방법에 대해 고려(우선순위 높음)
+  // TODO: Custom Confirm 로직을 개선할 방법에 대해 고려(우선순위 꽤 높음).
   const onConfirm = (callback) => {
     if (isChattingModalOpen) {
       openModal(
@@ -189,7 +189,7 @@ const RoomList = ({ match }) => {
       ([entry]) => {
         entry.target.classList.toggle(
           'stuck',
-          entry.intersectionRatio < 1 && entry.boundingClientRect.top <= 50
+          entry.intersectionRatio < 1 && !entry.isIntersecting
         );
       },
       { threshold: 1 }
@@ -248,10 +248,10 @@ const RoomList = ({ match }) => {
           </section>
         </div>
         <section className='room-list-section'>
-          {roomList.map((room, index) => (
+          {roomList?.map((room, index) => (
             <Room
-              room={room}
               key={index}
+              room={room}
               onClickRoom={(e) => onConfirm(() => joinChatting(e))}
             />
           ))}

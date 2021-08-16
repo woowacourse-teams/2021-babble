@@ -4,6 +4,7 @@
 @mixin search-container {
   max-width: 100%;
   padding: 1rem 0;
+  margin-bottom: 1rem;
   position: sticky;
   top: -1px;
   background: transparent;
@@ -13,7 +14,7 @@
 @mixin search-section {
   max-width: 100%;
   min-width: 40rem;
-  padding: 1rem 0;
+  padding: 0;
   margin-bottom: 1rem;
   display: flex;
   background-color: f.grey-scale(white);
