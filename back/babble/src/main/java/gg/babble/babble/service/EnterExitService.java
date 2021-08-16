@@ -5,6 +5,7 @@ import gg.babble.babble.domain.repository.SessionRepository;
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.user.User;
 import gg.babble.babble.dto.request.SessionRequest;
+import gg.babble.babble.dto.response.ExitResponse;
 import gg.babble.babble.dto.response.SessionsResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import org.springframework.stereotype.Service;
@@ -24,13 +25,6 @@ public class EnterExitService {
         this.userService = userService;
     }
 
-    public Long findRoomIdBySessionId(final String sessionId) {
-        Session session = findBySessionId(sessionId);
-        Room room = session.getRoom();
-
-        return room.getId();
-    }
-
     @Transactional
     public SessionsResponse enter(final Long roomId, final SessionRequest request) {
         Room room = roomService.findById(roomId);
@@ -43,16 +37,15 @@ public class EnterExitService {
     }
 
     @Transactional
-    public SessionsResponse exit(final String sessionId) {
+    public ExitResponse exit(final String sessionId) {
         Session session = findBySessionId(sessionId);
-        Room room = session.getRoom();
 
         session.delete();
 
-        if (room.isDeleted()) {
-            return SessionsResponse.empty();
+        if (session.getRoom().isDeleted()) {
+            return new ExitResponse(session.getRoom().getId(), SessionsResponse.empty());
         }
-        return SessionsResponse.of(room.getHost(), room.getGuests());
+        return new ExitResponse(session.getRoom().getId(), SessionsResponse.of(session.getRoom().getHost(), session.getRoom().getGuests()));
     }
 
     private Session findBySessionId(final String id) {

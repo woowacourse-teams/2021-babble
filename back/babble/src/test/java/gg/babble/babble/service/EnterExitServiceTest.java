@@ -1,23 +1,16 @@
 package gg.babble.babble.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.domain.Game;
 import gg.babble.babble.domain.Session;
-import gg.babble.babble.domain.repository.GameRepository;
-import gg.babble.babble.domain.repository.RoomRepository;
-import gg.babble.babble.domain.repository.SessionRepository;
-import gg.babble.babble.domain.repository.TagRepository;
-import gg.babble.babble.domain.repository.UserRepository;
 import gg.babble.babble.domain.room.MaxHeadCount;
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
 import gg.babble.babble.dto.request.SessionRequest;
 import gg.babble.babble.dto.response.SessionsResponse;
-import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -47,27 +40,6 @@ class EnterExitServiceTest extends ApplicationTest {
         // then
         assertThat(response.getHost()).usingRecursiveComparison()
             .isEqualTo(user);
-    }
-
-    @DisplayName("세션과 매핑된 방 ID를 조회한다.")
-    @Test
-    void findRoomBySessionId() {
-        // given
-        Session session = 세션을_생성한다();
-
-        // when
-        Long roomId = enterExitService.findRoomIdBySessionId(session.getSessionId());
-
-        // then
-        assertThat(roomId).isEqualTo(session.getRoom().getId());
-    }
-
-    @DisplayName("세션과 매핑된 방 ID 조회 실패시 예외가 발생한다.")
-    @Test
-    void findSessionOrElseThrowException() {
-        // then
-        assertThatThrownBy(() -> enterExitService.findRoomIdBySessionId("아무거나아아"))
-            .isInstanceOf(BabbleNotFoundException.class);
     }
 
     @DisplayName("세션을 삭제(방에 유저 퇴장)한다.")

@@ -12,6 +12,7 @@
 //import gg.babble.babble.domain.tag.Tag;
 //import gg.babble.babble.domain.user.User;
 //import java.util.Arrays;
+//import java.util.Collections;
 //import java.util.List;
 //import org.springframework.boot.CommandLineRunner;
 //import org.springframework.context.annotation.Profile;
@@ -88,23 +89,7 @@
 //    }
 //
 //    private void prepareDummyRoom() {
-//        for (int userIndex = 0; userIndex < MAX_USER_INDEX; userIndex++) {
-//            Room room = createAndJoinRoom(userIndex);
-//            roomRepository.save(room);
-//        }
+//        roomRepository.save(new Room(gameRepository.getById(1L), Collections.singletonList(tagRepository.getById(1L)), new MaxHeadCount(4)));
 //    }
 //
-//    private Room createAndJoinRoom(int userIndex) {
-//        Game game = gameRepository.findByNameAndDeletedFalse(LEAGUE_OF_LEGENDS).get(FIRST_DATA_INDEX);
-//        User user = userRepository.findByNickname("user" + userIndex).get(FIRST_DATA_INDEX);
-//        List<Tag> tags = Arrays.asList(tagRepository.findByName(실버).get(0), tagRepository.findByName(_2시간).get(0));
-//
-//        Room room = new Room(game, tags, new MaxHeadCount(4));
-//
-//        Session session = sessionRepository.save(new Session("12345678", room, user));
-//        room.addSession(session);
-//        user.linkSession(session);
-//
-//        return room;
-//    }
 //}

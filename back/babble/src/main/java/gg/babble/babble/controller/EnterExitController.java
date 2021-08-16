@@ -1,6 +1,7 @@
 package gg.babble.babble.controller;
 
 import gg.babble.babble.dto.request.SessionRequest;
+import gg.babble.babble.dto.response.ExitResponse;
 import gg.babble.babble.service.EnterExitService;
 import javax.validation.Valid;
 import org.springframework.context.event.EventListener;
@@ -29,9 +30,9 @@ public class EnterExitController {
 
     @EventListener
     public void exit(final SessionDisconnectEvent event) {
-        template.convertAndSend(
-            String.format("/topic/rooms/%s/users", enterExitService.findRoomIdBySessionId(event.getSessionId())),
-            enterExitService.exit(event.getSessionId())
-        );
+
+        ExitResponse response = enterExitService.exit(event.getSessionId());
+
+        template.convertAndSend(String.format("/topic/rooms/%s/users", response.getRoomId()), response.getSessionsResponse());
     }
 }

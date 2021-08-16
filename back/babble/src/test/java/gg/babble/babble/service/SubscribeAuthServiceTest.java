@@ -5,14 +5,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.domain.Game;
-import gg.babble.babble.domain.repository.GameRepository;
-import gg.babble.babble.domain.repository.RoomRepository;
-import gg.babble.babble.domain.repository.TagRepository;
-import gg.babble.babble.domain.repository.UserRepository;
 import gg.babble.babble.domain.room.MaxHeadCount;
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.tag.Tag;
-import gg.babble.babble.domain.user.Nickname;
 import gg.babble.babble.domain.user.User;
 import gg.babble.babble.dto.request.SessionRequest;
 import gg.babble.babble.exception.BabbleIllegalStatementException;

@@ -1,13 +1,10 @@
 package gg.babble.babble.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import gg.babble.babble.ApplicationTest;
-import gg.babble.babble.domain.repository.TagRepository;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.dto.response.TagResponse;
-import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;

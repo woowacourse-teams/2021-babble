@@ -2,7 +2,6 @@ package gg.babble.babble.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

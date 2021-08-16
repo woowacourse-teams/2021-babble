@@ -6,7 +6,6 @@ import gg.babble.babble.domain.repository.RoomRepository;
 import gg.babble.babble.domain.repository.SessionRepository;
 import gg.babble.babble.domain.repository.TagRepository;
 import gg.babble.babble.domain.repository.UserRepository;
-import gg.babble.babble.service.EnterExitService;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
