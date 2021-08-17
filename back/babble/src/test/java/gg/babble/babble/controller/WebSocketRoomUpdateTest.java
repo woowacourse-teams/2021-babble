@@ -79,7 +79,7 @@ public class WebSocketRoomUpdateTest extends ApplicationWebSocketTest {
     @Test
     public void testUserJoinUpdate() throws InterruptedException, ExecutionException, TimeoutException {
         // init setting
-        userJoinAndSubscribeAndSend(new SessionRequest(host.getId(), "1111"));
+        userJoinAndSubscribeAndSend(host);
         SessionsResponse response = blockingQueue.poll(5, SECONDS);
         assertThat(response).usingRecursiveComparison().isEqualTo(
             new SessionsResponse(
@@ -89,7 +89,7 @@ public class WebSocketRoomUpdateTest extends ApplicationWebSocketTest {
         );
 
         // Connection
-        userJoinAndSubscribeAndSend(new SessionRequest(guest1.getId(), "2222"));
+        userJoinAndSubscribeAndSend(guest1);
         response = blockingQueue.poll(5, SECONDS);
 
         //then
@@ -109,7 +109,7 @@ public class WebSocketRoomUpdateTest extends ApplicationWebSocketTest {
     public void testUserExitTest() throws InterruptedException, ExecutionException, TimeoutException {
 
         // host 입장.
-        userJoinAndSubscribeAndSend(new SessionRequest(host.getId(), "1111"));
+        userJoinAndSubscribeAndSend(host);
         SessionsResponse response = blockingQueue.poll(5, SECONDS);
         assertThat(response).usingRecursiveComparison().isEqualTo(
             new SessionsResponse(
@@ -119,7 +119,7 @@ public class WebSocketRoomUpdateTest extends ApplicationWebSocketTest {
         );
 
         // user1 입장
-        StompSession user1Session = userJoinAndSubscribeAndSend(new SessionRequest(guest1.getId(), "2222"));
+        StompSession user1Session = userJoinAndSubscribeAndSend(guest1);
         response = blockingQueue.poll(5, SECONDS);
         assertThat(response).usingRecursiveComparison().isEqualTo(
             new SessionsResponse(
@@ -132,7 +132,7 @@ public class WebSocketRoomUpdateTest extends ApplicationWebSocketTest {
         blockingQueue.poll(5, SECONDS);
 
         // user2 입장
-        userJoinAndSubscribeAndSend(new SessionRequest(guest2.getId(), "3333"));
+        userJoinAndSubscribeAndSend(guest2);
         response = blockingQueue.poll(5, SECONDS);
         assertThat(response).usingRecursiveComparison().isEqualTo(
             new SessionsResponse(
@@ -162,7 +162,7 @@ public class WebSocketRoomUpdateTest extends ApplicationWebSocketTest {
         blockingQueue.clear();
     }
 
-    private StompSession userJoinAndSubscribeAndSend(SessionRequest request)
+    private StompSession userJoinAndSubscribeAndSend(User user)
         throws InterruptedException, ExecutionException, TimeoutException {
 
         List<Transport> transports = createTransportClient();
@@ -173,7 +173,7 @@ public class WebSocketRoomUpdateTest extends ApplicationWebSocketTest {
         String sessionId = ((CustomWebSocketTransport) transports.get(0)).getSessionId();
 
         stompSession.subscribe(subscribeRoomUpdateBroadEndpoint, new UserUpdateStompFrameHandler());
-        stompSession.send(sendRoomUpdateEndpoint, new SessionRequest(request.getUserId(), sessionId));
+        stompSession.send(sendRoomUpdateEndpoint, new SessionRequest(user.getId(), sessionId));
 
         return stompSession;
     }

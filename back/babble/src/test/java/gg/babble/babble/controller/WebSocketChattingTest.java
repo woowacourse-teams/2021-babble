@@ -101,17 +101,13 @@ public class WebSocketChattingTest extends ApplicationWebSocketTest {
 
     private void joinRoom(StompSession stompSession) {
         stompSession.subscribe(subscribeRoomUpdateBroadEndpoint, new UserUpdateStompFrameHandler());
-        sendJoinMessage(stompSession, new SessionRequest(user.getId(), "7777"));
+        stompSession.send(sendRoomUpdateEndpoint, new SessionRequest(user.getId(), "7777"));
     }
 
     private List<Transport> createTransportClient() {
         List<Transport> transports = new ArrayList<>();
         transports.add(new WebSocketTransport(new StandardWebSocketClient()));
         return transports;
-    }
-
-    private void sendJoinMessage(StompSession stompSession, SessionRequest sessionRequest) {
-        stompSession.send(sendRoomUpdateEndpoint, sessionRequest);
     }
 
     private class ChatUpdateStompFrameHandler implements StompFrameHandler {
