@@ -46,7 +46,7 @@ const RoomList = ({ match }) => {
   const getGame = async () => {
     try {
       const response = await axios.get(
-        `https://test-api.babble.gg/api/games/${gameId}`
+        `https://api.babble.gg/api/games/${gameId}`
       );
 
       setCurrentGame(response.data);
@@ -56,7 +56,7 @@ const RoomList = ({ match }) => {
   };
 
   const getTags = async () => {
-    const response = await axios.get('https://test-api.babble.gg/api/tags');
+    const response = await axios.get('https://api.babble.gg/api/tags');
     const tags = response.data;
 
     setTagList(tags);
@@ -64,7 +64,7 @@ const RoomList = ({ match }) => {
   };
 
   const getRooms = async (tagIds) => {
-    const response = await axios.get('https://test-api.babble.gg/api/rooms', {
+    const response = await axios.get('https://api.babble.gg/api/rooms', {
       params: { gameId, tagIds, page: 1 },
     });
     const rooms = response.data;
@@ -99,7 +99,7 @@ const RoomList = ({ match }) => {
 
     try {
       const response = await axios.get(
-        `https://test-api.babble.gg/api/rooms/${selectedRoomId}`
+        `https://api.babble.gg/api/rooms/${selectedRoomId}`
       );
       const { tags, game, roomId } = response.data;
 
@@ -176,7 +176,7 @@ const RoomList = ({ match }) => {
       setSessionStorage('nickname', newUser.nickname);
     }
 
-    const response = await axios.post('https://test-api.babble.gg/api/users', {
+    const response = await axios.post('https://api.babble.gg/api/users', {
       nickname: newUser.nickname,
     });
     newUser.id = response.data.id;
