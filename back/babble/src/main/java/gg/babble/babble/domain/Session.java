@@ -48,7 +48,6 @@ public class Session {
     @CreatedDate
     private LocalDateTime createdAt;
 
-    @LastModifiedDate
     private LocalDateTime deletedAt;
 
     @Column(nullable = false)
