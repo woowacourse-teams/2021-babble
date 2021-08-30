@@ -47,7 +47,7 @@ const GameList = () => {
   // };
 
   const getGames = async () => {
-    const response = await axios.get('https://test-api.babble.gg/api/games');
+    const response = await axios.get('https://api.babble.gg/api/games');
     const games = response.data;
 
     setGameList(games);

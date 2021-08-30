@@ -83,7 +83,7 @@ const ChattingRoom = ({ tags, game, roomId }) => {
   };
 
   useEffect(() => {
-    const socket = new SockJS('https://test-api.babble.gg/connection');
+    const socket = new SockJS('https://api.babble.gg/connection');
     stompClient.current = Stomp.over(socket);
 
     if (isConnected.current) {

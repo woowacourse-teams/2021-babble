@@ -27,7 +27,7 @@ describe('E2E 테스트', () => {
   it('사용자는 찾은 게임을 클릭해 방 목록으로 들어갈 수 있다.', () => {
     cy.intercept(
       'GET',
-      'https://test-api.babble.gg/api/rooms?gameId=1&tagIds=&page=1',
+      'https://api.babble.gg/api/rooms?gameId=1&tagIds=&page=1',
       {
         fixture: 'example.json',
       }
