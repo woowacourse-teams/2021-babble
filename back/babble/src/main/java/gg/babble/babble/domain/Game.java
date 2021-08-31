@@ -1,5 +1,6 @@
 package gg.babble.babble.domain;
 
+import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.room.Rooms;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -28,6 +29,7 @@ public class Game {
     private String name;
     @NotNull(message = "게임 이미지는 Null 일 수 없습니다.")
     private String image;
+
     @Column(nullable = false)
     private boolean deleted = false;
 
@@ -56,6 +58,10 @@ public class Game {
     public void update(final Game target) {
         this.name = target.name;
         this.image = target.image;
+    }
+
+    public void addRoom(Room room) {
+        rooms.addRoom(room);
     }
 
     public void delete() {

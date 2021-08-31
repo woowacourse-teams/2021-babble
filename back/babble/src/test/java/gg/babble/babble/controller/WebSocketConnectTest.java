@@ -2,7 +2,6 @@ package gg.babble.babble.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import gg.babble.babble.ApplicationTest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -11,7 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-public class WebSocketConnectTest extends ApplicationTest {
+public class WebSocketConnectTest extends ApplicationWebSocketTest {
 
     @Override
     @BeforeEach

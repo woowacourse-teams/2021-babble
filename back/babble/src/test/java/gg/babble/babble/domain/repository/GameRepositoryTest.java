@@ -56,10 +56,9 @@ public class GameRepositoryTest {
         // given
         Game game = gameRepository.save(new Game("게임 이름", "게임 이미지"));
 
-        // when
-        game.delete();
-
         // then
+        assertThat(gameRepository.findByIdAndDeletedFalse(game.getId())).isPresent();
+        game.delete();
         assertThat(gameRepository.findByIdAndDeletedFalse(game.getId())).isNotPresent();
     }
 
@@ -92,18 +91,5 @@ public class GameRepositoryTest {
 
         game.delete();
         assertThat(gameRepository.findByIdAndDeletedFalse(game.getId())).isNotPresent();
-    }
-
-    @DisplayName("이름으로 게임 조회시 게임 삭제된 게임은 조회하지 않는다.")
-    @Test
-    void findByNameAndDeletedFalse() {
-        // given
-        Game game = gameRepository.save(new Game("에이펙스", "에이펙스 이미지"));
-
-        // then
-        assertThat(gameRepository.findByNameAndDeletedFalse(game.getName())).isNotEmpty();
-
-        game.delete();
-        assertThat(gameRepository.findByNameAndDeletedFalse(game.getName())).isEmpty();
     }
 }

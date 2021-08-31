@@ -1,7 +1,8 @@
 package gg.babble.babble.controller;
 
-import gg.babble.babble.dto.request.UserJoinRequest;
-import gg.babble.babble.service.RoomService;
+import gg.babble.babble.dto.request.SessionRequest;
+import gg.babble.babble.dto.response.ExitResponse;
+import gg.babble.babble.service.EnterExitService;
 import javax.validation.Valid;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -11,27 +12,27 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 @Controller
-public class UserListUpdateController {
+public class EnterExitController {
 
     private final SimpMessagingTemplate template;
-    private final RoomService roomService;
+    private final EnterExitService enterExitService;
 
-    public UserListUpdateController(final SimpMessagingTemplate template, final RoomService roomService) {
+    public EnterExitController(final SimpMessagingTemplate template, final EnterExitService enterExitService) {
         this.template = template;
-        this.roomService = roomService;
+        this.enterExitService = enterExitService;
     }
 
     @MessageMapping("/rooms/{roomId}/users")
-    public void join(@DestinationVariable final Long roomId, @Valid final UserJoinRequest userJoinRequest) {
+    public void enter(@DestinationVariable final Long roomId, @Valid final SessionRequest sessionRequest) {
         template.convertAndSend(String.format("/topic/rooms/%s/users", roomId),
-            roomService.sendJoinRoom(roomId, userJoinRequest));
+            enterExitService.enter(roomId, sessionRequest));
     }
 
     @EventListener
     public void exit(final SessionDisconnectEvent event) {
-        template.convertAndSend(
-            String.format("/topic/rooms/%s/users", roomService.findRoomIdBySessionId(event.getSessionId())),
-            roomService.sendExitRoom(event.getSessionId())
-        );
+
+        ExitResponse response = enterExitService.exit(event.getSessionId());
+
+        template.convertAndSend(String.format("/topic/rooms/%s/users", response.getRoomId()), response.getSessionsResponse());
     }
 }

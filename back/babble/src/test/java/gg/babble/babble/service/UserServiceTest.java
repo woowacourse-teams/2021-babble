@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import gg.babble.babble.ApplicationTest;
+import gg.babble.babble.domain.user.User;
 import gg.babble.babble.dto.request.UserRequest;
 import gg.babble.babble.dto.response.UserResponse;
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
@@ -19,15 +20,9 @@ public class UserServiceTest extends ApplicationTest {
 
     private static final String FORTUNE = "fortune";
     private static final String FORTUNE_AVATAR = "https://d2bidcnq0n74fu.cloudfront.net/img/users/profiles/profile57.png";
+
     @Autowired
     private UserService userService;
-
-    @DisplayName("유저 Id가 없을 경우 예외를 던진다.")
-    @Test
-    void userNotFoundTest() {
-        assertThatThrownBy(() -> userService.findById(Long.MAX_VALUE))
-            .isInstanceOf(BabbleNotFoundException.class);
-    }
 
     @DisplayName("유저를 저장한다.")
     @Test
@@ -61,5 +56,27 @@ public class UserServiceTest extends ApplicationTest {
     void nicknameLength(String nickname) {
         assertThatThrownBy(() -> userService.save(new UserRequest(nickname)))
             .isExactlyInstanceOf(BabbleIllegalArgumentException.class);
+    }
+
+    @DisplayName("저장되어 있는 유저를 찾는다.")
+    @Test
+    void findUser() {
+        // given
+        UserResponse response = userService.save(new UserRequest(FORTUNE));
+
+        // when
+        User user = userService.findById(response.getId());
+
+        // then
+        assertThat(user.getId()).isEqualTo(response.getId());
+        assertThat(user.getNickname()).isEqualTo(response.getNickname());
+        assertThat(user.getAvatar()).isEqualTo(response.getAvatar());
+    }
+
+    @DisplayName("유저 Id가 없을 경우 예외를 던진다.")
+    @Test
+    void userNotFoundTest() {
+        assertThatThrownBy(() -> userService.findById(Long.MAX_VALUE))
+            .isInstanceOf(BabbleNotFoundException.class);
     }
 }

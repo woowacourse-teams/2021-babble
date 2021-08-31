@@ -22,7 +22,7 @@ public class CreatedRoomResponse {
     public static CreatedRoomResponse from(final Room room) {
         return CreatedRoomResponse.builder()
             .roomId(room.getId())
-            .createdDate(room.getCreatedDate().toString())
+            .createdDate(room.getCreatedAt().toString())
             .game(GameResponse.from(room.getGame()))
             .maxHeadCount(room.maxHeadCount())
             .tags(tagResponses(room.getTagRegistrationsOfRoom()))

@@ -1,15 +1,13 @@
 package gg.babble.babble.service;
 
+import gg.babble.babble.domain.Game;
 import gg.babble.babble.domain.repository.RoomRepository;
 import gg.babble.babble.domain.room.MaxHeadCount;
 import gg.babble.babble.domain.room.Room;
-import gg.babble.babble.domain.user.User;
+import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.dto.request.RoomRequest;
-import gg.babble.babble.dto.request.UserJoinRequest;
 import gg.babble.babble.dto.response.CreatedRoomResponse;
 import gg.babble.babble.dto.response.FoundRoomResponse;
-import gg.babble.babble.dto.response.UserListUpdateResponse;
-import gg.babble.babble.dto.response.UserResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.HashSet;
 import java.util.List;
@@ -25,28 +23,27 @@ public class RoomService {
 
     private final RoomRepository roomRepository;
     private final GameService gameService;
-    private final UserService userService;
     private final TagService tagService;
-    private final SessionService sessionService;
 
-    public RoomService(final RoomRepository roomRepository, final GameService gameService, final UserService userService, final TagService tagService,
-                       final SessionService sessionService) {
+    public RoomService(final RoomRepository roomRepository, final GameService gameService, final TagService tagService) {
         this.roomRepository = roomRepository;
         this.gameService = gameService;
-        this.userService = userService;
         this.tagService = tagService;
-        this.sessionService = sessionService;
     }
 
     @Transactional
     public CreatedRoomResponse create(final RoomRequest request) {
-        Room room = new Room(gameService.findById(request.getGameId()), tagService.findById(request.getTags()),
-            new MaxHeadCount(request.getMaxHeadCount()));
+        Game game = gameService.findGameById(request.getGameId());
+        List<Tag> tags = tagService.findAllById(request.getTags());
+        MaxHeadCount maxHeadCount = new MaxHeadCount(request.getMaxHeadCount());
+
+        Room room = new Room(game, tags, maxHeadCount);
+
         return CreatedRoomResponse.from(roomRepository.save(room));
     }
 
-    public FoundRoomResponse findById(final Long id) {
-        return FoundRoomResponse.from(findRoomOrElseThrow(id));
+    public FoundRoomResponse findRoomById(final Long id) {
+        return FoundRoomResponse.from(findById(id));
     }
 
     public List<FoundRoomResponse> findGamesByGameIdAndTagIds(final Long gameId, final List<Long> tagIds, final Pageable pageable) {
@@ -57,58 +54,22 @@ public class RoomService {
 
     private List<Room> findByGameIdAndTagIdsInRepository(final Long gameId, final List<Long> tagIds, final Pageable pageable) {
         if (tagIds.isEmpty()) {
-            return roomRepository.findAllByGameId(gameId, pageable);
+            return roomRepository.findByGameIdAndDeletedFalse(gameId, pageable);
         }
+
         Set<Long> distinctTagIds = new HashSet<>(tagIds);
-        return roomRepository.findAllByGameIdAndTagIds(gameId, distinctTagIds, (long) distinctTagIds.size(), pageable);
-    }
 
-    private Room findRoomOrElseThrow(final Long id) {
-        return roomRepository.findById(id)
-            .orElseThrow(() -> new BabbleNotFoundException(String.format("존재하지 않는 게임 Id(%d) 입니다.", id)));
-    }
-
-    @Transactional
-    public UserListUpdateResponse sendJoinRoom(final Long roomId, final UserJoinRequest request) {
-        User user = userService.findById(request.getUserId());
-        Room room = findRoomOrElseThrow(roomId);
-
-        room.join(user);
-
-        sessionService.create(room, request.getSessionId(), user);
-
-        return new UserListUpdateResponse(UserResponse.from(room.getHost()), getGuests(room));
-    }
-
-    private List<UserResponse> getGuests(final Room room) {
-        return room.getGuests()
-            .stream()
-            .map(UserResponse::from)
-            .collect(Collectors.toList());
-    }
-
-    public Long findRoomIdBySessionId(final String sessionId) {
-        Room room = sessionService.findRoomBySessionId(sessionId);
-        return room.getId();
-    }
-
-    @Transactional
-    public UserListUpdateResponse sendExitRoom(final String sessionId) {
-        Room room = sessionService.findRoomBySessionId(sessionId);
-        User user = sessionService.findUserBySessionId(sessionId);
-
-        room.leave(user);
-        sessionService.delete(sessionId);
-
-        if (room.isEmpty()) {
-            return UserListUpdateResponse.empty();
-        }
-
-        return new UserListUpdateResponse(UserResponse.from(room.getHost()), getGuests(room));
+        return roomRepository.findByGameIdAndTagIdsAndDeletedFalse(gameId, distinctTagIds, (long) distinctTagIds.size(), pageable);
     }
 
     public boolean isFullRoom(final Long id) {
-        Room room = findRoomOrElseThrow(id);
+        Room room = findById(id);
+
         return room.isFull();
+    }
+
+    public Room findById(final Long id) {
+        return roomRepository.findByIdAndDeletedFalse(id)
+            .orElseThrow(() -> new BabbleNotFoundException(String.format("[%d]는 존재하지 않는 방 ID 입니다.", id)));
     }
 }

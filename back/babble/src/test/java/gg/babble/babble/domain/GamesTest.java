@@ -42,13 +42,13 @@ class GamesTest {
         assertThat(games.toList()).containsExactly(너구리게임, 피카츄배구);
     }
 
-    private void 게임_방에_유저를_입장_시킨다(Room room, User user) {
-        room.join(user);
-    }
-
     private Room 게임에_해당하는_방을_생성한다(final Game game) {
         List<Tag> tags = Collections.singletonList(new Tag("good-tag"));
         MaxHeadCount maxHeadCount = new MaxHeadCount(10);
         return new Room(1L, game, tags, maxHeadCount);
+    }
+
+    private void 게임_방에_유저를_입장_시킨다(Room room, User user) {
+        Session session = new Session(user.getId(), "1234", user, room);
     }
 }
