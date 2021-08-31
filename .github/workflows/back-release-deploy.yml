@@ -1,11 +1,11 @@
 # This workflow will build a Java project with Gradle
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
 
-name: Java CI with Gradle
+name: Backend release branch CI with gradle
 
 on:
   push:
-    branches: [ main ]
+    branches: [ release ]
     paths:
       - 'back/**'
 
@@ -33,10 +33,9 @@ jobs:
       working-directory: ./back/babble
       run: ./gradlew sonarqube -Dsonar.projectKey=babble-sonarqube -Dsonar.host.url=${{ secrets.SONARQUBE_SERVER_URL }} -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}
 
-    - name: SCP 명령을 이용해 WAS 서버로 jar 파일 전송
+    - name: SCP 명령을 이용해 테스트용 서버로 jar 파일 전송
       working-directory: ./back/babble
-      run: scp ./build/libs/babble-0.0.1-SNAPSHOT.jar was:/home/ubuntu
+      run: scp ./build/libs/babble-0.0.1-SNAPSHOT.jar test:/home/ubuntu/was
 
-    - name: SSH 명령을 통해 WAS 서버 접속 후 jar 파일 실행
-      run: ssh was "/home/ubuntu/deploy/deploy.sh"
-      
+    - name: SSH 명령을 통해 테스트용 서버 접속 후 jar 파일 실행
+      run: ssh test "cd was; /home/ubuntu/was/deploy.sh;"
