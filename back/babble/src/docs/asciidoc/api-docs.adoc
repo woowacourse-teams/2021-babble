@@ -30,6 +30,9 @@ Wilder<gyuhanKang@gmail.com>
 # 클라이언트 입력 예외
 ## status code: 400
 
+# 권한 없음 예외
+## status code: 401
+
 # NotFound 예외
 ## status code: 404
 
@@ -112,6 +115,33 @@ include::{snippets}/create-game/http-response.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
 include::{snippets}/insert-game/response-fields.adoc[]
+
+=== 게임 수정 API
+
+> Accessible only from allowed ip.
+
+==== HTTP Request
+
+include::{snippets}/edit-game/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/edit-game/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/update-game/response-fields.adoc[]
+
+=== 게임 삭제 API
+
+> Accessible only from allowed ip.
+
+==== HTTP Request
+
+include::{snippets}/delete-game/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/delete-game/http-response.adoc[]
 
 == 방
 

@@ -24,4 +24,8 @@ public class Rooms {
             .mapToInt(Room::currentHeadCount)
             .sum();
     }
+
+    public void addRoom(Room room) {
+        rooms.add(room);
+    }
 }

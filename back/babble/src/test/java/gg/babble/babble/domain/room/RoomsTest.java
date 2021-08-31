@@ -3,6 +3,7 @@ package gg.babble.babble.domain.room;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import gg.babble.babble.domain.Game;
+import gg.babble.babble.domain.Session;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ class RoomsTest {
         for (int i = 0; i < 5; i++) {
             Room room = 게임에_해당하는_방을_생성한다(game);
             User user = new User("익명의 누군가");
-            room.join(user);
+            Session session = new Session((long) i, Integer.toString(i), user, room);
             roomList.add(room);
         }
 

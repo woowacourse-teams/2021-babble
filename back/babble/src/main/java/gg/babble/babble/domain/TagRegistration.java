@@ -34,7 +34,7 @@ public class TagRegistration {
 
     @NotNull(message = "태그는 Null 일 수 없습니다.")
     @ManyToOne
-    @JoinColumn(name = "tag_name")
+    @JoinColumn(name = "tag_id")
     private Tag tag;
 
     public TagRegistration(final Room room, final Tag tag) {

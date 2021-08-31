@@ -2,7 +2,10 @@ package gg.babble.babble.domain;
 
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.user.User;
+import java.time.LocalDateTime;
 import java.util.Objects;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
@@ -13,14 +16,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @EntityListeners(AuditingEntityListener.class)
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Session {
@@ -32,18 +35,52 @@ public class Session {
     @NotNull(message = "세션 Id는 Null 일 수 없습니다.")
     private String sessionId;
 
-    @NotNull(message = "방은 Null 일 수 없습니다.")
-    @ManyToOne
-    @JoinColumn(name = "room_id")
-    private Room room;
-
     @NotNull(message = "유저는 Null 일 수 없습니다.")
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Session(final String sessionId, final Room room, final User user) {
-        this(null, sessionId, room, user);
+    @NotNull(message = "방은 Null 일 수 없습니다.")
+    @ManyToOne
+    @JoinColumn(name = "room_id")
+    private Room room;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    private LocalDateTime deletedAt;
+
+    @Column(nullable = false)
+    private boolean deleted = false;
+
+    public Session(final String sessionId, final User user, final Room room) {
+        this(null, sessionId, user, room);
+    }
+
+    public Session(final Long id, final String sessionId, final User user, final Room room) {
+        this.id = id;
+        this.sessionId = sessionId;
+        this.user = user;
+        this.room = room;
+        this.createdAt = LocalDateTime.now();
+
+        user.linkSession(this);
+        room.enterSession(this);
+    }
+
+    public void delete() {
+        if (user.isLinkedSession(this)) {
+            user.unLinkSession(this);
+        }
+        if (room.containsSession(this)) {
+            room.exitSession(this);
+        }
+        deletedAt = LocalDateTime.now();
+        deleted = true;
+    }
+
+    public Long getUserId() {
+        return user.getId();
     }
 
     @Override

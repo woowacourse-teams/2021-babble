@@ -9,7 +9,5 @@ public interface GameRepository extends JpaRepository<Game, Long> {
 
     List<Game> findByDeletedFalse();
 
-    List<Game> findByNameAndDeletedFalse(final String name);
-
     Optional<Game> findByIdAndDeletedFalse(final Long id);
 }
