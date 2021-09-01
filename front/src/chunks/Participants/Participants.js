@@ -18,12 +18,12 @@ const Participants = ({ participants }) => {
     const nickname = e.target.textContent;
     navigator.clipboard.writeText(nickname);
 
-    setCopied(true); // 삭제
+    setCopied(true); // 삭제해야함!
     e.target.classList.add('copied');
 
     setTimeout(() => {
       e.target.classList.remove('copied');
-      setCopied(false); // 삭제
+      setCopied(false); // 삭제해야함!
     }, 200);
   };
 
