@@ -1,0 +1,30 @@
+name: Node.js Package
+
+on:
+  pull_request:
+    branches: [release]
+    paths:
+      - 'front/**'
+
+jobs:
+  build:
+    runs-on: deploy
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: 패키지 설치
+        working-directory: ./front
+        run: npm install
+
+      - name: 빌드
+        working-directory: ./front
+        run: npm run prod
+
+      - name: Chrome E2E Test
+        uses: cypress-io/github-action@v2
+        with:
+          working-directory: front
+          start: npm start
