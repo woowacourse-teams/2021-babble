@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @SpringBootApplication
 public class BabbleApplication {
 
+    // 테스트용 주석
     public static void main(final String[] args) {
         SpringApplication.run(BabbleApplication.class, args);
     }
