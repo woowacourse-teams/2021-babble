@@ -9,6 +9,9 @@ logs
 node_modules
 bower_components
 
+cypress/screenshots
+cypress/videos
+
 psd
 thumb
 sketch

@@ -1,5 +1,7 @@
 import roomData from '../fixtures/example.json';
 
+const GAME_ID = 75;
+
 describe('E2E 테스트', () => {
   before(() => {
     cy.visit('http://localhost:3000');
@@ -27,7 +29,7 @@ describe('E2E 테스트', () => {
   it('사용자는 찾은 게임을 클릭해 방 목록으로 들어갈 수 있다.', () => {
     cy.intercept(
       'GET',
-      'https://api.babble.gg/api/rooms?gameId=1&tagIds=&page=1',
+      `https://api.babble.gg/api/rooms?gameId=${GAME_ID}&tagIds=&page=1`,
       {
         fixture: 'example.json',
       }
@@ -37,7 +39,7 @@ describe('E2E 테스트', () => {
       cy.get('.game-card-container').first().click().wait('@getRooms');
 
       cy.location().should((loc) => {
-        expect(loc.pathname).to.eq('/games/1');
+        expect(loc.pathname).to.eq(`/games/${GAME_ID}`);
       });
     });
   });
@@ -81,7 +83,7 @@ describe('E2E 테스트', () => {
       cy.get('.colored').click();
 
       cy.location().should((loc) => {
-        expect(loc.pathname).to.eq('/games/1/make-room');
+        expect(loc.pathname).to.eq(`/games/${GAME_ID}/make-room`);
       });
     });
   });
@@ -107,7 +109,7 @@ describe('E2E 테스트', () => {
   });
 
   it('방을 생성하면 생성한 방을 볼 수 있다.', () => {
-    cy.get('.room-list-section', { timeout: 4000 }).should('be.visible');
+    cy.get('.room-list-section', { timeout: 6000 }).should('be.visible');
   });
 
   it('사용자는 접속한 채팅방에서 채팅을 할 수 있다.', () => {
