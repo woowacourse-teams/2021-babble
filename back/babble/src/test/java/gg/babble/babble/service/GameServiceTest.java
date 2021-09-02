@@ -1,10 +1,11 @@
 package gg.babble.babble.service;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import gg.babble.babble.ApplicationTest;
-import gg.babble.babble.domain.Game;
+import gg.babble.babble.domain.game.Game;
 import gg.babble.babble.domain.room.MaxHeadCount;
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.tag.Tag;
@@ -94,9 +95,9 @@ class GameServiceTest extends ApplicationTest {
 
         // when
         List<IndexPageGameResponse> expectedResponses = Arrays.asList(
-            new IndexPageGameResponse(game3.getId(), game3.getName(), 2, game3.getImage()),
-            new IndexPageGameResponse(game1.getId(), game1.getName(), 0, game1.getImage()),
-            new IndexPageGameResponse(game2.getId(), game2.getName(), 0, game2.getImage())
+            new IndexPageGameResponse(game3.getId(), game3.getName(), 2, game3.getImage(), Collections.emptySet()),
+            new IndexPageGameResponse(game1.getId(), game1.getName(), 0, game1.getImage(), Collections.emptySet()),
+            new IndexPageGameResponse(game2.getId(), game2.getName(), 0, game2.getImage(), Collections.emptySet())
         );
 
         List<IndexPageGameResponse> sortedGames = gameService.findSortedGames();
@@ -110,7 +111,7 @@ class GameServiceTest extends ApplicationTest {
     @Test
     void findGame() {
         // when
-        GameWithImageResponse expectedResponse = new GameWithImageResponse(game1.getId(), game1.getName(), game1.getImage());
+        GameWithImageResponse expectedResponse = new GameWithImageResponse(game1.getId(), game1.getName(), game1.getImage(), Collections.emptySet());
         // then
         assertThat(gameService.findGame(game1.getId())).usingRecursiveComparison()
             .isEqualTo(expectedResponse);
@@ -120,7 +121,7 @@ class GameServiceTest extends ApplicationTest {
     @Test
     void insertGame() {
         // given
-        GameRequest request = new GameRequest("너구리 게임", "image.png");
+        GameRequest request = new GameRequest("너구리 게임", "image.png", Collections.singletonList("너구리"));
 
         // when
         GameWithImageResponse response = gameService.insertGame(request);
@@ -129,14 +130,16 @@ class GameServiceTest extends ApplicationTest {
         assertThat(response.getId()).isNotNull();
         assertThat(response.getName()).isEqualTo(request.getName());
         assertThat(response.getThumbnail()).isEqualTo(request.getThumbnail());
+        assertThat(response.getAlternativeNames()).hasSameSizeAs(response.getAlternativeNames())
+            .hasSameElementsAs(response.getAlternativeNames());
     }
 
     @DisplayName("단일 게임 정보를 편집한다.")
     @Test
     void updateGame() {
         // given
-        GameWithImageResponse insertGameResponse = gameService.insertGame(new GameRequest("너구리 게임", "썸네일"));
-        GameRequest updateRequest = new GameRequest("너구리 게임 - 너굴맨!", "썸네일");
+        GameWithImageResponse insertGameResponse = gameService.insertGame(new GameRequest("너구리 게임", "썸네일", Collections.emptyList()));
+        GameRequest updateRequest = new GameRequest("너구리 게임 - 너굴맨!", "썸네일", Collections.emptyList());
 
         // when
         GameWithImageResponse updateGameResponse = gameService.updateGame(insertGameResponse.getId(), updateRequest);
@@ -151,7 +154,7 @@ class GameServiceTest extends ApplicationTest {
     @Test
     void deleteGame() {
         // given
-        GameWithImageResponse insertGameResponse = gameService.insertGame(new GameRequest("너구리 게임", "썸네일"));
+        GameWithImageResponse insertGameResponse = gameService.insertGame(new GameRequest("너구리 게임", "썸네일", Collections.emptyList()));
 
         // when
         gameService.deleteGame(insertGameResponse.getId());

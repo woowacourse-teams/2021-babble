@@ -2,7 +2,7 @@ package gg.babble.babble.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import gg.babble.babble.domain.Game;
+import gg.babble.babble.domain.game.Game;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;

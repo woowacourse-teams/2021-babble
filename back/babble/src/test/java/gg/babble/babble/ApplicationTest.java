@@ -1,6 +1,7 @@
 package gg.babble.babble;
 
 import gg.babble.babble.domain.repository.AdministratorRepository;
+import gg.babble.babble.domain.repository.AlternativeNameRepository;
 import gg.babble.babble.domain.repository.GameRepository;
 import gg.babble.babble.domain.repository.RoomRepository;
 import gg.babble.babble.domain.repository.SessionRepository;
@@ -37,6 +38,9 @@ public class ApplicationTest {
 
     @Autowired
     protected GameRepository gameRepository;
+
+    @Autowired
+    protected AlternativeNameRepository alternativeNameRepository;
 
     @Autowired
     protected TagRepository tagRepository;

@@ -2,7 +2,7 @@ package gg.babble.babble.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import gg.babble.babble.domain.Game;
+import gg.babble.babble.domain.game.Game;
 import gg.babble.babble.domain.Session;
 import gg.babble.babble.domain.room.MaxHeadCount;
 import gg.babble.babble.domain.room.Room;

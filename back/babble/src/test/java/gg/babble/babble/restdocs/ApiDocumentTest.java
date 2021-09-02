@@ -8,6 +8,8 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gg.babble.babble.ApplicationTest;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -33,5 +36,10 @@ public abstract class ApiDocumentTest extends ApplicationTest {
             .apply(documentationConfiguration(restDocumentation))
             .alwaysDo(document("{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())))
             .build();
+    }
+
+    protected  <T> T getResponseAs(final MvcResult mvcResult, final Class<T> clazz)
+        throws com.fasterxml.jackson.core.JsonProcessingException, UnsupportedEncodingException {
+        return objectMapper.readValue(mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8), clazz);
     }
 }

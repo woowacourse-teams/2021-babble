@@ -1,4 +1,4 @@
-package gg.babble.babble.domain;
+package gg.babble.babble.domain.game;
 
 import java.util.Comparator;
 import java.util.List;

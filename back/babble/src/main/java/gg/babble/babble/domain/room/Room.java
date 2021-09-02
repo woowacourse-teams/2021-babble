@@ -1,6 +1,6 @@
 package gg.babble.babble.domain.room;
 
-import gg.babble.babble.domain.Game;
+import gg.babble.babble.domain.game.Game;
 import gg.babble.babble.domain.Session;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
