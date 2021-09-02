@@ -14,7 +14,7 @@ const SearchInput = ({
   onChangeInput,
   isResetable = true,
 }) => {
-  const { debounce } = useDebounce(500);
+  const { debounce } = useDebounce();
   const [autoCompleteList, setAutoCompleteList] = useState([]);
   const containerRef = useRef(null);
   const autoCompleteRef = useRef(null);
@@ -48,7 +48,7 @@ const SearchInput = ({
   // TODO: GameList와 RoomList에 있는 자동완성 로직 하나로 합쳐서 SearchInput에 있어야 할 듯.
 
   const onChangeInputDebounced = (e) => {
-    debounce(() => onChangeInput(e));
+    debounce(() => onChangeInput(e), 500);
   };
 
   useEffect(() => {

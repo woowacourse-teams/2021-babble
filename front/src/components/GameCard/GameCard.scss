@@ -18,30 +18,6 @@
     position: relative;
     margin-bottom: 0.2rem;
 
-    &.left {
-      img {
-        transform: skewY(-1.5deg) translate(0, -0.8rem);
-      }
-    }
-
-    &.right {
-      img {
-        transform: skewY(1.5deg) translate(0, -0.8rem);
-      }
-    }
-
-    &.center {
-      img {
-        transform: translate(0, -0.8rem);
-      }
-    }
-
-    &.active {
-      img {
-        transform: translate(0, 0);
-      }
-    }
-
     &:before {
       display: block;
       position: absolute;
@@ -52,6 +28,10 @@
     }
 
     &:hover {
+      img {
+        transform: translate(0, -0.8rem);
+      }
+
       &:before {
         content: ' ';
         border-radius: 0.8rem;
