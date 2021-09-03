@@ -27,7 +27,7 @@ public class AlternativeTagNames {
         alternativeTagNames.add(name);
     }
 
-    public boolean contains(final String name) {
+    public boolean contains(final TagName name) {
         return alternativeTagNames.stream()
             .anyMatch(alternativeName -> alternativeName.getName().equals(name));
     }
@@ -35,6 +35,7 @@ public class AlternativeTagNames {
     public Set<String> getNames() {
         return alternativeTagNames.stream()
             .map(AlternativeTagName::getName)
+            .map(TagName::getValue)
             .collect(Collectors.toSet());
     }
 

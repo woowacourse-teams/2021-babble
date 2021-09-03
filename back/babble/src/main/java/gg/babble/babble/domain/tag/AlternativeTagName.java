@@ -1,5 +1,7 @@
 package gg.babble.babble.domain.tag;
 
+import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,9 +21,10 @@ public class AlternativeTagName {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    //TODO Tag의 이름과 AlternativeTagName이름이 같은 검증을 하도록 리팩토링
-    @NotNull(message = "대안 이름은 Null 일 수 없습니다.")
-    private String name;
+
+    @Embedded
+    private TagName name;
+
     @ManyToOne
     @JoinColumn(name = "tag_id")
     @NotNull(message = "게임은 Null 일 수 없습니다.")
@@ -33,7 +36,7 @@ public class AlternativeTagName {
 
     public AlternativeTagName(final Long id, final String name, final Tag tag) {
         this.id = id;
-        this.name = name;
+        this.name = new TagName(name);
 
         setTag(tag);
     }
