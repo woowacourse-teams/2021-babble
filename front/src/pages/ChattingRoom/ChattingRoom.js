@@ -22,6 +22,7 @@ import TagList from '../../chunks/TagList/TagList';
 import { useChattingModal } from '../../contexts/ChattingModalProvider';
 import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 import usePushNotification from '../../hooks/usePushNotification';
+import useTabNotification from '../../hooks/useTabNotification';
 import { useUser } from '../../contexts/UserProvider';
 
 const ChattingRoom = ({ tags, game, roomId }) => {
@@ -42,6 +43,7 @@ const ChattingRoom = ({ tags, game, roomId }) => {
     changeCurrentRoomNumber,
   } = useUser();
   const { fireNotificationWithTimeout } = usePushNotification();
+  const { showNotificationCount } = useTabNotification();
 
   // mobile
   const toggleParticipants = () => {
@@ -129,6 +131,7 @@ const ChattingRoom = ({ tags, game, roomId }) => {
               fireNotificationWithTimeout('Babble 채팅 메시지', 5000, {
                 body: `${user.nickname}: ${content}`,
               });
+              showNotificationCount({ blinkMessage: 'New Message!' });
             }
 
             setChattings((prevChattings) => [
