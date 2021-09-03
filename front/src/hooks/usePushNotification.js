@@ -9,9 +9,19 @@ const usePushNotification = () => {
   }
 
   if (Notification.permission !== 'granted') {
-    Notification.requestPermission().then((permission) => {
-      if (permission !== 'granted') return;
-    });
+    try {
+      Notification.requestPermission().then((permission) => {
+        if (permission !== 'granted') return;
+      });
+    } catch (error) {
+      if (error instanceof TypeError) {
+        Notification.requestPermission((permission) => {
+          if (permission !== 'granted') return;
+        });
+      } else {
+        console.error(error);
+      }
+    }
   }
 
   const setNotificationTimer = (timeout) => {
