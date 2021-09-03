@@ -2,7 +2,6 @@ package gg.babble.babble.service;
 
 import gg.babble.babble.domain.game.Game;
 import gg.babble.babble.domain.game.Games;
-import gg.babble.babble.domain.repository.AlternativeGameNameRepository;
 import gg.babble.babble.domain.repository.GameRepository;
 import gg.babble.babble.dto.request.GameRequest;
 import gg.babble.babble.dto.response.GameImageResponse;
