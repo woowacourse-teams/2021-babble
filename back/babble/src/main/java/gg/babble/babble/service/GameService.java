@@ -19,11 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class GameService {
 
     private final GameRepository gameRepository;
-    private final AlternativeGameNameRepository alternativeGameNameRepository;
 
-    public GameService(final GameRepository gameRepository, final AlternativeGameNameRepository alternativeGameNameRepository) {
+    public GameService(final GameRepository gameRepository) {
         this.gameRepository = gameRepository;
-        this.alternativeGameNameRepository = alternativeGameNameRepository;
     }
 
     public List<IndexPageGameResponse> findSortedGames() {

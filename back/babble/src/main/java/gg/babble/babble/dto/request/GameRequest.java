@@ -26,7 +26,7 @@ public class GameRequest {
 
     public Game toEntity() {
         final Game game = new Game(name, thumbnail);
-        alternativeNames.forEach(name -> new AlternativeGameName(name, game));
+        alternativeNames.forEach(alternativeName -> new AlternativeGameName(alternativeName, game));
         return game;
     }
 }

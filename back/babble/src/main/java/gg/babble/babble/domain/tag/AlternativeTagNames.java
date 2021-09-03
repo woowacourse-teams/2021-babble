@@ -13,27 +13,27 @@ public class AlternativeTagNames {
 
     @OneToMany(mappedBy = "tag")
     @NotNull(message = "대안 이름들은 Null 일 수 없습니다.")
-    private final Set<AlternativeTagName> alternativeTagNames;
+    private final Set<AlternativeTagName> elements;
 
     public AlternativeTagNames() {
         this(new HashSet<>());
     }
 
-    public AlternativeTagNames(final Set<AlternativeTagName> alternativeTagNames) {
-        this.alternativeTagNames = alternativeTagNames;
+    public AlternativeTagNames(final Set<AlternativeTagName> elements) {
+        this.elements = elements;
     }
 
     public void add(final AlternativeTagName name) {
-        alternativeTagNames.add(name);
+        elements.add(name);
     }
 
     public boolean contains(final TagName name) {
-        return alternativeTagNames.stream()
+        return elements.stream()
             .anyMatch(alternativeName -> alternativeName.getName().equals(name));
     }
 
     public Set<String> getNames() {
-        return alternativeTagNames.stream()
+        return elements.stream()
             .map(AlternativeTagName::getName)
             .map(TagName::getValue)
             .collect(Collectors.toSet());
@@ -48,11 +48,11 @@ public class AlternativeTagNames {
             return false;
         }
         final AlternativeTagNames that = (AlternativeTagNames) o;
-        return Objects.equals(alternativeTagNames, that.alternativeTagNames);
+        return Objects.equals(elements, that.elements);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(alternativeTagNames);
+        return Objects.hash(elements);
     }
 }

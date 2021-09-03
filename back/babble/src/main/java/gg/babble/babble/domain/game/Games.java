@@ -5,17 +5,17 @@ import java.util.List;
 
 public class Games {
 
-    private final List<Game> games;
+    private final List<Game> elements;
 
-    public Games(final List<Game> games) {
-        this.games = games;
+    public Games(final List<Game> elements) {
+        this.elements = elements;
     }
 
     public void sortedByHeadCount() {
-        games.sort(Comparator.comparing(Game::userHeadCount).reversed());
+        elements.sort(Comparator.comparing(Game::userHeadCount).reversed());
     }
 
     public List<Game> toList() {
-        return games;
+        return elements;
     }
 }
