@@ -17,7 +17,6 @@ import gg.babble.babble.domain.admin.Administrator;
 import gg.babble.babble.domain.game.AlternativeGameName;
 import gg.babble.babble.domain.game.Game;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;

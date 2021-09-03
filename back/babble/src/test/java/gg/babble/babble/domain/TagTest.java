@@ -4,9 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import gg.babble.babble.domain.game.AlternativeGameName;
-import gg.babble.babble.domain.game.AlternativeGameNames;
-import gg.babble.babble.domain.game.Game;
 import gg.babble.babble.domain.tag.AlternativeTagName;
 import gg.babble.babble.domain.tag.AlternativeTagNames;
 import gg.babble.babble.domain.tag.Tag;

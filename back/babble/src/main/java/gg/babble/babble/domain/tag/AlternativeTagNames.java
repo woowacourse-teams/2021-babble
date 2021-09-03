@@ -16,7 +16,7 @@ public class AlternativeTagNames {
     private final Set<AlternativeTagName> alternativeTagNames;
 
     public AlternativeTagNames() {
-        this (new HashSet<>());
+        this(new HashSet<>());
     }
 
     public AlternativeTagNames(final Set<AlternativeTagName> alternativeTagNames) {

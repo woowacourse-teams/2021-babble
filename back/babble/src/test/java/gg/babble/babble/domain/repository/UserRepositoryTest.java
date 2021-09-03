@@ -13,7 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles("test")
 @DataJpaTest
-@AutoConfigureTestDatabase(replace= Replace.NONE)
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 public class UserRepositoryTest {
 
     @Autowired

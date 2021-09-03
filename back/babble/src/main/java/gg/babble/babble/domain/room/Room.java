@@ -1,7 +1,7 @@
 package gg.babble.babble.domain.room;
 
-import gg.babble.babble.domain.game.Game;
 import gg.babble.babble.domain.Session;
+import gg.babble.babble.domain.game.Game;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
 import gg.babble.babble.exception.BabbleDuplicatedException;
@@ -32,21 +32,17 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
 public class Room {
 
+    @Embedded
+    private final Sessions sessions = new Sessions();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @NotNull(message = "게임은 Null 이어서는 안됩니다.")
     @ManyToOne
     @JoinColumn(name = "game_id")
     private Game game;
-
     @Embedded
     private TagRegistrationsOfRoom tagRegistrationsOfRoom;
-
-    @Embedded
-    private final Sessions sessions = new Sessions();
-
     @Embedded
     private MaxHeadCount maxHeadCount;
 

@@ -2,8 +2,8 @@ package gg.babble.babble.domain.room;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import gg.babble.babble.domain.game.Game;
 import gg.babble.babble.domain.Session;
+import gg.babble.babble.domain.game.Game;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
 import java.util.ArrayList;

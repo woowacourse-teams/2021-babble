@@ -3,8 +3,8 @@ package gg.babble.babble.domain.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import gg.babble.babble.domain.game.Game;
 import gg.babble.babble.domain.Session;
+import gg.babble.babble.domain.game.Game;
 import gg.babble.babble.domain.room.MaxHeadCount;
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.tag.Tag;
@@ -29,7 +29,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles("test")
 @DataJpaTest
-@AutoConfigureTestDatabase(replace= Replace.NONE)
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 public class RoomRepositoryTest {
 
     @Autowired

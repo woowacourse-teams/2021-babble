@@ -53,7 +53,7 @@ public class Game {
     }
 
     public Game(final Long id, final String name, final String image) {
-        this (id, name, image, new AlternativeGameNames());
+        this(id, name, image, new AlternativeGameNames());
     }
 
     public Game(final Long id, final String name, final String image, final AlternativeGameNames alternativeGameNames) {
