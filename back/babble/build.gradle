@@ -94,3 +94,11 @@ task copyDocument(type: Copy) {
 build {
     dependsOn copyDocument
 }
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "woowacourse-teams_2021-babble"
+        property "sonar.organization", "woowacourse-teams-2021-babble"
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
+}
