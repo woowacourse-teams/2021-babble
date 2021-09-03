@@ -28,6 +28,6 @@ public class IndexPageGameResponse {
     }
 
     private static IndexPageGameResponse from(final Game game) {
-        return new IndexPageGameResponse(game.getId(), game.getName(), game.userHeadCount(), game.getImage(), game.getAlternativeNames().getNames());
+        return new IndexPageGameResponse(game.getId(), game.getName(), game.userHeadCount(), game.getImage(), game.getAlternativeGameNames().getNames());
     }
 }

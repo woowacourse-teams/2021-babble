@@ -31,36 +31,36 @@ public class Game {
     @NotNull(message = "게임 이미지는 Null 일 수 없습니다.")
     private String image;
     @Embedded
-    private AlternativeNames alternativeNames;
+    private AlternativeGameNames alternativeGameNames;
 
     @Column(nullable = false)
     private boolean deleted = false;
 
     public Game(final String name) {
-        this(null, name, DEFAULT_IMAGE, new AlternativeNames());
+        this(null, name, DEFAULT_IMAGE, new AlternativeGameNames());
     }
 
     public Game(final Long id, final String name) {
-        this(id, name, DEFAULT_IMAGE, new AlternativeNames());
+        this(id, name, DEFAULT_IMAGE, new AlternativeGameNames());
     }
 
     public Game(final String name, final String image) {
         this(null, name, image);
     }
 
-    public Game(final String name, final String image, final AlternativeNames alternativeNames) {
-        this(null, name, image, alternativeNames);
+    public Game(final String name, final String image, final AlternativeGameNames alternativeGameNames) {
+        this(null, name, image, alternativeGameNames);
     }
 
     public Game(final Long id, final String name, final String image) {
-        this (id, name, image, new AlternativeNames());
+        this (id, name, image, new AlternativeGameNames());
     }
 
-    public Game(final Long id, final String name, final String image, final AlternativeNames alternativeNames) {
+    public Game(final Long id, final String name, final String image, final AlternativeGameNames alternativeGameNames) {
         this.id = id;
         this.name = name;
         this.image = image;
-        this.alternativeNames = alternativeNames;
+        this.alternativeGameNames = alternativeGameNames;
     }
 
     public int userHeadCount() {
@@ -70,19 +70,19 @@ public class Game {
     public void update(final Game target) {
         this.name = target.name;
         this.image = target.image;
-        this.alternativeNames = target.alternativeNames;
+        this.alternativeGameNames = target.alternativeGameNames;
     }
 
     public void addRoom(Room room) {
         rooms.addRoom(room);
     }
 
-    public void addAlternativeName(final AlternativeName name) {
+    public void addAlternativeName(final AlternativeGameName name) {
         if (hasName(name.getName())) {
             throw new BabbleDuplicatedException(String.format("이미 존재하는 이름 입니다.(%s)", name.getName()));
         }
 
-        alternativeNames.add(name);
+        alternativeGameNames.add(name);
 
         if (name.getGame() != this) {
             name.setGame(this);
@@ -90,7 +90,7 @@ public class Game {
     }
 
     public boolean hasName(final String name) {
-        return this.name.equals(name) || alternativeNames.contains(name);
+        return this.name.equals(name) || alternativeGameNames.contains(name);
     }
 
     public boolean hasNotName(final String name) {

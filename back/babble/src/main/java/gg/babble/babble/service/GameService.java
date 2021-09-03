@@ -1,9 +1,8 @@
 package gg.babble.babble.service;
 
-import gg.babble.babble.domain.game.AlternativeName;
 import gg.babble.babble.domain.game.Game;
 import gg.babble.babble.domain.game.Games;
-import gg.babble.babble.domain.repository.AlternativeNameRepository;
+import gg.babble.babble.domain.repository.AlternativeGameNameRepository;
 import gg.babble.babble.domain.repository.GameRepository;
 import gg.babble.babble.dto.request.GameRequest;
 import gg.babble.babble.dto.response.GameImageResponse;
@@ -20,11 +19,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class GameService {
 
     private final GameRepository gameRepository;
-    private final AlternativeNameRepository alternativeNameRepository;
+    private final AlternativeGameNameRepository alternativeGameNameRepository;
 
-    public GameService(final GameRepository gameRepository, final AlternativeNameRepository alternativeNameRepository) {
+    public GameService(final GameRepository gameRepository, final AlternativeGameNameRepository alternativeGameNameRepository) {
         this.gameRepository = gameRepository;
-        this.alternativeNameRepository = alternativeNameRepository;
+        this.alternativeGameNameRepository = alternativeGameNameRepository;
     }
 
     public List<IndexPageGameResponse> findSortedGames() {

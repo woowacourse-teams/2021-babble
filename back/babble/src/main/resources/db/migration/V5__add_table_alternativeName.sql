@@ -1,4 +1,4 @@
-create table alternative_name
+create table alternative_game_name
 (
     id      bigint auto_increment,
     name    varchar(255) not null,

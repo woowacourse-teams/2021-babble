@@ -1,10 +1,8 @@
 package gg.babble.babble.dto.request;
 
-import gg.babble.babble.domain.game.AlternativeName;
-import gg.babble.babble.domain.game.AlternativeNames;
+import gg.babble.babble.domain.game.AlternativeGameName;
 import gg.babble.babble.domain.game.Game;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,7 +26,7 @@ public class GameRequest {
 
     public Game toEntity() {
         final Game game = new Game(name, thumbnail);
-        alternativeNames.forEach(name -> new AlternativeName(name, game));
+        alternativeNames.forEach(name -> new AlternativeGameName(name, game));
         return game;
     }
 }

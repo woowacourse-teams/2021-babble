@@ -2,12 +2,18 @@ package gg.babble.babble.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import gg.babble.babble.domain.game.AlternativeGameName;
+import gg.babble.babble.domain.game.AlternativeGameNames;
 import gg.babble.babble.domain.game.Game;
 import gg.babble.babble.domain.room.MaxHeadCount;
 import gg.babble.babble.domain.room.Room;
+import gg.babble.babble.domain.tag.AlternativeTagName;
+import gg.babble.babble.domain.tag.AlternativeTagNames;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -58,5 +64,18 @@ class GameTest {
 
         // then
         assertThat(game.isDeleted()).isTrue();
+    }
+
+    @DisplayName("대체 이름 추가")
+    @Test
+    void alternativeNames() {
+        // given
+        Game game = new Game(1L, "오래된 게임", "오래된 이미지");
+
+        // when
+        final AlternativeGameName alternativeGameName = new AlternativeGameName("망겜", game);
+
+        // then
+        assertThat(game.getAlternativeGameNames()).isEqualTo(new AlternativeGameNames(Collections.singleton(alternativeGameName)));
     }
 }

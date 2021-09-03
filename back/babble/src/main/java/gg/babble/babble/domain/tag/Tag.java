@@ -1,5 +1,6 @@
 package gg.babble.babble.domain.tag;
 
+import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
 import gg.babble.babble.exception.BabbleLengthException;
 import java.util.Objects;
@@ -29,6 +30,9 @@ public class Tag {
     private String name;
 
     @Embedded
+    private AlternativeTagNames alternativeTagNames;
+
+    @Embedded
     private TagRegistrationsOfTag tagRegistrations;
 
     public Tag(final String name) {
@@ -36,10 +40,15 @@ public class Tag {
     }
 
     public Tag(final Long id, final String name) {
+        this(id, name, new AlternativeTagNames(), new TagRegistrationsOfTag());
+    }
+
+    public Tag(final Long id, final String name, final AlternativeTagNames alternativeTagNames, final TagRegistrationsOfTag tagRegistrations) {
+        validateToConstruct(name);
         this.id = id;
         this.name = name;
-        this.tagRegistrations = new TagRegistrationsOfTag();
-        validateToConstruct(this.name);
+        this.alternativeTagNames = alternativeTagNames;
+        this.tagRegistrations = tagRegistrations;
     }
 
     private static void validateToConstruct(final String name) {
@@ -51,6 +60,26 @@ public class Tag {
                 String.format("이름의 길이는 %d자 이상 %d자 이하입니다. 현재 이름 길이(%d)", MIN_NAME_LENGTH, MAX_NAME_LENGTH, name.length())
             );
         }
+    }
+
+    public void addAlternativeName(final AlternativeTagName name) {
+        if (hasName(name.getName())) {
+            throw new BabbleDuplicatedException(String.format("이미 존재하는 이름 입니다.(%s)", name.getName()));
+        }
+
+        alternativeTagNames.add(name);
+
+        if (name.getTag() != this) {
+            name.setTag(this);
+        }
+    }
+
+    public boolean hasName(final String name) {
+        return this.name.equals(name) || alternativeTagNames.contains(name);
+    }
+
+    public boolean hasNotName(final String name) {
+        return !hasName(name);
     }
 
     @Override

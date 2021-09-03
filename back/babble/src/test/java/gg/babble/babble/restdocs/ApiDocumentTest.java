@@ -37,9 +37,4 @@ public abstract class ApiDocumentTest extends ApplicationTest {
             .alwaysDo(document("{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())))
             .build();
     }
-
-    protected  <T> T getResponseAs(final MvcResult mvcResult, final Class<T> clazz)
-        throws com.fasterxml.jackson.core.JsonProcessingException, UnsupportedEncodingException {
-        return objectMapper.readValue(mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8), clazz);
-    }
 }
