@@ -1,0 +1,10 @@
+spring:
+
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://192.168.1.7:3306/babble
+    username: babble
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
