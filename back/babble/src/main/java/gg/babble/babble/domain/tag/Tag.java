@@ -1,6 +1,7 @@
 package gg.babble.babble.domain.tag;
 
 import gg.babble.babble.exception.BabbleDuplicatedException;
+import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -54,6 +55,18 @@ public class Tag {
 
         if (name.getTag() != this) {
             name.setTag(this);
+        }
+    }
+
+    public void removeAlternativeName(final AlternativeTagName alternativeTagName) {
+        if (hasNotName(alternativeTagName.getValue())) {
+            throw new BabbleNotFoundException(String.format("존재하지 않는 이름 입니다.(%s)", alternativeTagName.getValue()));
+        }
+
+        alternativeTagNames.remove(alternativeTagName);
+
+        if (alternativeTagName.getTag().equals(this)) {
+            alternativeTagName.delete();
         }
     }
 

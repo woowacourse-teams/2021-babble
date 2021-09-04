@@ -3,6 +3,7 @@ package gg.babble.babble.domain.game;
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.room.Rooms;
 import gg.babble.babble.exception.BabbleDuplicatedException;
+import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -87,6 +88,17 @@ public class Game {
         if (alternativeGameName.getGame() != this) {
             alternativeGameName.setGame(this);
         }
+    }
+
+    public void removeAlternativeName(final AlternativeGameName alternativeGameName) {
+        if (hasNotName(alternativeGameName.getValue())) {
+            throw new BabbleNotFoundException(String.format("존재하지 않는 이름 입니다.(%s)", alternativeGameName.getValue()));
+        }
+
+        alternativeGameNames.remove(alternativeGameName);
+
+        if (alternativeGameName.getGame().equals(this))
+            alternativeGameName.delete();
     }
 
     public boolean hasName(final String name) {

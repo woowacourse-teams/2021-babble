@@ -30,6 +30,8 @@ public class AlternativeTagName {
     @NotNull(message = "게임은 Null 일 수 없습니다.")
     private Tag tag;
 
+    private boolean isDeleted = false;
+
     public AlternativeTagName(final String value, final Tag tag) {
         this(null, value, tag);
     }
@@ -42,11 +44,23 @@ public class AlternativeTagName {
     }
 
     public void setTag(final Tag tag) {
+        final Tag previousTag = this.tag;
         this.tag = tag;
+
+        if (Objects.nonNull(previousTag) && previousTag.hasName(value)) {
+            previousTag.removeAlternativeName(this);
+        }
 
         if (tag.hasNotName(value)) {
             tag.addAlternativeName(this);
         }
+    }
+
+    public void delete() {
+        if (tag.hasName(value)) {
+            tag.removeAlternativeName(this);
+        }
+        isDeleted = true;
     }
 
     public boolean isSameName(final TagName name) {

@@ -1,5 +1,6 @@
-package gg.babble.babble.domain;
+package gg.babble.babble.domain.tag;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -39,12 +40,41 @@ class TagTest {
     @Test
     void alternativeNames() {
         // given
-        Tag tag = new Tag(1L, "1시간");
+        final Tag tag = new Tag(1L, "1시간");
 
         // when
         final AlternativeTagName alternativeName = new AlternativeTagName("1hour", tag);
 
         // then
         assertThat(tag.getAlternativeTagNames()).isEqualTo(new AlternativeTagNames(Collections.singleton(alternativeName)));
+    }
+
+    @DisplayName("대체 이름 변경")
+    @Test
+    void changeAlternativeName() {
+        // given
+        final Tag tag = new Tag(1L, "1시간");
+        final Tag tag2 = new Tag(2L, "2시간");
+        final AlternativeTagName alternativeTagName = new AlternativeTagName("1hour", tag);
+        // when
+        alternativeTagName.setTag(tag2);
+        // then
+        assertThat(tag.hasName(alternativeTagName.getValue())).isFalse();
+        assertThat(tag2.hasName(alternativeTagName.getValue())).isTrue();
+        assertThat(alternativeTagName.getTag()).isEqualTo(tag2);
+        assertThat(alternativeTagName.isDeleted()).isFalse();
+    }
+
+    @DisplayName("대체 이름 삭제")
+    @Test
+    void delete() {
+        // given
+        final Tag tag = new Tag(1L, "1시간");
+        final AlternativeTagName alternativeName = new AlternativeTagName("1hour", tag);
+        // when
+        tag.removeAlternativeName(alternativeName);
+        // then
+        assertThat(tag.hasName(alternativeName.getValue())).isFalse();
+        assertThat(alternativeName.isDeleted()).isTrue();
     }
 }

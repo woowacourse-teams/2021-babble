@@ -1,6 +1,5 @@
 package gg.babble.babble.domain.tag;
 
-import gg.babble.babble.exception.BabbleIllegalArgumentException;
 import gg.babble.babble.exception.BabbleLengthException;
 import java.util.Objects;
 import javax.persistence.Column;

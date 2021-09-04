@@ -1,7 +1,8 @@
-package gg.babble.babble.domain;
+package gg.babble.babble.domain.game;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import gg.babble.babble.domain.Session;
 import gg.babble.babble.domain.game.AlternativeGameName;
 import gg.babble.babble.domain.game.AlternativeGameNames;
 import gg.babble.babble.domain.game.Game;
@@ -38,8 +39,8 @@ class GameTest {
     @Test
     void updateGame() {
         // given
-        Game game = new Game(1L, "오래된 게임", "오래된 이미지");
-        Game target = new Game("새로운 게임", "새로운 이미지");
+        final Game game = new Game(1L, "오래된 게임", "오래된 이미지");
+        final Game target = new Game("새로운 게임", "새로운 이미지");
 
         // when
         game.update(target);
@@ -54,7 +55,7 @@ class GameTest {
     @Test
     void deleteGame() {
         // given
-        Game game = new Game(1L, "게임 이름", "게임 이미지");
+        final Game game = new Game(1L, "게임 이름", "게임 이미지");
 
         // when
         game.delete();
@@ -67,12 +68,41 @@ class GameTest {
     @Test
     void alternativeNames() {
         // given
-        Game game = new Game(1L, "오래된 게임", "오래된 이미지");
+        final Game game = new Game(1L, "오래된 게임", "오래된 이미지");
 
         // when
         final AlternativeGameName alternativeGameName = new AlternativeGameName("망겜", game);
 
         // then
         assertThat(game.getAlternativeGameNames()).isEqualTo(new AlternativeGameNames(Collections.singleton(alternativeGameName)));
+    }
+
+    @DisplayName("대체 이름 변경")
+    @Test
+    void changeAlternativeGameName() {
+        // given
+        Game game = new Game(1L, "오래된 게임", "오래된 이미지");
+        Game game2 = new Game(2L, "최신 게임", "최신 이미지");
+        // when
+        final AlternativeGameName alternativeGameName = new AlternativeGameName("흥겜", game);
+        game2.addAlternativeName(alternativeGameName);
+        // then
+        assertThat(game.hasName(alternativeGameName.getValue())).isFalse();
+        assertThat(game2.hasName(alternativeGameName.getValue())).isTrue();
+        assertThat(alternativeGameName.getGame()).isEqualTo(game2);
+        assertThat(alternativeGameName.isDeleted()).isFalse();
+    }
+
+    @DisplayName("대체 이름 삭제")
+    @Test
+    void removeAlternativeGameName() {
+        // given
+        final Game game = new Game(1L, "오래된 게임", "오래된 이미지");
+        final AlternativeGameName alternativeGameName = new AlternativeGameName("흥겜", game);
+        // when
+        game.removeAlternativeName(alternativeGameName);
+        // then
+        assertThat(game.hasName(alternativeGameName.getValue())).isFalse();
+        assertThat(alternativeGameName.isDeleted()).isTrue();
     }
 }
