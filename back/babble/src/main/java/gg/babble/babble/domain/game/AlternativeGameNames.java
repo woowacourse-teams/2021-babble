@@ -28,12 +28,12 @@ public class AlternativeGameNames {
 
     public boolean contains(final String name) {
         return elements.stream()
-            .anyMatch(alternativeName -> alternativeName.getName().equals(name));
+            .anyMatch(alternativeName -> alternativeName.getValue().equals(name));
     }
 
     public Set<String> getNames() {
         return elements.stream()
-            .map(AlternativeGameName::getName)
+            .map(AlternativeGameName::getValue)
             .collect(Collectors.toSet());
     }
 

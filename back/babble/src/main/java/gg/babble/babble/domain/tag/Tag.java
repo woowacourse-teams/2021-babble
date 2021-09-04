@@ -2,6 +2,7 @@ package gg.babble.babble.domain.tag;
 
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -45,8 +46,8 @@ public class Tag {
     }
 
     public void addAlternativeName(final AlternativeTagName name) {
-        if (hasName(name.getName())) {
-            throw new BabbleDuplicatedException(String.format("이미 존재하는 이름 입니다.(%s)", name.getName()));
+        if (hasName(name.getValue())) {
+            throw new BabbleDuplicatedException(String.format("이미 존재하는 이름 입니다.(%s)", name.getValue()));
         }
 
         alternativeTagNames.add(name);
@@ -76,12 +77,12 @@ public class Tag {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Tag tag = (Tag) o;
-        return Objects.equals(name, tag.name);
+        final Tag tag = (Tag) o;
+        return Objects.equals(id, tag.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(id);
     }
 }

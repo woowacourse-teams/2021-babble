@@ -1,5 +1,6 @@
 package gg.babble.babble.domain.tag;
 
+import java.util.Objects;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,20 +23,20 @@ public class AlternativeTagName {
     private Long id;
 
     @Embedded
-    private TagName name;
+    private TagName value;
 
     @ManyToOne
     @JoinColumn(name = "tag_id")
     @NotNull(message = "게임은 Null 일 수 없습니다.")
     private Tag tag;
 
-    public AlternativeTagName(final String name, final Tag tag) {
-        this(null, name, tag);
+    public AlternativeTagName(final String value, final Tag tag) {
+        this(null, value, tag);
     }
 
-    public AlternativeTagName(final Long id, final String name, final Tag tag) {
+    public AlternativeTagName(final Long id, final String value, final Tag tag) {
         this.id = id;
-        this.name = new TagName(name);
+        this.value = new TagName(value);
 
         setTag(tag);
     }
@@ -43,8 +44,29 @@ public class AlternativeTagName {
     public void setTag(final Tag tag) {
         this.tag = tag;
 
-        if (tag.hasNotName(name)) {
+        if (tag.hasNotName(value)) {
             tag.addAlternativeName(this);
         }
+    }
+
+    public boolean isSameName(final TagName name) {
+        return value.equals(name);
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        final AlternativeTagName that = (AlternativeTagName) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

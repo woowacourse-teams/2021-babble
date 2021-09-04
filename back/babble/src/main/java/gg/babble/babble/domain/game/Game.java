@@ -77,15 +77,15 @@ public class Game {
         rooms.addRoom(room);
     }
 
-    public void addAlternativeName(final AlternativeGameName name) {
-        if (hasName(name.getName())) {
-            throw new BabbleDuplicatedException(String.format("이미 존재하는 이름 입니다.(%s)", name.getName()));
+    public void addAlternativeName(final AlternativeGameName alternativeGameName) {
+        if (hasName(alternativeGameName.getValue())) {
+            throw new BabbleDuplicatedException(String.format("이미 존재하는 이름 입니다.(%s)", alternativeGameName.getValue()));
         }
 
-        alternativeGameNames.add(name);
+        alternativeGameNames.add(alternativeGameName);
 
-        if (name.getGame() != this) {
-            name.setGame(this);
+        if (alternativeGameName.getGame() != this) {
+            alternativeGameName.setGame(this);
         }
     }
 

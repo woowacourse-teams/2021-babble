@@ -29,12 +29,12 @@ public class AlternativeTagNames {
 
     public boolean contains(final TagName name) {
         return elements.stream()
-            .anyMatch(alternativeName -> alternativeName.getName().equals(name));
+            .anyMatch(alternativeName -> alternativeName.isSameName(name));
     }
 
     public Set<String> getNames() {
         return elements.stream()
-            .map(AlternativeTagName::getName)
+            .map(AlternativeTagName::getValue)
             .map(TagName::getValue)
             .collect(Collectors.toSet());
     }
