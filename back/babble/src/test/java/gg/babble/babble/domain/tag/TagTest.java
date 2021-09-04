@@ -1,13 +1,9 @@
 package gg.babble.babble.domain.tag;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import gg.babble.babble.domain.tag.AlternativeTagName;
-import gg.babble.babble.domain.tag.AlternativeTagNames;
-import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.exception.BabbleLengthException;
 import java.util.Collections;
 import org.junit.jupiter.api.DisplayName;

@@ -97,8 +97,9 @@ public class Game {
 
         alternativeGameNames.remove(alternativeGameName);
 
-        if (alternativeGameName.getGame().equals(this))
+        if (alternativeGameName.getGame().equals(this)) {
             alternativeGameName.delete();
+        }
     }
 
     public boolean hasName(final String name) {

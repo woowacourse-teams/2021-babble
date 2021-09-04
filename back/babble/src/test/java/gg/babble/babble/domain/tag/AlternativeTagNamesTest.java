@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class AlternativeTagNamesTest {
+class AlternativeTagNamesTest {
 
     private Tag tag;
     private AlternativeTagNames alternativeTagNames;
@@ -28,7 +28,7 @@ public class AlternativeTagNamesTest {
         // when
         alternativeTagNames.add(alternativeTagName);
         // then
-        alternativeTagNames.contains(alternativeTagName.getValue());
+        assertThat(alternativeTagNames.contains(alternativeTagName.getValue())).isTrue();
     }
 
     @DisplayName("이미 존재하는 대체 이름 추가시 예외 처리")

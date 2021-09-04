@@ -3,9 +3,6 @@ package gg.babble.babble.domain.game;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import gg.babble.babble.domain.Session;
-import gg.babble.babble.domain.game.AlternativeGameName;
-import gg.babble.babble.domain.game.AlternativeGameNames;
-import gg.babble.babble.domain.game.Game;
 import gg.babble.babble.domain.room.MaxHeadCount;
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.tag.Tag;

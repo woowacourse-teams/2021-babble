@@ -3,7 +3,6 @@ package gg.babble.babble.domain.tag;
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.Objects;
-import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

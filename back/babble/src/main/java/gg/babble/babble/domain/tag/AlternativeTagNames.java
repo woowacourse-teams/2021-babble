@@ -33,7 +33,7 @@ public class AlternativeTagNames {
     }
 
     public void remove(final AlternativeTagName alternativeTagName) {
-        if(!contains(alternativeTagName.getValue())) {
+        if (!contains(alternativeTagName.getValue())) {
             throw new BabbleNotFoundException(String.format("존재하지 않는 이름 입니다.(%s)", alternativeTagName.getValue().getValue()));
         }
 

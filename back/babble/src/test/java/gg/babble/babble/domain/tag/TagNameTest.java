@@ -5,11 +5,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOf
 
 import gg.babble.babble.exception.BabbleLengthException;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-public class TagNameTest {
+class TagNameTest {
 
     @DisplayName("1자이상 20자이하의 길이일 경우 생성")
     @ValueSource(strings = {"고기가가가기고", "ㅋ", "very long tag name ."})
