@@ -21,9 +21,11 @@ public class AlternativeGameName {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "name")
     @NotNull(message = "대안 이름은 Null 일 수 없습니다.")
     private String value;
+
     @ManyToOne
     @JoinColumn(name = "game_id")
     @NotNull(message = "게임은 Null 일 수 없습니다.")

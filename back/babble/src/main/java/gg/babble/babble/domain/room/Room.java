@@ -32,17 +32,21 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
 public class Room {
 
-    @Embedded
-    private final Sessions sessions = new Sessions();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NotNull(message = "게임은 Null 이어서는 안됩니다.")
     @ManyToOne
     @JoinColumn(name = "game_id")
     private Game game;
+
+    @Embedded
+    private Sessions sessions;
+
     @Embedded
     private TagRegistrationsOfRoom tagRegistrationsOfRoom;
+
     @Embedded
     private MaxHeadCount maxHeadCount;
 
@@ -62,6 +66,7 @@ public class Room {
         this.game = game;
         this.tagRegistrationsOfRoom = new TagRegistrationsOfRoom(this, tags);
         this.maxHeadCount = maxHeadCount;
+        this.sessions = new Sessions();
 
         game.addRoom(this);
     }

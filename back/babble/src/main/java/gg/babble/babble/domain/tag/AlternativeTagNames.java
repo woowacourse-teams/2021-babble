@@ -1,5 +1,6 @@
 package gg.babble.babble.domain.tag;
 
+import gg.babble.babble.exception.BabbleDuplicatedException;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -24,6 +25,9 @@ public class AlternativeTagNames {
     }
 
     public void add(final AlternativeTagName name) {
+        if (contains(name.getValue())) {
+            throw new BabbleDuplicatedException(String.format("이미 존재하는 이름 입니다.(%s)", name.getValue()));
+        }
         elements.add(name);
     }
 
