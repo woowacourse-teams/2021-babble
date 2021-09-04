@@ -7,13 +7,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
 public class TagResponse {
 
-    private Long id;
-    private String name;
-    private Set<String> alternativeNames;
+    private final Long id;
+    private final String name;
+    private final Set<String> alternativeNames;
 
     public static TagResponse from(final Tag tag) {
         return new TagResponse(tag.getId(), tag.getName(), tag.getAlternativeTagNames().getNames());

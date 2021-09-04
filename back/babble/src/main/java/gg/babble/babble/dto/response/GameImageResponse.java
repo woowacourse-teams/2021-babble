@@ -6,12 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
 public class GameImageResponse {
 
-    private Long gameId;
-    private String image;
+    private final Long gameId;
+    private final String image;
 
     public static GameImageResponse from(final Game game) {
         return new GameImageResponse(game.getId(), game.getImage());

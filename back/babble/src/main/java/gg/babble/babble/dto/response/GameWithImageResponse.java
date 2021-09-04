@@ -7,14 +7,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
 public class GameWithImageResponse {
 
-    private Long id;
-    private String name;
-    private String thumbnail;
-    private Set<String> alternativeNames;
+    private final Long id;
+    private final String name;
+    private final String thumbnail;
+    private final Set<String> alternativeNames;
 
     public static GameWithImageResponse from(final Game game) {
         return new GameWithImageResponse(game.getId(), game.getName(), game.getImage(), game.getAlternativeGameNames().getNames());

@@ -10,15 +10,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
 public class IndexPageGameResponse {
 
-    private Long id;
-    private String name;
-    private int headCount;
-    private String thumbnail;
-    private Set<String> alternativeNames;
+    private final Long id;
+    private final String name;
+    private final int headCount;
+    private final String thumbnail;
+    private final Set<String> alternativeNames;
 
     public static List<IndexPageGameResponse> listFrom(final Games games) {
         return games.toList()

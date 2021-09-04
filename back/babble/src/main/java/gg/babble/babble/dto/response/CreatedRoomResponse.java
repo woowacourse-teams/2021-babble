@@ -11,15 +11,14 @@ import lombok.NoArgsConstructor;
 
 @Builder
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
 public class CreatedRoomResponse {
 
-    private Long roomId;
-    private String createdDate;
-    private GameResponse game;
-    private int maxHeadCount;
-    private List<TagResponse> tags;
+    private final Long roomId;
+    private final String createdDate;
+    private final GameResponse game;
+    private final int maxHeadCount;
+    private final List<TagResponse> tags;
 
     public static CreatedRoomResponse from(final Room room) {
         return CreatedRoomResponse.builder()

@@ -6,12 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
 public class GameResponse {
 
-    private Long id;
-    private String name;
+    private final Long id;
+    private final String name;
 
     public static GameResponse from(final Game game) {
         return new GameResponse(game.getId(), game.getName());
