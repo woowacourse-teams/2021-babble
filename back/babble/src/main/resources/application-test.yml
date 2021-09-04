@@ -7,9 +7,15 @@ spring:
     password: password
 
   jpa:
-    database-platform: org.hibernate.dialect.H2dialect
+    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create-drop
+    generate-ddl: true
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: true
+        use_sql_comment: false
 
   flyway:
     enabled: false
