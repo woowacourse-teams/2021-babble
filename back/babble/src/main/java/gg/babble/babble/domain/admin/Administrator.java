@@ -21,7 +21,6 @@ public class Administrator {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @Embedded
     private Ip ip;
 

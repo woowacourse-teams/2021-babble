@@ -10,10 +10,11 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import gg.babble.babble.domain.Game;
 import gg.babble.babble.domain.Session;
+import gg.babble.babble.domain.game.Game;
 import gg.babble.babble.domain.room.MaxHeadCount;
 import gg.babble.babble.domain.room.Room;
+import gg.babble.babble.domain.tag.AlternativeTagName;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
 import gg.babble.babble.dto.request.TagRequest;
@@ -35,6 +36,7 @@ public class RoomApiDocumentTest extends ApiDocumentTest {
 
     private static final int COUNT_OF_ONE_PAGE = 16;
     private static final int ROOM_COUNT = 20;
+    private static final String ALTERNATIVE_NAME = "실딱";
 
     // 태그, 유저, 방, 게임
     private final List<Tag> tags = new ArrayList<>();
@@ -47,6 +49,8 @@ public class RoomApiDocumentTest extends ApiDocumentTest {
         tags.add(tagRepository.save(new Tag("실버")));
         tags.add(tagRepository.save(new Tag("2시간")));
         tags.add(tagRepository.save(new Tag("솔로랭크")));
+
+        alternativeTagNameRepository.save(new AlternativeTagName(ALTERNATIVE_NAME, tags.get(0)));
 
         games.add(gameRepository.save(new Game("League Of Legends1", "image1")));
         games.add(gameRepository.save(new Game("League Of Legends2", "image2")));
@@ -82,10 +86,13 @@ public class RoomApiDocumentTest extends ApiDocumentTest {
             .andExpect(jsonPath("$.maxHeadCount").value(20))
             .andExpect(jsonPath("$.tags[0].id").value(tags.get(0).getId()))
             .andExpect(jsonPath("$.tags[0].name").value(tags.get(0).getName()))
+            .andExpect(jsonPath("$.tags[0].alternativeNames[0]").value(ALTERNATIVE_NAME))
             .andExpect(jsonPath("$.tags[1].id").value(tags.get(1).getId()))
             .andExpect(jsonPath("$.tags[1].name").value(tags.get(1).getName()))
+            .andExpect(jsonPath("$.tags[1].alternativeNames").value(hasSize(0)))
             .andExpect(jsonPath("$.tags[2].id").value(tags.get(2).getId()))
             .andExpect(jsonPath("$.tags[2].name").value(tags.get(2).getName()))
+            .andExpect(jsonPath("$.tags[1].alternativeNames").value(hasSize(0)))
 
             .andDo(document("create-room",
                 requestFields(fieldWithPath("gameId").description("게임 Id"),
@@ -97,7 +104,8 @@ public class RoomApiDocumentTest extends ApiDocumentTest {
                     fieldWithPath("game.name").description("게임 이름"),
                     fieldWithPath("maxHeadCount").description("최대 참가 인원"),
                     fieldWithPath("tags[].id").description("태그 Id"),
-                    fieldWithPath("tags[].name").description("태그 이름"))));
+                    fieldWithPath("tags[].name").description("태그 이름"),
+                    fieldWithPath("tags[].alternativeNames").description("대체 이름"))));
     }
 
     private List<TagRequest> tagRequestsFromTags() {
@@ -123,10 +131,13 @@ public class RoomApiDocumentTest extends ApiDocumentTest {
             .andExpect(jsonPath("$.tags", hasSize(3)))
             .andExpect(jsonPath("$.tags[0].id").value(tags.get(0).getId()))
             .andExpect(jsonPath("$.tags[0].name").value(tags.get(0).getName()))
+            .andExpect(jsonPath("$.tags[0].alternativeNames[0]").value(ALTERNATIVE_NAME))
             .andExpect(jsonPath("$.tags[1].id").value(tags.get(1).getId()))
             .andExpect(jsonPath("$.tags[1].name").value(tags.get(1).getName()))
+            .andExpect(jsonPath("$.tags[1].alternativeNames").value(hasSize(0)))
             .andExpect(jsonPath("$.tags[2].id").value(tags.get(2).getId()))
             .andExpect(jsonPath("$.tags[2].name").value(tags.get(2).getName()))
+            .andExpect(jsonPath("$.tags[1].alternativeNames").value(hasSize(0)))
 
             .andDo(document("read-room",
                 responseFields(fieldWithPath("roomId").description("방 Id"),
@@ -139,7 +150,8 @@ public class RoomApiDocumentTest extends ApiDocumentTest {
                     fieldWithPath("headCount.current").description("현재 참가 인원"),
                     fieldWithPath("headCount.max").description("최대 참가 인원"),
                     fieldWithPath("tags[].id").description("태그 Id"),
-                    fieldWithPath("tags[].name").description("태그 이름"))));
+                    fieldWithPath("tags[].name").description("태그 이름"),
+                    fieldWithPath("tags[].alternativeNames").description("대체 이름"))));
     }
 
     private void testRoomResponseOfOnePage(final ResultActions actions) throws Exception {
@@ -158,8 +170,11 @@ public class RoomApiDocumentTest extends ApiDocumentTest {
                 .andExpect(jsonPath("$[%d].tags", indexOfPage).isArray())
                 .andExpect(jsonPath("$[%d].tags.length()", indexOfPage).value(tags.size()))
                 .andExpect(jsonPath("$[%d].tags[0].name", indexOfPage).value(tags.get(0).getName()))
+                .andExpect(jsonPath("$[%d].tags[0].alternativeNames[0]", indexOfPage).value(ALTERNATIVE_NAME))
                 .andExpect(jsonPath("$[%d].tags[1].name", indexOfPage).value(tags.get(1).getName()))
-                .andExpect(jsonPath("$[%d].tags[2].name", indexOfPage).value(tags.get(2).getName()));
+                .andExpect(jsonPath("$[%d].tags[1].alternativeNames", indexOfPage).value(hasSize(0)))
+                .andExpect(jsonPath("$[%d].tags[2].name", indexOfPage).value(tags.get(2).getName()))
+                .andExpect(jsonPath("$[%d].tags[2].alternativeNames", indexOfPage).value(hasSize(0)));
         }
     }
 
@@ -175,7 +190,8 @@ public class RoomApiDocumentTest extends ApiDocumentTest {
                 fieldWithPath("[].headCount.current").description("현재 참가 인원"),
                 fieldWithPath("[].headCount.max").description("최대 참가 인원"),
                 fieldWithPath("[].tags[].id").description("태그 Id"),
-                fieldWithPath("[].tags[].name").description("태그 이름"))));
+                fieldWithPath("[].tags[].name").description("태그 이름"),
+                fieldWithPath("[].tags[].alternativeNames").description("대체 이름"))));
     }
 
     @DisplayName("page 번호와 태그 없이 게임에 해당하는 방 목록을 조회한다.")
@@ -221,4 +237,3 @@ public class RoomApiDocumentTest extends ApiDocumentTest {
         describeRoomResponse(actions);
     }
 }
-

@@ -66,7 +66,7 @@ public class User {
         session.delete();
     }
 
-    public String getNickname(){
+    public String getNickname() {
         return nickname.getValue();
     }
 
