@@ -36,5 +36,5 @@ jobs:
         run: aws s3 sync ./dist s3://bucket-babble-front/
 
       - name: 캐시 무효화
-        working-directory: ./front
+        working-directory: ./front/dist
         run: aws cloudfront create-invalidation --distribution-id ${{ secrets.DISTRIBUTION_ID }} --paths "/index.html" "/bundle.js"
