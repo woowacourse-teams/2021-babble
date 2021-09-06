@@ -13,7 +13,7 @@ const UserProvider = ({
     currentRoomNumber: -1,
   },
 }) => {
-  // TODO: 데모데이 이후 isNicknameChanged 삭제하고 더 나은 방법 찾아보기
+  // TODO: 데모데이 이후 isNicknameChanged 삭제하고 더 나은 방법 찾아보기.
   const [isNicknameChanged, setIsNicknameChanged] = useState(false);
   const [user, setUser] = useState(defaultValue);
 

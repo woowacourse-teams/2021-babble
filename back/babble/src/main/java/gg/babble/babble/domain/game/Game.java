@@ -1,7 +1,9 @@
-package gg.babble.babble.domain;
+package gg.babble.babble.domain.game;
 
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.room.Rooms;
+import gg.babble.babble.exception.BabbleDuplicatedException;
+import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -29,26 +31,37 @@ public class Game {
     private String name;
     @NotNull(message = "게임 이미지는 Null 일 수 없습니다.")
     private String image;
+    @Embedded
+    private AlternativeGameNames alternativeGameNames;
 
     @Column(nullable = false)
     private boolean deleted = false;
 
     public Game(final String name) {
-        this(null, name, DEFAULT_IMAGE);
+        this(null, name, DEFAULT_IMAGE, new AlternativeGameNames());
     }
 
     public Game(final Long id, final String name) {
-        this(id, name, DEFAULT_IMAGE);
+        this(id, name, DEFAULT_IMAGE, new AlternativeGameNames());
     }
 
     public Game(final String name, final String image) {
         this(null, name, image);
     }
 
+    public Game(final String name, final String image, final AlternativeGameNames alternativeGameNames) {
+        this(null, name, image, alternativeGameNames);
+    }
+
     public Game(final Long id, final String name, final String image) {
+        this(id, name, image, new AlternativeGameNames());
+    }
+
+    public Game(final Long id, final String name, final String image, final AlternativeGameNames alternativeGameNames) {
         this.id = id;
         this.name = name;
         this.image = image;
+        this.alternativeGameNames = alternativeGameNames;
     }
 
     public int userHeadCount() {
@@ -58,10 +71,43 @@ public class Game {
     public void update(final Game target) {
         this.name = target.name;
         this.image = target.image;
+        this.alternativeGameNames = target.alternativeGameNames;
     }
 
     public void addRoom(Room room) {
         rooms.addRoom(room);
+    }
+
+    public void addAlternativeName(final AlternativeGameName alternativeGameName) {
+        if (hasName(alternativeGameName.getValue())) {
+            throw new BabbleDuplicatedException(String.format("이미 존재하는 이름 입니다.(%s)", alternativeGameName.getValue()));
+        }
+
+        alternativeGameNames.add(alternativeGameName);
+
+        if (alternativeGameName.getGame() != this) {
+            alternativeGameName.setGame(this);
+        }
+    }
+
+    public void removeAlternativeName(final AlternativeGameName alternativeGameName) {
+        if (hasNotName(alternativeGameName.getValue())) {
+            throw new BabbleNotFoundException(String.format("존재하지 않는 이름 입니다.(%s)", alternativeGameName.getValue()));
+        }
+
+        alternativeGameNames.remove(alternativeGameName);
+
+        if (alternativeGameName.getGame().equals(this)) {
+            alternativeGameName.delete();
+        }
+    }
+
+    public boolean hasName(final String name) {
+        return this.name.equals(name) || alternativeGameNames.contains(name);
+    }
+
+    public boolean hasNotName(final String name) {
+        return !hasName(name);
     }
 
     public void delete() {

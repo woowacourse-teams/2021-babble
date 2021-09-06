@@ -47,7 +47,7 @@ public class User {
         this.avatar = avatarByNickname(nickname);
     }
 
-    public static String avatarByNickname(final String nickname) {
+    private static String avatarByNickname(final String nickname) {
         long avatarIndex = ((long) nickname.hashCode() - Integer.MIN_VALUE) % NUMBER_OF_AVATAR;
         return String.format(AVATAR_FORMAT, avatarIndex);
     }
@@ -66,7 +66,7 @@ public class User {
         session.delete();
     }
 
-    public String getNickname(){
+    public String getNickname() {
         return nickname.getValue();
     }
 
