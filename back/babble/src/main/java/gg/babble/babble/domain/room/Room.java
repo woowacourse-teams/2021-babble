@@ -23,11 +23,13 @@ import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @EntityListeners(AuditingEntityListener.class)
 @Getter
+@Where(clause = "deleted=false")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Room {
