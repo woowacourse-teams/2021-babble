@@ -49,6 +49,7 @@ public class WebSocketRoomUpdateTest extends ApplicationWebSocketTest {
     private User host;
     private User guest1;
     private User guest2;
+    private User guest3;
 
     private String URL;
     private BlockingQueue<SessionsResponse> blockingQueue;
@@ -73,6 +74,7 @@ public class WebSocketRoomUpdateTest extends ApplicationWebSocketTest {
         host = userRepository.findAll().get(0);
         guest1 = userRepository.findAll().get(1);
         guest2 = userRepository.findAll().get(2);
+        guest3 = userRepository.findAll().get(3);
     }
 
     @DisplayName("1번방에 입장하면, 자신을 포함한 1번방의 유저 정보들을 돌려받는다.")
@@ -108,7 +110,7 @@ public class WebSocketRoomUpdateTest extends ApplicationWebSocketTest {
     @Test
     public void testUserExitTest() throws InterruptedException, ExecutionException, TimeoutException {
 
-        // host 입장.
+        // host 입장 (host)
         userJoinAndSubscribeAndSend(host);
         SessionsResponse response = blockingQueue.poll(5, SECONDS);
         assertThat(response).usingRecursiveComparison().isEqualTo(
@@ -118,7 +120,7 @@ public class WebSocketRoomUpdateTest extends ApplicationWebSocketTest {
             )
         );
 
-        // user1 입장
+        // guest1 입장 (host, guest1)
         StompSession user1Session = userJoinAndSubscribeAndSend(guest1);
         response = blockingQueue.poll(5, SECONDS);
         assertThat(response).usingRecursiveComparison().isEqualTo(
@@ -131,7 +133,7 @@ public class WebSocketRoomUpdateTest extends ApplicationWebSocketTest {
         );
         blockingQueue.poll(5, SECONDS);
 
-        // user2 입장
+        // guest2 입장 (host, guest1, guest2)
         userJoinAndSubscribeAndSend(guest2);
         response = blockingQueue.poll(5, SECONDS);
         assertThat(response).usingRecursiveComparison().isEqualTo(
@@ -146,7 +148,7 @@ public class WebSocketRoomUpdateTest extends ApplicationWebSocketTest {
         blockingQueue.poll(5, SECONDS);
         blockingQueue.poll(5, SECONDS);
 
-        // 연결끊기, user1 퇴장
+        // 연결끊기, guest1 퇴장 (host, guest2)
         user1Session.disconnect();
         response = blockingQueue.poll(20, SECONDS);  // 유저2는 현재방 현황을 수신
 
@@ -156,6 +158,22 @@ public class WebSocketRoomUpdateTest extends ApplicationWebSocketTest {
                 UserResponse.from(host),
                 Collections.singletonList(
                     UserResponse.from(guest2)
+                )
+            )
+        );
+        blockingQueue.poll(5, SECONDS);
+
+        // guest3 입장 (host, guest2, guest3)
+        userJoinAndSubscribeAndSend(guest3);
+        response = blockingQueue.poll(20, SECONDS);
+
+        // then
+        assertThat(response).usingRecursiveComparison().isEqualTo(
+            new SessionsResponse(
+                UserResponse.from(host),
+                Arrays.asList(
+                    UserResponse.from(guest2),
+                    UserResponse.from(guest3)
                 )
             )
         );
