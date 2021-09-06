@@ -29,4 +29,4 @@ jobs:
 
       - name: 캐시 무효화
         working-directory: ./front
-        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.DISTRIBUTION_ID }} --paths "/index.html" "/bundle.js"
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.RELEASE_DISTRIBUTION_ID }} --paths "/index.html" "/bundle.js"
