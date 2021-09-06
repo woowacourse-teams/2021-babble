@@ -21,6 +21,7 @@ import { Subtitle3 } from '../../core/Typography';
 import TagList from '../../chunks/TagList/TagList';
 import { useChattingModal } from '../../contexts/ChattingModalProvider';
 import { useDefaultModal } from '../../contexts/DefaultModalProvider';
+import usePushNotification from '../../hooks/usePushNotification';
 import { useUser } from '../../contexts/UserProvider';
 
 const ChattingRoom = ({ tags, game, roomId }) => {
@@ -40,6 +41,7 @@ const ChattingRoom = ({ tags, game, roomId }) => {
     user: { nickname, id: userId },
     changeCurrentRoomNumber,
   } = useUser();
+  const { fireNotificationWithTimeout } = usePushNotification();
 
   // mobile
   const toggleParticipants = () => {
@@ -116,14 +118,22 @@ const ChattingRoom = ({ tags, game, roomId }) => {
               timeStyle: 'short',
             });
 
+            const user = JSON.parse(message.body).user;
+            const content = JSON.parse(message.body).content;
+            const type = JSON.parse(message.body).type;
+
+            if (
+              user.nickname !== nickname &&
+              (document.hidden || !document.hasFocus())
+            ) {
+              fireNotificationWithTimeout('Babble 채팅 메시지', 5000, {
+                body: `${user.nickname}: ${content}`,
+              });
+            }
+
             setChattings((prevChattings) => [
               ...prevChattings,
-              {
-                user: JSON.parse(message.body).user,
-                content: JSON.parse(message.body).content,
-                type: JSON.parse(message.body).type,
-                receivedTime,
-              },
+              { user, content, type, receivedTime },
             ]);
           }
         );

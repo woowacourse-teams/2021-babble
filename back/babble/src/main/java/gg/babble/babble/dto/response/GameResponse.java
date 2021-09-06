@@ -1,6 +1,6 @@
 package gg.babble.babble.dto.response;
 
-import gg.babble.babble.domain.Game;
+import gg.babble.babble.domain.game.Game;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

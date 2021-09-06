@@ -1,7 +1,7 @@
 package gg.babble.babble.domain.room;
 
-import gg.babble.babble.domain.Game;
 import gg.babble.babble.domain.Session;
+import gg.babble.babble.domain.game.Game;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
 import gg.babble.babble.exception.BabbleDuplicatedException;
@@ -42,10 +42,10 @@ public class Room {
     private Game game;
 
     @Embedded
-    private TagRegistrationsOfRoom tagRegistrationsOfRoom;
+    private Sessions sessions;
 
     @Embedded
-    private final Sessions sessions = new Sessions();
+    private TagRegistrationsOfRoom tagRegistrationsOfRoom;
 
     @Embedded
     private MaxHeadCount maxHeadCount;
@@ -66,6 +66,7 @@ public class Room {
         this.game = game;
         this.tagRegistrationsOfRoom = new TagRegistrationsOfRoom(this, tags);
         this.maxHeadCount = maxHeadCount;
+        this.sessions = new Sessions();
 
         game.addRoom(this);
     }

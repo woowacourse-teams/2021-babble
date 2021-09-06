@@ -4,6 +4,7 @@ import gg.babble.babble.exception.BabbleIllegalArgumentException;
 import java.util.regex.Pattern;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +17,7 @@ public class Ip {
     private static final Pattern IP_PATTERN = Pattern.compile(IP_REGEXP);
 
     @Column(name = "ip", unique = true)
+    @NotNull
     private String value;
 
     public Ip(final String value) {

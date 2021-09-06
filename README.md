@@ -219,11 +219,4 @@
     ex) `hotfix/bugs`
 
 ## 💻 5. Tech Stacks
-
-- `Java 11`
-- `Nginx`
-- `Maria DB`
-- `Docker`
-- `Spring Boot`
-- `Javascript`
-- `React.js`
+![tech-stack](./images/babble-tech-stack.png)
