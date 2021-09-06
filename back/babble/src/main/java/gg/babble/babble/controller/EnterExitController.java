@@ -32,7 +32,6 @@ public class EnterExitController {
     public void exit(final SessionDisconnectEvent event) {
 
         ExitResponse response = enterExitService.exit(event.getSessionId());
-
         template.convertAndSend(String.format("/topic/rooms/%s/users", response.getRoomId()), response.getSessionsResponse());
     }
 }
