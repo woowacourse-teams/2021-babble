@@ -12,7 +12,6 @@ const useTabNotification = () => {
         notificationCountRef.current = 0;
 
         clearInterval(timerRef.current);
-        timerRef.current = null;
       }
     };
 
@@ -29,7 +28,6 @@ const useTabNotification = () => {
 
       if (timerRef.current) {
         clearInterval(timerRef.current);
-        timerRef.current = null;
       }
     };
   }, []);
@@ -37,7 +35,6 @@ const useTabNotification = () => {
   const blinkTab = (title, notification, time) => {
     if (timerRef.current) {
       clearInterval(timerRef.current);
-      timerRef.current = null;
     }
 
     timerRef.current = setInterval(() => {

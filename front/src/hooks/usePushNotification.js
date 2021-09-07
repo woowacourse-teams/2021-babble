@@ -1,12 +1,11 @@
 import { useRef } from 'react';
+import useThrottle from './useThrottle';
 
 const usePushNotification = () => {
+  const { throttle } = useThrottle();
   const notificationRef = useRef(null);
-  const timerRef = useRef(null);
 
-  if (!window.Notification) {
-    return;
-  }
+  if (!Notification) return;
 
   if (Notification.permission !== 'granted') {
     try {
@@ -25,11 +24,11 @@ const usePushNotification = () => {
   }
 
   const setNotificationTimer = (timeout) => {
-    timerRef.current = setTimeout(() => {
-      timerRef.current = null;
-
-      notificationRef.current.close();
-      notificationRef.current = null;
+    throttle(() => {
+      if (notificationRef.current) {
+        notificationRef.current.close();
+        notificationRef.current = null;
+      }
     }, timeout);
   };
 
@@ -37,11 +36,17 @@ const usePushNotification = () => {
     notificationRef.current.onclick = (event) => {
       event.preventDefault();
       window.focus();
-      notificationRef.current.close();
+
+      if (notificationRef.current) {
+        notificationRef.current.close();
+        notificationRef.current = null;
+      }
     };
   };
 
   const fireNotificationWithTimeout = (title, timeout, options = {}) => {
+    if (Notification.permission !== 'granted') return;
+
     const newOption = {
       badge: 'https://babble.gg/img/logos/babble-speech-bubble.png',
       icon: 'https://babble.gg/img/logos/babble-speech-bubble.png',
@@ -50,6 +55,7 @@ const usePushNotification = () => {
 
     if (!notificationRef.current) {
       setNotificationTimer(timeout);
+
       notificationRef.current = new Notification(title, newOption);
       setNotificationClickEvent();
     }

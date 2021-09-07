@@ -126,9 +126,10 @@ const ChattingRoom = ({ tags, game, roomId }) => {
 
             if (
               user.nickname !== nickname &&
-              (document.hidden || !document.hasFocus())
+              (document.hidden || !document.hasFocus()) &&
+              type === 'chat'
             ) {
-              fireNotificationWithTimeout('Babble 채팅 메시지', 5000, {
+              fireNotificationWithTimeout('Babble 채팅 메시지', 3500, {
                 body: `${user.nickname}: ${content}`,
               });
               showNotificationCount({ blinkMessage: 'New Message!' });
