@@ -17,7 +17,6 @@
       "type": "image/png"
     }
   ],
-  "permissions": ["tabs", "<all_urls>", "webRequest"],
   "display": "standalone",
   "start_url": "https://babble.gg"
 }
