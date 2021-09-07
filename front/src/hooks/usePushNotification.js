@@ -1,3 +1,4 @@
+import { BABBLE_URL } from '../constants/api';
 import { useRef } from 'react';
 import useThrottle from './useThrottle';
 
@@ -48,8 +49,8 @@ const usePushNotification = () => {
     if (Notification.permission !== 'granted') return;
 
     const newOption = {
-      badge: 'https://babble.gg/img/logos/babble-speech-bubble.png',
-      icon: 'https://babble.gg/img/logos/babble-speech-bubble.png',
+      badge: `${BABBLE_URL}/img/logos/babble-speech-bubble.png`,
+      icon: `${BABBLE_URL}/img/logos/babble-speech-bubble.png`,
       ...options,
     };
 

@@ -1,5 +1,6 @@
 import './NotFound.scss';
 
+import { BABBLE_URL } from '../../constants/api';
 import { Body2 } from '../../core/Typography';
 import { Headline1 } from '../../core/Typography';
 import React from 'react';
@@ -20,7 +21,7 @@ const NotFound = () => {
           페이지를 찾지 못했어요.
         </Body2>
       </div>
-      <img src='https://babble.gg/img/logos/not_found.png' alt='404 image' />
+      <img src={`${BABBLE_URL}/img/logos/not_found.png`} alt='404 image' />
     </div>
   );
 };

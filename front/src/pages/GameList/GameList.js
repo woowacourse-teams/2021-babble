@@ -1,5 +1,6 @@
 import './GameList.scss';
 
+import { BABBLE_URL, BASE_URL } from '../../constants/api';
 import { GameCard, SearchInput, Slider } from '../../components';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -20,17 +21,17 @@ const GameList = () => {
     {
       id: 0,
       info: 'Kartrider Rush Plus',
-      src: 'https://babble.gg/img/banners/kartrider.png',
+      src: `${BABBLE_URL}/img/banners/kartrider.png`,
     },
     {
       id: 1,
       info: 'APEX LEGENDS',
-      src: 'https://babble.gg/img/banners/apexlegends.png',
+      src: `${BABBLE_URL}/img/banners/apexlegends.png`,
     },
     {
       id: 2,
       info: 'Fortnite',
-      src: 'https://babble.gg/img/banners/fortnite.png',
+      src: `${BABBLE_URL}/img/banners/fortnite.png`,
     },
   ];
 
@@ -47,7 +48,7 @@ const GameList = () => {
   // };
 
   const getGames = async () => {
-    const response = await axios.get('https://api.babble.gg/api/games');
+    const response = await axios.get(`${BASE_URL}/api/games`);
     const games = response.data;
 
     setGameList(games);

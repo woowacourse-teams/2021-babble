@@ -9,6 +9,7 @@ import {
 import React, { useEffect, useRef, useState } from 'react';
 import { SESSION_ID_LENGTH, SOCKET_URL_DIVIDER } from '../../constants/chat';
 
+import { BASE_URL } from '../../constants/api';
 import Chatbox from '../../chunks/Chatbox/Chatbox';
 import { IoCloseOutline } from 'react-icons/io5';
 import { IoRemove } from 'react-icons/io5';
@@ -87,7 +88,7 @@ const ChattingRoom = ({ tags, game, roomId }) => {
   };
 
   useEffect(() => {
-    const socket = new SockJS('https://api.babble.gg/connection');
+    const socket = new SockJS(`${BASE_URL}/connection`);
     stompClient.current = Stomp.over(socket);
 
     if (isConnected.current) {

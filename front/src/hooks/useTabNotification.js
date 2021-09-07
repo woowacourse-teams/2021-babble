@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react';
 
+import { NOTIFICATION_COUNT_PATTERN } from '../constants/regex';
+
 const useTabNotification = () => {
   const timerRef = useRef(null);
   const notificationCountRef = useRef(0);
@@ -43,12 +45,15 @@ const useTabNotification = () => {
   };
 
   const showNotificationCount = ({ isBlinkable = true, blinkMessage = '' }) => {
-    const pattern = /^\(\d+\)/; // TODO: constant로 분리
+    // TODO: constant로 분리
     notificationCountRef.current += 1;
 
-    if (notificationCountRef.current === 0 || pattern.test(document.title)) {
+    if (
+      notificationCountRef.current === 0 ||
+      NOTIFICATION_COUNT_PATTERN.test(document.title)
+    ) {
       document.title = document.title.replace(
-        pattern,
+        NOTIFICATION_COUNT_PATTERN,
         notificationCountRef.current !== 0 &&
           `(${notificationCountRef.current})`
       );
