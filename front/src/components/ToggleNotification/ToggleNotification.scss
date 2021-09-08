@@ -1,0 +1,47 @@
+.notification-switch-container {
+  position: absolute;
+  bottom: 2.5rem;
+  transform: translateX(-50%);
+  left: 50%;
+  display: flex;
+  align-items: center;
+  width: fit-content;
+
+  .notification-switch {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .caption2 {
+      margin-left: 0.4rem;
+    }
+
+    .notification-on {
+      color: #ff005c;
+    }
+
+    .notification-off {
+      color: #969696;
+    }
+  }
+
+  .notification-banned {
+    color: #ff0000;
+  }
+
+  .ban {
+    width: 24px;
+    height: 24px;
+    margin-right: 0.4rem;
+
+    svg {
+      position: absolute;
+
+      &:first-child {
+        top: 3px;
+        left: 3px;
+      }
+    }
+  }
+}

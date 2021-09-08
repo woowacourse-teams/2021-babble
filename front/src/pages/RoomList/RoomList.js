@@ -11,6 +11,7 @@ import {
 import React, { useEffect, useRef, useState } from 'react';
 import { getSessionStorage, setSessionStorage } from '../../utils/storage';
 
+import { BASE_URL } from '../../constants/api';
 import ChattingRoom from '../ChattingRoom/ChattingRoom';
 import ModalConfirm from '../../components/Modal/ModalConfirm';
 import PATH from '../../constants/path';
@@ -45,9 +46,7 @@ const RoomList = ({ match }) => {
 
   const getGame = async () => {
     try {
-      const response = await axios.get(
-        `https://api.babble.gg/api/games/${gameId}`
-      );
+      const response = await axios.get(`${BASE_URL}/api/games/${gameId}`);
 
       setCurrentGame(response.data);
     } catch (error) {
@@ -56,7 +55,7 @@ const RoomList = ({ match }) => {
   };
 
   const getTags = async () => {
-    const response = await axios.get('https://api.babble.gg/api/tags');
+    const response = await axios.get(`${BASE_URL}/api/tags`);
     const tags = response.data;
 
     setTagList(tags);
@@ -64,7 +63,7 @@ const RoomList = ({ match }) => {
   };
 
   const getRooms = async (tagIds) => {
-    const response = await axios.get('https://api.babble.gg/api/rooms', {
+    const response = await axios.get(`${BASE_URL}/api/rooms`, {
       params: { gameId, tagIds, page: 1 },
     });
     const rooms = response.data;
@@ -99,7 +98,7 @@ const RoomList = ({ match }) => {
 
     try {
       const response = await axios.get(
-        `https://api.babble.gg/api/rooms/${selectedRoomId}`
+        `${BASE_URL}/api/rooms/${selectedRoomId}`
       );
       const { tags, game, roomId } = response.data;
 
@@ -176,7 +175,7 @@ const RoomList = ({ match }) => {
       setSessionStorage('nickname', newUser.nickname);
     }
 
-    const response = await axios.post('https://api.babble.gg/api/users', {
+    const response = await axios.post(`${BASE_URL}/api/users`, {
       nickname: newUser.nickname,
     });
     newUser.id = response.data.id;

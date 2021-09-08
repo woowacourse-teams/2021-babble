@@ -10,6 +10,7 @@ import {
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 
+import { BASE_URL } from '../../constants/api';
 import ChattingRoom from '../ChattingRoom/ChattingRoom';
 import PATH from '../../constants/path';
 import PageLayout from '../../core/Layout/PageLayout';
@@ -42,16 +43,14 @@ const MakeRoom = ({ match }) => {
   const { gameName } = location.state;
 
   const getImage = async () => {
-    const response = await axios.get(
-      `https://api.babble.gg/api/games/${gameId}/images`
-    );
+    const response = await axios.get(`${BASE_URL}/api/games/${gameId}/images`);
     const image = response.data.image;
 
     setImageUrl(image);
   };
 
   const getTags = async () => {
-    const response = await axios.get('https://api.babble.gg/api/tags');
+    const response = await axios.get(`${BASE_URL}/api/tags`);
     const tags = response.data;
 
     setTagList(tags);
@@ -110,7 +109,7 @@ const MakeRoom = ({ match }) => {
     try {
       // TODO: 테스트 서버에서 실제 배포 서버로 변경하기
       const tagIds = selectedTagList.map(({ id }) => ({ id }));
-      const response = await axios.post('https://api.babble.gg/api/rooms', {
+      const response = await axios.post(`${BASE_URL}/api/rooms`, {
         gameId,
         maxHeadCount,
         tags: tagIds,

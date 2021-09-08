@@ -5,10 +5,12 @@ import {
   ModalError,
   SpeechBubble,
   SpeechBubbleWithAvatar,
+  ToggleNotification,
 } from '../../components';
 import React, { useEffect, useRef, useState } from 'react';
 import { SESSION_ID_LENGTH, SOCKET_URL_DIVIDER } from '../../constants/chat';
 
+import { BASE_URL } from '../../constants/api';
 import Chatbox from '../../chunks/Chatbox/Chatbox';
 import { IoCloseOutline } from 'react-icons/io5';
 import { IoRemove } from 'react-icons/io5';
@@ -21,7 +23,7 @@ import { Subtitle3 } from '../../core/Typography';
 import TagList from '../../chunks/TagList/TagList';
 import { useChattingModal } from '../../contexts/ChattingModalProvider';
 import { useDefaultModal } from '../../contexts/DefaultModalProvider';
-import usePushNotification from '../../hooks/usePushNotification';
+import { usePushNotification } from '../../contexts/PushNotificationProvider';
 import useTabNotification from '../../hooks/useTabNotification';
 import { useUser } from '../../contexts/UserProvider';
 
@@ -42,8 +44,14 @@ const ChattingRoom = ({ tags, game, roomId }) => {
     user: { nickname, id: userId },
     changeCurrentRoomNumber,
   } = useUser();
-  const { fireNotificationWithTimeout } = usePushNotification();
+  const { fireNotificationWithTimeout, isNotificationOn } =
+    usePushNotification();
   const { showNotificationCount } = useTabNotification();
+  const isNotificationOnRef = useRef(isNotificationOn);
+
+  useEffect(() => {
+    isNotificationOnRef.current = isNotificationOn;
+  }, [isNotificationOn]);
 
   // mobile
   const toggleParticipants = () => {
@@ -87,7 +95,7 @@ const ChattingRoom = ({ tags, game, roomId }) => {
   };
 
   useEffect(() => {
-    const socket = new SockJS('https://api.babble.gg/connection');
+    const socket = new SockJS(`${BASE_URL}/connection`);
     stompClient.current = Stomp.over(socket);
 
     if (isConnected.current) {
@@ -129,9 +137,12 @@ const ChattingRoom = ({ tags, game, roomId }) => {
               (document.hidden || !document.hasFocus()) &&
               type === 'chat'
             ) {
-              fireNotificationWithTimeout('Babble 채팅 메시지', 3500, {
-                body: `${user.nickname}: ${content}`,
-              });
+              if (isNotificationOnRef.current) {
+                fireNotificationWithTimeout('Babble 채팅 메시지', 3500, {
+                  body: `${user.nickname}: ${content}`,
+                });
+              }
+
               showNotificationCount({ blinkMessage: 'New Message!' });
             }
 
@@ -226,6 +237,7 @@ const ChattingRoom = ({ tags, game, roomId }) => {
           }`}
         >
           <Participants participants={participants} />
+          <ToggleNotification />
         </div>
 
         <div className='modal-chatbox-container'>
