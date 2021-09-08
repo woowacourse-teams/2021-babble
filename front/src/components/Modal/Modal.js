@@ -22,7 +22,7 @@ const Modal = forwardRef(
       </div>
     );
 
-    return ReactDOM.createPortal(content, document.querySelector('#modal'));
+    return ReactDOM.createPortal(content, document.getElementById('modal'));
   }
 );
 

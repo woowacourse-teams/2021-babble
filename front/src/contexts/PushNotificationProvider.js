@@ -1,28 +1,42 @@
-import { BABBLE_URL } from '../constants/api';
-import { useRef } from 'react';
-import useThrottle from './useThrottle';
+import React, { createContext, useContext, useRef, useState } from 'react';
 
-const usePushNotification = () => {
-  const { throttle } = useThrottle();
+import { BABBLE_URL } from '../constants/api';
+import PropTypes from 'prop-types';
+import useThrottle from '../hooks/useThrottle';
+
+const PushNotificationContext = createContext();
+
+const PushNotificationProvider = ({ children }) => {
+  const [isNotificationOn, setIsNotificationOn] = useState(true);
+  const [permission, setPermission] = useState(Notification.permission);
+
   const notificationRef = useRef(null);
+
+  const { throttle } = useThrottle();
 
   if (!Notification) return;
 
-  if (Notification.permission !== 'granted') {
+  if (permission !== 'granted') {
     try {
       Notification.requestPermission().then((permission) => {
         if (permission !== 'granted') return;
+        setPermission(permission);
       });
     } catch (error) {
       if (error instanceof TypeError) {
         Notification.requestPermission((permission) => {
           if (permission !== 'granted') return;
+          setPermission(permission);
         });
       } else {
         console.error(error);
       }
     }
   }
+
+  const toggleNotification = () => {
+    setIsNotificationOn((prevState) => !prevState);
+  };
 
   const setNotificationTimer = (timeout) => {
     throttle(() => {
@@ -46,11 +60,12 @@ const usePushNotification = () => {
   };
 
   const fireNotificationWithTimeout = (title, timeout, options = {}) => {
-    if (Notification.permission !== 'granted') return;
+    if (permission !== 'granted') return;
 
     const newOption = {
       badge: `${BABBLE_URL}/img/logos/babble-speech-bubble.png`,
       icon: `${BABBLE_URL}/img/logos/babble-speech-bubble.png`,
+      vibrate: true,
       ...options,
     };
 
@@ -62,7 +77,26 @@ const usePushNotification = () => {
     }
   };
 
-  return { fireNotificationWithTimeout };
+  return (
+    <PushNotificationContext.Provider
+      value={{
+        isNotificationOn,
+        permission,
+        toggleNotification,
+        fireNotificationWithTimeout,
+      }}
+    >
+      {children}
+    </PushNotificationContext.Provider>
+  );
 };
 
-export default usePushNotification;
+PushNotificationProvider.propTypes = {
+  children: PropTypes.node,
+};
+
+export const usePushNotification = () => {
+  return useContext(PushNotificationContext);
+};
+
+export default PushNotificationProvider;

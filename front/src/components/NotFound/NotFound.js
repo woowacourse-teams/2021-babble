@@ -8,7 +8,6 @@ import { useHistory } from 'react-router-dom';
 
 const NotFound = () => {
   const history = useHistory();
-  console.log(history);
 
   return (
     <div className='not-found-container'>

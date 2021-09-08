@@ -1,9 +1,9 @@
 import './Participants.scss';
 
 import { Avatar, Badge } from '../../components';
-import { Caption2, Subtitle3 } from '../../core/Typography';
 import React, { useState } from 'react';
 
+import { Caption2 } from '../../core/Typography';
 import LinearLayout from '../../core/Layout/LinearLayout';
 import PropTypes from 'prop-types';
 import { RiVipCrown2Fill } from 'react-icons/ri';
@@ -29,7 +29,6 @@ const Participants = ({ participants }) => {
 
   return (
     <aside className='participants-container'>
-      <Subtitle3>참가자</Subtitle3>
       <LinearLayout>
         {participants?.host && (
           <Avatar direction='row' imageSrc={participants?.host?.avatar}>
