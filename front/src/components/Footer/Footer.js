@@ -1,5 +1,6 @@
 import './Footer.scss';
 
+import { BABBLE_URL } from '../../constants/api';
 import { Caption2 } from '../../core/Typography';
 import React from 'react';
 
@@ -8,7 +9,7 @@ const Footer = () => {
     <footer>
       <span className='footer-logo-image'>
         <img
-          src='https://babble.gg/img/logos/footer_logo.png'
+          src={`${BABBLE_URL}/img/logos/footer_logo.png`}
           alt='footer logo'
         />
       </span>

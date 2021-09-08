@@ -1,11 +1,13 @@
 import './GameList.scss';
 
+import { BABBLE_URL, BASE_URL } from '../../constants/api';
 import { GameCard, SearchInput, Slider } from '../../components';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { Headline2 } from '../../core/Typography';
 import { Link } from 'react-router-dom';
 import PATH from '../../constants/path';
+import { PATTERNS } from '../../constants/regex';
 import PageLayout from '../../core/Layout/PageLayout';
 import axios from 'axios';
 import getKorRegExp from '../../components/SearchInput/service/getKorRegExp';
@@ -20,17 +22,17 @@ const GameList = () => {
     {
       id: 0,
       info: 'Kartrider Rush Plus',
-      src: 'https://babble.gg/img/banners/kartrider.png',
+      src: `${BABBLE_URL}/img/banners/kartrider.png`,
     },
     {
       id: 1,
       info: 'APEX LEGENDS',
-      src: 'https://babble.gg/img/banners/apexlegends.png',
+      src: `${BABBLE_URL}/img/banners/apexlegends.png`,
     },
     {
       id: 2,
       info: 'Fortnite',
-      src: 'https://babble.gg/img/banners/fortnite.png',
+      src: `${BABBLE_URL}/img/banners/fortnite.png`,
     },
   ];
 
@@ -47,7 +49,7 @@ const GameList = () => {
   // };
 
   const getGames = async () => {
-    const response = await axios.get('https://api.babble.gg/api/games');
+    const response = await axios.get(`${BASE_URL}/api/games`);
     const games = response.data;
 
     setGameList(games);
@@ -55,12 +57,9 @@ const GameList = () => {
   };
 
   const onChangeGameInput = (e) => {
-    const inputValue = e.target.value.replace(
-      /[^0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|a-z|A-Z]+/g,
-      ''
-    );
+    const inputValue = e.target.value.replace(PATTERNS.SPECIAL_CHARACTERS, '');
 
-    const searchResults = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]+/g.test(inputValue)
+    const searchResults = PATTERNS.KOREAN.test(inputValue)
       ? gameList.filter((game) => {
           const keywordRegExp = getKorRegExp(inputValue, {
             initialSearch: true,
@@ -70,7 +69,8 @@ const GameList = () => {
         })
       : gameList.filter((game) => {
           const searchRegex = new RegExp(inputValue, 'gi');
-          const keywordWithoutSpace = game.name.replace(/\s/g, '');
+          const keywordWithoutSpace = game.name.replace(PATTERNS.SPACE, '');
+
           return (
             keywordWithoutSpace.match(searchRegex) ||
             game.name.match(searchRegex)
@@ -96,9 +96,7 @@ const GameList = () => {
     // getSliderImages();
     getGames();
 
-    return () => {
-      stickyObserver && stickyObserver.disconnect();
-    };
+    return () => stickyObserver && stickyObserver.disconnect();
   }, []);
 
   return (
