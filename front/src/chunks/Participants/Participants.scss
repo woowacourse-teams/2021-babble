@@ -2,7 +2,7 @@
 @use '../../../style/animations';
 
 .participants-container {
-  min-width: 14rem;
+  min-width: 15rem;
   width: fit-content;
   height: calc(100% - 2rem);
   text-align: center;
@@ -21,6 +21,7 @@
 
   .avatar-container {
     text-align: left;
+    padding: 0 0.5rem;
 
     &:hover {
       color: f.primary(babble-pink);
