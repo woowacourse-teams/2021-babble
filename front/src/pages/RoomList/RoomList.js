@@ -15,6 +15,7 @@ import { BASE_URL } from '../../constants/api';
 import ChattingRoom from '../ChattingRoom/ChattingRoom';
 import ModalConfirm from '../../components/Modal/ModalConfirm';
 import PATH from '../../constants/path';
+import { PATTERNS } from '../../constants/regex';
 import PageLayout from '../../core/Layout/PageLayout';
 import PropTypes from 'prop-types';
 import TagList from '../../chunks/TagList/TagList';
@@ -146,7 +147,7 @@ const RoomList = ({ match }) => {
       ''
     );
 
-    const searchResults = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]+/g.test(inputValue)
+    const searchResults = PATTERNS.KOREAN.test(inputValue)
       ? tagList.filter((tag) => {
           const keywordRegExp = getKorRegExp(inputValue, {
             initialSearch: true,

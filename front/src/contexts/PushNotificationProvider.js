@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useRef, useState } from 'react';
 
 import { BABBLE_URL } from '../constants/api';
+import { PERMISSION } from '../constants/notification';
 import PropTypes from 'prop-types';
 import useThrottle from '../hooks/useThrottle';
 
@@ -16,16 +17,16 @@ const PushNotificationProvider = ({ children }) => {
 
   if (!Notification) return;
 
-  if (permission !== 'granted') {
+  if (permission !== PERMISSION.GRANTED) {
     try {
       Notification.requestPermission().then((permission) => {
-        if (permission !== 'granted') return;
+        if (permission !== PERMISSION.GRANTED) return;
         setPermission(permission);
       });
     } catch (error) {
       if (error instanceof TypeError) {
         Notification.requestPermission((permission) => {
-          if (permission !== 'granted') return;
+          if (permission !== PERMISSION.GRANTED) return;
           setPermission(permission);
         });
       } else {
@@ -60,7 +61,7 @@ const PushNotificationProvider = ({ children }) => {
   };
 
   const fireNotificationWithTimeout = (title, timeout, options = {}) => {
-    if (permission !== 'granted') return;
+    if (permission !== PERMISSION.GRANTED) return;
 
     const newOption = {
       badge: `${BABBLE_URL}/img/logos/babble-speech-bubble.png`,

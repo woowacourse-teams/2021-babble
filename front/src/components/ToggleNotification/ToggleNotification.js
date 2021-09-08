@@ -35,7 +35,7 @@ const ToggleNotification = () => {
           )}
         </button>
       ) : (
-        <>
+        <div className='ban-container'>
           <div className='ban'>
             <IoNotifications size='18px' />
             <IoBanOutline size='24px' color='#ff0000' />
@@ -43,7 +43,7 @@ const ToggleNotification = () => {
           <Caption2>
             채팅 알림 <span className='notification-banned'>차단됨</span>
           </Caption2>
-        </>
+        </div>
       )}
     </div>
   );

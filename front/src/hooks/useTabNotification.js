@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-import { NOTIFICATION_COUNT_PATTERN } from '../constants/regex';
+import { PATTERNS } from '../constants/regex';
 
 const useTabNotification = () => {
   const timerRef = useRef(null);
@@ -50,10 +50,10 @@ const useTabNotification = () => {
 
     if (
       notificationCountRef.current === 0 ||
-      NOTIFICATION_COUNT_PATTERN.test(document.title)
+      PATTERNS.NOTIFICATION_COUNT.test(document.title)
     ) {
       document.title = document.title.replace(
-        NOTIFICATION_COUNT_PATTERN,
+        PATTERNS.NOTIFICATION_COUNT,
         notificationCountRef.current !== 0 &&
           `(${notificationCountRef.current})`
       );
