@@ -61,23 +61,51 @@ const GameList = () => {
 
     const searchResults = PATTERNS.KOREAN.test(inputValue)
       ? gameList.filter((game) => {
-          const keywordRegExp = getKorRegExp(inputValue, {
+          const searchRegex = getKorRegExp(inputValue, {
             initialSearch: true,
             ignoreSpace: true,
           });
-          return game.name.match(keywordRegExp);
+
+          return game.name.match(searchRegex);
         })
       : gameList.filter((game) => {
           const searchRegex = new RegExp(inputValue, 'gi');
-          const keywordWithoutSpace = game.name.replace(PATTERNS.SPACE, '');
+          const nameWithoutSpace = game.name.replace(PATTERNS.SPACE, '');
 
           return (
-            keywordWithoutSpace.match(searchRegex) ||
-            game.name.match(searchRegex)
+            nameWithoutSpace.match(searchRegex) || game.name.match(searchRegex)
           );
         });
 
-    setSelectedGames(searchResults);
+    // 대안 이름으로 검색된 게임
+    const alternativeResults = PATTERNS.KOREAN.test(inputValue)
+      ? gameList.filter((game) => {
+          const searchRegex = getKorRegExp(inputValue, {
+            initialSearch: true,
+            ignoreSpace: true,
+          });
+
+          return game.alternativeNames.some((alternativeName) =>
+            alternativeName.match(searchRegex)
+          );
+        })
+      : gameList.filter((game) => {
+          const searchRegex = new RegExp(inputValue, 'gi');
+          const alternativeNamesWithoutSpace = game.alternativeNames.map(
+            (alternativeName) => alternativeName.replace(PATTERNS.SPACE, '')
+          );
+
+          return (
+            alternativeNamesWithoutSpace.some((alternativeName) =>
+              alternativeName.match(searchRegex)
+            ) ||
+            game.alternativeNames.some((alternativeName) =>
+              alternativeName.match(searchRegex)
+            )
+          );
+        });
+
+    setSelectedGames([...searchResults, ...alternativeResults]);
   };
 
   useEffect(() => {
