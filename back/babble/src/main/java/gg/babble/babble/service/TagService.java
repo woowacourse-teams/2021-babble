@@ -33,6 +33,7 @@ public class TagService {
 
     public List<TagResponse> findAll() {
         List<Tag> tags = tagRepository.findAll();
+
         return tags.stream()
             .map(TagResponse::from)
             .collect(Collectors.toList());

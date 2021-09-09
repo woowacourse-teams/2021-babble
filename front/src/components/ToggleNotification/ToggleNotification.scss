@@ -1,0 +1,93 @@
+@use '../../../style/functions' as f;
+
+.notification-switch-container {
+  position: absolute;
+  bottom: 2.5rem;
+  transform: translateX(-50%);
+  left: 50%;
+  display: flex;
+  align-items: center;
+  width: fit-content;
+
+  .notification-switch {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .caption2 {
+      margin-left: 0.4rem;
+    }
+
+    .notification-on {
+      color: #ff005c;
+    }
+
+    .notification-off {
+      color: #969696;
+    }
+  }
+
+  .notification-banned {
+    color: #ff0000;
+  }
+
+  .ban-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    &:hover {
+      &:after {
+        content: '브라우저 알림 설정을 허용해주세요!';
+        position: absolute;
+        background-color: f.grey-scale(4);
+        color: f.grey-scale(black);
+        padding: 1rem 1.2rem;
+        border-radius: 0.6rem;
+        line-height: 1;
+
+        width: max-content;
+        height: fit-content;
+        display: inline-block;
+
+        top: -3.6rem;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 12px;
+      }
+
+      &:before {
+        content: '';
+        position: absolute;
+        background-color: transparent;
+
+        width: 0;
+        height: 0;
+        border-top: 0.8rem solid f.grey-scale(4);
+        border-right: 0.8rem solid transparent;
+        border-left: 0.8rem solid transparent;
+        border-bottom: 0.8rem solid none;
+
+        top: -0.6rem;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+
+    .ban {
+      width: 24px;
+      height: 24px;
+      margin-right: 0.4rem;
+
+      svg {
+        position: absolute;
+
+        &:first-child {
+          top: 3px;
+          left: 3px;
+        }
+      }
+    }
+  }
+}

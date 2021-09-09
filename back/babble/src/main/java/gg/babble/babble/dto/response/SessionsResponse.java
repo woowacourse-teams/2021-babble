@@ -10,8 +10,8 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class SessionsResponse {
 
     private UserResponse host;

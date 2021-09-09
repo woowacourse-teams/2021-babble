@@ -1,5 +1,7 @@
 package gg.babble.babble.restdocs;
 
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -11,9 +13,11 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import gg.babble.babble.domain.Game;
 import gg.babble.babble.domain.admin.Administrator;
+import gg.babble.babble.domain.game.AlternativeGameName;
+import gg.babble.babble.domain.game.Game;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +31,9 @@ import org.springframework.web.context.WebApplicationContext;
 
 public class GameApiDocumentTest extends ApiDocumentTest {
 
+    private static final String ALTERNATIVE_NAME1 = "롤1";
+    private static final String ALTERNATIVE_NAME2 = "리오레1";
+    private static final String ALTERNATIVE_NAME3 = "롤2";
     private final List<Game> games = new ArrayList<>();
 
     @BeforeEach
@@ -36,6 +43,10 @@ public class GameApiDocumentTest extends ApiDocumentTest {
         games.add(gameRepository.save(new Game("League Of Legends1", "image1")));
         games.add(gameRepository.save(new Game("League Of Legends2", "image2")));
         games.add(gameRepository.save(new Game("League Of Legends3", "image3")));
+
+        alternativeGameNameRepository.save(new AlternativeGameName(ALTERNATIVE_NAME1, games.get(0)));
+        alternativeGameNameRepository.save(new AlternativeGameName(ALTERNATIVE_NAME2, games.get(0)));
+        alternativeGameNameRepository.save(new AlternativeGameName(ALTERNATIVE_NAME3, games.get(1)));
     }
 
     @DisplayName("게임 리스트 조회")
@@ -48,21 +59,27 @@ public class GameApiDocumentTest extends ApiDocumentTest {
             .andExpect(jsonPath("$[0].name").value(games.get(0).getName()))
             .andExpect(jsonPath("$[0].headCount").value(0))
             .andExpect(jsonPath("$[0].thumbnail").value(games.get(0).getImage()))
+            .andExpect(jsonPath("$[0].alternativeNames").value(hasSize(2)))
+            .andExpect(jsonPath("$[0].alternativeNames").value(containsInAnyOrder(ALTERNATIVE_NAME1, ALTERNATIVE_NAME2)))
             .andExpect(jsonPath("$[1].id").value(games.get(1).getId()))
             .andExpect(jsonPath("$[1].name").value(games.get(1).getName()))
             .andExpect(jsonPath("$[1].headCount").value(0))
             .andExpect(jsonPath("$[1].thumbnail").value(games.get(1).getImage()))
+            .andExpect(jsonPath("$[1].alternativeNames").value(hasSize(1)))
+            .andExpect(jsonPath("$[1].alternativeNames[0]").value(ALTERNATIVE_NAME3))
             .andExpect(jsonPath("$[2].id").value(games.get(2).getId()))
             .andExpect(jsonPath("$[2].name").value(games.get(2).getName()))
             .andExpect(jsonPath("$[2].headCount").value(0))
             .andExpect(jsonPath("$[2].thumbnail").value(games.get(2).getImage()))
+            .andExpect(jsonPath("$[2].alternativeNames").value(hasSize(0)))
 
             .andDo(document("read-games",
                 responseFields(
                     fieldWithPath("[].id").description("게임 Id"),
                     fieldWithPath("[].name").description("게임 이름"),
                     fieldWithPath("[].headCount").description("게임의 참가자 수"),
-                    fieldWithPath("[].thumbnail").description("썸네일"))));
+                    fieldWithPath("[].thumbnail").description("썸네일"),
+                    fieldWithPath("[].alternativeNames").description("대체 이름"))));
     }
 
     @DisplayName("단일 게임 이미지 조회")
@@ -110,10 +127,14 @@ public class GameApiDocumentTest extends ApiDocumentTest {
             .andExpect(jsonPath("$.id").value(games.get(0).getId()))
             .andExpect(jsonPath("$.name").value(games.get(0).getName()))
             .andExpect(jsonPath("$.thumbnail").value(games.get(0).getImage()))
+            .andExpect(jsonPath("$.alternativeNames").value(hasSize(2)))
+            .andExpect(jsonPath("$.alternativeNames").value(containsInAnyOrder(ALTERNATIVE_NAME1, ALTERNATIVE_NAME2)))
+
             .andDo(document("read-game",
                 responseFields(fieldWithPath("id").description("게임 Id"),
                     fieldWithPath("name").description("게임 이름"),
-                    fieldWithPath("thumbnail").description("썸네일"))));
+                    fieldWithPath("thumbnail").description("썸네일"),
+                    fieldWithPath("alternativeNames").description("대체 이름"))));
     }
 
     @DisplayName("게임을 추가한다.")
@@ -122,10 +143,12 @@ public class GameApiDocumentTest extends ApiDocumentTest {
         administratorRepository.save(new Administrator("127.0.0.1", "localhost"));
         String gameName = "League Of Legends";
         String thumbnail = "image.png";
+        List<String> alternativeNames = Collections.singletonList("롤");
 
         Map<String, Object> body = new HashMap<>();
         body.put("name", gameName);
         body.put("thumbnail", thumbnail);
+        body.put("alternativeNames", alternativeNames);
 
         mockMvc.perform(post("/api/games")
             .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -136,16 +159,20 @@ public class GameApiDocumentTest extends ApiDocumentTest {
             .andExpect(jsonPath("$.id").isNumber())
             .andExpect(jsonPath("$.name").value(gameName))
             .andExpect(jsonPath("$.thumbnail").value(thumbnail))
+            .andExpect(jsonPath("$.alternativeNames").value(hasSize(1)))
+            .andExpect(jsonPath("$.alternativeNames[0]").value(alternativeNames.get(0)))
 
             .andDo(document("insert-game",
                 requestFields(
                     fieldWithPath("name").description("게임 이름"),
-                    fieldWithPath("thumbnail").description("게임 썸네일 URL")
+                    fieldWithPath("thumbnail").description("게임 썸네일 URL"),
+                    fieldWithPath("alternativeNames").description("대체 이름")
                 ),
                 responseFields(
                     fieldWithPath("id").description("게임 ID"),
                     fieldWithPath("name").description("게임 이름"),
-                    fieldWithPath("thumbnail").description("게임 썸네일 URL")
+                    fieldWithPath("thumbnail").description("게임 썸네일 URL"),
+                    fieldWithPath("alternativeNames").description("대체 이름")
                 )
             ));
     }
@@ -155,10 +182,12 @@ public class GameApiDocumentTest extends ApiDocumentTest {
     void createGameWithInvalidAdministrator() throws Exception {
         String gameName = "League Of Legends";
         String thumbnail = "image.png";
+        List<String> alternativeNames = Collections.singletonList("롤");
 
         Map<String, Object> body = new HashMap<>();
         body.put("name", gameName);
         body.put("thumbnail", thumbnail);
+        body.put("alternativeNames", alternativeNames);
 
         mockMvc.perform(post("/api/games")
             .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -172,12 +201,14 @@ public class GameApiDocumentTest extends ApiDocumentTest {
     @Test
     void editGame() throws Exception {
         administratorRepository.save(new Administrator("127.0.0.1", "localhost"));
-        String gameName = "League Of Legeno";
+        String gameName = "League Of Legends";
         String thumbnail = "image.png";
+        List<String> alternativeNames = Collections.singletonList("롤");
 
         Map<String, Object> body = new HashMap<>();
         body.put("name", gameName);
         body.put("thumbnail", thumbnail);
+        body.put("alternativeNames", alternativeNames);
 
         mockMvc.perform(put("/api/games/" + games.get(0).getId())
             .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -189,15 +220,17 @@ public class GameApiDocumentTest extends ApiDocumentTest {
             .andExpect(jsonPath("$.name").value(gameName))
             .andExpect(jsonPath("$.thumbnail").value(thumbnail))
 
-            .andDo(document("update-game",
+            .andDo(document("insert-game",
                 requestFields(
                     fieldWithPath("name").description("게임 이름"),
-                    fieldWithPath("thumbnail").description("게임 썸네일 URL")
+                    fieldWithPath("thumbnail").description("게임 썸네일 URL"),
+                    fieldWithPath("alternativeNames").description("대체 이름")
                 ),
                 responseFields(
                     fieldWithPath("id").description("게임 ID"),
                     fieldWithPath("name").description("게임 이름"),
-                    fieldWithPath("thumbnail").description("게임 썸네일 URL")
+                    fieldWithPath("thumbnail").description("게임 썸네일 URL"),
+                    fieldWithPath("alternativeNames").description("대체 이름")
                 )
             ));
     }
@@ -205,12 +238,14 @@ public class GameApiDocumentTest extends ApiDocumentTest {
     @DisplayName("등록되어 있지 않은 관리자의 경우 게임을 수정할 수 없다.")
     @Test
     void editGameWithInvalidIp() throws Exception {
-        String gameName = "League Of Legeno";
+        String gameName = "League Of Legends";
         String thumbnail = "image.png";
+        List<String> alternativeNames = Collections.singletonList("롤");
 
         Map<String, Object> body = new HashMap<>();
         body.put("name", gameName);
         body.put("thumbnail", thumbnail);
+        body.put("alternativeNames", alternativeNames);
 
         mockMvc.perform(put("/api/games/" + games.get(0).getId())
             .accept(MediaType.APPLICATION_JSON_VALUE)

@@ -35,6 +35,6 @@ jobs:
         working-directory: ./front
         run: aws s3 sync ./dist s3://bucket-babble-front/
 
-      - name: 캐시 무효화
+      - name: 캐시 무효화
         working-directory: ./front
-        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.DISTRIBUTION_ID }} --paths "/index.html" "/bundle.js"
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.MAIN_DISTRIBUTION_ID }} --paths "/index.html" "/bundle.js"

@@ -1,7 +1,7 @@
 package gg.babble.babble.service;
 
-import gg.babble.babble.domain.Game;
-import gg.babble.babble.domain.Games;
+import gg.babble.babble.domain.game.Game;
+import gg.babble.babble.domain.game.Games;
 import gg.babble.babble.domain.repository.GameRepository;
 import gg.babble.babble.dto.request.GameRequest;
 import gg.babble.babble.dto.response.GameImageResponse;
@@ -42,7 +42,7 @@ public class GameService {
         return gameRepository.findByIdAndDeletedFalse(id)
             .orElseThrow(() -> new BabbleNotFoundException(String.format("존재하지 않는 게임 Id(%d) 입니다.", id)));
     }
-    
+
     public List<GameImageResponse> findAllGameImages() {
         return gameRepository.findByDeletedFalse()
             .stream()

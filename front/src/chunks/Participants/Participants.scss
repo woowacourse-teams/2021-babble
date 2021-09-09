@@ -2,15 +2,15 @@
 @use '../../../style/animations';
 
 .participants-container {
-  min-width: 14rem;
+  min-width: 15rem;
   width: fit-content;
-  height: 100%;
+  height: calc(100% - 2rem);
   text-align: center;
   position: relative;
 
   .linear-layout {
     /* TODO: 데모데이용 임시 방책. 높이를 정확히 맞추는 방법이 필요. */
-    height: calc(100% - 8rem);
+    height: 100%;
     overflow: auto;
     &::-webkit-scrollbar {
       display: none;
@@ -21,6 +21,7 @@
 
   .avatar-container {
     text-align: left;
+    padding: 0 0.5rem;
 
     &:hover {
       color: f.primary(babble-pink);

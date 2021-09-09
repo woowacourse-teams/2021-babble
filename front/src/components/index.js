@@ -23,3 +23,4 @@ export { default as Tag } from './Tag/Tag';
 export { default as NavBar } from './NavBar/NavBar';
 export { default as TagErasable } from './Tag/TagErasable';
 export { default as Main } from './Main/Main';
+export { default as ToggleNotification } from './ToggleNotification/ToggleNotification';
