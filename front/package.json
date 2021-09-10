@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack serve --mode development --env development",
     "start:prod": "webpack serve --mode production",
-    "build": "webpack",
+    "build": "webpack --mode production",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "semantic-release": "semantic-release",
@@ -40,6 +40,7 @@
     "babel-loader": "^8.2.2",
     "chromatic": "^5.10.0-canary.0",
     "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "compression-webpack-plugin": "^8.0.1",
     "css-loader": "^5.2.6",
     "cypress": "^8.2.0",
     "error-overlay-webpack-plugin": "^0.4.2",
@@ -61,13 +62,13 @@
     "webpack-manifest-plugin": "^4.0.2"
   },
   "dependencies": {
+    "@react-icons/all-files": "^4.1.0",
     "@stomp/stompjs": "^6.1.0",
     "@storybook/preset-scss": "^1.0.3",
     "@woowa-babble/random-nickname": "^1.0.2",
     "axios": "^0.21.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-icons": "^4.2.0",
     "react-router-dom": "^5.2.0",
     "sass": "^1.35.2",
     "sockjs-client": "^1.5.1"

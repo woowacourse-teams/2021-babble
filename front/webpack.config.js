@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const CompressionPlugin = require('compression-webpack-plugin');
 
 const path = require('path');
 
@@ -67,7 +68,11 @@ module.exports = (env, options) => {
       }),
       new BundleAnalyzerPlugin(),
       new MiniCssExtractPlugin({
-        filename: `[name].css`,
+        filename: `[name].[chunkhash].css`,
+      }),
+      new CompressionPlugin({
+        algorithm: 'gzip',
+        test: /\.(js|css|html)$/,
       }),
     ],
 
