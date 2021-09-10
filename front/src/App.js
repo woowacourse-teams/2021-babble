@@ -3,12 +3,14 @@ import '../global.scss';
 import { Footer, Main, NavBar } from './components';
 import { Route, Switch } from 'react-router-dom';
 
-import GameList from './pages/GameList/GameList';
-import MakeRoom from './pages/MakeRoom/MakeRoom';
-import NotFound from './components/NotFound/NotFound';
 import PATH from './constants/path';
 import React from 'react';
-import RoomList from './pages/RoomList/RoomList';
+import loadable from '@loadable/component';
+
+const GameList = loadable(() => import('./pages/GameList/GameList'));
+const NotFound = loadable(() => import('./components/NotFound/NotFound'));
+const MakeRoom = loadable(() => import('./pages/MakeRoom/MakeRoom'));
+const RoomList = loadable(() => import('./pages/RoomList/RoomList'));
 
 const App = () => {
   return (

@@ -7,6 +7,8 @@ const useThrottle = () => {
     if (!timerRef.current) {
       timerRef.current = setTimeout(() => {
         callback();
+
+        clearTimeout(timerRef.current);
         timerRef.current = null;
       }, delay);
     }
