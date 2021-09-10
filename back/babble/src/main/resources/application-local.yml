@@ -6,6 +6,10 @@ spring:
     username: sa
     password: password
 
+  test:
+    database:
+      replace: NONE
+
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:

@@ -16,12 +16,16 @@ public class AdminAccessInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler) {
-        String requestUrl = request.getRequestURI();
-        if ("OPTIONS".equals(request.getMethod()) || (!UrlParser.isAuthenticationUrl(requestUrl) && "GET".equals(request.getMethod()))) {
-            return true;
+        if (needsAuthentication(request)) {
+            String clientIp = request.getRemoteAddr();
+            administratorService.validateIp(clientIp);
         }
-        String clientIp = request.getRemoteAddr();
-        administratorService.validateIp(clientIp);
         return true;
+    }
+
+    private boolean needsAuthentication(final HttpServletRequest request) {
+        return !"OPTIONS".equals(request.getMethod()) &&
+            (UrlParser.isAuthenticationUrl(request.getRequestURI()) ||
+                !"GET".equals(request.getMethod()));
     }
 }
