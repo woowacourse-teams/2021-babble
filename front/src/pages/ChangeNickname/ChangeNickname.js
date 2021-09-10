@@ -5,7 +5,7 @@ import { NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH } from '../../constants/chat';
 import { RoundButton, TextInput } from '../../components';
 
 import { BASE_URL } from '../../constants/api';
-import { IoCloseOutline } from 'react-icons/io5';
+import { IoCloseOutline } from '@react-icons/all-files/io5/IoCloseOutline';
 import React from 'react';
 import axios from 'axios';
 import { setSessionStorage } from '../../utils/storage';

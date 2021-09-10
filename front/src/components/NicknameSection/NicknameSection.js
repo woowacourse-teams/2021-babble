@@ -3,7 +3,7 @@ import './NicknameSection.scss';
 import { Body2, Caption1, Caption2 } from '../../core/Typography';
 
 import ChangeNickname from '../../pages/ChangeNickname/ChangeNickname';
-import { FiEdit } from 'react-icons/fi';
+import { FiEdit } from '@react-icons/all-files/fi/FiEdit';
 import React from 'react';
 import { useChattingModal } from '../../contexts/ChattingModalProvider';
 import { useDefaultModal } from '../../contexts/DefaultModalProvider';

@@ -1,10 +1,10 @@
 import './Modal.scss';
 
-import { IoCloseOutline } from 'react-icons/io5';
+import { IoCloseOutline } from '@react-icons/all-files/io5/IoCloseOutline';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { VscChevronUp } from 'react-icons/vsc';
+import { VscChevronUp } from '@react-icons/all-files/vsc/VscChevronUp';
 
 const ModalMinimized = ({ maximize, close }) => {
   const content = (

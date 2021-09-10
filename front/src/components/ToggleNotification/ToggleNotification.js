@@ -1,12 +1,9 @@
 import './ToggleNotification.scss';
 
-import {
-  IoBanOutline,
-  IoNotifications,
-  IoNotificationsOff,
-} from 'react-icons/io5';
-
 import { Caption2 } from '../../core/Typography';
+import { IoBanOutline } from '@react-icons/all-files/io5/IoBanOutline';
+import { IoNotifications } from '@react-icons/all-files/io5/IoNotifications';
+import { IoNotificationsOff } from '@react-icons/all-files/io5/IoNotificationsOff';
 import React from 'react';
 import { usePushNotification } from '../../contexts/PushNotificationProvider';
 

@@ -3,8 +3,8 @@ import { Caption2, Subtitle3 } from '../../core/Typography';
 import Avatar from '../Avatar/Avatar';
 import Badge from './Badge';
 import React from 'react';
-import { RiVipCrown2Fill } from 'react-icons/ri';
-import { VscCircleFilled } from 'react-icons/vsc';
+import { RiVipCrown2Fill } from '@react-icons/all-files/ri/RiVipCrown2Fill';
+import { VscCircleFilled } from '@react-icons/all-files/vsc/VscCircleFilled';
 
 export default {
   title: 'components/Badge',

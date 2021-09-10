@@ -3,7 +3,7 @@ import './SearchInput.scss';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { Caption1 } from '../../core/Typography';
-import { IoCaretDown } from 'react-icons/io5';
+import { IoCaretDown } from '@react-icons/all-files/io5/IoCaretDown';
 import PropTypes from 'prop-types';
 
 const DropdownInput = ({
