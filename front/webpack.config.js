@@ -1,8 +1,9 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const path = require('path');
 
@@ -12,8 +13,9 @@ module.exports = (env, options) => {
 
     output: {
       path: path.join(__dirname, '/dist'),
+      filename: '[name].js',
       publicPath: '/',
-      filename: 'bundle.js',
+      clean: true,
     },
 
     module: {
@@ -25,7 +27,13 @@ module.exports = (env, options) => {
         },
         {
           test: /\.(css|scss|sass)$/,
-          use: ['style-loader', 'css-loader', 'sass-loader'],
+          use: [
+            options.mode === 'development'
+              ? 'style-loader'
+              : MiniCssExtractPlugin.loader,
+            'css-loader',
+            'sass-loader',
+          ],
         },
       ],
     },
@@ -48,7 +56,6 @@ module.exports = (env, options) => {
 
     plugins: [
       new ErrorOverlayPlugin(),
-      new CleanWebpackPlugin(),
       new ESLintPlugin(),
       new HtmlWebpackPlugin({
         template: 'index.html',
@@ -58,7 +65,47 @@ module.exports = (env, options) => {
         fileName: 'manifest.json',
         basePath: './public/',
       }),
+      new BundleAnalyzerPlugin(),
+      new MiniCssExtractPlugin({
+        filename: `[name].css`,
+      }),
     ],
+
+    optimization: {
+      minimize: options.mode === 'development' ? false : true,
+      splitChunks: {
+        cacheGroups: {
+          default: false,
+          vendors: false,
+          defaultVendors: false,
+          framework: {
+            chunks: 'all',
+            name: 'framework',
+            filename: '[name].js',
+            test: /(?<!node_modules.*)[\\/]node_modules[\\/](react|react-dom|react-router-dom)[\\/]/,
+            priority: 30,
+          },
+          library: {
+            chunks: 'all',
+            minChunks: 2,
+            priority: 20,
+            test: /[\\/]node_modules[\\/]/,
+            name: 'library',
+            filename: '[name].js',
+            reuseExistingChunk: true,
+          },
+          repetition: {
+            chunks: 'all',
+            minChunks: 2,
+            priority: 10,
+            test: /[\\/]src[\\/]/,
+            name: 'repetition',
+            filename: '[name].js',
+            reuseExistingChunk: true,
+          },
+        },
+      },
+    },
 
     target: 'web',
 

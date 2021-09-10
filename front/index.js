@@ -1,5 +1,3 @@
-import './global.scss';
-
 import App from './src/App';
 import ChattingModalProvider from './src/contexts/ChattingModalProvider';
 import DefaultModalProvider from './src/contexts/DefaultModalProvider';
