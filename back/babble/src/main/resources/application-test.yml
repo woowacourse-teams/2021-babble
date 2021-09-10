@@ -24,3 +24,8 @@ spring:
 
   flyway:
     enabled: true
+
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2
