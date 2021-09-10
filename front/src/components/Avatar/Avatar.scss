@@ -30,25 +30,33 @@
   }
 }
 
-.avatar-image {
+.avatar-image-container {
   border-radius: 40%;
-  border: 1px solid f.grey-scale(4);
   box-shadow: v.$box-shadow;
-  background: f.grey-scale(10);
+  overflow: hidden;
 
   &.small {
+    min-width: f.avatar-size(small);
     width: f.avatar-size(small);
     height: f.avatar-size(small);
   }
 
   &.medium {
+    min-width: f.avatar-size(medium);
     width: f.avatar-size(medium);
     height: f.avatar-size(medium);
   }
 
   &.large {
+    min-width: f.avatar-size(large);
     width: f.avatar-size(large);
     height: f.avatar-size(large);
+  }
+
+  .avatar-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 }
 
