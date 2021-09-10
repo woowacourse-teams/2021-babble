@@ -1,0 +1,13 @@
+<configuration>
+
+  <springProfile name="prod, dev">
+    <include resource="logback/file-appender/file-access-appender.xml"/>
+    <appender-ref ref="file-access-appender"/>
+  </springProfile>
+
+  <springProfile name="prod, dev, local, test">
+    <include resource="logback/console-appender/console-access-appender.xml"/>
+    <appender-ref ref="console-access-appender"/>
+  </springProfile>
+
+</configuration>

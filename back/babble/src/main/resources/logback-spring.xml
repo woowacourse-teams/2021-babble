@@ -1,73 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration>
-  <include resource="log-appender.xml"/>
+<configuration debug="false">
+  <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
   <springProfile name="prod">
-    <root level="INFO">
-      <appender-ref ref="STDOUT"/>
-    </root>
+    <include resource="logback/file-appender/file-info-appender.xml"/>
+    <include resource="logback/file-appender/file-warn-appender.xml"/>
+    <include resource="logback/file-appender/file-error-appender.xml"/>
 
-    <logger name="BabbleAdvice" additivity="false">
-      <level value = "DEBUG" />
-      <appender-ref ref="DEBUG_LOG" />
-      <appender-ref ref="INFO_LOG" />
-      <appender-ref ref="WARN_LOG" />
-      <appender-ref ref="ERROR_LOG" />
+    <logger name="gg.babble" level="INFO" additivity="false">
+      <appender-ref ref="file-info-appender"/>
+      <appender-ref ref="file-warn-appender"/>
+      <appender-ref ref="file-error-appender"/>
+    </logger>
+
+    <logger name="org.springframework" level="INFO" additivity="false">
+      <appender-ref ref="file-info-appender"/>
+      <appender-ref ref="file-warn-appender"/>
+      <appender-ref ref="file-error-appender"/>
+    </logger>
+
+  </springProfile>
+
+  <springProfile name="dev">
+    <include resource="logback/file-appender/file-debug-appender.xml"/>
+    <include resource="logback/file-appender/file-info-appender.xml"/>
+    <include resource="logback/file-appender/file-warn-appender.xml"/>
+    <include resource="logback/file-appender/file-error-appender.xml"/>
+
+    <logger name="gg.babble" level="DEBUG" additivity="false">
+      <appender-ref ref="file-debug-appender"/>
+      <appender-ref ref="file-info-appender"/>
+      <appender-ref ref="file-warn-appender"/>
+      <appender-ref ref="file-error-appender"/>
+    </logger>
+
+    <logger name="org.springframework" level="INFO" additivity="false">
+      <appender-ref ref="file-info-appender"/>
+      <appender-ref ref="file-warn-appender"/>
+      <appender-ref ref="file-error-appender"/>
     </logger>
   </springProfile>
 
-  <springProfile name="local">
-    <root level="INFO">
-      <appender-ref ref="STDOUT"/>
-    </root>
+  <springProfile name="local, test">
+    <include resource="logback/console-appender/console-log-appender.xml"/>
+    <include resource="logback/console-appender/console-db-appender.xml"/>
 
-    <logger name="BabbleAdvice" additivity="false">
-      <level value = "DEBUG" />
-      <appender-ref ref="DEBUG_LOG" />
-      <appender-ref ref="INFO_LOG" />
-      <appender-ref ref="WARN_LOG" />
-      <appender-ref ref="ERROR_LOG" />
+    <logger name="gg.babble" level="DEBUG" additivity="false">
+      <appender-ref ref="console-log-appender"/>
     </logger>
 
-    <logger name="org.hibernate.SQL" level="DEBUG">
-      <level value = "DEBUG" />
-      <appender-ref ref="DB_SQL_LOG" />
-      <appender-ref ref="DEBUG_LOG" />
-    </logger>
-    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="DEBUG">
-      <appender-ref ref="DB_SQL_LOG" />
-    </logger>
-  </springProfile>
-
-  <springProfile name="test">
-    <root level="INFO">
-      <appender-ref ref="STDOUT"/>
-    </root>
-
-    <logger name="org.springframework.web" level="INFO">
-      <appender-ref ref="TRACE_LOG"/>
-    </logger>
-    <logger name="org.springframework.data.jpa" level="DEBUG">
-      <appender-ref ref="TRACE_LOG"/>
-    </logger>
-    <logger name="BabbleAdvice" additivity="false">
-      <level value = "DEBUG" />
-      <appender-ref ref="TRACE_LOG" />
-      <appender-ref ref="DEBUG_LOG" />
-      <appender-ref ref="INFO_LOG" />
-      <appender-ref ref="WARN_LOG" />
-      <appender-ref ref="ERROR_LOG" />
+    <logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
+      <appender-ref ref="console-db-sql-appender"/>
     </logger>
 
-    <logger name="org.hibernate.SQL" level="DEBUG">
-      <level value = "DEBUG" />
-      <appender-ref ref="DB_SQL_LOG" />
-      <appender-ref ref="TRACE_LOG" />
-      <appender-ref ref="DEBUG_LOG" />
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" additivity="false">
+      <appender-ref ref="console-db-value-appender"/>
     </logger>
-    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE">
-      <appender-ref ref="DB_SQL_LOG" />
-      <appender-ref ref="TRACE_LOG" />
+
+    <logger name="org.hibernate.type.descriptor.sql.BasicExtractor" level="TRACE" additivity="false">
+      <appender-ref ref="console-db-value-appender"/>
     </logger>
   </springProfile>
 </configuration>
