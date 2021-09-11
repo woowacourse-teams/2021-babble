@@ -15,4 +15,4 @@ cloud:
       static: ap-northeast-2
     s3:
       bucket:
-        name: babble-back-test
+        name: bucket-babble-front
