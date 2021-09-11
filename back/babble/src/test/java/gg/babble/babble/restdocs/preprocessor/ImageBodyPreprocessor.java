@@ -32,7 +32,7 @@ public class ImageBodyPreprocessor implements OperationPreprocessor {
             parts.add(part);
         }
 
-        return new OperationRequestFactory().create(
+        return REQUEST_FACTORY.create(
             request.getUri(),
             request.getMethod(),
             request.getContent(),
