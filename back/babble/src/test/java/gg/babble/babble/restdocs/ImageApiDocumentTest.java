@@ -13,7 +13,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import gg.babble.babble.domain.admin.Administrator;
 import gg.babble.babble.restdocs.preprocessor.ImageBodyPreprocessor;
 import java.io.File;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;

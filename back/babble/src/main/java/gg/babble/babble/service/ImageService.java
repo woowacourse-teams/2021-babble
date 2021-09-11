@@ -6,8 +6,6 @@ import gg.babble.babble.domain.image.ImageResolver;
 import gg.babble.babble.domain.repository.S3Repository;
 import gg.babble.babble.exception.BabbleIOException;
 import java.io.IOException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -32,7 +30,7 @@ public class ImageService {
     }
 
     public Set<String> saveImage(final MultipartFile file, final String fullFilename) {
-        try { ;
+        try {
             ImageResolver imageResolver = new ImageResolver(file.getBytes());
             FileName fileName = FileName.of(fullFilename);
             return resizeAndSaveImage(imageResolver, fileName);
@@ -46,7 +44,8 @@ public class ImageService {
         Set<String> savedImages = new HashSet<>();
 
         for (int imageIndex = 0; imageIndex < SAVED_SIZE.size(); imageIndex++) {
-            final String newFileName = String.format(NEW_FILE_NAME_FORMAT, fileName.getSimpleName(), SAVED_SIZE.get(imageIndex), ImageResolver.DEFAULT_EXTENSION);
+            final String newFileName = String
+                .format(NEW_FILE_NAME_FORMAT, fileName.getSimpleName(), SAVED_SIZE.get(imageIndex), ImageResolver.DEFAULT_EXTENSION);
 
             s3Repository.save(newFileName, images.get(imageIndex));
             savedImages.add(newFileName);
