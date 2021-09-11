@@ -3,12 +3,15 @@ package gg.babble.babble.restdocs;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import gg.babble.babble.domain.admin.Administrator;
+import gg.babble.babble.restdocs.preprocessor.ImageBodyPreprocessor;
 import java.io.File;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -73,24 +76,32 @@ public class ImageApiDocumentTest extends ApiDocumentTest {
     @DisplayName("이미지 파일 저장 테스트")
     @Test
     void saveFile() throws Exception {
-        MockMultipartFile mockMultipartFile = new MockMultipartFile("file", Files.readAllBytes(file.toPath()));
+        administratorRepository.save(new Administrator("127.0.0.1", "localhost"));
+        MockMultipartFile multipartFile = new MockMultipartFile("file", "test-image.jpg", "image/jpg", Files.readAllBytes(file.toPath()));
         String filePath = "img/new-file.jpg";
-        final String encodeFilePath = URLEncoder.encode(filePath, StandardCharsets.UTF_8.toString());
 
-        mockMvc.perform(multipart("/api/images/" + encodeFilePath)
-            .file(mockMultipartFile))
+        mockMvc.perform(multipart("/api/images")
+            .file(multipartFile)
+            .param("fileName", filePath))
             .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").value(hasSize(3)))
             .andExpect(jsonPath("$").value(Matchers.containsInAnyOrder("img/new-file-x640.jpg", "img/new-file-x1280.jpg", "img/new-file-x1920.jpg")))
             .andDo(document("save-image",
+                preprocessRequest(new ImageBodyPreprocessor()),
                 responseFields(
                     fieldWithPath("[]").description("파일 경로"))));
+    }
 
-        mockMvc.perform(get("/api/images")
-            .accept(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$").value(hasSize(4)))
-            .andExpect(jsonPath("$").value(Matchers.containsInAnyOrder("test.jpg", "img/new-file-x640.jpg", "img/new-file-x1280.jpg", "img/new-file-x1920.jpg")));
+    @DisplayName("관리자 IP가 아닌 경우 이미지 저장 불가")
+    @Test
+    void saveFileUnauthorized() throws Exception {
+        MockMultipartFile mockMultipartFile = new MockMultipartFile("file", Files.readAllBytes(file.toPath()));
+        String filePath = "img/new-file.jpg";
+
+        mockMvc.perform(multipart("/api/images")
+            .file(mockMultipartFile)
+            .param("fileName", filePath))
+            .andExpect(status().isUnauthorized());
     }
 }

@@ -31,14 +31,13 @@ public class ImageService {
         return s3Repository.findAllImages();
     }
 
-    public Set<String> saveImage(final MultipartFile file, final String encodedFilename) {
-        try {
-            String decodeFileName = URLDecoder.decode(encodedFilename, StandardCharsets.UTF_8.toString());
+    public Set<String> saveImage(final MultipartFile file, final String fullFilename) {
+        try { ;
             ImageResolver imageResolver = new ImageResolver(file.getBytes());
-            FileName fileName = FileName.of(decodeFileName);
+            FileName fileName = FileName.of(fullFilename);
             return resizeAndSaveImage(imageResolver, fileName);
         } catch (IOException ioException) {
-            throw new BabbleIOException(String.format("파일 읽기에 실패했습니다. (%s)", encodedFilename));
+            throw new BabbleIOException(String.format("파일 읽기에 실패했습니다. (%s)", fullFilename));
         }
     }
 

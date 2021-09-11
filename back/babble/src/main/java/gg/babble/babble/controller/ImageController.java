@@ -26,8 +26,8 @@ public class ImageController {
         return ResponseEntity.ok(imageService.findAllImages());
     }
 
-    @PostMapping(value = "/{fileName}", consumes = "multipart/form-data")
-    public ResponseEntity<Set<String>> saveImage(@RequestParam("file") final MultipartFile file, @PathVariable("fileName") String fileName) {
+    @PostMapping(consumes = "multipart/form-data")
+    public ResponseEntity<Set<String>> saveImage(@RequestParam("file") final MultipartFile file, @RequestParam("fileName") String fileName) {
         return ResponseEntity.ok(imageService.saveImage(file, fileName));
     }
 }

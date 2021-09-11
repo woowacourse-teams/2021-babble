@@ -10,6 +10,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
@@ -31,7 +32,8 @@ public class ImageResolver {
             BufferedInputStream bufferedInputStream = new BufferedInputStream(byteArrayInputStream)) {
 
             BufferedImage bufferedImage = ImageIO.read(bufferedInputStream);
-            final ImageSize originalSize = ImageSize.of(bufferedImage);
+            validateBufferedImage(bufferedImage);
+            ImageSize originalSize = ImageSize.of(bufferedImage);
 
             return maxPixels.stream()
                 .map(maxPixel -> calculateSizeContaining(originalSize, maxPixel))
@@ -41,6 +43,12 @@ public class ImageResolver {
 
         } catch (IOException ioException) {
             throw new BabbleIOException("이미지 입출력 중에 오류가 발생했습니다.");
+        }
+    }
+
+    private void validateBufferedImage(final BufferedImage bufferedImage) {
+        if (Objects.isNull(bufferedImage)) {
+            throw new BabbleIllegalArgumentException("이미지 형식의 파일이 아닙니다.");
         }
     }
 
