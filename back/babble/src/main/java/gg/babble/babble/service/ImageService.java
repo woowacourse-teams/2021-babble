@@ -6,6 +6,8 @@ import gg.babble.babble.domain.image.ImageResolver;
 import gg.babble.babble.domain.repository.S3Repository;
 import gg.babble.babble.exception.BabbleIOException;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -17,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImageService {
 
     private static final List<Integer> SAVED_SIZE = Arrays.asList(1920, 1280, 640);
+    private static final String NEW_FILE_NAME_FORMAT = "%s-x%d.%s";
 
     private final S3Repository s3Repository;
 
@@ -28,13 +31,14 @@ public class ImageService {
         return s3Repository.findAllImages();
     }
 
-    public Set<String> saveImage(final MultipartFile file, final String fileFullName) {
+    public Set<String> saveImage(final MultipartFile file, final String encodedFilename) {
         try {
+            String decodeFileName = URLDecoder.decode(encodedFilename, StandardCharsets.UTF_8.toString());
             ImageResolver imageResolver = new ImageResolver(file.getBytes());
-            FileName fileName = FileName.of(fileFullName);
+            FileName fileName = FileName.of(decodeFileName);
             return resizeAndSaveImage(imageResolver, fileName);
         } catch (IOException ioException) {
-            throw new BabbleIOException(String.format("파일 읽기에 실패했습니다. (%s)", fileFullName));
+            throw new BabbleIOException(String.format("파일 읽기에 실패했습니다. (%s)", encodedFilename));
         }
     }
 
@@ -42,10 +46,10 @@ public class ImageService {
         List<byte[]> images = imageResolver.resizedImagesContaining(SAVED_SIZE);
         Set<String> savedImages = new HashSet<>();
 
-        for (byte[] image : images) {
-            final String newFileName = fileName.getSimpleName() + "-x" + ImageResolver.DEFAULT_EXTENSION;
+        for (int imageIndex = 0; imageIndex < SAVED_SIZE.size(); imageIndex++) {
+            final String newFileName = String.format(NEW_FILE_NAME_FORMAT, fileName.getSimpleName(), SAVED_SIZE.get(imageIndex), ImageResolver.DEFAULT_EXTENSION);
 
-            s3Repository.save(newFileName, image);
+            s3Repository.save(newFileName, images.get(imageIndex));
             savedImages.add(newFileName);
         }
 

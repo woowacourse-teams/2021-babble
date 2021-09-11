@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Objects;
@@ -28,12 +29,14 @@ class S3RepositoryTest {
         final ClassLoader classLoader = getClass().getClassLoader();
         final File file = new File(Objects.requireNonNull(classLoader.getResource("test-image.jpg")).getFile());
         s3Repository.save(IMAGE_FILE_NAME, Files.readAllBytes(Paths.get(file.getAbsolutePath())));
+        s3Repository.save("textFile.txt", "abc".getBytes(StandardCharsets.UTF_8));
     }
 
-    @DisplayName("파일 저장 확인 테스트")
+    @DisplayName("이미지 저장 확인 테스트")
     @Test
     void findAllImages() {
         final Set<String> allImages = s3Repository.findAllImages();
+        assertThat(allImages).hasSize(1);
         assertThat(allImages).contains(IMAGE_FILE_NAME);
     }
 }

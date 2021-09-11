@@ -9,6 +9,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URLConnection;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +19,7 @@ import org.springframework.stereotype.Repository;
 
 @Profile("!local")
 @Repository
-public class DefaultS3Repository implements S3Repository {
+public class DefaultS3Repository extends AbstractS3Repository {
 
     private final AmazonS3 amazonS3;
 
@@ -33,6 +35,7 @@ public class DefaultS3Repository implements S3Repository {
             .getObjectSummaries()
             .stream()
             .map(S3ObjectSummary::getKey)
+            .filter(this::isImageFile)
             .collect(Collectors.toSet());
     }
 

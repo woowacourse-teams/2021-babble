@@ -37,7 +37,7 @@ public class GameApiDocumentTest extends ApiDocumentTest {
     private final List<Game> games = new ArrayList<>();
 
     @BeforeEach
-    public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
+    public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) throws Exception {
         super.setUp(webApplicationContext, restDocumentation);
 
         games.add(gameRepository.save(new Game("League Of Legends1", "image1")));

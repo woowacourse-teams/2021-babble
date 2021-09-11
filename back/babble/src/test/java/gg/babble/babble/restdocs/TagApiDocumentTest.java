@@ -28,7 +28,7 @@ public class TagApiDocumentTest extends ApiDocumentTest {
     private final List<Tag> tags = new ArrayList<>();
 
     @BeforeEach
-    public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
+    public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) throws Exception {
         super.setUp(webApplicationContext, restDocumentation);
 
         tags.add(tagRepository.save(new Tag("실버")));

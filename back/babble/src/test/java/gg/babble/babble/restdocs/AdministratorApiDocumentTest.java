@@ -28,7 +28,7 @@ import org.springframework.web.context.WebApplicationContext;
 public class AdministratorApiDocumentTest extends ApiDocumentTest {
 
     @BeforeEach
-    public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
+    public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) throws Exception {
         super.setUp(webApplicationContext, restDocumentation);
         administratorRepository.save(new Administrator("127.0.0.1", "localhost"));
     }
