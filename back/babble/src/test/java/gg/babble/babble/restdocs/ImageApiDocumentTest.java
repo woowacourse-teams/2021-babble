@@ -15,7 +15,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Objects;
+import java.util.Set;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,10 +37,25 @@ public class ImageApiDocumentTest extends ApiDocumentTest {
     public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) throws Exception {
         super.setUp(webApplicationContext, restDocumentation);
 
+        deleteAllImageFile();
+
         final ClassLoader classLoader = getClass().getClassLoader();
         file = new File(Objects.requireNonNull(classLoader.getResource("test-image.jpg")).getFile());
         s3Repository.save(IMAGE_FILE_NAME, Files.readAllBytes(Paths.get(file.getAbsolutePath())));
         s3Repository.save("textFile.txt", "abc".getBytes(StandardCharsets.UTF_8));
+    }
+
+    @AfterEach
+    void tearDown() {
+        deleteAllImageFile();
+    }
+
+    private void deleteAllImageFile() {
+        final Set<String> allImages = s3Repository.findAllImages();
+
+        for (String image : allImages) {
+            s3Repository.delete(image);
+        }
     }
 
     @DisplayName("이미지 파일 조회 테스트")

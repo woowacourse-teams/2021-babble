@@ -8,5 +8,5 @@ public interface S3Repository {
 
     void save(final String fileName, final byte[] content);
 
-    //TODO delete(final String fileName) 구현하기
+    void delete(final String... fileNames);
 }

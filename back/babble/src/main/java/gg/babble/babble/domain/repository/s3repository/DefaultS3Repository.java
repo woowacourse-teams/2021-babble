@@ -1,16 +1,13 @@
 package gg.babble.babble.domain.repository.s3repository;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.DeleteObjectsRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
-import gg.babble.babble.domain.repository.S3Repository;
 import gg.babble.babble.exception.BabbleIOException;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URLConnection;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,5 +45,10 @@ public class DefaultS3Repository extends AbstractS3Repository {
         } catch (IOException ioException) {
             throw new BabbleIOException(String.format("파일을 S3에 저장에 실패했습니다. (%s)", fileName));
         }
+    }
+
+    public void delete(final String... fileNames) {
+        final DeleteObjectsRequest deleteObjectsRequest = new DeleteObjectsRequest(bucketName).withKeys(fileNames);
+        amazonS3.deleteObjects(deleteObjectsRequest);
     }
 }
