@@ -3,7 +3,7 @@ import './SearchInput.scss';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { Caption1 } from '../../core/Typography';
-import { FiSearch } from 'react-icons/fi';
+import { FiSearch } from '@react-icons/all-files/fi/FiSearch';
 import PropTypes from 'prop-types';
 import useDebounce from '../../hooks/useDebounce';
 
