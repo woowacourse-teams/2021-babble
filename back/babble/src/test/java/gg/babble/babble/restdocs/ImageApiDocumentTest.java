@@ -65,7 +65,7 @@ public class ImageApiDocumentTest extends ApiDocumentTest {
             .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").value(hasSize(3)))
-            .andExpect(jsonPath("$").value(Matchers.containsInAnyOrder("/img/new-file-x640.jpg", "/img/new-file-x1280.jpg", "/img/new-file-x1920.jpg")))
+            .andExpect(jsonPath("$").value(Matchers.containsInAnyOrder("img/new-file-x640.jpg", "img/new-file-x1280.jpg", "img/new-file-x1920.jpg")))
             .andDo(document("save-image",
                 responseFields(
                     fieldWithPath("[]").description("파일 경로"))));
@@ -74,6 +74,6 @@ public class ImageApiDocumentTest extends ApiDocumentTest {
             .accept(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").value(hasSize(4)))
-            .andExpect(jsonPath("$").value(Matchers.containsInAnyOrder("test.jpg", "/img/new-file-x640.jpg", "/img/new-file-x1280.jpg", "/img/new-file-x1920.jpg")));
+            .andExpect(jsonPath("$").value(Matchers.containsInAnyOrder("test.jpg", "img/new-file-x640.jpg", "img/new-file-x1280.jpg", "img/new-file-x1920.jpg")));
     }
 }
