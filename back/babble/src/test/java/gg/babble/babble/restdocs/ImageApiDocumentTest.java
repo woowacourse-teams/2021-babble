@@ -10,7 +10,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -58,7 +57,7 @@ public class ImageApiDocumentTest extends ApiDocumentTest {
     @Test
     void saveFile() throws Exception {
         MockMultipartFile mockMultipartFile = new MockMultipartFile("file", Files.readAllBytes(file.toPath()));
-        String filePath = "/img/new-file.jpg";
+        String filePath = "img/new-file.jpg";
         final String encodeFilePath = URLEncoder.encode(filePath, StandardCharsets.UTF_8.toString());
 
         mockMvc.perform(multipart("/api/images/" + encodeFilePath)
