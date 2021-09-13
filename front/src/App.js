@@ -1,4 +1,5 @@
-import '../global.scss';
+import '../style/global.scss';
+import '../style/fonts.scss';
 
 import { Footer, Main, NavBar } from './components';
 import { Route, Switch } from 'react-router-dom';
