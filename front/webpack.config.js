@@ -9,7 +9,7 @@ const CompressionPlugin = require('compression-webpack-plugin');
 const path = require('path');
 
 module.exports = (env, options) => {
-  return {
+  const config = {
     entry: './index.js',
 
     output: {
@@ -73,7 +73,6 @@ module.exports = (env, options) => {
         fileName: 'manifest.json',
         basePath: './public/',
       }),
-      new BundleAnalyzerPlugin(),
       new MiniCssExtractPlugin({
         filename: `[name].[chunkhash].css`,
       }),
@@ -125,4 +124,10 @@ module.exports = (env, options) => {
       hints: false,
     },
   };
+
+  if (options.mode === 'development') {
+    config.plugins.push(new BundleAnalyzerPlugin());
+  }
+
+  return config;
 };
