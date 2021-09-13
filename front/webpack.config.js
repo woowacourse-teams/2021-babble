@@ -36,11 +36,18 @@ module.exports = (env, options) => {
             'sass-loader',
           ],
         },
+        {
+          test: /\.(woff2|woff|ttf)$/i,
+          type: 'asset/resource',
+          generator: {
+            filename: 'fonts/[name][ext]',
+          },
+        },
       ],
     },
 
     resolve: {
-      extensions: ['.js', '.jsx', 'scss'],
+      extensions: ['.js', '.jsx', '.scss'],
     },
 
     devServer: {
@@ -72,7 +79,7 @@ module.exports = (env, options) => {
       }),
       new CompressionPlugin({
         algorithm: 'gzip',
-        test: /\.(js|css|html)$/,
+        test: /\.(js|css|html|ttf)$/,
       }),
     ],
 
