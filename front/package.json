@@ -7,7 +7,6 @@
     "start": "webpack serve --mode development --env development",
     "start:prod": "webpack serve --mode production --env production",
     "prod": "webpack --mode production",
-    "build": "webpack --mode production",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "semantic-release": "semantic-release",
