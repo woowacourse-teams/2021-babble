@@ -9,7 +9,7 @@ const CompressionPlugin = require('compression-webpack-plugin');
 const path = require('path');
 
 module.exports = (env, options) => {
-  return {
+  const config = {
     entry: './index.js',
 
     output: {
@@ -36,11 +36,18 @@ module.exports = (env, options) => {
             'sass-loader',
           ],
         },
+        {
+          test: /\.(woff2|woff|ttf)$/i,
+          type: 'asset/resource',
+          generator: {
+            filename: 'fonts/[name][ext]',
+          },
+        },
       ],
     },
 
     resolve: {
-      extensions: ['.js', '.jsx', 'scss'],
+      extensions: ['.js', '.jsx', '.scss'],
     },
 
     devServer: {
@@ -66,13 +73,12 @@ module.exports = (env, options) => {
         fileName: 'manifest.json',
         basePath: './public/',
       }),
-      new BundleAnalyzerPlugin(),
       new MiniCssExtractPlugin({
         filename: `[name].[chunkhash].css`,
       }),
       new CompressionPlugin({
         algorithm: 'gzip',
-        test: /\.(js|css|html)$/,
+        test: /\.(js|css|html|ttf)$/,
       }),
     ],
 
@@ -118,4 +124,10 @@ module.exports = (env, options) => {
       hints: false,
     },
   };
+
+  if (options.mode === 'development') {
+    config.plugins.push(new BundleAnalyzerPlugin());
+  }
+
+  return config;
 };
