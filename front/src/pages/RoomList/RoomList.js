@@ -142,18 +142,15 @@ const RoomList = ({ match }) => {
   };
 
   const onChangeTagInput = (e) => {
-    const inputValue = e.target.value.replace(
-      /[^0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|a-z|A-Z]+/g,
-      ''
-    );
+    const inputValue = e.target.value.replace(PATTERNS.SPECIAL_CHARACTERS, '');
 
     const searchResults = PATTERNS.KOREAN.test(inputValue)
       ? tagList.filter((tag) => {
-          const keywordRegExp = getKorRegExp(inputValue, {
+          const searchRegex = getKorRegExp(inputValue, {
             initialSearch: true,
             ignoreSpace: true,
           });
-          return tag.name.match(keywordRegExp);
+          return tag.name.match(searchRegex);
         })
       : tagList.filter((tag) => {
           const searchRegex = new RegExp(inputValue, 'gi');
@@ -164,7 +161,35 @@ const RoomList = ({ match }) => {
           );
         });
 
-    setAutoCompleteTagList(searchResults);
+    // 대안 이름으로 검색된 게임
+    const alternativeResults = PATTERNS.KOREAN.test(inputValue)
+      ? tagList.filter((tag) => {
+          const searchRegex = getKorRegExp(inputValue, {
+            initialSearch: true,
+            ignoreSpace: true,
+          });
+
+          return tag.alternativeNames.some((alternativeName) =>
+            alternativeName.match(searchRegex)
+          );
+        })
+      : tagList.filter((tag) => {
+          const searchRegex = new RegExp(inputValue, 'gi');
+          const alternativeNamesWithoutSpace = tag.alternativeNames.map(
+            (alternativeName) => alternativeName.replace(PATTERNS.SPACE, '')
+          );
+
+          return (
+            alternativeNamesWithoutSpace.some((alternativeName) =>
+              alternativeName.match(searchRegex)
+            ) ||
+            tag.alternativeNames.some((alternativeName) =>
+              alternativeName.match(searchRegex)
+            )
+          );
+        });
+
+    setAutoCompleteTagList([...searchResults, ...alternativeResults]);
   };
 
   const getUserId = async () => {
