@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 public class ImageResolver {
 
     private static final String NEW_FILE_NAME_FORMAT = "%s-x%d.%s";
-    public static final String DEFAULT_EXTENSION = "jpg";
+    private static final String DEFAULT_EXTENSION = "jpg";
 
     private final ImageFile imageFile;
 

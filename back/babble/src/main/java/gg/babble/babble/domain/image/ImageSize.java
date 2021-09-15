@@ -33,7 +33,7 @@ public class ImageSize {
         double heightRatio = (double) maxPixel / height;
         double resultRatio = Math.min(widthRatio, heightRatio);
 
-        return this.multiply(resultRatio);
+        return multiply(resultRatio);
     }
 
     @Override
