@@ -21,6 +21,8 @@ import javax.imageio.stream.ImageOutputStream;
 public class ImageResolver {
 
     public static final String DEFAULT_EXTENSION = "jpg";
+    private static final float COMPRESSION_QUALITY = 1.0f;
+    
     private final byte[] imageData;
 
     public ImageResolver(final byte[] imageData) {
@@ -101,7 +103,7 @@ public class ImageResolver {
 
         if (param.canWriteCompressed()) {
             param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-            param.setCompressionQuality(1.0f);
+            param.setCompressionQuality(COMPRESSION_QUALITY);
         }
         return param;
     }
