@@ -27,8 +27,8 @@ class S3RepositoryTest {
 
     @BeforeEach
     void setUp() throws IOException {
-        final ClassLoader classLoader = getClass().getClassLoader();
-        final File file = new File(Objects.requireNonNull(classLoader.getResource("test-image.jpg")).getFile());
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(Objects.requireNonNull(classLoader.getResource("test-image.jpg")).getFile());
 
         deleteAllImageFile();
 
@@ -42,7 +42,7 @@ class S3RepositoryTest {
     }
 
     private void deleteAllImageFile() {
-        final List<String> allImages = s3Repository.findAllImages();
+        List<String> allImages = s3Repository.findAllImages();
 
         for (String image : allImages) {
             s3Repository.delete(image);
@@ -52,7 +52,7 @@ class S3RepositoryTest {
     @DisplayName("이미지 저장 확인 테스트")
     @Test
     void findAllImages() {
-        final List<String> allImages = s3Repository.findAllImages();
+        List<String> allImages = s3Repository.findAllImages();
         assertThat(allImages).hasSize(1);
         assertThat(allImages).contains(IMAGE_FILE_NAME);
     }

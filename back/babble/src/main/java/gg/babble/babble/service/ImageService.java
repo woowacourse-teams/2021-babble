@@ -8,9 +8,7 @@ import gg.babble.babble.exception.BabbleIOException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -45,8 +43,7 @@ public class ImageService {
         List<String> savedImages = new ArrayList<>();
 
         for (int imageIndex = 0; imageIndex < SAVED_SIZE.size(); imageIndex++) {
-            final String newFileName = String
-                .format(NEW_FILE_NAME_FORMAT, fileName.getSimpleName(), SAVED_SIZE.get(imageIndex), ImageResolver.DEFAULT_EXTENSION);
+            String newFileName = String.format(NEW_FILE_NAME_FORMAT, fileName.getSimpleName(), SAVED_SIZE.get(imageIndex), ImageResolver.DEFAULT_EXTENSION);
 
             s3Repository.save(newFileName, images.get(imageIndex));
             savedImages.add(newFileName);

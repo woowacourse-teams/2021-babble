@@ -16,7 +16,7 @@ public class FileName {
     private final String extension;
 
     public static FileName of(final String fullName) {
-        final String[] simpleNameAndExtension = fullName.split(FILE_EXTENSION_DELIMITER, SPLIT_SIZE);
+        String[] simpleNameAndExtension = fullName.split(FILE_EXTENSION_DELIMITER, SPLIT_SIZE);
         if (simpleNameAndExtension.length != SPLIT_SIZE) {
             throw new IllegalArgumentException(String.format("잘못된 파일 이름입니다.(%s)", fullName));
         }
