@@ -23,4 +23,9 @@ public class FileName {
 
         return new FileName(simpleNameAndExtension[SIMPLE_NAME_INDEX], simpleNameAndExtension[EXTENSION_INDEX]);
     }
+
+    @Override
+    public String toString() {
+        return simpleName + '.' + extension;
+    }
 }
