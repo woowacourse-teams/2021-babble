@@ -49,6 +49,7 @@ public class SliderService {
         sliderRepository.saveAll(changed);
 
         return changed.stream()
+            .sorted(Comparator.comparingInt(Slider::getSortingIndex))
             .map(SliderResponse::from)
             .collect(Collectors.toList());
     }

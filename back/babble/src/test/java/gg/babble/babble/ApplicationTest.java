@@ -6,6 +6,7 @@ import gg.babble.babble.domain.repository.AlternativeTagNameRepository;
 import gg.babble.babble.domain.repository.GameRepository;
 import gg.babble.babble.domain.repository.RoomRepository;
 import gg.babble.babble.domain.repository.SessionRepository;
+import gg.babble.babble.domain.repository.SliderRepository;
 import gg.babble.babble.domain.repository.TagRepository;
 import gg.babble.babble.domain.repository.UserRepository;
 import io.restassured.RestAssured;
@@ -46,6 +47,9 @@ public class ApplicationTest {
 
     @Autowired
     protected TagRepository tagRepository;
+
+    @Autowired
+    protected SliderRepository sliderRepository;
 
     @BeforeEach
     protected void setUp() {
