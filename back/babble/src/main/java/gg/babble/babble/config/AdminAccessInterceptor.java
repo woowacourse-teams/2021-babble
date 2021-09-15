@@ -25,7 +25,6 @@ public class AdminAccessInterceptor implements HandlerInterceptor {
 
     private boolean needsAuthentication(final HttpServletRequest request) {
         return !"OPTIONS".equals(request.getMethod()) &&
-            (UrlParser.isAuthenticationUrl(request.getRequestURI()) ||
-                !"GET".equals(request.getMethod()));
+            (UrlParser.isAuthenticationUrl(request.getRequestURI()) || !"GET".equals(request.getMethod()));
     }
 }

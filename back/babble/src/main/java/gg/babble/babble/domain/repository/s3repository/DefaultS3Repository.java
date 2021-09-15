@@ -8,6 +8,7 @@ import gg.babble.babble.exception.BabbleIOException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URLConnection;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,13 +28,13 @@ public class DefaultS3Repository extends AbstractS3Repository {
         this.amazonS3 = amazonS3;
     }
 
-    public Set<String> findAllImages() {
+    public List<String> findAllImages() {
         return amazonS3.listObjectsV2(bucketName)
             .getObjectSummaries()
             .stream()
             .map(S3ObjectSummary::getKey)
             .filter(this::isImageFile)
-            .collect(Collectors.toSet());
+            .collect(Collectors.toList());
     }
 
     public void save(final String fileName, final byte[] content) {

@@ -1,7 +1,7 @@
 package gg.babble.babble.controller;
 
 import gg.babble.babble.service.ImageService;
-import java.util.Set;
+import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,12 +21,12 @@ public class ImageController {
     }
 
     @GetMapping
-    public ResponseEntity<Set<String>> findAllImages() {
+    public ResponseEntity<List<String>> findAllImages() {
         return ResponseEntity.ok(imageService.findAllImages());
     }
 
     @PostMapping(consumes = "multipart/form-data")
-    public ResponseEntity<Set<String>> saveImage(@RequestParam("file") final MultipartFile file, @RequestParam("fileName") String fileName) {
+    public ResponseEntity<List<String>> saveImage(@RequestParam("file") final MultipartFile file, @RequestParam("fileName") String fileName) {
         return ResponseEntity.ok(imageService.saveImage(file, fileName));
     }
 }

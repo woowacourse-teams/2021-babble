@@ -1,10 +1,10 @@
 package gg.babble.babble.domain.repository;
 
-import java.util.Set;
+import java.util.List;
 
 public interface S3Repository {
 
-    Set<String> findAllImages();
+    List<String> findAllImages();
 
     void save(final String fileName, final byte[] content);
 

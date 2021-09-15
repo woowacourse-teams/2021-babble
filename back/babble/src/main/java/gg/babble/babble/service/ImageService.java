@@ -6,6 +6,7 @@ import gg.babble.babble.domain.image.ImageResolver;
 import gg.babble.babble.domain.repository.S3Repository;
 import gg.babble.babble.exception.BabbleIOException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -25,11 +26,11 @@ public class ImageService {
         this.s3Repository = s3Repository;
     }
 
-    public Set<String> findAllImages() {
+    public List<String> findAllImages() {
         return s3Repository.findAllImages();
     }
 
-    public Set<String> saveImage(final MultipartFile file, final String fullFilename) {
+    public List<String> saveImage(final MultipartFile file, final String fullFilename) {
         try {
             ImageResolver imageResolver = new ImageResolver(file.getBytes());
             FileName fileName = FileName.of(fullFilename);
@@ -39,9 +40,9 @@ public class ImageService {
         }
     }
 
-    private Set<String> resizeAndSaveImage(final ImageResolver imageResolver, final FileName fileName) {
+    private List<String> resizeAndSaveImage(final ImageResolver imageResolver, final FileName fileName) {
         List<byte[]> images = imageResolver.resizedImagesContaining(SAVED_SIZE);
-        Set<String> savedImages = new HashSet<>();
+        List<String> savedImages = new ArrayList<>();
 
         for (int imageIndex = 0; imageIndex < SAVED_SIZE.size(); imageIndex++) {
             final String newFileName = String

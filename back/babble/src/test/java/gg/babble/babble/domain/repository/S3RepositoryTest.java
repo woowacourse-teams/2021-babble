@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -42,7 +42,7 @@ class S3RepositoryTest {
     }
 
     private void deleteAllImageFile() {
-        final Set<String> allImages = s3Repository.findAllImages();
+        final List<String> allImages = s3Repository.findAllImages();
 
         for (String image : allImages) {
             s3Repository.delete(image);
@@ -52,7 +52,7 @@ class S3RepositoryTest {
     @DisplayName("이미지 저장 확인 테스트")
     @Test
     void findAllImages() {
-        final Set<String> allImages = s3Repository.findAllImages();
+        final List<String> allImages = s3Repository.findAllImages();
         assertThat(allImages).hasSize(1);
         assertThat(allImages).contains(IMAGE_FILE_NAME);
     }

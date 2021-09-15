@@ -16,8 +16,8 @@ import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,7 +53,7 @@ public class ImageApiDocumentTest extends ApiDocumentTest {
     }
 
     private void deleteAllImageFile() {
-        final Set<String> allImages = s3Repository.findAllImages();
+        final List<String> allImages = s3Repository.findAllImages();
 
         for (String image : allImages) {
             s3Repository.delete(image);
