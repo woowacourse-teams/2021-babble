@@ -1,5 +1,6 @@
 package gg.babble.babble.domain;
 
+import gg.babble.babble.exception.BabbleIllegalArgumentException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -17,6 +18,10 @@ public class FileName {
 
     public static FileName of(final String fullName) {
         int extensionDelimiterIndex = fullName.lastIndexOf(FILE_EXTENSION_DELIMITER);
+        if (extensionDelimiterIndex == -1) {
+            throw new BabbleIllegalArgumentException(String.format("올바른 파일 이름 형식이 아닙니다.(%s)", fullName));
+        }
+
         String simpleName = fullName.substring(0, extensionDelimiterIndex);
         String extension = fullName.substring(extensionDelimiterIndex + 1);
 
