@@ -28,7 +28,7 @@ public class ImageService {
         return s3Repository.findAllImages();
     }
 
-    public List<String> saveImage(final MultipartFile file, final String fullFilename) {
+    public List<String> resizeAndSaveImage(final MultipartFile file, final String fullFilename) {
         try {
             ImageResolver imageResolver = new ImageResolver(file.getBytes());
             FileName fileName = FileName.of(fullFilename);

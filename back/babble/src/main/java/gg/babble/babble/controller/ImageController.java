@@ -27,6 +27,6 @@ public class ImageController {
 
     @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<List<String>> saveImage(@RequestParam("file") final MultipartFile file, @RequestParam("fileName") String fileName) {
-        return ResponseEntity.ok(imageService.saveImage(file, fileName));
+        return ResponseEntity.ok(imageService.resizeAndSaveImage(file, fileName));
     }
 }

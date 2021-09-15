@@ -22,7 +22,7 @@ public class ImageResolver {
 
     public static final String DEFAULT_EXTENSION = "jpg";
     private static final float COMPRESSION_QUALITY = 1.0f;
-    
+
     private final byte[] imageData;
 
     public ImageResolver(final byte[] imageData) {

@@ -38,9 +38,10 @@ public class DefaultS3Repository extends AbstractS3Repository {
     }
 
     public void save(final String fileName, final byte[] content) {
-        final ObjectMetadata objectMetadata = new ObjectMetadata();
+        ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentLength(content.length);
         objectMetadata.setContentType(URLConnection.guessContentTypeFromName(fileName));
+
         try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(content)) {
             amazonS3.putObject(bucketName, fileName, byteArrayInputStream, objectMetadata);
         } catch (IOException ioException) {
@@ -49,7 +50,7 @@ public class DefaultS3Repository extends AbstractS3Repository {
     }
 
     public void delete(final String... fileNames) {
-        final DeleteObjectsRequest deleteObjectsRequest = new DeleteObjectsRequest(bucketName).withKeys(fileNames);
+        DeleteObjectsRequest deleteObjectsRequest = new DeleteObjectsRequest(bucketName).withKeys(fileNames);
         amazonS3.deleteObjects(deleteObjectsRequest);
     }
 }
