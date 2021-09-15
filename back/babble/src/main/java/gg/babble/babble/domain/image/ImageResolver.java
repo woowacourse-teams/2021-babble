@@ -38,7 +38,7 @@ public class ImageResolver {
             ImageSize originalSize = ImageSize.of(bufferedImage);
 
             return maxPixels.stream()
-                .map(maxPixel -> calculateSizeContaining(originalSize, maxPixel))
+                .map(originalSize::calculateSizeContaining)
                 .map(newImageSize -> resizeImage(bufferedImage, newImageSize))
                 .map(resizedImage -> compressImage(resizedImage, DEFAULT_EXTENSION))
                 .collect(Collectors.toList());
@@ -52,17 +52,6 @@ public class ImageResolver {
         if (Objects.isNull(bufferedImage)) {
             throw new BabbleIllegalArgumentException("이미지 형식의 파일이 아닙니다.");
         }
-    }
-
-    private ImageSize calculateSizeContaining(final ImageSize originalSize, final Integer maxPixel) {
-        int originalWidth = originalSize.getWidth();
-        int originalHeight = originalSize.getHeight();
-
-        double widthRatio = (double) maxPixel / originalWidth;
-        double heightRatio = (double) maxPixel / originalHeight;
-        double resultRatio = Math.min(widthRatio, heightRatio);
-
-        return originalSize.multiply(resultRatio);
     }
 
     private BufferedImage resizeImage(final BufferedImage originalImage, final ImageSize imageSize) {

@@ -27,4 +27,12 @@ public class ImageSize {
     public ImageSize multiply(final double ratio) {
         return new ImageSize((int) ((double) width * ratio), (int) ((double) height * ratio));
     }
+
+    public ImageSize calculateSizeContaining(final Integer maxPixel) {
+        double widthRatio = (double) maxPixel / width;
+        double heightRatio = (double) maxPixel / height;
+        double resultRatio = Math.min(widthRatio, heightRatio);
+
+        return this.multiply(resultRatio);
+    }
 }
