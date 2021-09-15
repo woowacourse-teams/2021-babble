@@ -108,7 +108,7 @@ public class AdministratorApiDocumentTest extends ApiDocumentTest {
             }).get(0).getId();
 
         mockMvc.perform(delete("/api/admins/" + idToDelete)
-            .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isNoContent())
             .andDo(document("delete-administrators"));
 

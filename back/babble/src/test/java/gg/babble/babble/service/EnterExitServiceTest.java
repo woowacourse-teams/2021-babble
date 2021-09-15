@@ -26,7 +26,7 @@ class EnterExitServiceTest extends ApplicationTest {
     @Test
     void createSession() {
         // given
-        Game game = gameRepository.save(new Game("게임 이름", "게임 이미지"));
+        Game game = gameRepository.save(new Game("게임 이름", Collections.singletonList("게임이미지")));
         List<Tag> tags = Collections.singletonList(tagRepository.save(new Tag("초보만")));
         MaxHeadCount maxHeadCount = new MaxHeadCount(4);
         Room room = roomRepository.save(new Room(game, tags, maxHeadCount));
@@ -57,7 +57,7 @@ class EnterExitServiceTest extends ApplicationTest {
     }
 
     private Session 세션을_생성한다() {
-        Game game = gameRepository.save(new Game("게임 이름", "게임 이미지"));
+        Game game = gameRepository.save(new Game("게임 이름", Collections.singletonList("게임 이미지")));
         List<Tag> tags = Collections.singletonList(tagRepository.save(new Tag("초보만")));
         MaxHeadCount maxHeadCount = new MaxHeadCount(4);
         Room room = roomRepository.save(new Room(game, tags, maxHeadCount));

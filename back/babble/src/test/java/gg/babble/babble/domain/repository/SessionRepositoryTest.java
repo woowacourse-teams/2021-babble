@@ -77,7 +77,7 @@ class SessionRepositoryTest {
     private Session 세션_객체를_생성한다() {
         Tag tag = tagRepository.save(new Tag("초보만"));
         List<Tag> tags = Collections.singletonList(tag);
-        Game game = gameRepository.save(new Game("게임 이름", "게임 이미지"));
+        Game game = gameRepository.save(new Game("게임 이름", Collections.singletonList("게임 이미지")));
         MaxHeadCount maxHeadCount = new MaxHeadCount(4);
         Room room = roomRepository.save(new Room(game, tags, maxHeadCount));
         User user = userRepository.save(new User("코 파는 알리스타"));
