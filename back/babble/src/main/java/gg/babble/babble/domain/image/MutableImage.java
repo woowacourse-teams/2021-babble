@@ -9,16 +9,21 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
+import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.ImageOutputStream;
 
 public class MutableImage {
 
     private static final float COMPRESSION_QUALITY = 1.0f;
+    private static final IIOMetadata EMPTY_STREAM_METADATA = null;
+    private static final List<? extends BufferedImage> EMPTY_THUMBNAILS = null;
+    private static final IIOMetadata EMPTY_METADATA = null;
 
     private final BufferedImage bufferedImage;
 
@@ -58,7 +63,7 @@ public class MutableImage {
             ImageWriter writer = getImageWriter(extension, imageOutputStream);
             ImageWriteParam param = getCompressionParam(writer);
 
-            writer.write(null, new IIOImage(bufferedImage, null, null), param);
+            writer.write(EMPTY_STREAM_METADATA, new IIOImage(bufferedImage, EMPTY_THUMBNAILS, EMPTY_METADATA), param);
             writer.dispose();
 
             return byteArrayOutputStream.toByteArray();
