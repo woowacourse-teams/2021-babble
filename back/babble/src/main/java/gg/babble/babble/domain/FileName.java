@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class FileName {
 
-    private static final String FILE_EXTENSION_DELIMITER = "\\.";
+    private static final char FILE_EXTENSION_DELIMITER = '.';
     private static final int SIMPLE_NAME_INDEX = 0;
     private static final int EXTENSION_INDEX = 1;
     private static final int SPLIT_SIZE = 2;
@@ -16,16 +16,15 @@ public class FileName {
     private final String extension;
 
     public static FileName of(final String fullName) {
-        String[] simpleNameAndExtension = fullName.split(FILE_EXTENSION_DELIMITER, SPLIT_SIZE);
-        if (simpleNameAndExtension.length != SPLIT_SIZE) {
-            throw new IllegalArgumentException(String.format("잘못된 파일 이름입니다.(%s)", fullName));
-        }
+        int extensionDelimiterIndex = fullName.lastIndexOf(FILE_EXTENSION_DELIMITER);
+        String simpleName = fullName.substring(0, extensionDelimiterIndex);
+        String extension = fullName.substring(extensionDelimiterIndex + 1);
 
-        return new FileName(simpleNameAndExtension[SIMPLE_NAME_INDEX], simpleNameAndExtension[EXTENSION_INDEX]);
+        return new FileName(simpleName, extension);
     }
 
     @Override
     public String toString() {
-        return simpleName + '.' + extension;
+        return simpleName + FILE_EXTENSION_DELIMITER + extension;
     }
 }
