@@ -41,7 +41,7 @@ public class SliderService {
     }
 
     @Transactional
-    public List<SliderResponse> updateOrder(SliderOrderRequest request) {
+    public List<SliderResponse> updateOrder(final SliderOrderRequest request) {
         Map<Long, Slider> dictionary = listToMap(sliderRepository.findAll());
         sort(dictionary, request.getIds());
 
@@ -54,7 +54,7 @@ public class SliderService {
             .collect(Collectors.toList());
     }
 
-    private Map<Long, Slider> listToMap(List<Slider> sliders) {
+    private Map<Long, Slider> listToMap(final List<Slider> sliders) {
         Map<Long, Slider> dictionary = new HashMap<>();
 
         for (Slider slider : sliders) {
@@ -64,7 +64,7 @@ public class SliderService {
         return dictionary;
     }
 
-    private void sort(Map<Long, Slider> dictionary, List<Long> ids) {
+    private void sort(final Map<Long, Slider> dictionary, final List<Long> ids) {
         for (int i = 0; i < ids.size(); i++) {
             Slider slider = dictionary.get(ids.get(i));
             slider.setSortingIndex(i);
@@ -72,7 +72,7 @@ public class SliderService {
     }
 
     @Transactional
-    public void delete(Long sliderId) {
+    public void delete(final Long sliderId) {
         Slider slider = sliderRepository.findById(sliderId).orElseThrow(BabbleNotFoundException::new);
         sliderRepository.delete(slider);
     }

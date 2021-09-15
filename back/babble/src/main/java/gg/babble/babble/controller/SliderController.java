@@ -44,7 +44,7 @@ public class SliderController {
     }
 
     @DeleteMapping(value = "/{sliderId}")
-    public ResponseEntity<Void> delete(@PathVariable Long sliderId) {
+    public ResponseEntity<Void> delete(@PathVariable final Long sliderId) {
         sliderService.delete(sliderId);
         return ResponseEntity.noContent().build();
     }
