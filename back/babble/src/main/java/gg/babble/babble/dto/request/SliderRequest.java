@@ -1,6 +1,6 @@
 package gg.babble.babble.dto.request;
 
-import com.sun.istack.NotNull;
+import javax.validation.constraints.NotNull;
 import gg.babble.babble.domain.slider.Slider;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

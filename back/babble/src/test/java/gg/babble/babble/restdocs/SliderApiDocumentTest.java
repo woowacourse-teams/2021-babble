@@ -12,7 +12,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import gg.babble.babble.domain.admin.Administrator;
-import gg.babble.babble.domain.slider.ResourceUrl;
 import gg.babble.babble.domain.slider.Slider;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -26,7 +25,7 @@ import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.web.context.WebApplicationContext;
 
-public class SliderApiDocumentTest extends ApiDocumentTest {
+class SliderApiDocumentTest extends ApiDocumentTest {
 
     private Slider slider1;
     private Slider slider2;
@@ -45,7 +44,7 @@ public class SliderApiDocumentTest extends ApiDocumentTest {
 
     @DisplayName("전체 슬라이더를 조회한다.")
     @Test
-    public void findAllSliders() throws Exception {
+    void findAllSliders() throws Exception {
         mockMvc.perform(get("/api/sliders")
             .accept(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isOk())
@@ -65,7 +64,7 @@ public class SliderApiDocumentTest extends ApiDocumentTest {
 
     @DisplayName("슬라이더를 추가한다.")
     @Test
-    public void insertSlider() throws Exception {
+    void insertSlider() throws Exception {
         Map<String, Object> body = new HashMap<>();
         body.put("sliderUrl", "testPath");
         mockMvc.perform(post("/api/sliders")
@@ -86,7 +85,7 @@ public class SliderApiDocumentTest extends ApiDocumentTest {
 
     @DisplayName("슬라이더 순서를 변경한다.")
     @Test
-    public void updateSlider() throws Exception {
+    void updateSlider() throws Exception {
         Map<String, Object> body = new HashMap<>();
         List<Long> ids = Arrays.asList(slider1.getId(), slider3.getId(), slider2.getId());
         body.put("ids", ids);
@@ -112,7 +111,7 @@ public class SliderApiDocumentTest extends ApiDocumentTest {
 
     @DisplayName("슬라이더를 제거한다.")
     @Test
-    public void deleteSlider() throws Exception {
+    void deleteSlider() throws Exception {
         mockMvc.perform(delete("/api/sliders/" + slider1.getId())
             .accept(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isNoContent())
