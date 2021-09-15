@@ -1,6 +1,5 @@
 package gg.babble.babble.domain.image;
 
-import gg.babble.babble.domain.FileName;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
