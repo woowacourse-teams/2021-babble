@@ -12,7 +12,7 @@ public class ImageSize {
         this.height = height;
     }
 
-    public static ImageSize of(final BufferedImage image) {
+    public static ImageSize of(final MutableImage image) {
         return new ImageSize(image.getWidth(), image.getHeight());
     }
 
