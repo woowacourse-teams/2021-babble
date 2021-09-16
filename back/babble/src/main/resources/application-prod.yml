@@ -8,3 +8,11 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2
+    s3:
+      bucket:
+        name: bucket-babble-front
