@@ -4,7 +4,6 @@ import gg.babble.babble.dto.request.TagCreateRequest;
 import gg.babble.babble.dto.response.TagResponse;
 import gg.babble.babble.service.TagService;
 import java.util.List;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,6 +29,6 @@ public class TagController {
     @PostMapping
     public ResponseEntity<TagResponse> createTag(@RequestBody TagCreateRequest request) {
         TagResponse response = tagService.createTag(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.ok(response);
     }
 }
