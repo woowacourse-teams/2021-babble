@@ -27,7 +27,7 @@ public abstract class ApiDocumentTest extends ApplicationTest {
     protected MockMvc mockMvc;
 
     @BeforeEach
-    protected void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
+    protected void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) throws Exception {
         super.setUp();
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
             .apply(documentationConfiguration(restDocumentation))

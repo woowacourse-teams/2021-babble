@@ -5,6 +5,7 @@ import gg.babble.babble.domain.repository.AlternativeGameNameRepository;
 import gg.babble.babble.domain.repository.AlternativeTagNameRepository;
 import gg.babble.babble.domain.repository.GameRepository;
 import gg.babble.babble.domain.repository.RoomRepository;
+import gg.babble.babble.domain.repository.S3Repository;
 import gg.babble.babble.domain.repository.SessionRepository;
 import gg.babble.babble.domain.repository.SliderRepository;
 import gg.babble.babble.domain.repository.TagRepository;
@@ -38,6 +39,9 @@ public class ApplicationTest {
 
     @Autowired
     protected GameRepository gameRepository;
+
+    @Autowired
+    protected S3Repository s3Repository;
 
     @Autowired
     protected AlternativeGameNameRepository alternativeGameNameRepository;

@@ -37,7 +37,7 @@ public class GameApiDocumentTest extends ApiDocumentTest {
     private final List<Game> games = new ArrayList<>();
 
     @BeforeEach
-    public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
+    public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) throws Exception {
         super.setUp(webApplicationContext, restDocumentation);
 
         games.add(gameRepository.save(new Game("League Of Legends1", "image1")));
@@ -220,7 +220,7 @@ public class GameApiDocumentTest extends ApiDocumentTest {
             .andExpect(jsonPath("$.name").value(gameName))
             .andExpect(jsonPath("$.thumbnail").value(thumbnail))
 
-            .andDo(document("insert-game",
+            .andDo(document("update-game",
                 requestFields(
                     fieldWithPath("name").description("게임 이름"),
                     fieldWithPath("thumbnail").description("게임 썸네일 URL"),
