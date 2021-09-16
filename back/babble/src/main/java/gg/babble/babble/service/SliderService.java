@@ -46,7 +46,6 @@ public class SliderService {
         sort(dictionary, request.getIds());
 
         List<Slider> changed = new ArrayList<>(dictionary.values());
-        sliderRepository.saveAll(changed);
 
         return changed.stream()
             .sorted(Comparator.comparingInt(Slider::getSortingIndex))
