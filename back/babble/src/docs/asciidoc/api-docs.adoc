@@ -189,6 +189,38 @@ include::{snippets}/tags-get-test/http-response.adoc[]
 [cols="^,^,^",options="headers"]
 include::{snippets}/tags-get/response-fields.adoc[]
 
+== 이미지
+
+=== 이미지 파일 전체 조회 API
+
+==== HTTP Request
+
+include::{snippets}/find-all-images/http-request.adoc[]
+
+==== Http Response
+
+include::{snippets}/read-Images/http-response.adoc[]
+
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/read-Images/response-fields.adoc[]
+
+=== 이미지 저장 API
+
+> Accessible only from allowed ip.
+
+==== HTTP Request
+
+include::{snippets}/save-image/http-request.adoc[]
+
+==== Http Response
+
+include::{snippets}/save-file/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/save-image/response-fields.adoc[]
+
+
 == 관리자
 
 > Accessible only from allowed ip.

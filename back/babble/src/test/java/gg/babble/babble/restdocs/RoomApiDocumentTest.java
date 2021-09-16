@@ -45,7 +45,7 @@ public class RoomApiDocumentTest extends ApiDocumentTest {
     private final List<Game> games = new ArrayList<>();
 
     @BeforeEach
-    public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
+    public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) throws Exception {
         super.setUp(webApplicationContext, restDocumentation);
         tags.add(tagRepository.save(new Tag("실버")));
         tags.add(tagRepository.save(new Tag("2시간")));

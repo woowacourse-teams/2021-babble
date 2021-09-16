@@ -43,7 +43,7 @@ public class GameApiDocumentTest extends ApiDocumentTest {
     private final List<String> images = Arrays.asList(IMAGE_1, IMAGE_2, IMAGE_3);
 
     @BeforeEach
-    public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
+    public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) throws Exception {
         super.setUp(webApplicationContext, restDocumentation);
 
         games.add(gameRepository.save(new Game("League Of Legends1", Collections.singletonList(IMAGE_1))));

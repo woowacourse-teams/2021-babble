@@ -18,7 +18,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AdminAccessInterceptor(administratorService))
-            .addPathPatterns("/api/games/**", "/api/tags/**", "/api/sliders/**", "/api/admins/**");
+            .addPathPatterns("/api/games/**", "/api/tags/**", "/api/sliders/**", "/api/admins/**", "/api/images/**");
     }
 
     @Override
