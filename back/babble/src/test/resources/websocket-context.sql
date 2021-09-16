@@ -7,14 +7,13 @@ truncate table game;
 truncate table tag;
 truncate table user;
 truncate table game_images;
-alter table game auto_increment = 1;
 
 set FOREIGN_KEY_CHECKS = 1;
 
 insert into game (deleted, `name`) values (false, 'game1');
-insert into game_images(game_id, game_image) values (1, '게임 이미지1');
-insert into game_images(game_id, game_image) values (1, '게임 이미지2');
-insert into game_images(game_id, game_image) values (1, '게임 이미지3');
+insert into game_images(game_id, game_image) values ((select id from game limit 1), '게임 이미지1');
+insert into game_images(game_id, game_image) values ((select id from game limit 1), '게임 이미지2');
+insert into game_images(game_id, game_image) values ((select id from game limit 1), '게임 이미지3');
 insert into tag (`name`) values ('tag1');
 insert into user (avatar, nickname) values ('abc', '와일더');
 insert into user (avatar, nickname) values ('abc', '루트');
