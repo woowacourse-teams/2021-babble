@@ -51,9 +51,7 @@ public class AlternativeGameName {
             previousGame.removeAlternativeName(this);
         }
 
-        if (game.hasNotName(value)) {
-            game.addAlternativeName(this);
-        }
+        game.addAlternativeName(this);
     }
 
     public void delete() {

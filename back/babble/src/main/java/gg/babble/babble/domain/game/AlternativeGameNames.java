@@ -2,10 +2,9 @@ package gg.babble.babble.domain.game;
 
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleNotFoundException;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 import javax.persistence.Embeddable;
 import javax.persistence.OneToMany;
@@ -19,9 +18,9 @@ public class AlternativeGameNames {
 
     @OneToMany(mappedBy = "game")
     @NotNull(message = "대안 이름들은 Null 일 수 없습니다.")
-    private Set<AlternativeGameName> elements = new HashSet<>();
+    private List<AlternativeGameName> elements = new ArrayList<>();
 
-    public AlternativeGameNames(final Set<AlternativeGameName> elements) {
+    public AlternativeGameNames(final List<AlternativeGameName> elements) {
         this.elements = elements;
     }
 
@@ -29,6 +28,7 @@ public class AlternativeGameNames {
         if (contains(name.getValue())) {
             throw new BabbleDuplicatedException(String.format("이미 존재하는 이름 입니다.(%s)", name.getValue()));
         }
+
         elements.add(name);
     }
 

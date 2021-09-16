@@ -71,23 +71,26 @@ class GameTest {
         final AlternativeGameName alternativeGameName = new AlternativeGameName("망겜", game);
 
         // then
-        assertThat(game.getAlternativeGameNames()).isEqualTo(new AlternativeGameNames(Collections.singleton(alternativeGameName)));
+        assertThat(game.getAlternativeGameNames()).isEqualTo(new AlternativeGameNames(Collections.singletonList(alternativeGameName)));
     }
 
     @DisplayName("대체 이름 변경")
     @Test
     void changeAlternativeGameName() {
         // given
-        Game game = new Game(1L, "오래된 게임", Collections.singletonList("오래된 이미지"));
-        Game game2 = new Game(2L, "최신 게임", Collections.singletonList("최신 이미지"));
+        final Game game = new Game(1L, "오래된 게임", Collections.singletonList("오래된 이미지"));
+        AlternativeGameName alternativeGameName = new AlternativeGameName(1L, "흥겜", game);
+        final Game target = new Game("새로운 게임", Collections.singletonList("새로운 이미지"));
+        AlternativeGameName alternativeTargetGameName = new AlternativeGameName(1L, "망겜", target);
+
         // when
-        final AlternativeGameName alternativeGameName = new AlternativeGameName("흥겜", game);
-        game2.addAlternativeName(alternativeGameName);
+        game.update(target);
+
         // then
-        assertThat(game.hasName(alternativeGameName.getValue())).isFalse();
-        assertThat(game2.hasName(alternativeGameName.getValue())).isTrue();
-        assertThat(alternativeGameName.getGame()).isEqualTo(game2);
-        assertThat(alternativeGameName.isDeleted()).isFalse();
+        assertThat(game.getId()).isEqualTo(1L);
+        assertThat(game.getName()).isEqualTo(target.getName());
+        assertThat(game.getImages()).isEqualTo(target.getImages());
+        assertThat(game.getAlternativeGameNames()).isEqualTo(new AlternativeGameNames(Collections.singletonList(alternativeTargetGameName)));
     }
 
     @DisplayName("대체 이름 삭제")
