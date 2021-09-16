@@ -228,7 +228,7 @@ public class GameApiDocumentTest extends ApiDocumentTest {
             .andExpect(jsonPath("$.name").value(gameName))
             .andExpect(jsonPath("$.images").value(hasSize(3)))
             .andExpect(jsonPath("$.images").value(containsInAnyOrder(IMAGE_1, IMAGE_2, IMAGE_3)))
-            .andDo(document("insert-game",
+            .andDo(document("update-game",
                 requestFields(
                     fieldWithPath("name").description("게임 이름"),
                     fieldWithPath("images").description("게임 이미지 목록"),
