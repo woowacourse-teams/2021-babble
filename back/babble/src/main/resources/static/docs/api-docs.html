@@ -585,25 +585,25 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 401
+Content-Length: 422
 
 [ {
   "id" : 99,
   "name" : "League Of Legends1",
   "headCount" : 0,
-  "thumbnail" : "image1",
-  "alternativeNames" : [ "리오레1", "롤1" ]
+  "images" : [ "img1" ],
+  "alternativeNames" : [ "롤1", "리오레1" ]
 }, {
   "id" : 100,
   "name" : "League Of Legends2",
   "headCount" : 0,
-  "thumbnail" : "image2",
+  "images" : [ "img1", "img2" ],
   "alternativeNames" : [ "롤2" ]
 }, {
   "id" : 101,
   "name" : "League Of Legends3",
   "headCount" : 0,
-  "thumbnail" : "image3",
+  "images" : [ "img1", "img2", "img3" ],
   "alternativeNames" : [ ]
 } ]</code></pre>
 </div>
@@ -638,9 +638,9 @@ Content-Length: 401
 <td class="tableblock halign-center valign-top"><p class="tableblock">게임의 참가자 수</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>[].thumbnail</code></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock">썸네일</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>[].images</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">이미지 목록</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><code>[].alternativeNames</code></p></td>
@@ -672,13 +672,13 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 123
+Content-Length: 122
 
 {
   "id" : 74,
   "name" : "League Of Legends1",
-  "thumbnail" : "image1",
-  "alternativeNames" : [ "리오레1", "롤1" ]
+  "images" : [ "img1" ],
+  "alternativeNames" : [ "롤1", "리오레1" ]
 }</code></pre>
 </div>
 </div>
@@ -707,9 +707,9 @@ Content-Length: 123
 <td class="tableblock halign-left valign-top"><p class="tableblock">게임 이름</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>thumbnail</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">썸네일</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>images</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">게임 이미지 목록</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>alternativeNames</code></p></td>
@@ -741,17 +741,17 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 131
+Content-Length: 164
 
 [ {
   "gameId" : 77,
-  "image" : "image1"
+  "images" : [ "img1" ]
 }, {
   "gameId" : 78,
-  "image" : "image2"
+  "images" : [ "img1", "img2" ]
 }, {
   "gameId" : 79,
-  "image" : "image3"
+  "images" : [ "img1", "img2", "img3" ]
 } ]</code></pre>
 </div>
 </div>
@@ -775,8 +775,8 @@ Content-Length: 131
 <td class="tableblock halign-center valign-top"><p class="tableblock">게임 Id</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>[].image</code></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>[].images</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>Array</code></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock">이미지 URL</p></td>
 </tr>
 </tbody>
@@ -804,11 +804,11 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 41
+Content-Length: 44
 
 {
   "gameId" : 71,
-  "image" : "image1"
+  "images" : [ "img1" ]
 }</code></pre>
 </div>
 </div>
@@ -832,9 +832,9 @@ Content-Length: 41
 <td class="tableblock halign-center valign-top"><p class="tableblock">게임 Id</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>image</code></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock">이미지 URL</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>images</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">게임 이미지 목록</p></td>
 </tr>
 </tbody>
 </table>
@@ -856,12 +856,12 @@ Content-Length: 41
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/games HTTP/1.1
 Content-Type: application/json;charset=utf-8
 Accept: application/json
-Content-Length: 97
+Content-Length: 109
 Host: localhost:8080
 
 {
   "alternativeNames" : [ "롤" ],
-  "thumbnail" : "image.png",
+  "images" : [ "img1", "img2", "img3" ],
   "name" : "League Of Legends"
 }</code></pre>
 </div>
@@ -877,12 +877,12 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Location: api/games/89
 Content-Type: application/json
-Content-Length: 110
+Content-Length: 122
 
 {
   "id" : 89,
   "name" : "League Of Legends",
-  "thumbnail" : "image.png",
+  "images" : [ "img1", "img2", "img3" ],
   "alternativeNames" : [ "롤" ]
 }</code></pre>
 </div>
@@ -912,9 +912,9 @@ Content-Length: 110
 <td class="tableblock halign-center valign-top"><p class="tableblock">게임 이름</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>thumbnail</code></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock">게임 썸네일 URL</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>images</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">게임 이미지 목록</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><code>alternativeNames</code></p></td>
@@ -941,12 +941,12 @@ Content-Length: 110
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">PUT /api/games/93 HTTP/1.1
 Content-Type: application/json;charset=utf-8
 Accept: application/json
-Content-Length: 97
+Content-Length: 109
 Host: localhost:8080
 
 {
   "alternativeNames" : [ "롤" ],
-  "thumbnail" : "image.png",
+  "images" : [ "img1", "img2", "img3" ],
   "name" : "League Of Legends"
 }</code></pre>
 </div>
@@ -961,12 +961,12 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 110
+Content-Length: 122
 
 {
   "id" : 93,
   "name" : "League Of Legends",
-  "thumbnail" : "image.png",
+  "images" : [ "img1", "img2", "img3" ],
   "alternativeNames" : [ "롤" ]
 }</code></pre>
 </div>
@@ -996,9 +996,9 @@ Content-Length: 110
 <td class="tableblock halign-center valign-top"><p class="tableblock">게임 이름</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>thumbnail</code></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock">게임 썸네일 URL</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>images</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">게임 이미지 목록</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><code>alternativeNames</code></p></td>
@@ -1051,7 +1051,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <h4 id="_http_request_8">4.1.1. HTTP Request</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/rooms/62 HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/rooms/61 HTTP/1.1
 Accept: application/json
 Host: localhost:8080</code></pre>
 </div>
@@ -1069,14 +1069,14 @@ Content-Type: application/json
 Content-Length: 588
 
 {
-  "roomId" : 62,
-  "createdDate" : "2021-09-12T01:29:28.845",
+  "roomId" : 61,
+  "createdDate" : "2021-09-16T12:09:20.349",
   "game" : {
     "id" : 53,
     "name" : "League Of Legends1"
   },
   "host" : {
-    "id" : 68,
+    "id" : 67,
     "nickname" : "user0",
     "avatar" : "https://d2bidcnq0n74fu.cloudfront.net/img/users/profiles/profile23.png"
   },
@@ -1085,15 +1085,15 @@ Content-Length: 588
     "max" : 20
   },
   "tags" : [ {
-    "id" : 35,
+    "id" : 34,
     "name" : "실버",
     "alternativeNames" : [ "실딱" ]
   }, {
-    "id" : 36,
+    "id" : 35,
     "name" : "2시간",
     "alternativeNames" : [ ]
   }, {
-    "id" : 37,
+    "id" : 36,
     "name" : "솔로랭크",
     "alternativeNames" : [ ]
   } ]
@@ -1194,11 +1194,11 @@ Host: localhost:8080
   "gameId" : 59,
   "maxHeadCount" : 20,
   "tags" : [ {
+    "id" : 40
+  }, {
     "id" : 41
   }, {
     "id" : 42
-  }, {
-    "id" : 43
   } ]
 }</code></pre>
 </div>
@@ -1243,28 +1243,28 @@ Host: localhost:8080
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Location: api/rooms/122
+Location: api/rooms/121
 Content-Type: application/json
 Content-Length: 408
 
 {
-  "roomId" : 122,
-  "createdDate" : "2021-09-12T01:29:29.569",
+  "roomId" : 121,
+  "createdDate" : "2021-09-16T12:09:22.192",
   "game" : {
     "id" : 59,
     "name" : "League Of Legends1"
   },
   "maxHeadCount" : 20,
   "tags" : [ {
-    "id" : 41,
+    "id" : 40,
     "name" : "실버",
     "alternativeNames" : [ "실딱" ]
   }, {
-    "id" : 42,
+    "id" : 41,
     "name" : "2시간",
     "alternativeNames" : [ ]
   }, {
-    "id" : 43,
+    "id" : 42,
     "name" : "솔로랭크",
     "alternativeNames" : [ ]
   } ]
@@ -1358,15 +1358,15 @@ Content-Type: application/json
 Content-Length: 238
 
 [ {
-  "id" : 32,
+  "id" : 31,
   "name" : "실버",
   "alternativeNames" : [ "실딱이", "silver" ]
 }, {
-  "id" : 33,
+  "id" : 32,
   "name" : "2시간",
   "alternativeNames" : [ "2hours" ]
 }, {
-  "id" : 34,
+  "id" : 33,
   "name" : "솔로랭크",
   "alternativeNames" : [ ]
 } ]</code></pre>
@@ -1500,7 +1500,7 @@ Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Content-Length: 79
 
-[ "img/new-file-x640.jpg", "img/new-file-x1920.jpg", "img/new-file-x1280.jpg" ]</code></pre>
+[ "img/new-file-x1920.jpg", "img/new-file-x1280.jpg", "img/new-file-x640.jpg" ]</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 40%;">
@@ -1805,7 +1805,7 @@ Content-Type: application/json
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2021-09-12 00:20:25 +0900
+Last updated 2021-09-16 11:57:46 +0900
 </div>
 </div>
 </body>

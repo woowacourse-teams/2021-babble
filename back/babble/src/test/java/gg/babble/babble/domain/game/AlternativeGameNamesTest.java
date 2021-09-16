@@ -5,6 +5,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOf
 
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleNotFoundException;
+import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,7 @@ class AlternativeGameNamesTest {
 
     @BeforeEach
     void setUp() {
-        game = new Game("디지투온", "화려한이미지");
+        game = new Game("디지투온", Collections.singletonList("화려한 이미지"));
         names = new AlternativeGameNames();
     }
 
