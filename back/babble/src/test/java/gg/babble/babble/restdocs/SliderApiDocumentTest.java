@@ -32,7 +32,7 @@ class SliderApiDocumentTest extends ApiDocumentTest {
     private Slider slider3;
 
     @BeforeEach
-    public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
+    public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) throws Exception {
         super.setUp(webApplicationContext, restDocumentation);
 
         slider1 = sliderRepository.save(new Slider("test/url/1"));
