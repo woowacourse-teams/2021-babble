@@ -4,8 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import gg.babble.babble.ApplicationTest;
+import gg.babble.babble.domain.tag.AlternativeTagName;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.dto.request.TagCreateRequest;
+import gg.babble.babble.dto.request.TagUpdateRequest;
 import gg.babble.babble.dto.response.TagResponse;
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import java.util.Arrays;
@@ -91,5 +93,25 @@ public class TagServiceTest extends ApplicationTest {
             assertThatThrownBy(() -> tagService.createTag(request))
                 .isExactlyInstanceOf(BabbleDuplicatedException.class);
         }
+    }
+
+    @DisplayName("태그 정보를 수정한다.")
+    @Test
+    void updateTag() {
+        // given
+        Tag tag = tagRepository.save(new Tag("피터파커"));
+        AlternativeTagName alternativeTagName = new AlternativeTagName("노 웨이 홈", tag);
+
+        String updateTagName = "피똥파커";
+        List<String> updateAlternativeTagNames = Arrays.asList("웨", "쳐", "피", "똥");
+
+        // when
+        TagUpdateRequest request = new TagUpdateRequest(updateTagName, updateAlternativeTagNames);
+        TagResponse response = tagService.updateTag(tag.getId(), request);
+
+        // then
+        assertThat(response.getId()).isEqualTo(tag.getId());
+        assertThat(response.getName()).isEqualTo(updateTagName);
+        assertThat(response.getAlternativeNames()).isEqualTo(updateAlternativeTagNames);
     }
 }

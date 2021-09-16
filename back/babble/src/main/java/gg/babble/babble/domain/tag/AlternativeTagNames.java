@@ -47,11 +47,11 @@ public class AlternativeTagNames {
             .anyMatch(alternativeName -> alternativeName.isSameName(name));
     }
 
-    public Set<String> getNames() {
+    public List<String> getNames() {
         return elements.stream()
             .map(AlternativeTagName::getValue)
             .map(TagName::getValue)
-            .collect(Collectors.toSet());
+            .collect(Collectors.toList());
     }
 
     @Override

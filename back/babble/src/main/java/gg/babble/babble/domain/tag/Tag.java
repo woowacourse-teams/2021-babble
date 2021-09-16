@@ -57,6 +57,11 @@ public class Tag {
         }
     }
 
+    public void update(Tag target) {
+        this.name = target.name;
+        this.alternativeTagNames = target.alternativeTagNames;
+    }
+
     public void removeAlternativeName(final AlternativeTagName alternativeTagName) {
         if (hasNotName(alternativeTagName.getValue())) {
             throw new BabbleNotFoundException(String.format("존재하지 않는 이름 입니다.(%s)", alternativeTagName.getValue()));

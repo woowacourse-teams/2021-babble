@@ -93,6 +93,26 @@ class TagTest {
             .isExactlyInstanceOf(BabbleDuplicatedException.class);
     }
 
+    @DisplayName("태그 정보를 변경한다.")
+    @Test
+    void updateTag() {
+        Tag tag = new Tag(1L, "1시간");
+        AlternativeTagName alternativeTagName = new AlternativeTagName("1HOUR", tag);
+
+        String updateTagName = "2시간";
+        String updateAlternativeTagName = "2HOUR";
+
+        // when
+        Tag target = new Tag(updateTagName);
+        AlternativeTagName alternativeTargetTagName = new AlternativeTagName(updateAlternativeTagName, target);
+
+        tag.update(target);
+
+        // then
+        assertThat(tag.getName()).isEqualTo(updateTagName);
+        assertThat(tag.getAlternativeTagNames().getNames()).containsExactly(updateAlternativeTagName);
+    }
+
     @DisplayName("단일 대체 이름 변경")
     @Test
     void changeAlternativeName() {

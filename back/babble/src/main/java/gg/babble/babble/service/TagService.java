@@ -4,6 +4,7 @@ import gg.babble.babble.domain.repository.TagRepository;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.dto.request.TagCreateRequest;
 import gg.babble.babble.dto.request.TagRequest;
+import gg.babble.babble.dto.request.TagUpdateRequest;
 import gg.babble.babble.dto.response.TagResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.List;
@@ -46,6 +47,13 @@ public class TagService {
     @Transactional
     public TagResponse createTag(TagCreateRequest request) {
         Tag tag = tagRepository.save(request.toEntity());
+
+        return TagResponse.from(tag);
+    }
+
+    public TagResponse updateTag(Long tagId, TagUpdateRequest request) {
+        Tag tag = findById(tagId);
+        tag.update(request.toEntity());
 
         return TagResponse.from(tag);
     }
