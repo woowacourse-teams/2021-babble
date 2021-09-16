@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleLengthException;
 import java.util.Collections;
 import org.junit.jupiter.api.DisplayName;
@@ -32,9 +33,9 @@ class TagTest {
         assertThatThrownBy(() -> new Tag("태그길이가스무자이다태그길이가스무자이다하")).isInstanceOf(BabbleLengthException.class);
     }
 
-    @DisplayName("대체 이름 추가")
+    @DisplayName("단일 대체 이름 추가")
     @Test
-    void alternativeNames() {
+    void addAlternativeName() {
         // given
         final Tag tag = new Tag(1L, "1시간");
 
@@ -42,10 +43,57 @@ class TagTest {
         final AlternativeTagName alternativeName = new AlternativeTagName("1hour", tag);
 
         // then
-        assertThat(tag.getAlternativeTagNames()).isEqualTo(new AlternativeTagNames(Collections.singleton(alternativeName)));
+        assertThat(tag.getAlternativeTagNames()).isEqualTo(new AlternativeTagNames(Collections.singletonList(alternativeName)));
     }
 
-    @DisplayName("대체 이름 변경")
+    @DisplayName("태그와 대체 이름 생성시 연관관계가 이어진다.")
+    @Test
+    void addAlternativeNames() {
+        // given
+        String tagName = "1시간";
+        String name1 = "1Hour";
+        String name2 = "한시간";
+
+        // when
+        Tag tag = new Tag(1L, tagName);
+
+        AlternativeTagName alternativeTagName1 = new AlternativeTagName(1L, name1, tag);
+        AlternativeTagName alternativeTagName2 = new AlternativeTagName(2L, name2, tag);
+
+        // then
+        assertThat(tag.getAlternativeTagNames().getNames()).containsExactly(name1, name2);
+    }
+
+    @DisplayName("대체 이름간 중복이 존재할 경우 예외가 발생한다.")
+    @Test
+    void duplicateAlternativeNamesException() {
+        // given
+        String tagName = "1시간";
+        String name = "1Hour";
+
+        // when
+        Tag tag = new Tag(1L, tagName);
+        AlternativeTagName alternativeTagName = new AlternativeTagName(1L, name, tag);
+
+        // then
+        assertThatThrownBy(() -> new AlternativeTagName(2L, name, tag)).isInstanceOf(BabbleDuplicatedException.class);
+    }
+
+    @DisplayName("태그 이름과 대체 이름이 중복되는 경우 예외가 발생한다.")
+    @Test
+    void duplicateAlternativeNameWithTagName() {
+        // given
+        String name = "1시간";
+
+        // when
+        Tag tag = new Tag(1L, name);
+
+        // then
+        assertThatThrownBy(() -> new AlternativeTagName(name, tag))
+            .isExactlyInstanceOf(BabbleDuplicatedException.class);
+    }
+
+    @DisplayName("단일 대체 이름 변경")
     @Test
     void changeAlternativeName() {
         // given
@@ -61,7 +109,7 @@ class TagTest {
         assertThat(alternativeTagName.isDeleted()).isFalse();
     }
 
-    @DisplayName("대체 이름 삭제")
+    @DisplayName("단일 대체 이름 삭제")
     @Test
     void delete() {
         // given

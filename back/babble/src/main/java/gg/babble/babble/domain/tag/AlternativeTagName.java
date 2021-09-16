@@ -44,16 +44,14 @@ public class AlternativeTagName {
     }
 
     public void setTag(final Tag tag) {
-        final Tag previousTag = this.tag;
+        Tag previousTag = this.tag;
         this.tag = tag;
 
         if (Objects.nonNull(previousTag) && previousTag.hasName(value)) {
             previousTag.removeAlternativeName(this);
         }
 
-        if (tag.hasNotName(value)) {
-            tag.addAlternativeName(this);
-        }
+        tag.addAlternativeName(this);
     }
 
     public void delete() {

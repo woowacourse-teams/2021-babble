@@ -2,7 +2,9 @@ package gg.babble.babble.domain.tag;
 
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleNotFoundException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -15,13 +17,13 @@ public class AlternativeTagNames {
 
     @OneToMany(mappedBy = "tag")
     @NotNull(message = "대안 이름들은 Null 일 수 없습니다.")
-    private final Set<AlternativeTagName> elements;
+    private final List<AlternativeTagName> elements;
 
     public AlternativeTagNames() {
-        this(new HashSet<>());
+        this(new ArrayList<>());
     }
 
-    public AlternativeTagNames(final Set<AlternativeTagName> elements) {
+    public AlternativeTagNames(final List<AlternativeTagName> elements) {
         this.elements = elements;
     }
 
