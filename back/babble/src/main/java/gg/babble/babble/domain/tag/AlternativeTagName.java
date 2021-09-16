@@ -54,15 +54,17 @@ public class AlternativeTagName {
         tag.addAlternativeName(this);
     }
 
+    // TODO: 동시성 문제가 발생해서 연관관계를 끊지 않도록 했다.
     public void delete() {
-        if (tag.hasName(value)) {
-            tag.removeAlternativeName(this);
-        }
         isDeleted = true;
     }
 
     public boolean isSameName(final TagName name) {
         return value.equals(name);
+    }
+
+    public boolean isNotDeleted() {
+        return !isDeleted();
     }
 
     @Override

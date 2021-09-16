@@ -1,6 +1,7 @@
 package gg.babble.babble.domain.tag;
 
 import gg.babble.babble.domain.TagRegistration;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Embeddable;
 import javax.persistence.OneToMany;
@@ -9,6 +10,9 @@ import javax.persistence.OneToMany;
 public class TagRegistrationsOfTag {
 
     @OneToMany(mappedBy = "tag")
-    private List<TagRegistration> tagRegistrations;
+    private List<TagRegistration> tagRegistrations = new ArrayList<>();
 
+    public boolean isNotEmpty() {
+        return !tagRegistrations.isEmpty();
+    }
 }

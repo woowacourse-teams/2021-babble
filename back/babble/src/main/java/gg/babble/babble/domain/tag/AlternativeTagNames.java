@@ -31,6 +31,7 @@ public class AlternativeTagNames {
         if (contains(name.getValue())) {
             throw new BabbleDuplicatedException(String.format("이미 존재하는 이름 입니다.(%s)", name.getValue()));
         }
+
         elements.add(name);
     }
 
@@ -39,18 +40,24 @@ public class AlternativeTagNames {
             throw new BabbleNotFoundException(String.format("존재하지 않는 이름 입니다.(%s)", alternativeTagName.getValue().getValue()));
         }
 
-        elements.remove(alternativeTagName);
+        alternativeTagName.delete();
     }
 
     public boolean contains(final TagName name) {
-        return elements.stream()
+        return getElements().stream()
             .anyMatch(alternativeName -> alternativeName.isSameName(name));
     }
 
     public List<String> getNames() {
-        return elements.stream()
+        return getElements().stream()
             .map(AlternativeTagName::getValue)
             .map(TagName::getValue)
+            .collect(Collectors.toList());
+    }
+
+    private List<AlternativeTagName> getElements() {
+        return elements.stream()
+            .filter(AlternativeTagName::isNotDeleted)
             .collect(Collectors.toList());
     }
 

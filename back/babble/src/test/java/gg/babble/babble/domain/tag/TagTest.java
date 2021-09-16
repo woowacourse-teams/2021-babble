@@ -37,10 +37,10 @@ class TagTest {
     @Test
     void addAlternativeName() {
         // given
-        final Tag tag = new Tag(1L, "1시간");
+        Tag tag = new Tag(1L, "1시간");
 
         // when
-        final AlternativeTagName alternativeName = new AlternativeTagName("1hour", tag);
+        AlternativeTagName alternativeName = new AlternativeTagName("1hour", tag);
 
         // then
         assertThat(tag.getAlternativeTagNames()).isEqualTo(new AlternativeTagNames(Collections.singletonList(alternativeName)));
@@ -113,32 +113,39 @@ class TagTest {
         assertThat(tag.getAlternativeTagNames().getNames()).containsExactly(updateAlternativeTagName);
     }
 
-    @DisplayName("단일 대체 이름 변경")
-    @Test
-    void changeAlternativeName() {
-        // given
-        final Tag tag = new Tag(1L, "1시간");
-        final Tag tag2 = new Tag(2L, "2시간");
-        final AlternativeTagName alternativeTagName = new AlternativeTagName("1hour", tag);
-        // when
-        alternativeTagName.setTag(tag2);
-        // then
-        assertThat(tag.hasName(alternativeTagName.getValue())).isFalse();
-        assertThat(tag2.hasName(alternativeTagName.getValue())).isTrue();
-        assertThat(alternativeTagName.getTag()).isEqualTo(tag2);
-        assertThat(alternativeTagName.isDeleted()).isFalse();
-    }
-
     @DisplayName("단일 대체 이름 삭제")
     @Test
-    void delete() {
+    void deleteAlternativeName() {
         // given
-        final Tag tag = new Tag(1L, "1시간");
-        final AlternativeTagName alternativeName = new AlternativeTagName("1hour", tag);
+        Tag tag = new Tag(1L, "1시간");
+        AlternativeTagName alternativeName = new AlternativeTagName("1hour", tag);
+
         // when
+        assertThat(tag.isDeleted()).isFalse();
+        assertThat(alternativeName.isDeleted()).isFalse();
+
         tag.removeAlternativeName(alternativeName);
+
         // then
         assertThat(tag.hasName(alternativeName.getValue())).isFalse();
+        assertThat(alternativeName.isDeleted()).isTrue();
+    }
+
+    @DisplayName("태그를 삭제할 경우 대체 이름도 모두 삭제된다.")
+    @Test
+    void deleteTag() {
+        // given
+        Tag tag = new Tag(1L, "1시간");
+        AlternativeTagName alternativeName = new AlternativeTagName("1hour", tag);
+
+        // when
+        assertThat(tag.isDeleted()).isFalse();
+        assertThat(alternativeName.isDeleted()).isFalse();
+
+        tag.delete();
+
+        // then
+        assertThat(tag.isDeleted()).isTrue();
         assertThat(alternativeName.isDeleted()).isTrue();
     }
 }
