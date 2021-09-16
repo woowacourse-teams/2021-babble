@@ -10,6 +10,7 @@ import gg.babble.babble.dto.request.TagCreateRequest;
 import gg.babble.babble.dto.request.TagUpdateRequest;
 import gg.babble.babble.dto.response.TagResponse;
 import gg.babble.babble.exception.BabbleDuplicatedException;
+import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -95,23 +96,69 @@ public class TagServiceTest extends ApplicationTest {
         }
     }
 
-    @DisplayName("태그 정보를 수정한다.")
-    @Test
-    void updateTag() {
-        // given
-        Tag tag = tagRepository.save(new Tag("피터파커"));
-        AlternativeTagName alternativeTagName = new AlternativeTagName("노 웨이 홈", tag);
+    @DisplayName("태그 정보를 수정할 때")
+    @Nested
+    class UpdateTag {
 
-        String updateTagName = "피똥파커";
-        List<String> updateAlternativeTagNames = Arrays.asList("웨", "쳐", "피", "똥");
+        @DisplayName("id에 해당하는 태그가 존재하면 태그 정보를 수정한다.")
+        @Test
+        void updateTag() {
+            // given
+            Tag tag = tagRepository.save(new Tag("피터파커"));
+            AlternativeTagName alternativeTagName = new AlternativeTagName("노 웨이 홈", tag);
 
-        // when
-        TagUpdateRequest request = new TagUpdateRequest(updateTagName, updateAlternativeTagNames);
-        TagResponse response = tagService.updateTag(tag.getId(), request);
+            String updateTagName = "피똥파커";
+            List<String> updateAlternativeTagNames = Arrays.asList("웨", "쳐", "피", "똥");
 
-        // then
-        assertThat(response.getId()).isEqualTo(tag.getId());
-        assertThat(response.getName()).isEqualTo(updateTagName);
-        assertThat(response.getAlternativeNames()).isEqualTo(updateAlternativeTagNames);
+            // when
+            TagUpdateRequest request = new TagUpdateRequest(updateTagName, updateAlternativeTagNames);
+            TagResponse response = tagService.updateTag(tag.getId(), request);
+
+            // then
+            assertThat(response.getId()).isEqualTo(tag.getId());
+            assertThat(response.getName()).isEqualTo(updateTagName);
+            assertThat(response.getAlternativeNames()).isEqualTo(updateAlternativeTagNames);
+        }
+
+        @DisplayName("id에 해당하는 태그가 존재하지 않으면 예외가 발생한다.")
+        @Test
+        void updateTagException() {
+            // given
+            String updateTagName = "피똥파커";
+            List<String> updateAlternativeTagNames = Arrays.asList("웨", "쳐", "피", "똥");
+
+            // when, then
+            TagUpdateRequest request = new TagUpdateRequest(updateTagName, updateAlternativeTagNames);
+            assertThatThrownBy(() -> tagService.updateTag(Long.MAX_VALUE, request))
+                .isExactlyInstanceOf(BabbleNotFoundException.class);
+        }
+    }
+
+    @DisplayName("태그를 삭제할 때")
+    @Nested
+    class DeleteTag {
+
+        @DisplayName("id에 해당하는 태그가 존재하면 태그를 삭제한다.")
+        @Test
+        void updateTag() {
+            // given
+            Tag tag = tagRepository.save(new Tag("피터파커"));
+            AlternativeTagName alternativeTagName = new AlternativeTagName("노 웨이 홈", tag);
+
+            // when
+            assertThat(tagRepository.findByIdAndDeletedFalse(tag.getId())).isPresent();
+            tagService.deleteTag(tag.getId());
+
+            // then
+            assertThat(tagRepository.findByIdAndDeletedFalse(tag.getId())).isNotPresent();
+        }
+
+        @DisplayName("id에 해당하는 태그가 존재하지 않으면 예외가 발생한다.")
+        @Test
+        void updateTagException() {
+            // when, then
+            assertThatThrownBy(() -> tagService.deleteTag(Long.MAX_VALUE))
+                .isExactlyInstanceOf(BabbleNotFoundException.class);
+        }
     }
 }

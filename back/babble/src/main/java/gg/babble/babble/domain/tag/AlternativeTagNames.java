@@ -3,10 +3,8 @@ package gg.babble.babble.domain.tag;
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 import javax.persistence.Embeddable;
 import javax.persistence.OneToMany;
@@ -41,6 +39,12 @@ public class AlternativeTagNames {
         }
 
         alternativeTagName.delete();
+    }
+
+    public void deleteAll() {
+        for (AlternativeTagName element : getElements()) {
+            element.delete();
+        }
     }
 
     public boolean contains(final TagName name) {

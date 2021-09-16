@@ -1,8 +1,10 @@
 package gg.babble.babble.domain.tag;
 
 import gg.babble.babble.exception.BabbleDuplicatedException;
+import gg.babble.babble.exception.BabbleIllegalStatementException;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,6 +31,9 @@ public class Tag {
 
     @Embedded
     private TagRegistrationsOfTag tagRegistrations;
+
+    @Column(nullable = false)
+    private boolean deleted = false;
 
     public Tag(final String name) {
         this(null, name);
@@ -68,10 +73,15 @@ public class Tag {
         }
 
         alternativeTagNames.remove(alternativeTagName);
+    }
 
-        if (alternativeTagName.getTag().equals(this)) {
-            alternativeTagName.delete();
+    public void delete() {
+        if (tagRegistrations.isNotEmpty()) {
+            throw new BabbleIllegalStatementException(String.format("(%d) 태그를 사용중인 방이 있어 삭제를 할 수 없습니다.", id));
         }
+
+        alternativeTagNames.deleteAll();
+        deleted = true;
     }
 
     public boolean hasName(final TagName name) {
