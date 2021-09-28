@@ -22,7 +22,7 @@ public class Sliders {
     }
 
     public void validateExistIdsValue(final List<Long> ids) {
-        if (ids().containsAll(ids)) {
+        if (!ids().containsAll(ids)) {
             throw new BabbleIllegalArgumentException("등록된 모든 Slider Id 가 포함되어 있지 않습니다.");
         }
 
