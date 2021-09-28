@@ -1,9 +1,16 @@
 spring:
 
-  datasource:
-    url: jdbc:mariadb://172.17.0.2:3306/babble
-    driver-class-name: org.mariadb.jdbc.Driver
-    username: babble
+# -------------------------------------------------------------------------------------
+# 개발 환경 'EC2-babble-test' 에서는 데이터베이스를 같은 인스턴스 내에서 도커 컨테이너로 관리하고 있다.
+# 데이터베이스 도커 컨테이너를 조작할 경우 도커 컨테이너의 IP가 변경될 가능성이 다분하다.
+# 도커 컨테이너의 IP가 변경될 때마다 'application-dev.yml' 파일에서 IP를 변경하는 것은 공수가 크므로,
+# 'application-dev.yml' 파일이 아닌 'EC2-babble-test' 내부 스크립트 파일로 데이터베이스 IP를 관리한다.
+# -------------------------------------------------------------------------------------
+#  datasource:
+#    url: jdbc:mariadb://{IP주소}:3306/babble
+#    driver-class-name: org.mariadb.jdbc.Driver
+#    username: babble
+# -------------------------------------------------------------------------------------
 
   jpa:
     hibernate:
