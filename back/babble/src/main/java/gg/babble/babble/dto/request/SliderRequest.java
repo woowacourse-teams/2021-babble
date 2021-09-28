@@ -1,7 +1,7 @@
 package gg.babble.babble.dto.request;
 
-import javax.validation.constraints.NotNull;
 import gg.babble.babble.domain.slider.Slider;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +17,6 @@ public class SliderRequest {
     private String sliderUrl;
 
     public Slider toEntity() {
-        return new Slider(sliderUrl);
+        return new Slider(sliderUrl, Integer.MAX_VALUE);
     }
 }

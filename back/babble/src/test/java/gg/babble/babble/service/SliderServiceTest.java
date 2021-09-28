@@ -1,12 +1,14 @@
 package gg.babble.babble.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.domain.slider.Slider;
 import gg.babble.babble.dto.request.SliderOrderRequest;
 import gg.babble.babble.dto.request.SliderRequest;
 import gg.babble.babble.dto.response.SliderResponse;
+import gg.babble.babble.exception.BabbleIllegalArgumentException;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -68,6 +70,14 @@ class SliderServiceTest extends ApplicationTest {
         assertThat(responses).usingRecursiveComparison().ignoringFields("id").isEqualTo(expected);
     }
 
+    @DisplayName("올바르지 않게 슬라이더 이미지를 순서를 변경한다.")
+    @Test
+    void updateWrongValue() {
+        SliderOrderRequest request = new SliderOrderRequest(Arrays.asList(slider3.getId(), slider1.getId(), slider1.getId()));
+
+        assertThatThrownBy(() -> sliderService.updateOrder(request)).isInstanceOf(BabbleIllegalArgumentException.class);
+    }
+
     @DisplayName("슬라이더 이미지를 제거한다.")
     @Test
     void delete() {
@@ -79,5 +89,22 @@ class SliderServiceTest extends ApplicationTest {
         );
 
         assertThat(sliders).usingRecursiveComparison().isEqualTo(expected);
+    }
+
+    @DisplayName("슬라이더 이미지를 제거하고 난 후 제거된 이미지 뒤에 있는 이미지의 인덱스가 새롭게 수정된다.")
+    @Test
+    void deleteAfterChangedIndex() {
+        sliderService.delete(slider2.getId());
+
+        Slider slider4 = sliderRepository.save(new Slider("test4/path"));
+
+        List<SliderResponse> slidersAfterDelete = sliderService.findAll();
+
+        List<SliderResponse> expected = Arrays.asList(SliderResponse.from(slider1)
+            , SliderResponse.from(slider3)
+            , SliderResponse.from(slider4)
+        );
+
+        assertThat(slidersAfterDelete).usingRecursiveComparison().ignoringFields("id").isEqualTo(expected);
     }
 }

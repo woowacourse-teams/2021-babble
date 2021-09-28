@@ -2,16 +2,12 @@ package gg.babble.babble.service;
 
 import gg.babble.babble.domain.repository.SliderRepository;
 import gg.babble.babble.domain.slider.Slider;
+import gg.babble.babble.domain.slider.Sliders;
 import gg.babble.babble.dto.request.SliderOrderRequest;
 import gg.babble.babble.dto.request.SliderRequest;
 import gg.babble.babble.dto.response.SliderResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,52 +23,35 @@ public class SliderService {
 
     @Transactional
     public SliderResponse insert(final SliderRequest request) {
-        Slider slider = sliderRepository.save(request.toEntity());
+        Slider sliderRequest = request.toEntity();
+        sliderRequest.setSortingIndex(findAll().size());
+        Slider slider = sliderRepository.save(sliderRequest);
+
         return SliderResponse.from(slider);
     }
 
     public List<SliderResponse> findAll() {
-        List<Slider> sliders = sliderRepository.findAll();
-        sliders.sort(Comparator.comparingInt(Slider::getSortingIndex));
+        final Sliders sliders = new Sliders(sliderRepository.findAll());
 
-        return sliders.stream()
-            .map(SliderResponse::from)
-            .collect(Collectors.toList());
+        return sliders.toResponse();
     }
 
     @Transactional
     public List<SliderResponse> updateOrder(final SliderOrderRequest request) {
-        Map<Long, Slider> dictionary = listToMap(sliderRepository.findAll());
-        sort(dictionary, request.getIds());
+        final Sliders sliders = new Sliders(sliderRepository.findAll());
+        final List<Long> ids = request.getIds();
 
-        List<Slider> changed = new ArrayList<>(dictionary.values());
+        sliders.sortValue(ids);
 
-        return changed.stream()
-            .sorted(Comparator.comparingInt(Slider::getSortingIndex))
-            .map(SliderResponse::from)
-            .collect(Collectors.toList());
-    }
-
-    private Map<Long, Slider> listToMap(final List<Slider> sliders) {
-        Map<Long, Slider> dictionary = new HashMap<>();
-
-        for (Slider slider : sliders) {
-            dictionary.put(slider.getId(), slider);
-        }
-
-        return dictionary;
-    }
-
-    private void sort(final Map<Long, Slider> dictionary, final List<Long> ids) {
-        for (int i = 0; i < ids.size(); i++) {
-            Slider slider = dictionary.get(ids.get(i));
-            slider.setSortingIndex(i);
-        }
+        return sliders.toResponse();
     }
 
     @Transactional
     public void delete(final Long sliderId) {
-        Slider slider = sliderRepository.findById(sliderId).orElseThrow(BabbleNotFoundException::new);
+        final Slider slider = sliderRepository.findById(sliderId).orElseThrow(BabbleNotFoundException::new);
         sliderRepository.delete(slider);
+
+        final Sliders sliders = new Sliders(sliderRepository.findAll());
+        sliders.rearrange(slider.getSortingIndex());
     }
 }

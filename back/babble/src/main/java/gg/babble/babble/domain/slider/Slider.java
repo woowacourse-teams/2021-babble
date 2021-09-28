@@ -27,6 +27,10 @@ public class Slider {
         this(null, new ResourceUrl(url), Integer.MAX_VALUE);
     }
 
+    public Slider(final String url, int sortingIndex) {
+        this(null, new ResourceUrl(url), sortingIndex);
+    }
+
     public Slider(final Long id, final ResourceUrl resourceUrl, final int sortingIndex) {
         this.id = id;
         this.resourceUrl = resourceUrl;
