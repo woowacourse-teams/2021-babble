@@ -32,6 +32,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
+    // aws spring cloud
+    implementation 'org.springframework.cloud:spring-cloud-aws-context:2.2.6.RELEASE'
+
     // log
     implementation 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.7.1'
 

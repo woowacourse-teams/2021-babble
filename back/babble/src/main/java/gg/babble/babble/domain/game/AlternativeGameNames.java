@@ -3,6 +3,7 @@ package gg.babble.babble.domain.game;
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -44,10 +45,10 @@ public class AlternativeGameNames {
             .anyMatch(alternativeName -> alternativeName.getValue().equals(name));
     }
 
-    public Set<String> getNames() {
+    public List<String> getNames() {
         return elements.stream()
             .map(AlternativeGameName::getValue)
-            .collect(Collectors.toSet());
+            .collect(Collectors.toList());
     }
 
     @Override

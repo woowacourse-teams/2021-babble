@@ -19,6 +19,7 @@ import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
 import gg.babble.babble.dto.request.TagRequest;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +45,7 @@ public class RoomApiDocumentTest extends ApiDocumentTest {
     private final List<Game> games = new ArrayList<>();
 
     @BeforeEach
-    public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
+    public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) throws Exception {
         super.setUp(webApplicationContext, restDocumentation);
         tags.add(tagRepository.save(new Tag("실버")));
         tags.add(tagRepository.save(new Tag("2시간")));
@@ -52,9 +53,9 @@ public class RoomApiDocumentTest extends ApiDocumentTest {
 
         alternativeTagNameRepository.save(new AlternativeTagName(ALTERNATIVE_NAME, tags.get(0)));
 
-        games.add(gameRepository.save(new Game("League Of Legends1", "image1")));
-        games.add(gameRepository.save(new Game("League Of Legends2", "image2")));
-        games.add(gameRepository.save(new Game("League Of Legends3", "image3")));
+        games.add(gameRepository.save(new Game("League Of Legends1", Collections.singletonList("image1"))));
+        games.add(gameRepository.save(new Game("League Of Legends2", Collections.singletonList("image2"))));
+        games.add(gameRepository.save(new Game("League Of Legends3", Collections.singletonList("image3"))));
 
         for (int i = 0; i < ROOM_COUNT; i++) {
             User user = userRepository.save(new User("user" + i));
@@ -72,9 +73,9 @@ public class RoomApiDocumentTest extends ApiDocumentTest {
         body.put("maxHeadCount", 20);
         body.put("tags", tagRequestsFromTags());
         mockMvc.perform(post("/api/rooms").characterEncoding("utf-8")
-            .accept(MediaType.APPLICATION_JSON_VALUE)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .content(objectMapper.writeValueAsString(body)).characterEncoding("utf-8"))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(body)).characterEncoding("utf-8"))
             .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$.roomId").isNumber())
@@ -116,7 +117,7 @@ public class RoomApiDocumentTest extends ApiDocumentTest {
     @Test
     public void readRoomTest() throws Exception {
         mockMvc.perform(get("/api/rooms/" + rooms.get(0).getId())
-            .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.roomId").value(rooms.get(0).getId()))
             .andExpect(jsonPath("$.createdDate").isString())
