@@ -6,11 +6,10 @@ spring:
 # 도커 컨테이너의 IP가 변경될 때마다 'application-dev.yml' 파일에서 IP를 변경하는 것은 공수가 크므로,
 # 'application-dev.yml' 파일이 아닌 'EC2-babble-test' 내부 스크립트 파일로 데이터베이스 IP를 관리한다.
 # -------------------------------------------------------------------------------------
-#  datasource:
-#    url: jdbc:mariadb://{IP주소}:3306/babble
-#    driver-class-name: org.mariadb.jdbc.Driver
-#    username: babble
-# -------------------------------------------------------------------------------------
+  datasource:
+#   url: jdbc:mariadb://{IP주소}:3306/babble
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: babble
 
   jpa:
     hibernate:
