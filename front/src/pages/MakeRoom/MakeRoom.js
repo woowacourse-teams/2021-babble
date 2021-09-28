@@ -44,18 +44,28 @@ const MakeRoom = ({ match }) => {
   const { gameName } = location.state;
 
   const getImage = async () => {
-    const response = await axios.get(`${BASE_URL}/api/games/${gameId}/images`);
-    const image = response.data.image;
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/api/games/${gameId}/images`
+      );
+      const image = response.data.image;
 
-    setImageUrl(image);
+      setImageUrl(image);
+    } catch (error) {
+      openModal(<ModalError>{error}</ModalError>);
+    }
   };
 
   const getTags = async () => {
-    const response = await axios.get(`${BASE_URL}/api/tags`);
-    const tags = response.data;
+    try {
+      const response = await axios.get(`${BASE_URL}/api/tags`);
+      const tags = response.data;
 
-    setTagList(tags);
-    setAutoCompleteTagList(tags);
+      setTagList(tags);
+      setAutoCompleteTagList(tags);
+    } catch (error) {
+      openModal(<ModalError>{error}</ModalError>);
+    }
   };
 
   const selectTag = (tagName) => {
@@ -125,7 +135,7 @@ const MakeRoom = ({ match }) => {
         state: { gameName },
       });
     } catch (error) {
-      alert('방 생성을 하는 데 오류가 있습니다.');
+      openModal(<ModalError>{error}</ModalError>);
     }
   };
 
