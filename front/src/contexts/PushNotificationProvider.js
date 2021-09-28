@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useRef, useState } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { BABBLE_URL } from '../constants/api';
 import { PERMISSION } from '../constants/notification';
@@ -9,15 +15,21 @@ const PushNotificationContext = createContext();
 
 const PushNotificationProvider = ({ children }) => {
   const [isNotificationOn, setIsNotificationOn] = useState(true);
-  const [permission, setPermission] = useState(Notification.permission);
+  const [permission, setPermission] = useState(null);
 
   const notificationRef = useRef(null);
 
   const { throttle } = useThrottle();
 
-  if (!Notification) return;
+  useEffect(() => {
+    const isSupported = 'Notification' in window && 'PushManager' in window;
 
-  if (permission !== PERMISSION.GRANTED) {
+    if (isSupported) {
+      setPermission(Notification.permission);
+    }
+  }, []);
+
+  if (permission !== PERMISSION.GRANTED || !permission) {
     try {
       Notification.requestPermission().then((permission) => {
         if (permission !== PERMISSION.GRANTED) return;
@@ -61,7 +73,7 @@ const PushNotificationProvider = ({ children }) => {
   };
 
   const fireNotificationWithTimeout = (title, timeout, options = {}) => {
-    if (permission !== PERMISSION.GRANTED) return;
+    if (permission !== PERMISSION.GRANTED || !permission) return;
 
     const newOption = {
       badge: `${BABBLE_URL}/img/logos/babble-speech-bubble.png`,

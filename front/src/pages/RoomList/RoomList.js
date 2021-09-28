@@ -298,4 +298,8 @@ const RoomList = ({ match }) => {
   );
 };
 
+RoomList.propTypes = {
+  match: PropTypes.object,
+};
+
 export default RoomList;

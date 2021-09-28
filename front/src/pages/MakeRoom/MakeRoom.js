@@ -4,6 +4,7 @@ import { Body2, Headline2 } from '../../core/Typography';
 import {
   DropdownInput,
   MainImage,
+  ModalError,
   RoundButton,
   SearchInput,
 } from '../../components';
@@ -20,6 +21,7 @@ import TagList from '../../chunks/TagList/TagList';
 import axios from 'axios';
 import getKorRegExp from '../../components/SearchInput/service/getKorRegExp';
 import { useChattingModal } from '../../contexts/ChattingModalProvider';
+import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 
 const MakeRoom = ({ match }) => {
   const location = useLocation();
@@ -29,6 +31,7 @@ const MakeRoom = ({ match }) => {
   const [selectedTagList, setSelectedTagList] = useState([]);
   const [maxHeadCount, setMaxHeadCount] = useState(0);
   const { openChatting, closeChatting } = useChattingModal();
+  const { openModal } = useDefaultModal();
 
   // TODO: 임시 방편. onChangeInput을 SearchInput 내부로 집어넣으면서 사라질 운명
   const [autoCompleteTagList, setAutoCompleteTagList] = useState([]);
