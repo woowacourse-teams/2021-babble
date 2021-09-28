@@ -21,7 +21,7 @@ import org.springframework.web.context.WebApplicationContext;
 public class UserApiDocumentTest extends ApiDocumentTest {
 
     @BeforeEach
-    public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
+    public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) throws Exception {
         super.setUp(webApplicationContext, restDocumentation);
     }
 
@@ -32,9 +32,9 @@ public class UserApiDocumentTest extends ApiDocumentTest {
         body.put("nickname", "fortune");
 
         mockMvc.perform(post("/api/users")
-            .accept(MediaType.APPLICATION_JSON_VALUE)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .content(objectMapper.writeValueAsString(body)).characterEncoding("utf-8"))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(body)).characterEncoding("utf-8"))
             .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.nickname").value("fortune"))

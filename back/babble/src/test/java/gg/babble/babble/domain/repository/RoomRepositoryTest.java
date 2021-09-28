@@ -46,7 +46,7 @@ public class RoomRepositoryTest {
     @Test
     void createRoom() {
         // given
-        Game game = gameRepository.save(new Game("게임 이름", "게임 이미지"));
+        Game game = gameRepository.save(new Game("게임 이름", Collections.singletonList("게임 이미지")));
         List<Tag> tags = Collections.singletonList(tagRepository.save(new Tag("초보만")));
         MaxHeadCount maxHeadCount = new MaxHeadCount(4);
         Room room = new Room(game, tags, maxHeadCount);
@@ -66,7 +66,7 @@ public class RoomRepositoryTest {
     @Test
     void findRoomById() {
         // given
-        Game game = gameRepository.save(new Game("게임 이름", "게임 이미지"));
+        Game game = gameRepository.save(new Game("게임 이름", Collections.singletonList("게임 이미지")));
         List<Tag> tags = Collections.singletonList(tagRepository.save(new Tag("초보만")));
         MaxHeadCount maxHeadCount = new MaxHeadCount(4);
 
@@ -88,7 +88,7 @@ public class RoomRepositoryTest {
     @Test
     void findRoomByIdException() {
         // given
-        Game game = gameRepository.save(new Game("게임 이름", "게임 이미지"));
+        Game game = gameRepository.save(new Game("게임 이름", Collections.singletonList("게임 이미지")));
         List<Tag> tags = Collections.singletonList(tagRepository.save(new Tag("초보만")));
         MaxHeadCount maxHeadCount = new MaxHeadCount(4);
         User user = userRepository.save(new User("와일더"));
@@ -109,7 +109,7 @@ public class RoomRepositoryTest {
     @Test
     void findByGameId() {
         // given
-        Game game = gameRepository.save(new Game("게임 이름", "게임 이미지"));
+        Game game = gameRepository.save(new Game("게임 이름", Collections.singletonList("게임 이미지")));
         Tag tag = tagRepository.save(new Tag("초보만"));
         List<Tag> tags = new ArrayList<>(Collections.singletonList(tag));
         Room room1 = createRoomWithGameAndTags(game, tags);
@@ -127,16 +127,14 @@ public class RoomRepositoryTest {
     @Test
     void findByGameIdAndTags() {
         // given
-        Game game = gameRepository.save(new Game("게임 이름", "게임 이미지"));
+        Game game = gameRepository.save(new Game("게임 이름", Collections.singletonList("게임 이미지")));
         Tag tag1 = tagRepository.save(new Tag("2시간"));
         Tag tag2 = tagRepository.save(new Tag("실버"));
         Tag tag3 = tagRepository.save(new Tag("고수만"));
-        Tag tag4 = tagRepository.save(new Tag("초보만"));
 
         Room room1 = createRoomWithGameAndTags(game, Arrays.asList(tag1, tag2));
         Room room2 = createRoomWithGameAndTags(game, Arrays.asList(tag1, tag2));
         Room room3 = createRoomWithGameAndTags(game, Arrays.asList(tag1, tag2, tag3));
-        Room room4 = createRoomWithGameAndTags(game, Collections.singletonList(tag4));
 
         // when
         Pageable pageable = PageRequest.of(0, 16);

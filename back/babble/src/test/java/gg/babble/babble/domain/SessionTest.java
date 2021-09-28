@@ -18,7 +18,7 @@ class SessionTest {
     @Test
     void deleteSession() {
         // given
-        Game game = new Game(1L, "게임 이름", "게임 이미지");
+        Game game = new Game(1L, "게임 이름", Collections.singletonList("게임 이미지"));
         List<Tag> tags = Collections.singletonList(new Tag(1L, "초보만"));
         MaxHeadCount maxHeadCount = new MaxHeadCount(4);
         Room room = new Room(1L, game, tags, maxHeadCount);
@@ -36,7 +36,7 @@ class SessionTest {
     @Test
     void getUserId() {
         // given
-        Game game = new Game(1L, "게임 이름", "게임 이미지");
+        Game game = new Game(1L, "게임 이름", Collections.singletonList("게임 이미지"));
         List<Tag> tags = Collections.singletonList(new Tag(1L, "초보만"));
         MaxHeadCount maxHeadCount = new MaxHeadCount(4);
         Room room = new Room(1L, game, tags, maxHeadCount);

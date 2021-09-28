@@ -20,7 +20,7 @@ class GameTest {
     void headCount() {
         // given
         User host = new User(1L, "방장");
-        Game game = new Game(1L, "게임 이름", "게임 이미지");
+        Game game = new Game(1L, "게임 이름", Collections.singletonList("게임 이미지"));
         List<Tag> tags = Arrays.asList(new Tag("실버"), new Tag("2시간"));
         Room room = new Room(1L, game, tags, new MaxHeadCount(4));
         Session session = new Session(1L, "1111", host, room);
@@ -36,8 +36,8 @@ class GameTest {
     @Test
     void updateGame() {
         // given
-        final Game game = new Game(1L, "오래된 게임", "오래된 이미지");
-        final Game target = new Game("새로운 게임", "새로운 이미지");
+        final Game game = new Game(1L, "오래된 게임", Collections.singletonList("오래된 이미지"));
+        final Game target = new Game("새로운 게임", Collections.singletonList("새로운 이미지"));
 
         // when
         game.update(target);
@@ -45,14 +45,14 @@ class GameTest {
         // then
         assertThat(game.getId()).isEqualTo(1L);
         assertThat(game.getName()).isEqualTo(target.getName());
-        assertThat(game.getImage()).isEqualTo(target.getImage());
+        assertThat(game.getImages()).isEqualTo(target.getImages());
     }
 
     @DisplayName("게임 삭제")
     @Test
     void deleteGame() {
         // given
-        final Game game = new Game(1L, "게임 이름", "게임 이미지");
+        final Game game = new Game(1L, "게임 이름", Collections.singletonList("게임 이미지"));
 
         // when
         game.delete();
@@ -65,7 +65,7 @@ class GameTest {
     @Test
     void alternativeNames() {
         // given
-        final Game game = new Game(1L, "오래된 게임", "오래된 이미지");
+        final Game game = new Game(1L, "오래된 게임", Collections.singletonList("오래된 이미지"));
 
         // when
         final AlternativeGameName alternativeGameName = new AlternativeGameName("망겜", game);
@@ -78,8 +78,8 @@ class GameTest {
     @Test
     void changeAlternativeGameName() {
         // given
-        Game game = new Game(1L, "오래된 게임", "오래된 이미지");
-        Game game2 = new Game(2L, "최신 게임", "최신 이미지");
+        Game game = new Game(1L, "오래된 게임", Collections.singletonList("오래된 이미지"));
+        Game game2 = new Game(2L, "최신 게임", Collections.singletonList("최신 이미지"));
         // when
         final AlternativeGameName alternativeGameName = new AlternativeGameName("흥겜", game);
         game2.addAlternativeName(alternativeGameName);
@@ -94,7 +94,7 @@ class GameTest {
     @Test
     void removeAlternativeGameName() {
         // given
-        final Game game = new Game(1L, "오래된 게임", "오래된 이미지");
+        final Game game = new Game(1L, "오래된 게임", Collections.singletonList("오래된 이미지"));
         final AlternativeGameName alternativeGameName = new AlternativeGameName("흥겜", game);
         // when
         game.removeAlternativeName(alternativeGameName);

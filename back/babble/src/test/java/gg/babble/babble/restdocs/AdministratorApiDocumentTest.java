@@ -28,7 +28,7 @@ import org.springframework.web.context.WebApplicationContext;
 public class AdministratorApiDocumentTest extends ApiDocumentTest {
 
     @BeforeEach
-    public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
+    public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) throws Exception {
         super.setUp(webApplicationContext, restDocumentation);
         administratorRepository.save(new Administrator("127.0.0.1", "localhost"));
     }
@@ -108,7 +108,7 @@ public class AdministratorApiDocumentTest extends ApiDocumentTest {
             }).get(0).getId();
 
         mockMvc.perform(delete("/api/admins/" + idToDelete)
-            .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isNoContent())
             .andDo(document("delete-administrators"));
 
