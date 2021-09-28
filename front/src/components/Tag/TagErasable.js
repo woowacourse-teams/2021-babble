@@ -1,7 +1,7 @@
 import './Tag.scss';
 
 import BadgeClickable from '../Badge/BadgeClickable';
-import { IoCloseOutline } from 'react-icons/io5';
+import { IoCloseOutline } from '@react-icons/all-files/io5/IoCloseOutline';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Tag from './Tag';

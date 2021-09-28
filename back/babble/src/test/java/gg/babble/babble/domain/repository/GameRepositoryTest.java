@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import gg.babble.babble.domain.game.Game;
 import gg.babble.babble.exception.BabbleNotFoundException;
+import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,7 @@ public class GameRepositoryTest {
     @Test
     void saveGame() {
         // given
-        Game game = new Game("게임 이름", "게임 이미지");
+        Game game = new Game("게임 이름", Collections.singletonList("게임 이미지"));
 
         // when
         Game savedGame = gameRepository.save(game);
@@ -28,15 +29,15 @@ public class GameRepositoryTest {
         // then
         assertThat(savedGame.getId()).isNotNull();
         assertThat(savedGame.getName()).isEqualTo(game.getName());
-        assertThat(savedGame.getImage()).isEqualTo(game.getImage());
+        assertThat(savedGame.getImages()).isEqualTo(game.getImages());
     }
 
     @DisplayName("게임 정보 편집을 수행한다.")
     @Test
     void updateGame() {
         // given
-        Game game = gameRepository.save(new Game("오래된 게임", "오래된 이미지"));
-        Game target = new Game("새로운 게임", "새로운 이미지");
+        Game game = gameRepository.save(new Game("오래된 게임", Collections.singletonList("오래된 이미지")));
+        Game target = new Game("새로운 게임", Collections.singletonList("오래된 이미지"));
 
         // when
         game.update(target);
@@ -52,7 +53,7 @@ public class GameRepositoryTest {
     @Test
     void deleteGame() {
         // given
-        Game game = gameRepository.save(new Game("게임 이름", "게임 이미지"));
+        Game game = gameRepository.save(new Game("게임 이름", Collections.singletonList("게임 이미지")));
 
         // then
         assertThat(gameRepository.findByIdAndDeletedFalse(game.getId())).isPresent();
@@ -64,9 +65,9 @@ public class GameRepositoryTest {
     @Test
     void findByDeletedFalse() {
         // given
-        Game apex_game = gameRepository.save(new Game("에이펙스", "에이펙스 이미지"));
-        Game bpex_game = gameRepository.save(new Game("비펙스", "비펙스 이미지"));
-        Game cpex_game = gameRepository.save(new Game("씨펙스", "씨펙스 이미지"));
+        Game apex_game = gameRepository.save(new Game("에이펙스", Collections.singletonList("에이펙스 이미지")));
+        Game bpex_game = gameRepository.save(new Game("비펙스", Collections.singletonList("비펙스 이미지")));
+        Game cpex_game = gameRepository.save(new Game("씨펙스", Collections.singletonList("씨펙스 이미지")));
 
         // when
         List<Game> beforeDeleteGames = gameRepository.findByDeletedFalse();
@@ -82,7 +83,7 @@ public class GameRepositoryTest {
     @Test
     void findByIdAndDeletedFalse() {
         // given
-        Game game = gameRepository.save(new Game("에이펙스", "에이펙스 이미지"));
+        Game game = gameRepository.save(new Game("에이펙스", Collections.singletonList("게임 이미지")));
 
         // then
         assertThat(gameRepository.findByIdAndDeletedFalse(game.getId())).isPresent();

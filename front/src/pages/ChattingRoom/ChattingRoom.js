@@ -1,7 +1,6 @@
 import './ChattingRoom.scss';
 
 import { CONNECTION_URL, SEND_URL, SUBSCRIBE_URL } from '../../constants/api';
-import { FaChevronDown, FaChevronUp, FaUsers } from 'react-icons/fa';
 import {
   ModalError,
   SpeechBubble,
@@ -12,8 +11,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import { SESSION_ID_LENGTH, SOCKET_URL_DIVIDER } from '../../constants/chat';
 
 import Chatbox from '../../chunks/Chatbox/Chatbox';
-import { IoCloseOutline } from 'react-icons/io5';
-import { IoRemove } from 'react-icons/io5';
+import { FaChevronDown } from '@react-icons/all-files/fa/FaChevronDown';
+import { FaChevronUp } from '@react-icons/all-files/fa/FaChevronUp';
+import { FaUsers } from '@react-icons/all-files/fa/FaUsers';
+import { IoCloseOutline } from '@react-icons/all-files/io5/IoCloseOutline';
+import { IoRemove } from '@react-icons/all-files/io5/IoRemove';
 import LinearLayout from '../../core/Layout/LinearLayout';
 import Participants from '../../chunks/Participants/Participants';
 import PropTypes from 'prop-types';

@@ -27,4 +27,4 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           working-directory: front
-          start: npm start
+          start: npm run start

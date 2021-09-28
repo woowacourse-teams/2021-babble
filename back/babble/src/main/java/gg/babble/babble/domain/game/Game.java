@@ -4,13 +4,18 @@ import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.room.Rooms;
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleNotFoundException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -31,8 +36,13 @@ public class Game {
     private Long id;
     @NotNull(message = "게임 이름은 Null 일 수 없습니다.")
     private String name;
+
     @NotNull(message = "게임 이미지는 Null 일 수 없습니다.")
-    private String image;
+    @ElementCollection
+    @CollectionTable(name = "gameImages", joinColumns = @JoinColumn(name = "game_id"))
+    @Column(name = "game_image")
+    private List<String> images;
+
     @Embedded
     private AlternativeGameNames alternativeGameNames;
 
@@ -40,29 +50,29 @@ public class Game {
     private boolean deleted = false;
 
     public Game(final String name) {
-        this(null, name, DEFAULT_IMAGE, new AlternativeGameNames());
+        this(null, name, Collections.singletonList(DEFAULT_IMAGE), new AlternativeGameNames());
     }
 
     public Game(final Long id, final String name) {
-        this(id, name, DEFAULT_IMAGE, new AlternativeGameNames());
+        this(id, name, Collections.singletonList(DEFAULT_IMAGE), new AlternativeGameNames());
     }
 
-    public Game(final String name, final String image) {
-        this(null, name, image);
+    public Game(final String name, final List<String> images) {
+        this(null, name, images);
     }
 
-    public Game(final String name, final String image, final AlternativeGameNames alternativeGameNames) {
-        this(null, name, image, alternativeGameNames);
+    public Game(final String name, final List<String> images, final AlternativeGameNames alternativeGameNames) {
+        this(null, name, images, alternativeGameNames);
     }
 
-    public Game(final Long id, final String name, final String image) {
-        this(id, name, image, new AlternativeGameNames());
+    public Game(final Long id, final String name, final List<String> images) {
+        this(id, name, images, new AlternativeGameNames());
     }
 
-    public Game(final Long id, final String name, final String image, final AlternativeGameNames alternativeGameNames) {
+    public Game(final Long id, final String name, final List<String> images, final AlternativeGameNames alternativeGameNames) {
         this.id = id;
         this.name = name;
-        this.image = image;
+        this.images = images;
         this.alternativeGameNames = alternativeGameNames;
     }
 
@@ -72,7 +82,7 @@ public class Game {
 
     public void update(final Game target) {
         this.name = target.name;
-        this.image = target.image;
+        this.images = target.images;
         this.alternativeGameNames = target.alternativeGameNames;
     }
 
