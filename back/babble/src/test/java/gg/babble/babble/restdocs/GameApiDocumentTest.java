@@ -187,6 +187,48 @@ public class GameApiDocumentTest extends ApiDocumentTest {
             ));
     }
 
+    @DisplayName("게임을 추가한다.(X-Forwarded-For)")
+    @Test
+    void createGameByXForwardedForHeader() throws Exception {
+        administratorRepository.save(new Administrator("127.0.0.1", "localhost"));
+        String gameName = "League Of Legends";
+        List<String> images = Arrays.asList("img1", "img2", "img3");
+        List<String> alternativeNames = Collections.singletonList("롤");
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("name", gameName);
+        body.put("images", images);
+        body.put("alternativeNames", alternativeNames);
+
+        mockMvc.perform(post("/api/games")
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("x-forwarded-for", "127.0.0.1")
+                .content(objectMapper.writeValueAsString(body)).characterEncoding("utf-8"))
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.id").isNumber())
+            .andExpect(jsonPath("$.name").value(gameName))
+            .andExpect(jsonPath("$.images").value(hasSize(3)))
+            .andExpect(jsonPath("$.images[0]").value(IMAGE_1))
+            .andExpect(jsonPath("$.alternativeNames").value(hasSize(1)))
+            .andExpect(jsonPath("$.alternativeNames").value(alternativeNames.get(0)))
+
+            .andDo(document("insert-game",
+                requestFields(
+                    fieldWithPath("name").description("게임 이름"),
+                    fieldWithPath("images").description("게임 이미지 목록"),
+                    fieldWithPath("alternativeNames").description("대체 이름")
+                ),
+                responseFields(
+                    fieldWithPath("id").description("게임 ID"),
+                    fieldWithPath("name").description("게임 이름"),
+                    fieldWithPath("images").description("게임 이미지 목록"),
+                    fieldWithPath("alternativeNames").description("대체 이름")
+                )
+            ));
+    }
+
     @DisplayName("등록되어 있지 않은 관리자의 경우 게임을 추가할 수 없다.")
     @Test
     void createGameWithInvalidAdministrator() throws Exception {
@@ -199,6 +241,27 @@ public class GameApiDocumentTest extends ApiDocumentTest {
         body.put("alternativeNames", alternativeNames);
 
         mockMvc.perform(post("/api/games")
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(body)).characterEncoding("utf-8"))
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isUnauthorized());
+    }
+
+    @DisplayName("등록되어 있지 않은 관리자의 경우 게임을 추가할 수 없다.(X-Forwarded-For)")
+    @Test
+    void createGameWithInvalidXForwardedForHeader() throws Exception {
+        administratorRepository.save(new Administrator("127.0.0.1", "localhost"));
+        String gameName = "League Of Legends";
+        List<String> alternativeNames = Collections.singletonList("롤");
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("name", gameName);
+        body.put("images", images);
+        body.put("alternativeNames", alternativeNames);
+
+        mockMvc.perform(post("/api/games")
+                .header("x-forwarded-for", "127.0.0.2")
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(body)).characterEncoding("utf-8"))
