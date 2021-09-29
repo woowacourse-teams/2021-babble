@@ -20,7 +20,6 @@ public class AdminAccessInterceptor implements HandlerInterceptor {
     public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler) {
         if (needsAuthentication(request)) {
             String clientIp = getClientIpFrom(request);
-
             administratorService.validateIp(clientIp);
         }
         return true;
