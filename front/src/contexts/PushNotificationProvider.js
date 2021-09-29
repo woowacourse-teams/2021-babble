@@ -29,7 +29,7 @@ const PushNotificationProvider = ({ children }) => {
     }
   }, []);
 
-  if (permission !== PERMISSION.GRANTED || !permission) {
+  if (permission && permission !== PERMISSION.GRANTED) {
     try {
       Notification.requestPermission().then((permission) => {
         if (permission !== PERMISSION.GRANTED) return;
@@ -73,7 +73,7 @@ const PushNotificationProvider = ({ children }) => {
   };
 
   const fireNotificationWithTimeout = (title, timeout, options = {}) => {
-    if (permission !== PERMISSION.GRANTED || !permission) return;
+    if (!permission || permission !== PERMISSION.GRANTED) return;
 
     const newOption = {
       badge: `${BABBLE_URL}/img/logos/babble-speech-bubble.png`,
