@@ -12,13 +12,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Sliders {
 
-    private List<Slider> sliders;
+    private final List<Slider> values;
 
-    public Sliders(final List<Slider> sliders) {
-        this.sliders = sliders;
+    public Sliders(final List<Slider> values) {
+        this.values = values;
     }
 
     public void validateExistIdsValue(final List<Long> ids) {
@@ -34,7 +33,7 @@ public class Sliders {
     }
 
     private List<Long> ids() {
-        return sliders.stream()
+        return values.stream()
             .map(Slider::getId)
             .collect(Collectors.toList());
     }
@@ -42,7 +41,7 @@ public class Sliders {
     public void sortValue(final List<Long> ids) {
         validateExistIdsValue(ids);
 
-        final Map<Long, Slider> dictionary = listToMap(sliders);
+        final Map<Long, Slider> dictionary = listToMap(values);
 
         for (int i = 0; i < ids.size(); i++) {
             Slider slider = dictionary.get(ids.get(i));
@@ -61,15 +60,15 @@ public class Sliders {
     }
 
     public List<SliderResponse> toResponse() {
-        return sliders.stream()
+        return values.stream()
             .sorted(Comparator.comparingInt(Slider::getSortingIndex))
             .map(SliderResponse::from)
             .collect(Collectors.toList());
     }
 
     public void rearrange(final int start) {
-        for (int i = start; i < sliders.size(); i++) {
-            sliders.get(i - 1).setSortingIndex(i);
+        for (int i = start; i < values.size(); i++) {
+            values.get(i - 1).setSortingIndex(i);
         }
     }
 }
