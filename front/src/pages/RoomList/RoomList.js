@@ -3,6 +3,7 @@ import './RoomList.scss';
 import { Body2, Headline2 } from '../../core/Typography';
 import {
   MainImage,
+  ModalError,
   NicknameSection,
   Room,
   SearchInput,
@@ -51,25 +52,33 @@ const RoomList = ({ match }) => {
 
       setCurrentGame(response.data);
     } catch (error) {
-      console.error(error);
+      openModal(<ModalError>{error}</ModalError>);
     }
   };
 
   const getTags = async () => {
-    const response = await axios.get(`${BASE_URL}/api/tags`);
-    const tags = response.data;
+    try {
+      const response = await axios.get(`${BASE_URL}/api/tags`);
+      const tags = response.data;
 
-    setTagList(tags);
-    setAutoCompleteTagList(tags);
+      setTagList(tags);
+      setAutoCompleteTagList(tags);
+    } catch (error) {
+      openModal(<ModalError>{error}</ModalError>);
+    }
   };
 
   const getRooms = async (tagIds) => {
-    const response = await axios.get(`${BASE_URL}/api/rooms`, {
-      params: { gameId, tagIds, page: 1 },
-    });
-    const rooms = response.data;
+    try {
+      const response = await axios.get(`${BASE_URL}/api/rooms`, {
+        params: { gameId, tagIds, page: 1 },
+      });
+      const rooms = response.data;
 
-    setRoomList(rooms);
+      setRoomList(rooms);
+    } catch (error) {
+      openModal(<ModalError>{error}</ModalError>);
+    }
   };
 
   const selectTag = (tagName) => {
@@ -108,8 +117,7 @@ const RoomList = ({ match }) => {
       }
       openChatting(<ChattingRoom game={game} tags={tags} roomId={roomId} />);
     } catch (error) {
-      alert('방이 존재하지 않습니다.');
-      console.error(error);
+      openModal(<ModalError>{error}</ModalError>);
     }
   };
 
@@ -201,12 +209,16 @@ const RoomList = ({ match }) => {
       setSessionStorage('nickname', newUser.nickname);
     }
 
-    const response = await axios.post(`${BASE_URL}/api/users`, {
-      nickname: newUser.nickname,
-    });
-    newUser.id = response.data.id;
-    newUser.nickname = response.data.nickname;
-    changeUser(newUser);
+    try {
+      const response = await axios.post(`${BASE_URL}/api/users`, {
+        nickname: newUser.nickname,
+      });
+      newUser.id = response.data.id;
+      newUser.nickname = response.data.nickname;
+      changeUser(newUser);
+    } catch (error) {
+      openModal(<ModalError>{error}</ModalError>);
+    }
   };
 
   useEffect(() => {

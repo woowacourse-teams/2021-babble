@@ -46,6 +46,7 @@ const ChattingRoom = ({ tags, game, roomId }) => {
     user: { nickname, id: userId },
     changeCurrentRoomNumber,
   } = useUser();
+
   const { fireNotificationWithTimeout, isNotificationOn } =
     usePushNotification();
   const { showNotificationCount } = useTabNotification();
