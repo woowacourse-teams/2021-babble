@@ -1,0 +1,50 @@
+@use '../../../style/functions' as f;
+
+.name-list-container {
+  width: calc(100%);
+  padding: 1.8rem 1.2rem;
+  height: 16rem;
+  border: 1px solid f.grey-scale(6);
+  border-radius: 1rem;
+  font-size: 1.3rem;
+  display: flex;
+  flex-wrap: wrap;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 1.5rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: f.grey-scale(3);
+    border-radius: 1rem;
+    background-clip: padding-box;
+    border: 0.3rem solid transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: f.grey-scale(8);
+    border-radius: 1rem;
+    background-clip: padding-box;
+    border: 0.3rem solid transparent;
+  }
+
+  &::-webkit-scrollbar-thumb:active {
+    background-color: f.grey-scale(10);
+  }
+
+  .tag-container {
+    border: 1px solid f.grey-scale(8);
+    border-radius: 0.6rem;
+    height: 2.8rem;
+    margin: 0.5rem 1rem;
+
+    span {
+      cursor: pointer;
+
+      &:hover {
+        color: f.primary(babble-pink);
+      }
+    }
+  }
+}

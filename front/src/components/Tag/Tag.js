@@ -3,8 +3,16 @@ import './Tag.scss';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const Tag = ({ customClass = '', children }) => {
-  return <span className={`tag-container ${customClass}`}>{children}</span>;
+const Tag = ({ customClass = '', children, ...rest }) => {
+  return (
+    <span className={`tag-container ${customClass}`}>
+      {customClass.includes('erasable') ? (
+        children
+      ) : (
+        <span {...rest}>{children}</span>
+      )}
+    </span>
+  );
 };
 
 Tag.propTypes = {
