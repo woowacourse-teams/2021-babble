@@ -1,0 +1,44 @@
+@use '../../../style/functions' as f;
+
+.image-preview-section {
+  picture {
+    display: flex;
+    align-items: flex-end;
+    margin-top: 1rem;
+
+    .preview {
+      border: 1px solid f.grey-scale(5);
+      border-radius: f.border-radius(image-preview);
+      overflow: hidden;
+      margin-right: 1.5rem;
+
+      &:first-child {
+        min-width: 30rem;
+        min-height: 20rem;
+        width: 30rem;
+        height: 20rem;
+      }
+
+      &:nth-child(2) {
+        min-width: 26rem;
+        min-height: 16rem;
+        width: 26rem;
+        height: 16rem;
+      }
+
+      &:last-child {
+        min-width: 23rem;
+        min-height: 13rem;
+        width: 23rem;
+        height: 13rem;
+        margin-right: 0;
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+}
