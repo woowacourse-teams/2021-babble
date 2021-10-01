@@ -14,4 +14,7 @@ const MainImageTemplate = (args) => (
 
 export const Default = MainImageTemplate.bind({});
 
-Default.args = {};
+Default.args = {
+  imageSrc:
+    'https://d2bidcnq0n74fu.cloudfront.net/img/games/title/League-of-Legends.png',
+};

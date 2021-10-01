@@ -10,10 +10,14 @@ export default {
   component: Chatbox,
 };
 
+const user = {
+  nickname: 'peter',
+};
+
 const ChatboxTemplate = (args) => (
   <div>
     <Chatbox {...args}>
-      <SpeechBubbleWithAvatar time='10:19AM' nickname='peter'>
+      <SpeechBubbleWithAvatar time='10:19AM' user={user}>
         안녕하세요
       </SpeechBubbleWithAvatar>
       <div
