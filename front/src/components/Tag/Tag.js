@@ -16,6 +16,7 @@ const Tag = ({ customClass = '', children, onClickTagName = null }) => {
 Tag.propTypes = {
   children: PropTypes.node,
   customClass: PropTypes.string,
+  onClickTagName: PropTypes.func,
 };
 
 export default Tag;

@@ -20,6 +20,7 @@ const TagErasable = ({ onDeleteTag, children, onClickTagName }) => {
 TagErasable.propTypes = {
   children: PropTypes.node,
   onDeleteTag: PropTypes.func,
+  onClickTagName: PropTypes.func,
 };
 
 export default TagErasable;
