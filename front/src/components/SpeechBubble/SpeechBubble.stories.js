@@ -8,6 +8,10 @@ export default {
   component: [SpeechBubble, SpeechBubbleWithAvatar],
 };
 
+const user = {
+  nickname: '피터',
+};
+
 const SpeechBubbleTemplate = (args) => (
   <div
     style={{
@@ -18,16 +22,15 @@ const SpeechBubbleTemplate = (args) => (
     }}
   >
     <div style={{ margin: '20rem 0 1rem 0' }}>
-      <Subtitle3>Others' Chattings</Subtitle3>
+      <Subtitle3>{`Others' Chattings`}</Subtitle3>
       <br />
-      <SpeechBubbleWithAvatar {...args} />
+      <SpeechBubbleWithAvatar user={user} {...args} />
     </div>
     <div style={{ marginBottom: '1rem' }}>
       <Subtitle3>My Chatting</Subtitle3>
       <br />
       <SpeechBubble type='mine'>
-        {`아니요 ㅋㅋ;
-전 오버워치 하러 갈건데;`}
+        {`아니요 ㅋㅋ; \n전 오버워치 하러 갈건데;`}
       </SpeechBubble>
     </div>
     <div style={{ marginBottom: '1rem' }}>
