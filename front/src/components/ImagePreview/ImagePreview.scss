@@ -1,43 +1,42 @@
 @use '../../../style/functions' as f;
 
 .image-preview-container {
+  width: 100%;
+
   .image-preview-wrapper {
     display: flex;
     align-items: flex-end;
     margin-top: 1rem;
+    max-width: 80rem;
 
     .preview {
       border: 1px solid f.grey-scale(5);
       border-radius: f.border-radius(image-preview);
       overflow: hidden;
       margin-right: 1.5rem;
+      width: 100%;
+      display: flex;
 
       &:first-child {
-        min-width: 30rem;
-        min-height: 20rem;
-        width: 30rem;
-        height: 20rem;
+        min-width: 28rem;
+        min-height: 21rem;
       }
 
       &:nth-child(2) {
-        min-width: 26rem;
-        min-height: 16rem;
-        width: 26rem;
-        height: 16rem;
+        min-width: 22rem;
+        min-height: 16.5rem;
       }
 
       &:last-child {
-        min-width: 23rem;
-        min-height: 13rem;
-        width: 23rem;
-        height: 13rem;
+        min-width: 18rem;
+        min-height: 13.5rem;
         margin-right: 0;
       }
 
       img {
         width: 100%;
-        height: 100%;
-        object-fit: cover;
+        height: auto;
+        object-fit: contain;
       }
     }
   }
