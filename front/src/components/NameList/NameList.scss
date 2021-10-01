@@ -14,6 +14,13 @@
 
   @include m.custom-scrollbar;
 
+  .no-data {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
   .tag-container {
     border: 1px solid f.grey-scale(8);
     border-radius: f.border-radius(speech-bubble);
