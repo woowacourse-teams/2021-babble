@@ -8,9 +8,9 @@ const ImagePreview = ({ imageList }) => {
   const [bigImage, middleImage, smallImage] = imageList;
 
   return (
-    <section className='image-preview-section'>
+    <section className='image-preview-container'>
       <Subtitle3>이미지 Preview</Subtitle3>
-      <picture>
+      <div className='image-preview-wrapper'>
         <div className='preview'>
           <img src={bigImage} alt='' />
         </div>
@@ -20,7 +20,7 @@ const ImagePreview = ({ imageList }) => {
         <div className='preview'>
           <img src={smallImage} alt='' />
         </div>
-      </picture>
+      </div>
     </section>
   );
 };

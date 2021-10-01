@@ -1,7 +1,7 @@
 @use '../../../style/functions' as f;
 
-.image-preview-section {
-  picture {
+.image-preview-container {
+  .image-preview-wrapper {
     display: flex;
     align-items: flex-end;
     margin-top: 1rem;
