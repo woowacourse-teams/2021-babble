@@ -48,5 +48,5 @@ Default.args = {
     'Roblox',
   ],
   erasable: true,
-  onClickNames: () => console.log('hi'),
+  onClickNames: () => console.log('Tag name clicked!'),
 };
