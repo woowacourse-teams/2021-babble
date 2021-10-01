@@ -10,11 +10,11 @@ const NameList = ({ list, erasable, onClickNames }) => {
     <div className='name-list-container'>
       {list.map((itemName, index) =>
         erasable ? (
-          <TagErasable onClick={onClickNames} key={index}>
+          <TagErasable onClickTagName={onClickNames} key={index}>
             {itemName}
           </TagErasable>
         ) : (
-          <Tag onClick={onClickNames} key={index}>
+          <Tag onClickTagName={onClickNames} key={index}>
             {itemName}
           </Tag>
         )

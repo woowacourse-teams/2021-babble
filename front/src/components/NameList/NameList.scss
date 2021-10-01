@@ -20,11 +20,13 @@
     height: 2.8rem;
     margin: 0.5rem 1rem;
 
-    span {
-      cursor: pointer;
+    .tag-content {
+      span {
+        cursor: pointer;
 
-      &:hover {
-        color: f.primary(babble-pink);
+        &:hover {
+          color: f.primary(babble-pink);
+        }
       }
     }
   }

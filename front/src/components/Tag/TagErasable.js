@@ -6,10 +6,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Tag from './Tag';
 
-const TagErasable = ({ onDeleteTag, children, ...rest }) => {
+const TagErasable = ({ onDeleteTag, children, onClickTagName }) => {
   return (
     <Tag customClass='erasable'>
-      <span {...rest}>{children}</span>
+      <span onClick={onClickTagName}>{children}</span>
       <BadgeClickable onClickBadge={onDeleteTag} ariaLabel='delete'>
         <IoCloseOutline size='18px' />
       </BadgeClickable>

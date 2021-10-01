@@ -3,10 +3,12 @@ import './Tag.scss';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const Tag = ({ customClass = '', children, ...rest }) => {
+const Tag = ({ customClass = '', children, onClickTagName = null }) => {
   return (
     <span className={`tag-container ${customClass}`}>
-      <span {...rest}>{children}</span>
+      <span className='tag-content' onClick={onClickTagName}>
+        {children}
+      </span>
     </span>
   );
 };
