@@ -4,10 +4,14 @@ import { Caption1, Subtitle3 } from '../../core/Typography';
 import React, { useRef, useState } from 'react';
 
 import { BsPlusCircle } from '@react-icons/all-files/bs/BsPlusCircle';
+import { ModalError } from '..';
+import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 
 const ImageRegister = () => {
   const fileInputRef = useRef(null);
   const [file, setFile] = useState({ name: '', imagePath: '' });
+
+  const { openModal } = useDefaultModal();
 
   const handleFile = ({ target }) => {
     const file = target.files[0];
@@ -16,10 +20,15 @@ const ImageRegister = () => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
-      setFile((prevData) => ({ ...prevData, imagePath: reader.result }));
+      setFile((prevData) => ({
+        ...prevData,
+        name: filename,
+        imagePath: reader.result,
+      }));
     };
-
-    setFile((prevData) => ({ ...prevData, name: filename }));
+    reader.onerror = () => {
+      openModal(<ModalError>{reader.error}</ModalError>);
+    };
   };
 
   return (
