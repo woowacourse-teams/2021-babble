@@ -1,0 +1,12 @@
+@use '../../../style/functions' as f;
+
+.admin-management-container {
+  margin-left: f.indent(one-depth);
+  width: calc(100% - #{f.indent(one-depth)});
+
+  .name-list-container {
+    width: calc(100% - #{f.indent(one-depth)});
+    margin-top: f.indent(one-depth);
+    margin-left: f.indent(one-depth);
+  }
+}

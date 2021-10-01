@@ -63,6 +63,15 @@
   @return null;
 }
 
+@function indent($key) {
+  @if map-has-key($indent, $key) {
+    @return map-get($indent, $key);
+  }
+
+  @warn "Unknown `#{$key}` in $z-index!";
+  @return null;
+}
+
 @function chatting($key) {
   @if map-has-key($chatting, $key) {
     @return map-get($chatting, $key);
