@@ -22,22 +22,22 @@ public class SliderService {
 
     @Transactional
     public SliderResponse insert(final SliderRequest request) {
-        final Sliders sliders = new Sliders(sliderRepository.findAll());
-        final Slider slider = sliderRepository.save(request.toEntity());
+        Sliders sliders = new Sliders(sliderRepository.findAll());
+        Slider slider = sliderRepository.save(request.toEntity());
         sliders.add(slider);
 
         return SliderResponse.from(slider);
     }
 
     public List<SliderResponse> findAll() {
-        final Sliders sliders = new Sliders(sliderRepository.findAll());
+        Sliders sliders = new Sliders(sliderRepository.findAll());
 
         return SliderResponse.from(sliders);
     }
 
     @Transactional
     public List<SliderResponse> updateOrder(final SliderOrderRequest request) {
-        final Sliders sliders = new Sliders(sliderRepository.findAll());
+        Sliders sliders = new Sliders(sliderRepository.findAll());
 
         sliders.changeOrder(request.getIds());
 
@@ -46,8 +46,8 @@ public class SliderService {
 
     @Transactional
     public void delete(final Long sliderId) {
-        final Sliders sliders = new Sliders(sliderRepository.findAll());
-        final Slider slider = sliders.find(sliderId);
+        Sliders sliders = new Sliders(sliderRepository.findAll());
+        Slider slider = sliders.find(sliderId);
 
         sliders.delete(slider);
 

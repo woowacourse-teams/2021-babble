@@ -19,7 +19,7 @@ public class Sliders {
     }
 
     private void validateExistIdsValue(final List<Long> ids) {
-        final List<Long> valueIds = ids();
+        List<Long> valueIds = ids();
 
         if (new HashSet<>(ids).size() != ids.size()) {
             throw new BabbleIllegalArgumentException("중복된 Slider ID가 포함되어 있습니다.");
@@ -57,7 +57,7 @@ public class Sliders {
     public void changeOrder(final List<Long> ids) {
         validateExistIdsValue(ids);
 
-        final Map<Long, Slider> dictionary = listToMap(values);
+        Map<Long, Slider> dictionary = listToMap(values);
 
         for (int i = 0; i < ids.size(); i++) {
             Slider slider = dictionary.get(ids.get(i));
@@ -66,7 +66,7 @@ public class Sliders {
     }
 
     private Map<Long, Slider> listToMap(final List<Slider> sliders) {
-        final Map<Long, Slider> dictionary = new HashMap<>();
+        Map<Long, Slider> dictionary = new HashMap<>();
 
         for (Slider slider : sliders) {
             dictionary.put(slider.getId(), slider);
