@@ -57,27 +57,7 @@
       display: block;
     }
 
-    &::-webkit-scrollbar {
-      width: 1.5rem;
-    }
-
-    &::-webkit-scrollbar-track {
-      background-color: f.grey-scale(3);
-      border-radius: 1rem;
-      background-clip: padding-box;
-      border: 0.3rem solid transparent;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background-color: f.grey-scale(8);
-      border-radius: 1rem;
-      background-clip: padding-box;
-      border: 0.3rem solid transparent;
-    }
-
-    &::-webkit-scrollbar-thumb:active {
-      background-color: f.grey-scale(10);
-    }
+    @include m.custom-scrollbar;
 
     .keyword-button {
       width: 100%;
