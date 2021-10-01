@@ -1,5 +1,6 @@
 package gg.babble.babble.domain.slider;
 
+import java.util.Objects;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -43,5 +44,22 @@ public class Slider {
 
     public void setSortingIndex(final int sortingIndex) {
         this.sortingIndex = sortingIndex;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Slider slider = (Slider) o;
+        return Objects.equals(id, slider.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
