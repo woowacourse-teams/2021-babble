@@ -29,11 +29,9 @@ public class Sliders {
             throw new BabbleIllegalArgumentException("등록된 모든 Slider ID가 포함되어 있지 않습니다.");
         }
 
-        if (ids.containsAll(valueIds)) {
-            return;
+        if (!ids.containsAll(valueIds)) {
+            throw new BabbleIllegalArgumentException("존재하지 않는 Slider ID가 입력되어 있습니다.");
         }
-
-        throw new BabbleIllegalArgumentException("존재하지 않는 Slider ID가 입력되어 있습니다.");
     }
 
     private List<Long> ids() {
