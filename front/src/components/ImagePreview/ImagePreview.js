@@ -5,7 +5,7 @@ import React from 'react';
 import { Subtitle3 } from '../../core/Typography';
 
 const ImagePreview = ({ imageList }) => {
-  const { bigImage, middleImage, smallImage } = imageList;
+  const [bigImage, middleImage, smallImage] = imageList;
 
   return (
     <section className='image-preview-section'>
