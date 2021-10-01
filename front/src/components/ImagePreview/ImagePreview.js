@@ -12,13 +12,13 @@ const ImagePreview = ({ imageList }) => {
       <Subtitle3>이미지 Preview</Subtitle3>
       <div className='image-preview-wrapper'>
         <div className='preview'>
-          <img src={bigImage} alt='' />
+          <img src={bigImage} alt='Big image preview' />
         </div>
         <div className='preview'>
-          <img src={middleImage} alt='' />
+          <img src={middleImage} alt='Middle image preview' />
         </div>
         <div className='preview'>
-          <img src={smallImage} alt='' />
+          <img src={smallImage} alt='Small image preview' />
         </div>
       </div>
     </section>
