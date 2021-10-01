@@ -18,7 +18,7 @@ const SpeechBubbleTemplate = (args) => (
     }}
   >
     <div style={{ margin: '20rem 0 1rem 0' }}>
-      <Subtitle3>Others' Chattings</Subtitle3>
+      <Subtitle3>Others&apos; Chattings</Subtitle3>
       <br />
       <SpeechBubbleWithAvatar {...args} />
     </div>
