@@ -1,9 +1,10 @@
 package gg.babble.babble.domain.slider;
 
-import gg.babble.babble.dto.response.SliderResponse;
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
-import java.util.Comparator;
+import gg.babble.babble.exception.BabbleNotFoundException;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -18,16 +19,22 @@ public class Sliders {
         this.values = values;
     }
 
-    public void validateExistIdsValue(final List<Long> ids) {
-        if (!ids().containsAll(ids)) {
-            throw new BabbleIllegalArgumentException("등록된 모든 Slider Id 가 포함되어 있지 않습니다.");
+    private void validateExistIdsValue(final List<Long> ids) {
+        final List<Long> valueIds = ids();
+
+        if (new HashSet<>(ids).size() != ids.size()) {
+            throw new BabbleIllegalArgumentException("중복된 Slider ID가 포함되어 있습니다.");
         }
 
-        if (ids.containsAll(ids())) {
+        if (!valueIds.containsAll(ids)) {
+            throw new BabbleIllegalArgumentException("등록된 모든 Slider ID가 포함되어 있지 않습니다.");
+        }
+
+        if (ids.containsAll(valueIds)) {
             return;
         }
 
-        throw new BabbleIllegalArgumentException("존재하지 않는 Slider Id 가 입력되어 있습니다.");
+        throw new BabbleIllegalArgumentException("존재하지 않는 Slider ID가 입력되어 있습니다.");
     }
 
     private List<Long> ids() {
@@ -36,7 +43,12 @@ public class Sliders {
             .collect(Collectors.toList());
     }
 
-    public void sortValue(final List<Long> ids) {
+    public void add(Slider slider) {
+        slider.setSortingIndex(values.size());
+        values.add(slider);
+    }
+
+    public List<Slider> sortValue(final List<Long> ids) {
         validateExistIdsValue(ids);
 
         final Map<Long, Slider> dictionary = listToMap(values);
@@ -45,6 +57,8 @@ public class Sliders {
             Slider slider = dictionary.get(ids.get(i));
             slider.setSortingIndex(i);
         }
+
+        return Collections.unmodifiableList(values);
     }
 
     private Map<Long, Slider> listToMap(final List<Slider> sliders) {
@@ -57,16 +71,16 @@ public class Sliders {
         return dictionary;
     }
 
-    public List<SliderResponse> toResponse() {
-        return values.stream()
-            .sorted(Comparator.comparingInt(Slider::getSortingIndex))
-            .map(SliderResponse::from)
-            .collect(Collectors.toList());
-    }
-
     public void rearrange(final int start) {
         for (int i = start; i < values.size(); i++) {
             values.get(i - 1).setSortingIndex(i);
         }
+    }
+
+    public Slider find(final Long sliderId) {
+        return values.stream()
+            .filter(slider -> slider.isSameId(sliderId))
+            .findAny()
+            .orElseThrow(() -> new BabbleNotFoundException(String.format("[%d]번 Slider ID는 존재하지 않습니다.", sliderId)));
     }
 }
