@@ -1,4 +1,4 @@
-import '../global.scss';
+import '../style/global.scss';
 
 import ChattingModalProvider from '../src/contexts/ChattingModalProvider';
 import DefaultModalProvider from '../src/contexts/DefaultModalProvider';
