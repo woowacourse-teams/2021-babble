@@ -1,8 +1,8 @@
 import './ChangeNickname.scss';
 
 import { Caption1, Subtitle3 } from '../../core/Typography';
+import { ModalError, RoundButton, TextInput } from '../../components';
 import { NICKNAME_MAX_LENGTH, NICKNAME_MIN_LENGTH } from '../../constants/chat';
-import { RoundButton, TextInput } from '../../components';
 
 import { BASE_URL } from '../../constants/api';
 import { IoCloseOutline } from '@react-icons/all-files/io5/IoCloseOutline';
@@ -13,23 +13,27 @@ import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 import { useUser } from '../../contexts/UserProvider';
 
 const ChangeNickname = () => {
-  const { closeModal } = useDefaultModal();
+  const { openModal, closeModal } = useDefaultModal();
   const { user, changeUser, setIsNicknameChanged } = useUser();
 
   const submitNickname = async (e) => {
     e.preventDefault();
     const nicknameInput = e.target.nickname.value;
 
-    const response = await axios.post(`${BASE_URL}/api/users`, {
-      nickname: nicknameInput,
-    });
-    const generatedUser = response.data;
+    try {
+      const response = await axios.post(`${BASE_URL}/api/users`, {
+        nickname: nicknameInput,
+      });
+      const generatedUser = response.data;
 
-    setSessionStorage('nickname', generatedUser.nickname);
+      setSessionStorage('nickname', generatedUser.nickname);
 
-    setIsNicknameChanged(true);
-    changeUser({ id: generatedUser.id, nickname: generatedUser.nickname });
-    closeModal();
+      setIsNicknameChanged(true);
+      changeUser({ id: generatedUser.id, nickname: generatedUser.nickname });
+      closeModal();
+    } catch (error) {
+      openModal(<ModalError>{error}</ModalError>);
+    }
   };
 
   return (

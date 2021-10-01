@@ -4,6 +4,7 @@ import { Body2, Headline2 } from '../../core/Typography';
 import {
   DropdownInput,
   MainImage,
+  ModalError,
   RoundButton,
   SearchInput,
 } from '../../components';
@@ -20,6 +21,7 @@ import TagList from '../../chunks/TagList/TagList';
 import axios from 'axios';
 import getKorRegExp from '../../components/SearchInput/service/getKorRegExp';
 import { useChattingModal } from '../../contexts/ChattingModalProvider';
+import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 
 const MakeRoom = ({ match }) => {
   const location = useLocation();
@@ -29,6 +31,7 @@ const MakeRoom = ({ match }) => {
   const [selectedTagList, setSelectedTagList] = useState([]);
   const [maxHeadCount, setMaxHeadCount] = useState(0);
   const { openChatting, closeChatting } = useChattingModal();
+  const { openModal } = useDefaultModal();
 
   // TODO: 임시 방편. onChangeInput을 SearchInput 내부로 집어넣으면서 사라질 운명
   const [autoCompleteTagList, setAutoCompleteTagList] = useState([]);
@@ -44,18 +47,28 @@ const MakeRoom = ({ match }) => {
   const { gameName } = location.state;
 
   const getImage = async () => {
-    const response = await axios.get(`${BASE_URL}/api/games/${gameId}/images`);
-    const image = response.data.image;
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/api/games/${gameId}/images`
+      );
+      const image = response.data.image;
 
-    setImageUrl(image);
+      setImageUrl(image);
+    } catch (error) {
+      openModal(<ModalError>{error}</ModalError>);
+    }
   };
 
   const getTags = async () => {
-    const response = await axios.get(`${BASE_URL}/api/tags`);
-    const tags = response.data;
+    try {
+      const response = await axios.get(`${BASE_URL}/api/tags`);
+      const tags = response.data;
 
-    setTagList(tags);
-    setAutoCompleteTagList(tags);
+      setTagList(tags);
+      setAutoCompleteTagList(tags);
+    } catch (error) {
+      openModal(<ModalError>{error}</ModalError>);
+    }
   };
 
   const selectTag = (tagName) => {
@@ -125,7 +138,7 @@ const MakeRoom = ({ match }) => {
         state: { gameName },
       });
     } catch (error) {
-      alert('방 생성을 하는 데 오류가 있습니다.');
+      openModal(<ModalError>{error}</ModalError>);
     }
   };
 

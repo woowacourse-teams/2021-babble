@@ -1,7 +1,7 @@
 import './GameList.scss';
 
 import { BABBLE_URL, BASE_URL } from '../../constants/api';
-import { GameCard, SearchInput, Slider } from '../../components';
+import { GameCard, ModalError, SearchInput, Slider } from '../../components';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { Headline2 } from '../../core/Typography';
@@ -11,12 +11,15 @@ import { PATTERNS } from '../../constants/regex';
 import PageLayout from '../../core/Layout/PageLayout';
 import axios from 'axios';
 import getKorRegExp from '../../components/SearchInput/service/getKorRegExp';
+import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 
 const GameList = () => {
   // const [sliderImageList, setSliderImageList] = useState([]);
   const [gameList, setGameList] = useState([]);
   const [selectedGames, setSelectedGames] = useState([]);
   const searchRef = useRef(null);
+
+  const { openModal } = useDefaultModal();
 
   const dummyImage = [
     {
@@ -49,11 +52,15 @@ const GameList = () => {
   // };
 
   const getGames = async () => {
-    const response = await axios.get(`${BASE_URL}/api/games`);
-    const games = response.data;
+    try {
+      const response = await axios.get(`${BASE_URL}/api/games`);
+      const games = response.data;
 
-    setGameList(games);
-    setSelectedGames(games);
+      setGameList(games);
+      setSelectedGames(games);
+    } catch (error) {
+      openModal(<ModalError>{error}</ModalError>);
+    }
   };
 
   const onChangeGameInput = (e) => {
