@@ -2,7 +2,6 @@ package gg.babble.babble.domain.slider;
 
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
 import gg.babble.babble.exception.BabbleNotFoundException;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -48,7 +47,14 @@ public class Sliders {
         values.add(slider);
     }
 
-    public List<Slider> sortValue(final List<Long> ids) {
+    public Slider find(final Long sliderId) {
+        return values.stream()
+            .filter(slider -> slider.isSameId(sliderId))
+            .findAny()
+            .orElseThrow(() -> new BabbleNotFoundException(String.format("[%d]번 Slider ID는 존재하지 않습니다.", sliderId)));
+    }
+
+    public void changeOrder(final List<Long> ids) {
         validateExistIdsValue(ids);
 
         final Map<Long, Slider> dictionary = listToMap(values);
@@ -57,8 +63,6 @@ public class Sliders {
             Slider slider = dictionary.get(ids.get(i));
             slider.setSortingIndex(i);
         }
-
-        return Collections.unmodifiableList(values);
     }
 
     private Map<Long, Slider> listToMap(final List<Slider> sliders) {
@@ -71,16 +75,14 @@ public class Sliders {
         return dictionary;
     }
 
-    public void rearrange(final int start) {
-        for (int i = start; i < values.size(); i++) {
-            values.get(i - 1).setSortingIndex(i);
-        }
+    public void delete(Slider slider) {
+        values.remove(slider);
+        rearrange(slider.getSortingIndex());
     }
 
-    public Slider find(final Long sliderId) {
-        return values.stream()
-            .filter(slider -> slider.isSameId(sliderId))
-            .findAny()
-            .orElseThrow(() -> new BabbleNotFoundException(String.format("[%d]번 Slider ID는 존재하지 않습니다.", sliderId)));
+    private void rearrange(final int start) {
+        for (int i = start; i < values.size(); i++) {
+            values.get(i).setSortingIndex(i - 1);
+        }
     }
 }

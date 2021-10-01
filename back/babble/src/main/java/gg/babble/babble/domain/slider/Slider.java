@@ -25,7 +25,7 @@ public class Slider {
     private int sortingIndex;
 
     public Slider(final String url) {
-        this(null, new ResourceUrl(url), Integer.MAX_VALUE);
+        resourceUrl = new ResourceUrl(url);
     }
 
     public Slider(final Long id, final ResourceUrl resourceUrl, final int sortingIndex) {

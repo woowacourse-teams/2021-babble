@@ -6,9 +6,7 @@ import gg.babble.babble.domain.slider.Sliders;
 import gg.babble.babble.dto.request.SliderOrderRequest;
 import gg.babble.babble.dto.request.SliderRequest;
 import gg.babble.babble.dto.response.SliderResponse;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,47 +22,35 @@ public class SliderService {
 
     @Transactional
     public SliderResponse insert(final SliderRequest request) {
-        Sliders sliders = new Sliders(sliderRepository.findAll());
-        Slider slider = request.toEntity();
+        final Sliders sliders = new Sliders(sliderRepository.findAll());
+        final Slider slider = sliderRepository.save(request.toEntity());
         sliders.add(slider);
 
-        Slider savedSlider = sliderRepository.save(slider);
-
-        return SliderResponse.from(savedSlider);
+        return SliderResponse.from(slider);
     }
 
     public List<SliderResponse> findAll() {
         final Sliders sliders = new Sliders(sliderRepository.findAll());
 
-        final List<Slider> result = sliders.getValues();
-
-        return toResponse(result);
+        return SliderResponse.from(sliders);
     }
 
     @Transactional
     public List<SliderResponse> updateOrder(final SliderOrderRequest request) {
         final Sliders sliders = new Sliders(sliderRepository.findAll());
-        final List<Long> ids = request.getIds();
 
-        final List<Slider> result = sliders.sortValue(ids);
+        sliders.changeOrder(request.getIds());
 
-        return toResponse(result);
+        return SliderResponse.from(sliders);
     }
 
     @Transactional
     public void delete(final Long sliderId) {
         final Sliders sliders = new Sliders(sliderRepository.findAll());
-        Slider slider = sliders.find(sliderId);
+        final Slider slider = sliders.find(sliderId);
+
+        sliders.delete(slider);
 
         sliderRepository.delete(slider);
-
-        sliders.rearrange(slider.getSortingIndex());
-    }
-
-    private List<SliderResponse> toResponse(List<Slider> result) {
-        return result.stream()
-            .sorted(Comparator.comparingInt(Slider::getSortingIndex))
-            .map(SliderResponse::from)
-            .collect(Collectors.toList());
     }
 }

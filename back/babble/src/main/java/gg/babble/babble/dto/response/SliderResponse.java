@@ -1,6 +1,10 @@
 package gg.babble.babble.dto.response;
 
 import gg.babble.babble.domain.slider.Slider;
+import gg.babble.babble.domain.slider.Sliders;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,5 +21,13 @@ public class SliderResponse {
 
     public static SliderResponse from(final Slider slider) {
         return new SliderResponse(slider.getId(), slider.url());
+    }
+
+    public static List<SliderResponse> from(final Sliders sliders) {
+        return sliders.getValues()
+            .stream()
+            .sorted(Comparator.comparingInt(Slider::getSortingIndex))
+            .map(SliderResponse::from)
+            .collect(Collectors.toList());
     }
 }
