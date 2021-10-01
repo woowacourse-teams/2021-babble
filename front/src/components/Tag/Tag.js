@@ -6,11 +6,7 @@ import React from 'react';
 const Tag = ({ customClass = '', children, ...rest }) => {
   return (
     <span className={`tag-container ${customClass}`}>
-      {customClass.includes('erasable') ? (
-        children
-      ) : (
-        <span {...rest}>{children}</span>
-      )}
+      <span {...rest}>{children}</span>
     </span>
   );
 };
