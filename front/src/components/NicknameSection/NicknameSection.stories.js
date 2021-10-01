@@ -7,7 +7,7 @@ export default {
 };
 
 const NicknameSectionTemplate = () => (
-  <div style={{ marginTop: '10rem' }}>
+  <div style={{ marginTop: '10rem', marginLeft: '5rem' }}>
     <NicknameSection />
   </div>
 );
