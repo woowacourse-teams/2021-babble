@@ -1,4 +1,5 @@
 import DropdownInput from './DropdownInput';
+import PropTypes from 'prop-types';
 import React from 'react';
 import SearchInput from './SearchInput';
 import { Subtitle3 } from '../../core/Typography';
@@ -26,6 +27,13 @@ const DefaultTemplate = ({ autoCompleteKeywords, dropdownKeywords }) => (
     <TextInput />
   </div>
 );
+
+DefaultTemplate.propTypes = {
+  autoCompleteKeywords: PropTypes.arrayOf(
+    PropTypes.shape({ name: PropTypes.string })
+  ),
+  dropdownKeywords: PropTypes.arrayOf(PropTypes.number),
+};
 
 export const Default = DefaultTemplate.bind({});
 Default.args = {
