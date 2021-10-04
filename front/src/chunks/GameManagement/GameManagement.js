@@ -35,10 +35,11 @@ const GameManagement = () => {
 
   const onSelectGame = (gameId) => {
     const selectedGameDetails = gameList.find((game) => game.id === gameId);
-
+    console.log(selectedGameDetails);
     setSelectedGame((prevData) => ({
       ...prevData,
-      name: selectedGame,
+      id: selectedGameDetails.id,
+      name: selectedGameDetails.name,
       // imageList: selectedGameDetails.thumbnail, TODO: thumbnail이 아직 List 형태가 아님
       imageList: [selectedGameDetails.thumbnail, '', ''],
       alternativeNames: selectedGameDetails.alternativeNames,
