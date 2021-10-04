@@ -80,7 +80,7 @@ public class Sliders {
 
     private void rearrange(final int start) {
         for (int i = start; i < values.size(); i++) {
-            values.get(i).setSortingIndex(i - 1);
+            values.get(i).setSortingIndex(i);
         }
     }
 }

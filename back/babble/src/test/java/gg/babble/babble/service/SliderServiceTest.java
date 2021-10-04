@@ -2,6 +2,7 @@ package gg.babble.babble.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.in;
 
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.domain.slider.Slider;
@@ -81,11 +82,23 @@ class SliderServiceTest extends ApplicationTest {
     @DisplayName("슬라이더 이미지를 제거한다.")
     @Test
     void delete() {
-        sliderService.delete(slider2.getId());
+        Slider slider4 = sliderRepository.save(new Slider("test4/path"));
+        Slider slider5 = sliderRepository.save(new Slider("test5/path"));
+        Slider slider6 = sliderRepository.save(new Slider("test6/path"));
+
+        sliderService.delete(slider3.getId());
         List<SliderResponse> sliders = sliderService.findAll();
+
+        for (SliderResponse slider : sliders) {
+            System.out.println(slider.getId());
+        }
+
         List<SliderResponse> expected = Arrays.asList(
             SliderResponse.from(slider1),
-            SliderResponse.from(slider3)
+            SliderResponse.from(slider2),
+            SliderResponse.from(slider4),
+            SliderResponse.from(slider5),
+            SliderResponse.from(slider6)
         );
 
         assertThat(sliders).usingRecursiveComparison().isEqualTo(expected);
