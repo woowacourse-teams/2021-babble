@@ -2,7 +2,6 @@ package gg.babble.babble.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.Assertions.in;
 
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.domain.slider.Slider;
@@ -109,7 +108,9 @@ class SliderServiceTest extends ApplicationTest {
     void deleteAfterChangedIndex() {
         sliderService.delete(slider2.getId());
 
-        Slider slider4 = sliderRepository.save(new Slider("test4/path"));
+        Slider slider4 = new Slider("test4/path");
+
+        sliderService.insert(new SliderRequest(slider4.url()));
 
         List<SliderResponse> slidersAfterDelete = sliderService.findAll();
 
