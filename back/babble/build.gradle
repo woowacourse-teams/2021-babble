@@ -74,6 +74,7 @@ jacocoTestReport {
         xml.enabled true
     }
 }
+
 test.finalizedBy jacocoTestReport
 
 test {
@@ -81,32 +82,15 @@ test {
     useJUnitPlatform()
 }
 
-asciidoctor.doFirst {
-    delete file('src/main/resources/static/docs')
-}
-
 asciidoctor {
     attributes 'snippets': snippetsDir
     inputs.dir snippetsDir
+    outputDir "build/resources/main/static/docs"
     dependsOn test
 }
 
 bootJar {
     dependsOn asciidoctor
-    from("${asciidoctor.outputDir}/html5") {
-        into 'static/docs'
-    }
-}
-
-task copyDocument(type: Copy) {
-    dependsOn bootJar
-
-    from file("build/docs/asciidoc/api-docs.html")
-    into file("src/main/resources/static/docs")
-}
-
-build {
-    dependsOn copyDocument
 }
 
 sonarqube {
