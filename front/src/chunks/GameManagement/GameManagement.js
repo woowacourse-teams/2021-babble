@@ -55,13 +55,13 @@ const GameManagement = () => {
   return (
     <section className='game-management-container'>
       <Headline2>게임 관리</Headline2>
-      <div className='game-management-wrapper indent'>
+      <div className='game-management-wrapper'>
         <Subtitle1>게임 조회</Subtitle1>
         <NameList list={gameList} erasable onClickNames={onSelectGame} />
 
         <Subtitle1>게임 등록</Subtitle1>
 
-        <form className='register-edit-game indent'>
+        <form className='register-edit-game'>
           <Subtitle3>게임 이름</Subtitle3>
           <div className='game-name-input'>
             <TextInput value={selectedGame.name} placeholder='게임 이름' />

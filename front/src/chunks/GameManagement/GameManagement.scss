@@ -1,9 +1,8 @@
-.indent {
-  margin-top: 1rem;
-  margin-left: 2rem;
-}
+@use '../../../style/mixins' as m;
 
 .game-management-container {
+  @include m.top-left-indents;
+
   .headline2,
   .subtitle1,
   .subtitle3 {
@@ -16,6 +15,8 @@
 
   .game-management-wrapper {
     .register-edit-game {
+      @include m.top-left-indents;
+
       .game-submit {
         margin-top: 1rem;
       }
