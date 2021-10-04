@@ -68,7 +68,7 @@
     @return map-get($indent, $key);
   }
 
-  @warn "Unknown `#{$key}` in $z-index!";
+  @warn "Unknown `#{$key}` in $indent!";
   @return null;
 }
 
