@@ -8,12 +8,15 @@ import React from 'react';
 const NameList = ({ list, erasable, onClickNames = null }) => {
   return (
     <div className='name-list-container'>
-      {list.length === 0 ? (
+      {!list.length ? (
         <div className='no-data'>조회된 데이터가 없습니다.</div>
       ) : (
         list.map((item) =>
           erasable ? (
-            <TagErasable onClickTagName={onClickNames} key={item.id}>
+            <TagErasable
+              onClickTagName={() => onClickNames(item.id)}
+              key={item.id}
+            >
               {item.name}
             </TagErasable>
           ) : (

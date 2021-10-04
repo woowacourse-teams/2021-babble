@@ -14,6 +14,7 @@ import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 const GameManagement = () => {
   const [gameList, setGameList] = useState([]);
   const [selectedGame, setSelectedGame] = useState({
+    id: -1,
     name: '',
     imageList: [],
     alternativeNames: [],
@@ -32,12 +33,8 @@ const GameManagement = () => {
     }
   };
 
-  const onSelectGame = ({ target }) => {
-    const selectedGame = target.innerText;
-
-    const selectedGameDetails = gameList.find(
-      (game) => game.name === selectedGame
-    );
+  const onSelectGame = (gameId) => {
+    const selectedGameDetails = gameList.find((game) => game.id === gameId);
 
     setSelectedGame((prevData) => ({
       ...prevData,
