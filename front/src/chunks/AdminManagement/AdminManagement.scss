@@ -1,12 +1,12 @@
 @use '../../../style/functions' as f;
+@use '../../../style/mixins' as m;
 
 .admin-management-container {
-  margin-left: f.indent(one-depth);
-  width: calc(100% - #{f.indent(one-depth)});
+  @include m.top-left-indents;
 
   .name-list-container {
+    @include m.top-left-indents;
+
     width: calc(100% - #{f.indent(one-depth)});
-    margin-top: f.indent(one-depth);
-    margin-left: f.indent(one-depth);
   }
 }
