@@ -22,12 +22,19 @@
       margin-bottom: 1.5rem;
     }
 
-    .form-error {
-      color: f.primary(babble-pink);
+    .form {
       margin: 1rem 0;
       display: inline-block;
       font-size: 1.1rem;
       max-width: fit-content;
+
+      &.error {
+        color: f.primary(babble-pink);
+      }
+
+      &.confirm {
+        color: f.alert(confirm);
+      }
     }
   }
 

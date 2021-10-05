@@ -7,6 +7,7 @@ import { RoundButton, TextInput } from '../../components';
 
 import { BASE_URL } from '../../constants/api';
 import { IoCloseOutline } from '@react-icons/all-files/io5/IoCloseOutline';
+import { PATTERNS } from '../../constants/regex';
 import axios from 'axios';
 import { setSessionStorage } from '../../utils/storage';
 import { useDefaultModal } from '../../contexts/DefaultModalProvider';
@@ -14,9 +15,25 @@ import { useUser } from '../../contexts/UserProvider';
 
 const ChangeNickname = () => {
   const [errorMessage, setErrorMessage] = useState('');
+  const [validNickname, setValidNickname] = useState(null);
 
   const { closeModal } = useDefaultModal();
   const { user, changeUser, setIsNicknameChanged } = useUser();
+
+  const isValidNickname = (e) => {
+    const includeSpecialCharacter = new RegExp(
+      PATTERNS.SPECIAL_CHARACTERS_WITHOUT_SPACE
+    );
+
+    if (includeSpecialCharacter.test(e.target.value)) {
+      setValidNickname(false);
+      setErrorMessage('한글, 영어, 숫자, 공백만 포함 가능합니다.');
+
+      return;
+    }
+
+    setValidNickname(true);
+  };
 
   const submitNickname = async (e) => {
     e.preventDefault();
@@ -56,10 +73,14 @@ const ChangeNickname = () => {
           placeholder='닉네임을 입력해주세요.'
           maxLength={NICKNAME_MAX_LENGTH}
           minLength={NICKNAME_MIN_LENGTH}
+          onChangeInput={isValidNickname}
           isContentSelected
           autocomplete='off'
         />
-        <span className='form-error'>{errorMessage}</span>
+
+        <span className={`form ${validNickname ? 'confirm' : 'error'}`}>
+          {validNickname ? '옳은 입력입니다.' : errorMessage}
+        </span>
       </div>
       <div className='control-buttons'>
         <RoundButton onClick={closeModal} size='small'>
