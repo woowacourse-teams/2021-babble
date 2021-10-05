@@ -1,0 +1,52 @@
+@use '../../../style/mixins' as m;
+
+.game-management-container {
+  @include m.top-left-indents;
+
+  .headline2,
+  .subtitle1,
+  .subtitle3 {
+    margin-top: 2rem;
+  }
+
+  .name-list-container {
+    margin-top: 1rem;
+  }
+
+  .game-management-wrapper {
+    .register-edit-game {
+      @include m.top-left-indents;
+
+      .game-submit {
+        margin-top: 1rem;
+      }
+
+      .game-name-input,
+      .game-alternative-input {
+        margin-top: 1rem;
+        display: flex;
+
+        .input-container {
+          input[type='text'] {
+            text-align: left;
+
+            &.input-inner {
+              margin-left: 0;
+            }
+          }
+        }
+
+        button {
+          margin-left: 1rem;
+          flex-basis: 15%;
+          max-width: 9rem;
+          height: inherit;
+        }
+      }
+
+      .game-submit {
+        height: 5rem;
+      }
+    }
+  }
+}

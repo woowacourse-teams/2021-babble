@@ -6,14 +6,11 @@ export default {
   component: [ImagePreview],
 };
 
-const imageList = {
-  bigImage:
-    'https://d2bidcnq0n74fu.cloudfront.net/img/games/title/League-of-Legends.png',
-  middleImage:
-    'https://d2bidcnq0n74fu.cloudfront.net/img/games/title/League-of-Legends.png',
-  smallImage:
-    'https://d2bidcnq0n74fu.cloudfront.net/img/games/title/League-of-Legends.png',
-};
+const imageList = [
+  'https://d2bidcnq0n74fu.cloudfront.net/img/games/title/League-of-Legends.png',
+  'https://d2bidcnq0n74fu.cloudfront.net/img/games/title/League-of-Legends.png',
+  'https://d2bidcnq0n74fu.cloudfront.net/img/games/title/League-of-Legends.png',
+];
 
 const ImagePreviewTemplate = (args) => (
   <div style={{ margin: '1rem' }}>
