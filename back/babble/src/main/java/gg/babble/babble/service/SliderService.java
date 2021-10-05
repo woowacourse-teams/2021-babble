@@ -26,13 +26,13 @@ public class SliderService {
         Slider slider = sliderRepository.save(request.toEntity());
         sliders.add(slider);
 
-        return SliderResponse.from(slider);
+        return SliderResponse.of(slider);
     }
 
     public List<SliderResponse> findAll() {
         Sliders sliders = new Sliders(sliderRepository.findAll());
 
-        return SliderResponse.from(sliders);
+        return SliderResponse.of(sliders);
     }
 
     @Transactional
@@ -41,7 +41,7 @@ public class SliderService {
 
         sliders.changeOrder(request.getIds());
 
-        return SliderResponse.from(sliders);
+        return SliderResponse.of(sliders);
     }
 
     @Transactional

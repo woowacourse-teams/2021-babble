@@ -9,7 +9,6 @@ import gg.babble.babble.dto.request.SliderOrderRequest;
 import gg.babble.babble.dto.request.SliderRequest;
 import gg.babble.babble.dto.response.SliderResponse;
 import gg.babble.babble.exception.BabbleDuplicatedException;
-import gg.babble.babble.exception.BabbleIllegalArgumentException;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,7 +38,7 @@ class SliderServiceTest extends ApplicationTest {
         SliderRequest request = new SliderRequest("test/path");
         SliderResponse response = sliderService.insert(request);
 
-        SliderResponse expected = SliderResponse.from(new Slider("test/path"));
+        SliderResponse expected = SliderResponse.of(new Slider("test/path"));
 
         assertThat(response).usingRecursiveComparison().ignoringFields("id").isEqualTo(expected);
     }
@@ -49,9 +48,9 @@ class SliderServiceTest extends ApplicationTest {
     void findAll() {
         List<SliderResponse> sliders = sliderService.findAll();
         List<SliderResponse> expected = Arrays.asList(
-            SliderResponse.from(slider1),
-            SliderResponse.from(slider2),
-            SliderResponse.from(slider3)
+            SliderResponse.of(slider1),
+            SliderResponse.of(slider2),
+            SliderResponse.of(slider3)
         );
 
         assertThat(sliders).usingRecursiveComparison().isEqualTo(expected);
@@ -63,9 +62,9 @@ class SliderServiceTest extends ApplicationTest {
         SliderOrderRequest request = new SliderOrderRequest(Arrays.asList(slider3.getId(), slider1.getId(), slider2.getId()));
         List<SliderResponse> responses = sliderService.updateOrder(request);
 
-        List<SliderResponse> expected = Arrays.asList(SliderResponse.from(slider3)
-            , SliderResponse.from(slider1)
-            , SliderResponse.from(slider2)
+        List<SliderResponse> expected = Arrays.asList(SliderResponse.of(slider3)
+            , SliderResponse.of(slider1)
+            , SliderResponse.of(slider2)
         );
 
         assertThat(responses).usingRecursiveComparison().ignoringFields("id").isEqualTo(expected);
@@ -94,11 +93,11 @@ class SliderServiceTest extends ApplicationTest {
         }
 
         List<SliderResponse> expected = Arrays.asList(
-            SliderResponse.from(slider1),
-            SliderResponse.from(slider2),
-            SliderResponse.from(slider4),
-            SliderResponse.from(slider5),
-            SliderResponse.from(slider6)
+            SliderResponse.of(slider1),
+            SliderResponse.of(slider2),
+            SliderResponse.of(slider4),
+            SliderResponse.of(slider5),
+            SliderResponse.of(slider6)
         );
 
         assertThat(sliders).usingRecursiveComparison().isEqualTo(expected);
@@ -115,9 +114,9 @@ class SliderServiceTest extends ApplicationTest {
 
         List<SliderResponse> slidersAfterDelete = sliderService.findAll();
 
-        List<SliderResponse> expected = Arrays.asList(SliderResponse.from(slider1)
-            , SliderResponse.from(slider3)
-            , SliderResponse.from(slider4)
+        List<SliderResponse> expected = Arrays.asList(SliderResponse.of(slider1)
+            , SliderResponse.of(slider3)
+            , SliderResponse.of(slider4)
         );
 
         assertThat(slidersAfterDelete).usingRecursiveComparison().ignoringFields("id").isEqualTo(expected);

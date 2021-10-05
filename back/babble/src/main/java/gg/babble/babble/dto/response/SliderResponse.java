@@ -19,15 +19,15 @@ public class SliderResponse {
     private Long id;
     private String url;
 
-    public static SliderResponse from(final Slider slider) {
+    public static SliderResponse of(final Slider slider) {
         return new SliderResponse(slider.getId(), slider.url());
     }
 
-    public static List<SliderResponse> from(final Sliders sliders) {
+    public static List<SliderResponse> of(final Sliders sliders) {
         return sliders.getValues()
             .stream()
             .sorted(Comparator.comparingInt(Slider::getSortingIndex))
-            .map(SliderResponse::from)
+            .map(SliderResponse::of)
             .collect(Collectors.toList());
     }
 }
