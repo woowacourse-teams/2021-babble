@@ -6,7 +6,11 @@ export default {
   component: GameCard,
 };
 
-const GameCardTemplate = (args) => <GameCard {...args} />;
+const GameCardTemplate = (args) => (
+  <div style={{ width: '200px' }}>
+    <GameCard {...args} />
+  </div>
+);
 
 export const Default = GameCardTemplate.bind({});
 Default.args = {

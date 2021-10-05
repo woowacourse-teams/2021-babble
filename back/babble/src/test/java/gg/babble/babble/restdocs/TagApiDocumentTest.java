@@ -44,7 +44,7 @@ public class TagApiDocumentTest extends ApiDocumentTest {
     @Test
     public void tagsGetTest() throws Exception {
         mockMvc.perform(get("/api/tags")
-            .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").exists())
             .andExpect(jsonPath("$").isArray())

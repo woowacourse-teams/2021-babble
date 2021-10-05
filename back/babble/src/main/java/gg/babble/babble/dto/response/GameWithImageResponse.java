@@ -1,7 +1,7 @@
 package gg.babble.babble.dto.response;
 
 import gg.babble.babble.domain.game.Game;
-import java.util.Set;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -11,11 +11,11 @@ public class GameWithImageResponse {
 
     private final Long id;
     private final String name;
-    private final String thumbnail;
-    private final Set<String> alternativeNames;
+    private final List<String> images;
+    private final List<String> alternativeNames;
 
     public static GameWithImageResponse from(final Game game) {
-        return new GameWithImageResponse(game.getId(), game.getName(), game.getImage(), game.getAlternativeGameNames().getNames());
+        return new GameWithImageResponse(game.getId(), game.getName(), game.getImages(), game.getAlternativeGameNames().getNames());
     }
 
 }

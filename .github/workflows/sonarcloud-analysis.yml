@@ -5,8 +5,12 @@ on:
       - main
       - release
       - develop
+    paths:
+      - 'back/**'
   pull_request:
     types: [opened, synchronize, reopened]
+    paths:
+      - 'back/**'
 
 jobs:
   build:

@@ -17,6 +17,12 @@
 .erasable {
   padding: 0.4rem 0.8rem 0.4rem 1.2rem;
 
+  span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   button {
     margin-left: 0.6rem;
 
