@@ -18,6 +18,6 @@ public class SliderRequest {
     private String sliderUrl;
 
     public Slider toEntity() {
-        return new Slider(null, new ResourceUrl(sliderUrl), Integer.MAX_VALUE);
+        return new Slider(sliderUrl);
     }
 }

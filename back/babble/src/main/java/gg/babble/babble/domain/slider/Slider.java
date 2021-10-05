@@ -28,17 +28,11 @@ public class Slider {
         resourceUrl = new ResourceUrl(url);
     }
 
-    public Slider(final Long id, final ResourceUrl resourceUrl, final int sortingIndex) {
-        this.id = id;
-        this.resourceUrl = resourceUrl;
-        this.sortingIndex = sortingIndex;
-    }
-
     public String url() {
         return resourceUrl.getUrl();
     }
 
-    public boolean isSameId(Long sliderId) {
+    public boolean isSameId(final Long sliderId) {
         return id.equals(sliderId);
     }
 

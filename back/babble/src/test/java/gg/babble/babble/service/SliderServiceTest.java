@@ -8,6 +8,7 @@ import gg.babble.babble.domain.slider.Slider;
 import gg.babble.babble.dto.request.SliderOrderRequest;
 import gg.babble.babble.dto.request.SliderRequest;
 import gg.babble.babble.dto.response.SliderResponse;
+import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
 import java.util.Arrays;
 import java.util.List;
@@ -70,12 +71,12 @@ class SliderServiceTest extends ApplicationTest {
         assertThat(responses).usingRecursiveComparison().ignoringFields("id").isEqualTo(expected);
     }
 
-    @DisplayName("올바르지 않게 슬라이더 이미지를 순서를 변경한다.")
+    @DisplayName("중복된 아이디를 포함한 값으로 슬라이더 이미지를 순서를 변경한다.")
     @Test
     void updateWrongValue() {
         SliderOrderRequest request = new SliderOrderRequest(Arrays.asList(slider3.getId(), slider1.getId(), slider1.getId()));
 
-        assertThatThrownBy(() -> sliderService.updateOrder(request)).isInstanceOf(BabbleIllegalArgumentException.class);
+        assertThatThrownBy(() -> sliderService.updateOrder(request)).isInstanceOf(BabbleDuplicatedException.class);
     }
 
     @DisplayName("슬라이더 이미지를 제거한다.")

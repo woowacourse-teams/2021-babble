@@ -1,5 +1,6 @@
 package gg.babble.babble.domain.slider;
 
+import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.HashMap;
@@ -16,13 +17,14 @@ public class Sliders {
 
     public Sliders(final List<Slider> values) {
         this.values = values;
+        rearrange();
     }
 
     private void validateExistIdsValue(final List<Long> ids) {
         List<Long> valueIds = ids();
 
         if (new HashSet<>(ids).size() != ids.size()) {
-            throw new BabbleIllegalArgumentException("중복된 Slider ID가 포함되어 있습니다.");
+            throw new BabbleDuplicatedException("중복된 Slider ID가 포함되어 있습니다.");
         }
 
         if (!valueIds.containsAll(ids)) {
@@ -40,7 +42,7 @@ public class Sliders {
             .collect(Collectors.toList());
     }
 
-    public void add(Slider slider) {
+    public void add(final Slider slider) {
         slider.setSortingIndex(values.size());
         values.add(slider);
     }
@@ -73,9 +75,13 @@ public class Sliders {
         return dictionary;
     }
 
-    public void delete(Slider slider) {
+    public void delete(final Slider slider) {
         values.remove(slider);
         rearrange(slider.getSortingIndex());
+    }
+
+    private void rearrange() {
+        rearrange(0);
     }
 
     private void rearrange(final int start) {
