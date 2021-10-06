@@ -39,9 +39,9 @@ public class TagRepositoryTest {
         Tag cpex_tag = tagRepository.save(new Tag("씨펙스"));
 
         // when
-        List<Tag> beforeDeleteTags = tagRepository.findByDeletedFalse();
+        List<Tag> beforeDeleteTags = tagRepository.findAll();
         bpex_tag.delete();
-        List<Tag> afterDeleteTags = tagRepository.findByDeletedFalse();
+        List<Tag> afterDeleteTags = tagRepository.findAll();
 
         // then
         assertThat(beforeDeleteTags).containsExactly(apex_tag, bpex_tag, cpex_tag);
@@ -55,10 +55,10 @@ public class TagRepositoryTest {
         Tag tag = tagRepository.save(new Tag("똥겜"));
 
         // when
-        assertThat(tagRepository.findByIdAndDeletedFalse(tag.getId())).isPresent();
+        assertThat(tagRepository.findById(tag.getId())).isPresent();
         tag.delete();
 
         // then
-        assertThat(tagRepository.findByIdAndDeletedFalse(tag.getId())).isNotPresent();
+        assertThat(tagRepository.findById(tag.getId())).isNotPresent();
     }
 }

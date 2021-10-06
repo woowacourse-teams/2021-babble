@@ -146,11 +146,11 @@ public class TagServiceTest extends ApplicationTest {
             AlternativeTagName alternativeTagName = new AlternativeTagName("노 웨이 홈", tag);
 
             // when
-            assertThat(tagRepository.findByIdAndDeletedFalse(tag.getId())).isPresent();
+            assertThat(tagRepository.findById(tag.getId())).isPresent();
             tagService.deleteTag(tag.getId());
 
             // then
-            assertThat(tagRepository.findByIdAndDeletedFalse(tag.getId())).isNotPresent();
+            assertThat(tagRepository.findById(tag.getId())).isNotPresent();
         }
 
         @DisplayName("id에 해당하는 태그가 존재하지 않으면 예외가 발생한다.")
