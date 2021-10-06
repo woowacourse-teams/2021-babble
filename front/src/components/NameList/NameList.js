@@ -5,18 +5,25 @@ import { Tag, TagErasable } from '..';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const NameList = ({ list, erasable, onClickNames }) => {
+const NameList = ({ list, erasable, onClickNames = null }) => {
   return (
     <div className='name-list-container'>
-      {list.map((itemName, index) =>
-        erasable ? (
-          <TagErasable onClickTagName={onClickNames} key={index}>
-            {itemName}
-          </TagErasable>
-        ) : (
-          <Tag onClickTagName={onClickNames} key={index}>
-            {itemName}
-          </Tag>
+      {!list.length ? (
+        <div className='no-data'>조회된 데이터가 없습니다.</div>
+      ) : (
+        list.map((item) =>
+          erasable ? (
+            <TagErasable
+              onClickTagName={() => onClickNames(item.id)}
+              key={item.id}
+            >
+              {item.name}
+            </TagErasable>
+          ) : (
+            <Tag onClickTagName={onClickNames} key={item.id}>
+              {item.name}
+            </Tag>
+          )
         )
       )}
     </div>
@@ -24,7 +31,12 @@ const NameList = ({ list, erasable, onClickNames }) => {
 };
 
 NameList.propTypes = {
-  list: PropTypes.arrayOf(PropTypes.string),
+  list: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+    })
+  ),
   erasable: PropTypes.bool,
   onClickNames: PropTypes.func,
 };
