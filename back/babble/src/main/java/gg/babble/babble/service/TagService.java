@@ -29,12 +29,12 @@ public class TagService {
     }
 
     private Tag findById(final Long id) {
-        return tagRepository.findById(id)
+        return tagRepository.findByIdAndDeletedFalse(id)
             .orElseThrow(() -> new BabbleNotFoundException(String.format("[%d]는 존재하지 않는 태그 ID입니다.", id)));
     }
 
     public List<TagResponse> findAll() {
-        List<Tag> tags = tagRepository.findAll();
+        List<Tag> tags = tagRepository.findByDeletedFalse();
 
         return tags.stream()
             .map(TagResponse::from)

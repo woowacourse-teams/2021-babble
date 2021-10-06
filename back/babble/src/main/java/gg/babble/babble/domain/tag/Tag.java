@@ -13,10 +13,8 @@ import javax.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Where;
 
 @Getter
-@Where(clause = "deleted=false")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Tag {
