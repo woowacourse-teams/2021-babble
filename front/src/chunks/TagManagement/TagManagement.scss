@@ -1,0 +1,49 @@
+@use '../../../style/functions' as f;
+@use '../../../style/mixins' as m;
+
+.tag-management-container {
+  @include m.top-left-indents;
+
+  .tag-management-wrapper {
+    @include m.top-left-indents;
+
+    & > .name-list-container {
+      @include m.top-left-indents;
+
+      margin-bottom: 2rem;
+    }
+
+    .register-tag {
+      @include m.top-left-indents;
+
+      .input-container {
+        margin: 1rem 0;
+
+        input[type='text'] {
+          text-align: left;
+
+          &.input-inner {
+            margin-left: 0;
+          }
+        }
+      }
+
+      .register-alternative-tag-name {
+        display: flex;
+        align-items: center;
+
+        button {
+          margin-left: 1rem;
+          flex-basis: 15%;
+          max-width: 9rem;
+          height: 5rem;
+        }
+      }
+
+      .tag-submit {
+        margin-top: 1rem;
+        height: 5rem;
+      }
+    }
+  }
+}
