@@ -52,11 +52,11 @@ const ChangeNickname = () => {
       closeModal();
     } catch (error) {
       //TODO: 상수화 필요
-      setErrorMessage(
-        error.response.data[0].message
-          .split('닉네임은 ')[1]
-          .split('입력 닉네임:')[0]
-      );
+      const [{ message }] = error.response.data;
+      const [splittedMessage] = message.split(' 입력 닉네임:');
+      const [, errorMessage] = splittedMessage.split('닉네임은 ');
+
+      setErrorMessage(errorMessage);
     }
   };
 
