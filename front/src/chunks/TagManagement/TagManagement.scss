@@ -6,11 +6,13 @@
 
   .tag-management-wrapper {
     @include m.top-left-indents;
+    width: calc(100% - #{f.indent(one-left-depth)});
 
     & > .name-list-container {
       @include m.top-left-indents;
 
       margin-bottom: 2rem;
+      width: calc(100% - #{f.indent(one-left-depth)});
     }
 
     .register-tag {
