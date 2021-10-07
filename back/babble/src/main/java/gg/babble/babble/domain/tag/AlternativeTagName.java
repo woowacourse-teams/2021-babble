@@ -12,9 +12,11 @@ import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 @Getter
+@SQLDelete(sql = "UPDATE alternative_tag_name SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity

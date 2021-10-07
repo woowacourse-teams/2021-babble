@@ -50,19 +50,6 @@ class GameTest {
         assertThat(game.getImages()).isEqualTo(target.getImages());
     }
 
-    @DisplayName("게임 삭제")
-    @Test
-    void deleteGame() {
-        // given
-        Game game = new Game(1L, "게임 이름", Collections.singletonList("게임 이미지"));
-
-        // when
-        game.delete();
-
-        // then
-        assertThat(game.isDeleted()).isTrue();
-    }
-
     @DisplayName("대체 이름 추가")
     @Test
     void alternativeNames() {

@@ -56,10 +56,10 @@ class SessionRepositoryTest {
         Session session = sessionRepository.save(세션_객체를_생성한다());
 
         // when
-        session.delete();
+        sessionRepository.deleteById(session.getId());
 
         // then
-        assertThat(sessionRepository.findBySessionIdAndDeletedFalse(session.getSessionId())).isNotPresent();
+        assertThat(sessionRepository.findBySessionId(session.getSessionId())).isEmpty();
     }
 
     @DisplayName("sessionId로 조회를 시도할 때 삭제된 세션은 조회되지 않는다.")
@@ -69,9 +69,9 @@ class SessionRepositoryTest {
         Session session = sessionRepository.save(세션_객체를_생성한다());
 
         // then
-        assertThat(sessionRepository.findBySessionIdAndDeletedFalse(session.getSessionId())).isPresent();
-        session.delete();
-        assertThat(sessionRepository.findBySessionIdAndDeletedFalse(session.getSessionId())).isNotPresent();
+        assertThat(sessionRepository.findBySessionId(session.getSessionId())).isPresent();
+        sessionRepository.deleteById(session.getId());
+        assertThat(sessionRepository.findBySessionId(session.getSessionId())).isNotPresent();
     }
 
     private Session 세션_객체를_생성한다() {

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class AlternativeGameNames {
 
-    @OneToMany(mappedBy = "game")
+    @OneToMany(mappedBy = "game", cascade = CascadeType.REMOVE)
     @NotNull(message = "대안 이름들은 Null 일 수 없습니다.")
     private List<AlternativeGameName> elements = new ArrayList<>();
 

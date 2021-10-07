@@ -2,7 +2,6 @@ package gg.babble.babble.domain.repository;
 
 import gg.babble.babble.domain.room.Room;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,6 +21,4 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
         + "from Room r "
         + "where r.deleted = false and r.sessions.sessions.size > 0 and r.game.id = ?1 order by r.createdAt desc")
     List<Room> findByGameIdAndDeletedFalse(final Long gameId, final Pageable pageable);
-
-    Optional<Room> findByIdAndDeletedFalse(final Long id);
 }

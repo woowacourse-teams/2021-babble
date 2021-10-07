@@ -18,9 +18,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 @Getter
+@SQLDelete(sql = "UPDATE tag SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity

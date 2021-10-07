@@ -23,9 +23,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 @Getter
+@SQLDelete(sql = "UPDATE game SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -50,7 +52,7 @@ public class Game {
     private AlternativeGameNames alternativeGameNames;
 
     @Column(nullable = false)
-    private boolean deleted = false;
+    private final boolean deleted = false;
 
     public Game(final String name) {
         this(null, name, Collections.singletonList(DEFAULT_IMAGE), new AlternativeGameNames());
@@ -133,7 +135,7 @@ public class Game {
 
         alternativeGameNames.remove(alternativeGameName);
 
-        if (alternativeGameName.getGame().equals(this)) {
+        if (this.equals(alternativeGameName.getGame())) {
             alternativeGameName.delete();
         }
     }
@@ -144,10 +146,6 @@ public class Game {
 
     public boolean hasNotName(final String name) {
         return !hasName(name);
-    }
-
-    public void delete() {
-        this.deleted = true;
     }
 
     public List<String> getAlternativeNames() {
