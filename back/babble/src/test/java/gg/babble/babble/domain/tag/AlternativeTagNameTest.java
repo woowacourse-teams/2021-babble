@@ -14,7 +14,7 @@ class AlternativeTagNameTest {
     @BeforeEach
     void setUp() {
         tag = new Tag("1시간");
-        alternativeTagName = new AlternativeTagName("1hour", tag);
+        alternativeTagName = new AlternativeTagName(new TagName("1hour"), tag);
     }
 
     @DisplayName("AlternativeTagName을 생성하면 자동으로 Tag에 추가됨")

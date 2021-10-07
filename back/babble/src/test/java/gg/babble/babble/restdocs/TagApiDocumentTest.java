@@ -15,10 +15,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import gg.babble.babble.domain.admin.Administrator;
-import gg.babble.babble.domain.tag.AlternativeTagName;
 import gg.babble.babble.domain.tag.Tag;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,9 +46,8 @@ public class TagApiDocumentTest extends ApiDocumentTest {
         tags.add(tagRepository.save(new Tag("2시간")));
         tags.add(tagRepository.save(new Tag("솔로랭크")));
 
-        alternativeTagNameRepository.save(new AlternativeTagName(ALTERNATIVE_NAME1, tags.get(0)));
-        alternativeTagNameRepository.save(new AlternativeTagName(ALTERNATIVE_NAME2, tags.get(0)));
-        alternativeTagNameRepository.save(new AlternativeTagName(ALTERNATIVE_NAME3, tags.get(1)));
+        tags.get(0).addNames(Arrays.asList(ALTERNATIVE_NAME1, ALTERNATIVE_NAME2));
+        tags.get(1).addNames(Collections.singletonList(ALTERNATIVE_NAME3));
     }
 
     @DisplayName("전체 태그를 가져오는데 성공하면, 200응답 코드와 전체 태그를 가져온다.")

@@ -34,13 +34,13 @@ public class AlternativeTagName {
 
     private boolean isDeleted = false;
 
-    public AlternativeTagName(final String value, final Tag tag) {
-        this(null, value, tag);
+    public AlternativeTagName(final TagName tagName, final Tag tag) {
+        this(null, tagName, tag);
     }
 
-    public AlternativeTagName(final Long id, final String value, final Tag tag) {
+    public AlternativeTagName(final Long id, final TagName tagName, final Tag tag) {
         this.id = id;
-        this.value = new TagName(value);
+        this.value = tagName;
 
         setTag(tag);
     }

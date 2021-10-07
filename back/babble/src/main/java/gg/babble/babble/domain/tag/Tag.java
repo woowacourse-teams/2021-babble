@@ -3,7 +3,11 @@ package gg.babble.babble.domain.tag;
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleIllegalStatementException;
 import gg.babble.babble.exception.BabbleNotFoundException;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -13,6 +17,7 @@ import javax.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.logging.log4j.util.Strings;
 import org.hibernate.annotations.Where;
 
 @Getter
@@ -50,6 +55,30 @@ public class Tag {
         this.name = new TagName(name);
         this.alternativeTagNames = alternativeTagNames;
         this.tagRegistrations = tagRegistrations;
+    }
+
+    public void addNames(final List<String> names) {
+        List<TagName> tagNames = names.stream()
+            .map(TagName::new)
+            .collect(Collectors.toList());
+        validateToAddNames(tagNames);
+
+        for (TagName tagName : tagNames) {
+            new AlternativeTagName(tagName, this);
+        }
+    }
+
+    private void validateToAddNames(final List<TagName> names) {
+        Set<TagName> nameSet = new HashSet<>(names);
+        if (nameSet.size() != names.size()) {
+            throw new BabbleDuplicatedException(String.format("중복된 값이 있습니다.(%s)", Strings.join(names, ',')));
+        }
+
+        for (TagName name : names) {
+            if (hasName(name)) {
+                throw new BabbleDuplicatedException(String.format("이미 존재하는 이름 입니다.(%s)", name.getValue()));
+            }
+        }
     }
 
     public void addAlternativeName(final AlternativeTagName name) {
@@ -92,6 +121,10 @@ public class Tag {
 
     public boolean hasNotName(final TagName name) {
         return !hasName(name);
+    }
+
+    public List<String> getAlternativeNames() {
+        return alternativeTagNames.getNames();
     }
 
     public String getName() {

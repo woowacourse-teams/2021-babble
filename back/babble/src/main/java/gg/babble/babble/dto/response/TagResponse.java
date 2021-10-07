@@ -14,6 +14,6 @@ public class TagResponse {
     private final List<String> alternativeNames;
 
     public static TagResponse from(final Tag tag) {
-        return new TagResponse(tag.getId(), tag.getName(), tag.getAlternativeTagNames().getNames());
+        return new TagResponse(tag.getId(), tag.getName(), tag.getAlternativeNames());
     }
 }

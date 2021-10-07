@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import gg.babble.babble.ApplicationTest;
-import gg.babble.babble.domain.tag.AlternativeTagName;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.dto.request.TagCreateRequest;
 import gg.babble.babble.dto.request.TagUpdateRequest;
@@ -12,6 +11,7 @@ import gg.babble.babble.dto.response.TagResponse;
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
@@ -105,7 +105,7 @@ public class TagServiceTest extends ApplicationTest {
         void updateTag() {
             // given
             Tag tag = tagRepository.save(new Tag("피터파커"));
-            AlternativeTagName alternativeTagName = new AlternativeTagName("노 웨이 홈", tag);
+            tag.addNames(Collections.singletonList("노 웨이 홈"));
 
             String updateTagName = "피똥파커";
             List<String> updateAlternativeTagNames = Arrays.asList("웨", "쳐", "피", "똥");
@@ -143,7 +143,7 @@ public class TagServiceTest extends ApplicationTest {
         void updateTag() {
             // given
             Tag tag = tagRepository.save(new Tag("피터파커"));
-            AlternativeTagName alternativeTagName = new AlternativeTagName("노 웨이 홈", tag);
+            tag.addNames(Collections.singletonList("노 웨이 홈"));
 
             // when
             assertThat(tagRepository.findByIdAndDeletedFalse(tag.getId())).isPresent();

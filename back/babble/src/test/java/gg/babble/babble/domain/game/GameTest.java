@@ -38,8 +38,8 @@ class GameTest {
     @Test
     void updateGame() {
         // given
-        final Game game = new Game(1L, "오래된 게임", Collections.singletonList("오래된 이미지"));
-        final Game target = new Game("새로운 게임", Collections.singletonList("새로운 이미지"));
+        Game game = new Game(1L, "오래된 게임", Collections.singletonList("오래된 이미지"));
+        Game target = new Game("새로운 게임", Collections.singletonList("새로운 이미지"));
 
         // when
         game.update(target);
@@ -54,7 +54,7 @@ class GameTest {
     @Test
     void deleteGame() {
         // given
-        final Game game = new Game(1L, "게임 이름", Collections.singletonList("게임 이미지"));
+        Game game = new Game(1L, "게임 이름", Collections.singletonList("게임 이미지"));
 
         // when
         game.delete();
@@ -67,10 +67,10 @@ class GameTest {
     @Test
     void alternativeNames() {
         // given
-        final Game game = new Game(1L, "오래된 게임", Collections.singletonList("오래된 이미지"));
+        Game game = new Game(1L, "오래된 게임", Collections.singletonList("오래된 이미지"));
 
         // when
-        final AlternativeGameName alternativeGameName = new AlternativeGameName("망겜", game);
+        AlternativeGameName alternativeGameName = new AlternativeGameName("망겜", game);
 
         // then
         assertThat(game.getAlternativeGameNames()).isEqualTo(new AlternativeGameNames(Collections.singletonList(alternativeGameName)));
@@ -80,9 +80,9 @@ class GameTest {
     @Test
     void changeAlternativeGameName() {
         // given
-        final Game game = new Game(1L, "오래된 게임", Collections.singletonList("오래된 이미지"));
+        Game game = new Game(1L, "오래된 게임", Collections.singletonList("오래된 이미지"));
         AlternativeGameName alternativeGameName = new AlternativeGameName(1L, "흥겜", game);
-        final Game target = new Game("새로운 게임", Collections.singletonList("새로운 이미지"));
+        Game target = new Game("새로운 게임", Collections.singletonList("새로운 이미지"));
         AlternativeGameName alternativeTargetGameName = new AlternativeGameName(1L, "망겜", target);
 
         // when
@@ -99,8 +99,8 @@ class GameTest {
     @Test
     void removeAlternativeGameName() {
         // given
-        final Game game = new Game(1L, "오래된 게임", Collections.singletonList("오래된 이미지"));
-        final AlternativeGameName alternativeGameName = new AlternativeGameName("흥겜", game);
+        Game game = new Game(1L, "오래된 게임", Collections.singletonList("오래된 이미지"));
+        AlternativeGameName alternativeGameName = new AlternativeGameName("흥겜", game);
         // when
         game.removeAlternativeName(alternativeGameName);
         // then
@@ -112,7 +112,7 @@ class GameTest {
     @Test
     void addNames() {
         // given
-        final Game game = new Game(1L, "오래된 게임", Collections.singletonList("오래된 이미지"));
+        Game game = new Game(1L, "오래된 게임", Collections.singletonList("오래된 이미지"));
 
         // when
         List<String> alternativeNames = Arrays.asList("망겜", "국민겜", "사골");
@@ -126,9 +126,9 @@ class GameTest {
     @Test
     void invalidAddNames() {
         // given
-        final Game game = new Game(1L, "오래된 게임", Collections.singletonList("오래된 이미지"));
+        Game game = new Game(1L, "오래된 게임", Collections.singletonList("오래된 이미지"));
 
-        // when
+        // then
         List<String> alternativeNames = Arrays.asList("망겜", "오래된 게임", "사골");
         assertThatThrownBy(() -> game.addNames(alternativeNames)).isExactlyInstanceOf(BabbleDuplicatedException.class);
     }
@@ -137,36 +137,10 @@ class GameTest {
     @Test
     void addDuplicatedNames() {
         // given
-        final Game game = new Game(1L, "오래된 게임", Collections.singletonList("오래된 이미지"));
+        Game game = new Game(1L, "오래된 게임", Collections.singletonList("오래된 이미지"));
 
         // when
         List<String> alternativeNames = Arrays.asList("망겜", "망겜", "사골");
         assertThatThrownBy(() -> game.addNames(alternativeNames)).isExactlyInstanceOf(BabbleDuplicatedException.class);
-    }
-
-    @DisplayName("단수 개의 이름 추가")
-    @Test
-    void addName() {
-        // given
-        final Game game = new Game(1L, "오래된 게임", Collections.singletonList("오래된 이미지"));
-
-        // when
-        game.addName("망겜");
-
-        // then
-        assertThat(game.getAlternativeNames()).hasSize(1).contains("망겜");
-    }
-
-    @DisplayName("단수 개의 이름 추가시 이미 존재하는 이름인 경우 예외 처리")
-    @Test
-    void invalidAddName() {
-        // given
-        final Game game = new Game(1L, "오래된 게임", Collections.singletonList("오래된 이미지"));
-
-        // when
-        game.addName("망겜");
-
-        // then
-        assertThatThrownBy(() -> game.addName("망겜")).isExactlyInstanceOf(BabbleDuplicatedException.class);
     }
 }

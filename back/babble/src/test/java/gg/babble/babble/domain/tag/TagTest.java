@@ -6,7 +6,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleLengthException;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -40,7 +42,7 @@ class TagTest {
         Tag tag = new Tag(1L, "1시간");
 
         // when
-        AlternativeTagName alternativeName = new AlternativeTagName("1hour", tag);
+        AlternativeTagName alternativeName = new AlternativeTagName(new TagName("1hour"), tag);
 
         // then
         assertThat(tag.getAlternativeTagNames()).isEqualTo(new AlternativeTagNames(Collections.singletonList(alternativeName)));
@@ -57,8 +59,8 @@ class TagTest {
         // when
         Tag tag = new Tag(1L, tagName);
 
-        AlternativeTagName alternativeTagName1 = new AlternativeTagName(1L, name1, tag);
-        AlternativeTagName alternativeTagName2 = new AlternativeTagName(2L, name2, tag);
+        AlternativeTagName alternativeTagName1 = new AlternativeTagName(1L, new TagName(name1), tag);
+        AlternativeTagName alternativeTagName2 = new AlternativeTagName(2L, new TagName(name2), tag);
 
         // then
         assertThat(tag.getAlternativeTagNames().getNames()).containsExactly(name1, name2);
@@ -73,10 +75,10 @@ class TagTest {
 
         // when
         Tag tag = new Tag(1L, tagName);
-        AlternativeTagName alternativeTagName = new AlternativeTagName(1L, name, tag);
+        AlternativeTagName alternativeTagName = new AlternativeTagName(1L, new TagName(name), tag);
 
         // then
-        assertThatThrownBy(() -> new AlternativeTagName(2L, name, tag)).isInstanceOf(BabbleDuplicatedException.class);
+        assertThatThrownBy(() -> new AlternativeTagName(2L, new TagName(name), tag)).isInstanceOf(BabbleDuplicatedException.class);
     }
 
     @DisplayName("태그 이름과 대체 이름이 중복되는 경우 예외가 발생한다.")
@@ -89,7 +91,7 @@ class TagTest {
         Tag tag = new Tag(1L, name);
 
         // then
-        assertThatThrownBy(() -> new AlternativeTagName(name, tag))
+        assertThatThrownBy(() -> new AlternativeTagName(new TagName(name), tag))
             .isExactlyInstanceOf(BabbleDuplicatedException.class);
     }
 
@@ -97,14 +99,14 @@ class TagTest {
     @Test
     void updateTag() {
         Tag tag = new Tag(1L, "1시간");
-        AlternativeTagName alternativeTagName = new AlternativeTagName("1HOUR", tag);
+        tag.addNames(Collections.singletonList("1HOUR"));
 
         String updateTagName = "2시간";
         String updateAlternativeTagName = "2HOUR";
 
         // when
         Tag target = new Tag(updateTagName);
-        AlternativeTagName alternativeTargetTagName = new AlternativeTagName(updateAlternativeTagName, target);
+        target.addNames(Collections.singletonList(updateAlternativeTagName));
 
         tag.update(target);
 
@@ -118,7 +120,7 @@ class TagTest {
     void deleteAlternativeName() {
         // given
         Tag tag = new Tag(1L, "1시간");
-        AlternativeTagName alternativeName = new AlternativeTagName("1hour", tag);
+        AlternativeTagName alternativeName = new AlternativeTagName(new TagName("1hour"), tag);
 
         // when
         assertThat(tag.isDeleted()).isFalse();
@@ -136,7 +138,7 @@ class TagTest {
     void deleteTag() {
         // given
         Tag tag = new Tag(1L, "1시간");
-        AlternativeTagName alternativeName = new AlternativeTagName("1hour", tag);
+        AlternativeTagName alternativeName = new AlternativeTagName(new TagName("1hour"), tag);
 
         // when
         assertThat(tag.isDeleted()).isFalse();
@@ -147,5 +149,41 @@ class TagTest {
         // then
         assertThat(tag.isDeleted()).isTrue();
         assertThat(alternativeName.isDeleted()).isTrue();
+    }
+
+    @DisplayName("복수 개의 이름 추가")
+    @Test
+    void addNames() {
+        // given
+        Tag tag = new Tag(1L, "1시간");
+
+        // when
+        List<String> alternativeNames = Arrays.asList("1hour", "1時間");
+        tag.addNames(alternativeNames);
+
+        // then
+        assertThat(tag.getAlternativeNames()).hasSameSizeAs(alternativeNames).containsAll(alternativeNames);
+    }
+
+    @DisplayName("복수 개의 이름 추가시 이미 존재하는 이름이면 예외 처리")
+    @Test
+    void invalidAddNames() {
+        // given
+        Tag tag = new Tag(1L, "1시간");
+
+        // then
+        List<String> alternativeNames = Arrays.asList("1hour", "1시간");
+        assertThatThrownBy(() -> tag.addNames(alternativeNames)).isExactlyInstanceOf(BabbleDuplicatedException.class);
+    }
+
+    @DisplayName("복수 개의 이름 추가시 중복된 이름이 있으면 예외 처리")
+    @Test
+    void addDuplicatedNames() {
+        // given
+        Tag tag = new Tag(1L, "1시간");
+
+        // when
+        List<String> alternativeNames = Arrays.asList("1hour", "1hour", "1時間");
+        assertThatThrownBy(() -> tag.addNames(alternativeNames)).isExactlyInstanceOf(BabbleDuplicatedException.class);
     }
 }

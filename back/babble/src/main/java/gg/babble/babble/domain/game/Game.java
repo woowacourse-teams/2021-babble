@@ -4,7 +4,6 @@ import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.room.Rooms;
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleNotFoundException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -113,14 +112,6 @@ public class Game {
                 throw new BabbleDuplicatedException(String.format("이미 존재하는 이름 입니다.(%s)", name));
             }
         }
-    }
-
-    public void addName(final String name) {
-        if (hasName(name)) {
-            throw new BabbleDuplicatedException(String.format("이미 존재하는 이름 입니다.(%s)", name));
-        }
-
-        new AlternativeGameName(name, this);
     }
 
     public void addAlternativeName(final AlternativeGameName alternativeGameName) {
