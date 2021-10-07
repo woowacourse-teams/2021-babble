@@ -29,7 +29,7 @@
       max-width: fit-content;
 
       &.error {
-        color: f.primary(babble-pink);
+        color: f.alert(fail);
       }
 
       &.confirm {
