@@ -15,24 +15,24 @@ import { useUser } from '../../contexts/UserProvider';
 
 const ChangeNickname = () => {
   const [errorMessage, setErrorMessage] = useState('');
-  const [validNickname, setValidNickname] = useState(null);
+  const [isValidNickname, setIsValidNickname] = useState(false);
 
   const { closeModal } = useDefaultModal();
   const { user, changeUser, setIsNicknameChanged } = useUser();
 
-  const isValidNickname = (e) => {
+  const checkValidNickname = (e) => {
     const includeSpecialCharacter = new RegExp(
       PATTERNS.SPECIAL_CHARACTERS_WITHOUT_SPACE
     );
 
     if (includeSpecialCharacter.test(e.target.value)) {
-      setValidNickname(false);
+      setIsValidNickname(false);
       setErrorMessage('한글, 영어, 숫자, 공백만 포함 가능합니다.');
 
       return;
     }
 
-    setValidNickname(true);
+    setIsValidNickname(true);
   };
 
   const submitNickname = async (e) => {
@@ -73,13 +73,13 @@ const ChangeNickname = () => {
           placeholder='닉네임을 입력해주세요.'
           maxLength={NICKNAME_MAX_LENGTH}
           minLength={NICKNAME_MIN_LENGTH}
-          onChangeInput={isValidNickname}
+          onChangeInput={checkValidNickname}
           isContentSelected
           autocomplete='off'
         />
 
-        <span className={`form ${validNickname ? 'confirm' : 'error'}`}>
-          {validNickname ? '옳은 입력입니다.' : errorMessage}
+        <span className={`form ${isValidNickname ? 'confirm' : 'error'}`}>
+          {isValidNickname ? '옳은 입력입니다.' : errorMessage}
         </span>
       </div>
       <div className='control-buttons'>
