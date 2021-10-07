@@ -50,9 +50,8 @@ public class GameApiDocumentTest extends ApiDocumentTest {
         games.add(gameRepository.save(new Game("League Of Legends2", Arrays.asList(IMAGE_1, IMAGE_2))));
         games.add(gameRepository.save(new Game("League Of Legends3", images)));
 
-        alternativeGameNameRepository.save(new AlternativeGameName(ALTERNATIVE_NAME1, games.get(0)));
-        alternativeGameNameRepository.save(new AlternativeGameName(ALTERNATIVE_NAME2, games.get(0)));
-        alternativeGameNameRepository.save(new AlternativeGameName(ALTERNATIVE_NAME3, games.get(1)));
+        games.get(0).addNames(Arrays.asList(ALTERNATIVE_NAME1, ALTERNATIVE_NAME2));
+        games.get(1).addNames(Collections.singletonList(ALTERNATIVE_NAME3));
     }
 
     @DisplayName("게임 리스트 조회")

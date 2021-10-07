@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class AlternativeGameNames {
 
-    @OneToMany(mappedBy = "game", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
     @NotNull(message = "대안 이름들은 Null 일 수 없습니다.")
     private List<AlternativeGameName> elements = new ArrayList<>();
 

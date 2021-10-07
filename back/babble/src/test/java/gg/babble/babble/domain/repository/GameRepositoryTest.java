@@ -21,6 +21,7 @@ public class GameRepositoryTest {
     void saveGame() {
         // given
         Game game = new Game("게임 이름", Collections.singletonList("게임 이미지"));
+        game.addNames(Collections.singletonList("새 게임"));
 
         // when
         Game savedGame = gameRepository.save(game);
@@ -29,6 +30,7 @@ public class GameRepositoryTest {
         assertThat(savedGame.getId()).isNotNull();
         assertThat(savedGame.getName()).isEqualTo(game.getName());
         assertThat(savedGame.getImages()).isEqualTo(game.getImages());
+        assertThat(savedGame.getAlternativeNames()).hasSize(1).contains("새 게임");
     }
 
     @DisplayName("게임 정보 편집을 수행한다.")

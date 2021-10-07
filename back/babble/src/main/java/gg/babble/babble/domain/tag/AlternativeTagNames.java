@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @Embeddable
 public class AlternativeTagNames {
 
-    @OneToMany(mappedBy = "tag", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
     @NotNull(message = "대안 이름들은 Null 일 수 없습니다.")
     private final List<AlternativeTagName> elements;
 
