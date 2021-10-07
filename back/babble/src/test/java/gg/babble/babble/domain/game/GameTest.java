@@ -1,12 +1,14 @@
 package gg.babble.babble.domain.game;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import gg.babble.babble.domain.Session;
 import gg.babble.babble.domain.room.MaxHeadCount;
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
+import gg.babble.babble.exception.BabbleDuplicatedException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -104,5 +106,67 @@ class GameTest {
         // then
         assertThat(game.hasName(alternativeGameName.getValue())).isFalse();
         assertThat(alternativeGameName.isDeleted()).isTrue();
+    }
+
+    @DisplayName("복수 개의 이름 추가")
+    @Test
+    void addNames() {
+        // given
+        final Game game = new Game(1L, "오래된 게임", Collections.singletonList("오래된 이미지"));
+
+        // when
+        List<String> alternativeNames = Arrays.asList("망겜", "국민겜", "사골");
+        game.addNames(alternativeNames);
+
+        // then
+        assertThat(game.getAlternativeNames()).hasSameSizeAs(alternativeNames).containsAll(alternativeNames);
+    }
+
+    @DisplayName("복수 개의 이름 추가시 이미 존재하는 이름이면 예외 처리")
+    @Test
+    void invalidAddNames() {
+        // given
+        final Game game = new Game(1L, "오래된 게임", Collections.singletonList("오래된 이미지"));
+
+        // when
+        List<String> alternativeNames = Arrays.asList("망겜", "오래된 게임", "사골");
+        assertThatThrownBy(() -> game.addNames(alternativeNames)).isExactlyInstanceOf(BabbleDuplicatedException.class);
+    }
+
+    @DisplayName("복수 개의 이름 추가시 중복된 이름이 있으면 예외 처리")
+    @Test
+    void addDuplicatedNames() {
+        // given
+        final Game game = new Game(1L, "오래된 게임", Collections.singletonList("오래된 이미지"));
+
+        // when
+        List<String> alternativeNames = Arrays.asList("망겜", "망겜", "사골");
+        assertThatThrownBy(() -> game.addNames(alternativeNames)).isExactlyInstanceOf(BabbleDuplicatedException.class);
+    }
+
+    @DisplayName("단수 개의 이름 추가")
+    @Test
+    void addName() {
+        // given
+        final Game game = new Game(1L, "오래된 게임", Collections.singletonList("오래된 이미지"));
+
+        // when
+        game.addName("망겜");
+
+        // then
+        assertThat(game.getAlternativeNames()).hasSize(1).contains("망겜");
+    }
+
+    @DisplayName("단수 개의 이름 추가시 이미 존재하는 이름인 경우 예외 처리")
+    @Test
+    void invalidAddName() {
+        // given
+        final Game game = new Game(1L, "오래된 게임", Collections.singletonList("오래된 이미지"));
+
+        // when
+        game.addName("망겜");
+
+        // then
+        assertThatThrownBy(() -> game.addName("망겜")).isExactlyInstanceOf(BabbleDuplicatedException.class);
     }
 }

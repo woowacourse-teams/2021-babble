@@ -4,9 +4,12 @@ import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.room.Rooms;
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleNotFoundException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -20,6 +23,7 @@ import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.logging.log4j.util.Strings;
 import org.hibernate.annotations.Where;
 
 @Getter
@@ -86,8 +90,37 @@ public class Game {
         this.alternativeGameNames = target.alternativeGameNames;
     }
 
-    public void addRoom(Room room) {
+    public void addRoom(final Room room) {
         rooms.addRoom(room);
+    }
+
+    public void addNames(final List<String> names) {
+        validateToAddNames(names);
+
+        for (String name : names) {
+            new AlternativeGameName(name, this);
+        }
+    }
+
+    private void validateToAddNames(final List<String> names) {
+        Set<String> nameSet = new HashSet<>(names);
+        if (nameSet.size() != names.size()) {
+            throw new BabbleDuplicatedException(String.format("중복된 값이 있습니다.(%s)", Strings.join(names, ',')));
+        }
+
+        for (String name : names) {
+            if (hasName(name)) {
+                throw new BabbleDuplicatedException(String.format("이미 존재하는 이름 입니다.(%s)", name));
+            }
+        }
+    }
+
+    public void addName(final String name) {
+        if (hasName(name)) {
+            throw new BabbleDuplicatedException(String.format("이미 존재하는 이름 입니다.(%s)", name));
+        }
+
+        new AlternativeGameName(name, this);
     }
 
     public void addAlternativeName(final AlternativeGameName alternativeGameName) {
@@ -124,6 +157,10 @@ public class Game {
 
     public void delete() {
         this.deleted = true;
+    }
+
+    public List<String> getAlternativeNames() {
+        return alternativeGameNames.getNames();
     }
 
     @Override
