@@ -45,6 +45,15 @@
   @return null;
 }
 
+@function alert($key) {
+  @if map-has-key($alert, $key) {
+    @return map-get($alert, $key);
+  }
+
+  @warn "Unknown `#{$key}` in $alert!";
+  @return null;
+}
+
 @function shadow($key) {
   @if map-has-key($shadow, $key) {
     @return map-get($shadow, $key);
