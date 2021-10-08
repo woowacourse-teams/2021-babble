@@ -1,7 +1,7 @@
 import './TagManagement.scss';
 
 import { Body1, Subtitle1, Subtitle3 } from '../../core/Typography';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SquareButton, TextInput } from '../../components';
 
 import Headline2 from '../../core/Typography/Headline2';
@@ -18,6 +18,16 @@ const TagManagement = ({ tags = [] }) => {
   const [alternativeNamesToRegister, setAlternativeNamesToRegister] = useState(
     []
   );
+
+  useEffect(() => {
+    setTagList([]);
+    setSelectedTag({
+      id: -1,
+      name: '',
+      alternativeNames: [],
+    });
+    setAlternativeNamesToRegister([]);
+  }, []);
 
   return (
     <section className='tag-management-container'>

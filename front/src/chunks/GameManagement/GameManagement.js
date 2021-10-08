@@ -76,7 +76,6 @@ const GameManagement = () => {
               <Body1>등록</Body1>
             </SquareButton>
           </div>
-
           <NameList list={selectedGame.alternativeNames} erasable />
 
           <div className='game-submit'>
