@@ -41,7 +41,7 @@ jobs:
 
     - name: SCP 명령을 이용해 테스트용 서버로 jar 파일 전송
       working-directory: ./back/babble
-      run: scp ./build/libs/babble-0.0.1-SNAPSHOT.jar test:/home/ubuntu/was
+      run: scp ./build/libs/babble-0.0.1-SNAPSHOT.jar test-was:/home/ubuntu/deploy
 
     - name: SSH 명령을 통해 테스트용 서버 접속 후 jar 파일 실행
-      run: ssh test "cd was; /home/ubuntu/was/deploy.sh;"
+      run: ssh test-was "cd deploy; /home/ubuntu/deploy/deploy.sh;"
