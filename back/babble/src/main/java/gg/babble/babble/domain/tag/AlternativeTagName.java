@@ -12,8 +12,12 @@ import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Getter
+@SQLDelete(sql = "UPDATE alternative_tag_name SET deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class AlternativeTagName {
@@ -30,41 +34,40 @@ public class AlternativeTagName {
     @NotNull(message = "게임은 Null 일 수 없습니다.")
     private Tag tag;
 
-    private boolean isDeleted = false;
+    private boolean deleted = false;
 
-    public AlternativeTagName(final String value, final Tag tag) {
-        this(null, value, tag);
+    public AlternativeTagName(final TagName tagName, final Tag tag) {
+        this(null, tagName, tag);
     }
 
-    public AlternativeTagName(final Long id, final String value, final Tag tag) {
+    public AlternativeTagName(final Long id, final TagName tagName, final Tag tag) {
         this.id = id;
-        this.value = new TagName(value);
+        this.value = tagName;
 
         setTag(tag);
     }
 
     public void setTag(final Tag tag) {
-        final Tag previousTag = this.tag;
+        Tag previousTag = this.tag;
         this.tag = tag;
 
         if (Objects.nonNull(previousTag) && previousTag.hasName(value)) {
             previousTag.removeAlternativeName(this);
         }
 
-        if (tag.hasNotName(value)) {
-            tag.addAlternativeName(this);
-        }
+        tag.addAlternativeName(this);
     }
 
     public void delete() {
-        if (tag.hasName(value)) {
-            tag.removeAlternativeName(this);
-        }
-        isDeleted = true;
+        deleted = true;
     }
 
     public boolean isSameName(final TagName name) {
         return value.equals(name);
+    }
+
+    public boolean isNotDeleted() {
+        return !isDeleted();
     }
 
     @Override

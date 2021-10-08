@@ -9,7 +9,6 @@ import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleIllegalStatementException;
-import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -57,54 +56,6 @@ public class RoomTest {
         assertThatThrownBy(() -> room.enterSession(session)).isInstanceOf(BabbleDuplicatedException.class);
     }
 
-    @DisplayName("유저가 방에서 나간다.")
-    @Test
-    void leave() {
-        // given
-        User guest1 = new User(2L, "손님");
-        User guest2 = new User(3L, "손님");
-        Session session1 = new Session(2L, "1234", guest1, room);
-        Session session2 = new Session(3L, "2345", guest2, room);
-
-        // when
-        room.exitSession(session1);
-
-        // then
-        assertThat(guest1.getSession()).isNull();
-        assertThat(room.getGuests()).containsExactly(guest2);
-        assertThat(room.currentHeadCount()).isEqualTo(2);
-    }
-
-    @DisplayName("입장하지 않는 유저가 방을 나갈 때 예외 처리한다.")
-    @Test
-    void leavingUserNotFoundInRoom() {
-        // given
-        Room anotherRoom = new Room(game, tags, new MaxHeadCount(4));
-        User user = new User(2L, "외부자");
-        Session session = new Session(2L, "1234", user, anotherRoom);
-
-        // when, then
-        assertThatThrownBy(() -> room.exitSession(session)).isInstanceOf(BabbleNotFoundException.class);
-    }
-
-    @DisplayName("호스트가 퇴장할 경우 가장 먼저 들어온 게스트가 호스트가 된다.")
-    @Test
-    void hostDelegate() {
-        // given
-        User guest1 = new User(2L, "게스트");
-        User guest2 = new User(3L, "게스트");
-
-        Session session1 = new Session(2L, "2222", guest1, room);
-        Session session2 = new Session(3L, "3333", guest2, room);
-
-        // when
-        room.exitSession(session);
-
-        // then
-        assertThat(room.getHost()).isEqualTo(guest1);
-        assertThat(room.getGuests()).containsExactly(guest2);
-    }
-
     @DisplayName("호스트를 조회한다.")
     @Test
     void getHost() {
@@ -148,18 +99,5 @@ public class RoomTest {
 
         assertThatThrownBy(room::getGuests)
             .isInstanceOf(BabbleIllegalStatementException.class);
-    }
-
-    @DisplayName("방에 모든 인원이 퇴장할 경우 방은 제거된다.")
-    @Test
-    void deleteRoom() {
-        // when, then
-        assertThat(room.isDeleted()).isFalse();
-
-        // when
-        room.exitSession(session);
-
-        // then
-        assertThat(room.isDeleted()).isTrue();
     }
 }

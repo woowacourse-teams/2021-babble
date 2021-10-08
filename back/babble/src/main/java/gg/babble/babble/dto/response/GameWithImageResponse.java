@@ -15,7 +15,7 @@ public class GameWithImageResponse {
     private final List<String> alternativeNames;
 
     public static GameWithImageResponse from(final Game game) {
-        return new GameWithImageResponse(game.getId(), game.getName(), game.getImages(), game.getAlternativeGameNames().getNames());
+        return new GameWithImageResponse(game.getId(), game.getName(), game.getImages(), game.getAlternativeNames());
     }
 
 }

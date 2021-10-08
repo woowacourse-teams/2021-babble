@@ -6,11 +6,9 @@ import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
-import gg.babble.babble.exception.BabbleNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -23,12 +21,14 @@ import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @EntityListeners(AuditingEntityListener.class)
 @Getter
+@SQLDelete(sql = "UPDATE room SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -55,8 +55,7 @@ public class Room {
     @CreatedDate
     private LocalDateTime createdAt;
 
-    @Column(nullable = false)
-    private boolean deleted = false;
+    private final boolean deleted = false;
 
     public Room(final Game game, final List<Tag> tags, final MaxHeadCount maxHeadCount) {
         this(null, game, tags, maxHeadCount);
@@ -87,22 +86,6 @@ public class Room {
         sessions.enter(session);
     }
 
-    public void exitSession(final Session session) {
-        if (sessions.noContains(session)) {
-            throw new BabbleNotFoundException(String.format("[%d] 유저는 [%d] 방에 참여하지 않아 퇴장이 불가능 합니다.", session.getUserId(), id));
-        }
-
-        sessions.exit(session);
-
-        if (sessions.isEmpty()) {
-            deleted = true;
-        }
-    }
-
-    public boolean containsSession(final Session session) {
-        return sessions.contains(session);
-    }
-
     public int currentHeadCount() {
         return sessions.headCount();
     }
@@ -121,6 +104,14 @@ public class Room {
         List<User> users = sessions.sortedUsersByEnteredTime();
 
         return users.subList(1, users.size());
+    }
+
+    public boolean isEmpty() {
+        return sessions.isEmpty();
+    }
+
+    public void deleteSession(final Session session) {
+        sessions.delete(session);
     }
 
     public boolean isFull() {
