@@ -35,7 +35,7 @@ public class AlternativeGameName {
     @NotNull(message = "게임은 Null 일 수 없습니다.")
     private Game game;
 
-    private boolean isDeleted = false;
+    private boolean deleted = false;
 
     public AlternativeGameName(final String value, final Game game) {
         this(null, value, game);
@@ -62,7 +62,7 @@ public class AlternativeGameName {
         if (game.hasName(value)) {
             game.removeAlternativeName(this);
         }
-        isDeleted = true;
+        deleted = true;
     }
 
     @Override

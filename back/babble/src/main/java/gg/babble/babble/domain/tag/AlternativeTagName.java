@@ -34,7 +34,7 @@ public class AlternativeTagName {
     @NotNull(message = "게임은 Null 일 수 없습니다.")
     private Tag tag;
 
-    private boolean isDeleted = false;
+    private boolean deleted = false;
 
     public AlternativeTagName(final TagName tagName, final Tag tag) {
         this(null, tagName, tag);
@@ -59,7 +59,7 @@ public class AlternativeTagName {
     }
 
     public void delete() {
-        isDeleted = true;
+        deleted = true;
     }
 
     public boolean isSameName(final TagName name) {
