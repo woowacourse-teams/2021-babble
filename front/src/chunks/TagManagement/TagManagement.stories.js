@@ -2,7 +2,7 @@ import React from 'react';
 import TagManagement from './TagManagement';
 
 export default {
-  title: 'components/TagManagement',
+  title: 'chunks/TagManagement',
   component: TagManagement,
 };
 

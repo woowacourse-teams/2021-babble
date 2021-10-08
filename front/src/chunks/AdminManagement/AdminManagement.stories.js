@@ -2,7 +2,7 @@ import AdminManagement from './AdminManagement';
 import React from 'react';
 
 export default {
-  title: 'components/AdminManagement',
+  title: 'chunks/AdminManagement',
   component: AdminManagement,
 };
 
