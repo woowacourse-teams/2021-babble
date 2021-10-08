@@ -8,6 +8,7 @@ const TextInput = ({
   value,
   name,
   maxLength,
+  onChangeInput = null,
   isContentSelected = true,
   placeholder = '닉네임을 입력해주세요.',
 }) => {
@@ -35,6 +36,7 @@ const TextInput = ({
         name={name}
         maxLength={maxLength}
         placeholder={placeholder}
+        onChange={onChangeInput}
         onFocus={onFocusInput}
         onBlur={onBlurInput}
         defaultValue={value}
@@ -48,6 +50,7 @@ TextInput.propTypes = {
   name: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
   maxLength: PropTypes.number,
+  onChangeInput: PropTypes.func,
   isContentSelected: PropTypes.bool,
 };
 

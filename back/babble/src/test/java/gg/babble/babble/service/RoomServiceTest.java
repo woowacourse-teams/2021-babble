@@ -99,31 +99,6 @@ class RoomServiceTest extends ApplicationTest {
             .isInstanceOf(BabbleNotFoundException.class);
     }
 
-    @DisplayName("방에 남은 유저가 없을 경우 방이 자동으로 삭제된다.")
-    @Test
-    void autoDeleteRoom() {
-        String gameName = "너구리게임";
-        String tagName1 = "2시간";
-        String tagName2 = "실버";
-        int maxHeadCount = 4;
-
-        Game game = gameRepository.save(new Game(gameName));
-        Tag tag1 = tagRepository.save(new Tag(tagName1));
-        Tag tag2 = tagRepository.save(new Tag(tagName2));
-        User user = userRepository.save(new User("코 파는 알리스타"));
-        Room room = roomRepository.save(new Room(game, Arrays.asList(tag1, tag2), new MaxHeadCount(maxHeadCount)));
-
-        Session session = new Session("11112222", user, room);
-        sessionRepository.save(session);
-
-        assertThat(roomService.findRoomById(room.getId())).isInstanceOf(FoundRoomResponse.class);
-
-        session.delete();
-
-        assertThatThrownBy(() -> roomService.findRoomById(room.getId()))
-            .isInstanceOf(BabbleNotFoundException.class);
-    }
-
     @DisplayName("요청한 gameId와 page에 해당되는 방 정보들을 반환한다.")
     @Test
     void findRoomsByGameIdAndPageTest() {

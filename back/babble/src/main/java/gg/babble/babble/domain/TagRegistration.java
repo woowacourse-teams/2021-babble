@@ -15,9 +15,13 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Getter
 @AllArgsConstructor
+@SQLDelete(sql = "UPDATE tag_registration SET deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "tag_registration")
 @Entity
@@ -36,6 +40,8 @@ public class TagRegistration {
     @ManyToOne
     @JoinColumn(name = "tag_id")
     private Tag tag;
+
+    private final boolean deleted = false;
 
     public TagRegistration(final Room room, final Tag tag) {
         this(null, room, tag);

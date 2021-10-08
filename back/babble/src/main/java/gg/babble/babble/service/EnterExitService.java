@@ -40,16 +40,19 @@ public class EnterExitService {
     public ExitResponse exit(final String sessionId) {
         Session session = findBySessionId(sessionId);
 
-        session.delete();
+        sessionRepository.deleteById(session.getId());
 
-        if (session.getRoom().isDeleted()) {
-            return new ExitResponse(session.getRoom().getId(), SessionsResponse.empty());
+        Room room = session.getRoom();
+        room.deleteSession(session);
+        if (room.isEmpty()) {
+            roomService.deleteRoom(room);
+            return new ExitResponse(room.getId(), SessionsResponse.empty());
         }
         return new ExitResponse(session.getRoom().getId(), SessionsResponse.of(session.getRoom().getHost(), session.getRoom().getGuests()));
     }
 
     private Session findBySessionId(final String id) {
-        return sessionRepository.findBySessionIdAndDeletedFalse(id)
+        return sessionRepository.findBySessionId(id)
             .orElseThrow(() -> new BabbleNotFoundException(String.format("[%s]는 존재하지 않는 세션 ID 입니다.", id)));
     }
 }

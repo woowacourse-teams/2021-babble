@@ -1,6 +1,5 @@
 package gg.babble.babble.dto.request;
 
-import gg.babble.babble.domain.game.AlternativeGameName;
 import gg.babble.babble.domain.game.Game;
 import java.util.List;
 import javax.validation.constraints.NotNull;
@@ -26,7 +25,8 @@ public class GameRequest {
 
     public Game toEntity() {
         final Game game = new Game(name, images);
-        alternativeNames.forEach(alternativeName -> new AlternativeGameName(alternativeName, game));
+        game.addNames(alternativeNames);
+
         return game;
     }
 }
