@@ -19,7 +19,6 @@ import org.hibernate.annotations.Where;
 @Entity
 public class Administrator {
 
-    private final boolean deleted = Boolean.FALSE;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,6 +26,8 @@ public class Administrator {
     private Ip ip;
     @NotNull
     private String name;
+
+    private final boolean deleted = false;
 
     public Administrator(final String ip, final String name) {
         this(null, new Ip(ip), name);

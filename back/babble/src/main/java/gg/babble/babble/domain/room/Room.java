@@ -55,7 +55,7 @@ public class Room {
     @CreatedDate
     private LocalDateTime createdAt;
 
-    private final boolean deleted = Boolean.FALSE;
+    private final boolean deleted = false;
 
     public Room(final Game game, final List<Tag> tags, final MaxHeadCount maxHeadCount) {
         this(null, game, tags, maxHeadCount);
