@@ -18,9 +18,11 @@
     .register-tag {
       @include m.top-left-indents;
 
-      .input-container {
+      & > .input-container {
         margin: 1rem 0;
+      }
 
+      .input-container {
         input[type='text'] {
           text-align: left;
 
@@ -32,13 +34,13 @@
 
       .register-alternative-tag-name {
         display: flex;
-        align-items: center;
+        margin: 1rem 0;
 
         button {
           margin-left: 1rem;
           flex-basis: 15%;
           max-width: 9rem;
-          height: 5rem;
+          height: inherit;
         }
       }
 
