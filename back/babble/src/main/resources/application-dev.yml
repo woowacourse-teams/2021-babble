@@ -1,8 +1,8 @@
 spring:
 
   datasource:
-    url: jdbc:mariadb://172.17.0.2:3306/babble
     driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://192.168.2.215:3306/babble
     username: babble
 
   jpa:
