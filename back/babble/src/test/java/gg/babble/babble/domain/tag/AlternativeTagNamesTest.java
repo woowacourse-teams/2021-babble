@@ -24,7 +24,7 @@ class AlternativeTagNamesTest {
     @Test
     void add() {
         // given
-        final AlternativeTagName alternativeTagName = new AlternativeTagName("1hour", tag);
+        final AlternativeTagName alternativeTagName = new AlternativeTagName(new TagName("1hour"), tag);
         // when
         alternativeTagNames.add(alternativeTagName);
         // then
@@ -34,7 +34,7 @@ class AlternativeTagNamesTest {
     @DisplayName("이미 존재하는 대체 이름 추가시 예외 처리")
     @Test
     void addSameName() {
-        final AlternativeTagName alternativeTagName = new AlternativeTagName("1hour", tag);
+        final AlternativeTagName alternativeTagName = new AlternativeTagName(new TagName("1hour"), tag);
         alternativeTagNames.add(alternativeTagName);
         assertThatExceptionOfType(BabbleDuplicatedException.class).isThrownBy(() -> alternativeTagNames.add(alternativeTagName));
     }
@@ -43,7 +43,7 @@ class AlternativeTagNamesTest {
     @Test
     void remove() {
         // given
-        final AlternativeTagName alternativeTagName = new AlternativeTagName("1hour", tag);
+        final AlternativeTagName alternativeTagName = new AlternativeTagName(new TagName("1hour"), tag);
         alternativeTagNames.add(alternativeTagName);
         // when
         alternativeTagNames.remove(alternativeTagName);
@@ -55,7 +55,7 @@ class AlternativeTagNamesTest {
     @Test
     void removeNotFoundName() {
         // given
-        final AlternativeTagName alternativeTagName = new AlternativeTagName("1hour", tag);
+        final AlternativeTagName alternativeTagName = new AlternativeTagName(new TagName("1hour"), tag);
         // then
         assertThatExceptionOfType(BabbleNotFoundException.class).isThrownBy(() -> alternativeTagNames.remove(alternativeTagName));
     }

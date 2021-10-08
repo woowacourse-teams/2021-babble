@@ -14,7 +14,7 @@ class AlternativeTagNameTest {
     @BeforeEach
     void setUp() {
         tag = new Tag("1시간");
-        alternativeTagName = new AlternativeTagName("1hour", tag);
+        alternativeTagName = new AlternativeTagName(new TagName("1hour"), tag);
     }
 
     @DisplayName("AlternativeTagName을 생성하면 자동으로 Tag에 추가됨")
@@ -23,21 +23,12 @@ class AlternativeTagNameTest {
         assertThat(tag.getAlternativeTagNames().contains(alternativeTagName.getValue())).isTrue();
     }
 
-    @DisplayName("대체 이름의 게임을 변경")
-    @Test
-    void setGame() {
-        final Tag anotherTag = new Tag("2시간");
-        alternativeTagName.setTag(anotherTag);
-
-        assertThat(anotherTag.getAlternativeTagNames().contains(alternativeTagName.getValue())).isTrue();
-        assertThat(tag.getAlternativeTagNames().contains(alternativeTagName.getValue())).isFalse();
-    }
-
     @DisplayName("대체 이름 삭제")
     @Test
     void delete() {
         // when
         alternativeTagName.delete();
+
         // then
         assertThat(tag.hasName(alternativeTagName.getValue())).isFalse();
         assertThat(alternativeTagName.isDeleted()).isTrue();

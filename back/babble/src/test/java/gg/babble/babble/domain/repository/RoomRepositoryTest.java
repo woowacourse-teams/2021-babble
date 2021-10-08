@@ -73,7 +73,7 @@ public class RoomRepositoryTest {
         Room room = roomRepository.save(new Room(game, tags, maxHeadCount));
 
         // when
-        Room savedRoom = roomRepository.findByIdAndDeletedFalse(room.getId())
+        Room savedRoom = roomRepository.findById(room.getId())
             .orElseThrow(BabbleNotFoundException::new);
 
         // then
@@ -82,27 +82,6 @@ public class RoomRepositoryTest {
         assertThat(savedRoom.getTagRegistrationsOfRoom().tags()).isEqualTo(tags);
         assertThat(savedRoom.getMaxHeadCount()).isEqualTo(maxHeadCount);
         assertThatThrownBy(savedRoom::getHost).isInstanceOf(BabbleIllegalStatementException.class);
-    }
-
-    @DisplayName("삭제된 방은 조회되지 않는다.")
-    @Test
-    void findRoomByIdException() {
-        // given
-        Game game = gameRepository.save(new Game("게임 이름", Collections.singletonList("게임 이미지")));
-        List<Tag> tags = Collections.singletonList(tagRepository.save(new Tag("초보만")));
-        MaxHeadCount maxHeadCount = new MaxHeadCount(4);
-        User user = userRepository.save(new User("와일더"));
-        Room room = roomRepository.save(new Room(game, tags, maxHeadCount));
-
-        Session session = new Session("1234", user, room);
-        sessionRepository.save(session);
-
-        // when
-        room.exitSession(session);
-
-        // then
-        assertThat(room.isDeleted()).isTrue();
-        assertThat(roomRepository.findByIdAndDeletedFalse(room.getId())).isNotPresent();
     }
 
     @DisplayName("게임 ID를 기준으로 최신순 방 목록을 검색한다.")

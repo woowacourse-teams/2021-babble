@@ -1,7 +1,6 @@
 package gg.babble.babble.domain.user;
 
 import gg.babble.babble.domain.Session;
-import gg.babble.babble.exception.BabbleIllegalArgumentException;
 import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
@@ -14,8 +13,12 @@ import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Getter
+@SQLDelete(sql = "UPDATE user SET deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class User {
@@ -34,8 +37,10 @@ public class User {
     @NotNull(message = "아바타는 Null 이어서는 안됩니다.")
     private String avatar;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.PERSIST)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
     private Session session;
+
+    private final boolean deleted = false;
 
     public User(final String nickname) {
         this(null, nickname);
@@ -56,26 +61,8 @@ public class User {
         this.session = session;
     }
 
-    public void unLinkSession(final Session session) {
-        if (isNotLinkedSession(session)) {
-            Long roomId = session.getRoom().getId();
-            throw new BabbleIllegalArgumentException(String.format("[%d]번 유저는 [%d]번 방에 없으므로 나갈 수 없습니다.", id, roomId));
-        }
-
-        this.session = null;
-        session.delete();
-    }
-
     public String getNickname() {
         return nickname.getValue();
-    }
-
-    public boolean isLinkedSession(final Session session) {
-        return !isNotLinkedSession(session);
-    }
-
-    private boolean isNotLinkedSession(final Session session) {
-        return Objects.isNull(this.session) || !this.session.equals(session);
     }
 
     @Override

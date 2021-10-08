@@ -24,7 +24,7 @@ public class GameService {
     }
 
     public List<IndexPageGameResponse> findSortedGames() {
-        Games games = new Games(gameRepository.findByDeletedFalse());
+        Games games = new Games(gameRepository.findAll());
         games.sortedByHeadCount();
 
         return IndexPageGameResponse.listFrom(games);
@@ -39,12 +39,12 @@ public class GameService {
     }
 
     public Game findGameById(final Long id) {
-        return gameRepository.findByIdAndDeletedFalse(id)
+        return gameRepository.findById(id)
             .orElseThrow(() -> new BabbleNotFoundException(String.format("존재하지 않는 게임 Id(%d) 입니다.", id)));
     }
 
     public List<GameImageResponse> findAllGameImages() {
-        return gameRepository.findByDeletedFalse()
+        return gameRepository.findAll()
             .stream()
             .map(GameImageResponse::from)
             .collect(Collectors.toList());
@@ -68,6 +68,6 @@ public class GameService {
     @Transactional
     public void deleteGame(final Long gameId) {
         Game game = findGameById(gameId);
-        game.delete();
+        gameRepository.delete(game);
     }
 }
