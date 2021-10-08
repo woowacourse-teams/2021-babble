@@ -194,7 +194,7 @@ public class TagApiDocumentTest extends ApiDocumentTest {
         mockMvc.perform(delete("/api/tags/" + tags.get(0).getId()).
                 accept(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isNoContent())
-            .andDo(document("delete-game"));
+            .andDo(document("remove-tag"));
 
         mockMvc.perform(get("/api/tags")
                 .accept(MediaType.APPLICATION_JSON_VALUE))
