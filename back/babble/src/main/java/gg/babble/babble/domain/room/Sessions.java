@@ -20,9 +20,8 @@ public class Sessions {
         sessions.add(session);
     }
 
-    public void exit(final Session session) {
+    public void delete(final Session session) {
         sessions.remove(session);
-        session.delete();
     }
 
     public List<User> sortedUsersByEnteredTime() {
@@ -46,9 +45,5 @@ public class Sessions {
 
     public boolean contains(final Session session) {
         return sessions.contains(session);
-    }
-
-    public boolean noContains(final Session session) {
-        return !sessions.contains(session);
     }
 }

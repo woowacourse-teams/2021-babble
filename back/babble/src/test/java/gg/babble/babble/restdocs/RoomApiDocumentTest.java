@@ -14,7 +14,6 @@ import gg.babble.babble.domain.Session;
 import gg.babble.babble.domain.game.Game;
 import gg.babble.babble.domain.room.MaxHeadCount;
 import gg.babble.babble.domain.room.Room;
-import gg.babble.babble.domain.tag.AlternativeTagName;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
 import gg.babble.babble.dto.request.TagRequest;
@@ -51,7 +50,7 @@ public class RoomApiDocumentTest extends ApiDocumentTest {
         tags.add(tagRepository.save(new Tag("2시간")));
         tags.add(tagRepository.save(new Tag("솔로랭크")));
 
-        alternativeTagNameRepository.save(new AlternativeTagName(ALTERNATIVE_NAME, tags.get(0)));
+        tags.get(0).addNames(Collections.singletonList(ALTERNATIVE_NAME));
 
         games.add(gameRepository.save(new Game("League Of Legends1", Collections.singletonList("image1"))));
         games.add(gameRepository.save(new Game("League Of Legends2", Collections.singletonList("image2"))));

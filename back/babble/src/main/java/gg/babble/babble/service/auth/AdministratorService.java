@@ -31,7 +31,7 @@ public class AdministratorService {
     @Transactional
     public void deleteAdministrator(final Long id) {
         Administrator administrator = findById(id);
-        administratorRepository.delete(administrator);
+        administratorRepository.deleteById(administrator.getId());
     }
 
     private Administrator findById(final Long id) {

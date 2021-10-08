@@ -14,7 +14,7 @@ insert into game (deleted, `name`) values (false, 'game1');
 insert into game_images(game_id, game_image) values ((select id from game limit 1), '게임 이미지1');
 insert into game_images(game_id, game_image) values ((select id from game limit 1), '게임 이미지2');
 insert into game_images(game_id, game_image) values ((select id from game limit 1), '게임 이미지3');
-insert into tag (`name`) values ('tag1');
+insert into tag (`name`, deleted) values ('tag1', false);
 insert into user (avatar, nickname) values ('abc', '와일더');
 insert into user (avatar, nickname) values ('abc', '루트');
 insert into user (avatar, nickname) values ('abc', '포츈');

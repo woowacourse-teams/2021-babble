@@ -64,7 +64,7 @@ public class ImageApiDocumentTest extends ApiDocumentTest {
     @Test
     void findAllImages() throws Exception {
         mockMvc.perform(get("/api/images")
-            .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$[0]").value("test.jpg"))
             .andDo(document("read-images",
@@ -80,8 +80,8 @@ public class ImageApiDocumentTest extends ApiDocumentTest {
         String filePath = "img/new-file.jpg";
 
         mockMvc.perform(multipart("/api/images")
-            .file(multipartFile)
-            .param("fileName", filePath))
+                .file(multipartFile)
+                .param("fileName", filePath))
             .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").value(hasSize(3)))
@@ -99,8 +99,8 @@ public class ImageApiDocumentTest extends ApiDocumentTest {
         String filePath = "img/new-file.jpg";
 
         mockMvc.perform(multipart("/api/images")
-            .file(mockMultipartFile)
-            .param("fileName", filePath))
+                .file(mockMultipartFile)
+                .param("fileName", filePath))
             .andExpect(status().isUnauthorized());
     }
 }

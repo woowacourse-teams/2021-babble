@@ -69,7 +69,12 @@ public class RoomService {
     }
 
     public Room findById(final Long id) {
-        return roomRepository.findByIdAndDeletedFalse(id)
+        return roomRepository.findById(id)
             .orElseThrow(() -> new BabbleNotFoundException(String.format("[%d]는 존재하지 않는 방 ID 입니다.", id)));
+    }
+
+    @Transactional
+    public void deleteRoom(final Room room) {
+        roomRepository.delete(room);
     }
 }

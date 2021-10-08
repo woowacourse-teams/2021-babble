@@ -49,6 +49,24 @@ Wilder<gyuhanKang@gmail.com>
 }
 ```
 
+== 유저
+
+=== 유저 생성 API
+
+==== HTTP Request
+
+include::{snippets}/create-user/http-request.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/create-user/request-fields.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/create-user/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/create-user/response-fields.adoc[]
+
 == 게임
 
 === 게임 리스트 조회 API
@@ -188,6 +206,54 @@ include::{snippets}/tags-get-test/http-response.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
 include::{snippets}/tags-get/response-fields.adoc[]
+
+=== 태그 등록 API
+
+> Accessible only from allowed ip.
+
+==== HTTP Request
+
+include::{snippets}/create-tag/http-request.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/insert-tag/request-fields.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/create-tag/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/insert-tag/response-fields.adoc[]
+
+=== 태그 수정 API
+
+> Accessible only from allowed ip.
+
+==== HTTP Request
+
+include::{snippets}/update-tag/http-request.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/update-tag/request-fields.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/update-tag/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/update-tag/response-fields.adoc[]
+
+=== 태그 삭제 API
+
+> Accessible only from allowed ip.
+
+==== HTTP Request
+
+include::{snippets}/remove-tag/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/remove-tag/http-response.adoc[]
 
 == 이미지
 

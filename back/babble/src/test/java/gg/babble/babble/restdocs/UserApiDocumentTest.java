@@ -2,6 +2,9 @@ package gg.babble.babble.restdocs;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -42,6 +45,7 @@ public class UserApiDocumentTest extends ApiDocumentTest {
             .andExpect(jsonPath("$.avatar").value("https://d2bidcnq0n74fu.cloudfront.net/img/users/profiles/profile57.png"))
 
             .andDo(document("create-user",
+                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                 requestFields(fieldWithPath("nickname").description("닉네임")),
                 responseFields(fieldWithPath("nickname").description("닉네임"),
                     fieldWithPath("id").description("유저 Id"),
