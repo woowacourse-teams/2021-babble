@@ -151,7 +151,19 @@
   }
 
   .modal-minimized-container {
-    width: 100%;
-    right: 0;
+    width: 6rem;
+    height: 6rem;
+    bottom: 4rem;
+    right: 1.5rem;
+    border-radius: 50%;
+    background-image: url('https://babble.gg/img/logos/white-babble-logo.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 55%;
+
+    .close,
+    .maximize {
+      display: none;
+    }
   }
 }
