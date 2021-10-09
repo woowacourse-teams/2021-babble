@@ -34,13 +34,16 @@ import org.hibernate.annotations.Where;
 public class Game {
 
     private static final String DEFAULT_IMAGE = "https://static-cdn.jtvnw.net/ttv-static/404_boxart-1080x1436.jpg";
-    @Embedded
-    private final Rooms rooms = new Rooms();
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NotNull(message = "게임 이름은 Null 일 수 없습니다.")
     private String name;
+
+    @Embedded
+    private AlternativeGameNames alternativeGameNames;
 
     @NotNull(message = "게임 이미지는 Null 일 수 없습니다.")
     @ElementCollection
@@ -48,11 +51,11 @@ public class Game {
     @Column(name = "game_image")
     private List<String> images;
 
-    @Embedded
-    private AlternativeGameNames alternativeGameNames;
-
     @Column(nullable = false)
     private final boolean deleted = false;
+
+    @Embedded
+    private final Rooms rooms = new Rooms();
 
     public Game(final String name) {
         this(null, name, Collections.singletonList(DEFAULT_IMAGE), new AlternativeGameNames());
@@ -89,6 +92,13 @@ public class Game {
         this.name = target.name;
         this.images = target.images;
         this.alternativeGameNames = target.alternativeGameNames;
+    }
+
+    public void update(String name, List<String> alternativeNames, List<String> images) {
+        this.name = name;
+        this.alternativeGameNames.deleteAll();
+        AlternativeGameNames.convertAndAddToGame(alternativeNames, this);
+        this.images = images;
     }
 
     public void addRoom(final Room room) {

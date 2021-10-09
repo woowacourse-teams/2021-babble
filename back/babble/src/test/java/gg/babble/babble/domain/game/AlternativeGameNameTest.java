@@ -40,7 +40,6 @@ class AlternativeGameNameTest {
         // when
         alternativeGameName.delete();
         // then
-        assertThat(game.hasName(alternativeGameName.getValue())).isFalse();
         assertThat(alternativeGameName.isDeleted()).isTrue();
     }
 }

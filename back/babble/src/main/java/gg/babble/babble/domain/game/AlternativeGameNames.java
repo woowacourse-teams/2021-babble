@@ -1,5 +1,6 @@
 package gg.babble.babble.domain.game;
 
+import gg.babble.babble.domain.tag.AlternativeTagName;
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.ArrayList;
@@ -25,6 +26,14 @@ public class AlternativeGameNames {
         this.elements = elements;
     }
 
+    public static AlternativeGameNames convertAndAddToGame(List<String> alternativeNames, Game game) {
+        List<AlternativeGameName> alternativeGameNames = alternativeNames.stream()
+            .map(gameName -> new AlternativeGameName(gameName, game))
+            .collect(Collectors.toList());
+
+        return new AlternativeGameNames(alternativeGameNames);
+    }
+
     public void add(final AlternativeGameName name) {
         if (contains(name.getValue())) {
             throw new BabbleDuplicatedException(String.format("이미 존재하는 이름 입니다.(%s)", name.getValue()));
@@ -38,17 +47,29 @@ public class AlternativeGameNames {
             throw new BabbleNotFoundException(String.format("존재하지 않는 이름 입니다.(%s)", alternativeGameName.getValue()));
         }
 
-        elements.remove(alternativeGameName);
+        alternativeGameName.delete();
+    }
+
+    public void deleteAll() {
+        for (AlternativeGameName element : getElements()) {
+            element.delete();
+        }
     }
 
     public boolean contains(final String name) {
-        return elements.stream()
+        return getElements().stream()
             .anyMatch(alternativeName -> alternativeName.getValue().equals(name));
     }
 
     public List<String> getNames() {
-        return elements.stream()
+        return getElements().stream()
             .map(AlternativeGameName::getValue)
+            .collect(Collectors.toList());
+    }
+
+    private List<AlternativeGameName> getElements() {
+        return elements.stream()
+            .filter(AlternativeGameName::isNotDeleted)
             .collect(Collectors.toList());
     }
 

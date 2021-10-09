@@ -59,10 +59,11 @@ public class AlternativeGameName {
     }
 
     public void delete() {
-        if (game.hasName(value)) {
-            game.removeAlternativeName(this);
-        }
         deleted = true;
+    }
+
+    public boolean isNotDeleted() {
+        return !isDeleted();
     }
 
     @Override

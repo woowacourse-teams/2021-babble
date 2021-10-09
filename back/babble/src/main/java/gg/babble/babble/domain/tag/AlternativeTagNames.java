@@ -43,11 +43,6 @@ public class AlternativeTagNames {
         elements.add(name);
     }
 
-    public void updateAll(AlternativeTagNames target) {
-        this.deleteAll();
-        this.elements.addAll(target.elements);
-    }
-
     public void remove(final AlternativeTagName alternativeTagName) {
         if (!contains(alternativeTagName.getValue())) {
             throw new BabbleNotFoundException(String.format("존재하지 않는 이름 입니다.(%s)", alternativeTagName.getValue().getValue()));
