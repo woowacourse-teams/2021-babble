@@ -108,7 +108,7 @@ class TagTest {
         Tag target = new Tag(updateTagName);
         target.addNames(Collections.singletonList(updateAlternativeTagName));
 
-        tag.update(target);
+        tag.update(updateTagName, Collections.singletonList(updateAlternativeTagName));
 
         // then
         assertThat(tag.getName()).isEqualTo(updateTagName);

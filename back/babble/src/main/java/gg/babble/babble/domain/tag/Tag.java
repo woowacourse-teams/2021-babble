@@ -95,9 +95,10 @@ public class Tag {
         }
     }
 
-    public void update(Tag target) {
-        this.name = target.name;
-        this.alternativeTagNames = target.alternativeTagNames;
+    public void update(String name, List<String> alternativeNames) {
+        this.name = new TagName(name);
+        this.alternativeTagNames.deleteAll();
+        AlternativeTagNames.convertAndAddToTag(alternativeNames, this);
     }
 
     public void removeAlternativeName(final AlternativeTagName alternativeTagName) {

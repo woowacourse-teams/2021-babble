@@ -26,12 +26,26 @@ public class AlternativeTagNames {
         this.elements = elements;
     }
 
+    public static AlternativeTagNames convertAndAddToTag(List<String> alternativeNames, Tag tag) {
+        List<AlternativeTagName> alternativeTagNames = alternativeNames.stream()
+            .map(TagName::new)
+            .map(tagName -> new AlternativeTagName(tagName, tag))
+            .collect(Collectors.toList());
+
+        return new AlternativeTagNames(alternativeTagNames);
+    }
+
     public void add(final AlternativeTagName name) {
         if (contains(name.getValue())) {
             throw new BabbleDuplicatedException(String.format("이미 존재하는 이름 입니다.(%s)", name.getValue()));
         }
 
         elements.add(name);
+    }
+
+    public void updateAll(AlternativeTagNames target) {
+        this.deleteAll();
+        this.elements.addAll(target.elements);
     }
 
     public void remove(final AlternativeTagName alternativeTagName) {
