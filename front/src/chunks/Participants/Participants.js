@@ -16,15 +16,18 @@ const Participants = ({ participants }) => {
 
   const copyNickname = (e) => {
     const nickname = e.target.textContent;
-    navigator.clipboard.writeText(nickname);
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(nickname);
+      setCopied(true); // 삭제해야함!
+      e.target.classList.add('copied');
 
-    setCopied(true); // 삭제해야함!
-    e.target.classList.add('copied');
-
-    setTimeout(() => {
-      e.target.classList.remove('copied');
-      setCopied(false); // 삭제해야함!
-    }, 200);
+      setTimeout(() => {
+        e.target.classList.remove('copied');
+        setCopied(false); // 삭제해야함!
+      }, 200);
+    } else {
+      console.log('클립보드가 없습니다.');
+    }
   };
 
   return (
