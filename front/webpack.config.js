@@ -5,10 +5,17 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const CompressionPlugin = require('compression-webpack-plugin');
-
+const dotenv = require('dotenv');
 const path = require('path');
+const { DefinePlugin } = require('webpack');
 
 module.exports = (env, options) => {
+  const envKey = dotenv.config().parsed;
+  const envKeys = Object.keys(envKey).reduce((prev, next) => {
+    prev[`process.env.${next}`] = JSON.stringify(envKey[next]);
+    return prev;
+  }, {});
+
   const config = {
     entry: './index.js',
 
@@ -80,6 +87,7 @@ module.exports = (env, options) => {
         algorithm: 'gzip',
         test: /\.(js|css|html|ttf)$/,
       }),
+      new DefinePlugin(envKeys),
     ],
 
     optimization: {

@@ -9,13 +9,13 @@ const KakaoShareButton = ({ gameId, roomId }) => {
     createKakaoButton();
   }, []);
 
+  console.log(process.env.REACT_APP_KAKAO_KEY);
   const createKakaoButton = () => {
     if (window.Kakao) {
       const kakao = window.Kakao;
 
       if (!kakao.isInitialized()) {
-        // TODO: kakao.init(process.env.REACT_APP_KAKAO_KEY);
-        kakao.init('a6abc5f71c7dabdd128d08f6de040ba1');
+        kakao.init(process.env.REACT_APP_KAKAO_KEY);
       }
 
       kakao.Link.createCustomButton({
