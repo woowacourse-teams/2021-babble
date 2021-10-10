@@ -64,7 +64,7 @@ const RoomList = ({ match }) => {
 
       changeUser({ id: generatedUser.id, nickname: generatedUser.nickname });
     } catch (error) {
-      console.log(error);
+      openModal(<ModalError>{error}</ModalError>);
     }
 
     if (roomId) {
