@@ -44,18 +44,7 @@ public class AlternativeGameName {
     public AlternativeGameName(final Long id, final String value, final Game game) {
         this.id = id;
         this.value = value;
-        setGame(game);
-    }
-
-    public void setGame(final Game game) {
-        final Game previousGame = this.game;
         this.game = game;
-
-        if (Objects.nonNull(previousGame) && previousGame.hasName(value)) {
-            previousGame.removeAlternativeName(this);
-        }
-
-        game.addAlternativeName(this);
     }
 
     public void delete() {

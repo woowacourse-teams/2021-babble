@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import gg.babble.babble.domain.game.Game;
 import gg.babble.babble.exception.BabbleNotFoundException;
+import java.util.ArrayList;
 import java.util.Collections;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,7 +42,7 @@ public class GameRepositoryTest {
         Game target = new Game("새로운 게임", Collections.singletonList("오래된 이미지"));
 
         // when
-        game.update(target);
+        game.update(target.getName(), new ArrayList<>(), target.getImages());
         Game foundGame = gameRepository.findById(game.getId())
             .orElseThrow(BabbleNotFoundException::new);
 

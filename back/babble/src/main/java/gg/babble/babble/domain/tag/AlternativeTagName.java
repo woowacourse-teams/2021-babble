@@ -70,6 +70,10 @@ public class AlternativeTagName {
         return !isDeleted();
     }
 
+    public String getName() {
+        return value.getValue();
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) {

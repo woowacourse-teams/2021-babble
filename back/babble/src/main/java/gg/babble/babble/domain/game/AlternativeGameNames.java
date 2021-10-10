@@ -1,6 +1,5 @@
 package gg.babble.babble.domain.game;
 
-import gg.babble.babble.domain.tag.AlternativeTagName;
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.ArrayList;
@@ -26,14 +25,6 @@ public class AlternativeGameNames {
         this.elements = elements;
     }
 
-    public static AlternativeGameNames convertAndAddToGame(List<String> alternativeNames, Game game) {
-        List<AlternativeGameName> alternativeGameNames = alternativeNames.stream()
-            .map(gameName -> new AlternativeGameName(gameName, game))
-            .collect(Collectors.toList());
-
-        return new AlternativeGameNames(alternativeGameNames);
-    }
-
     public void add(final AlternativeGameName name) {
         if (contains(name.getValue())) {
             throw new BabbleDuplicatedException(String.format("이미 존재하는 이름 입니다.(%s)", name.getValue()));
@@ -42,18 +33,29 @@ public class AlternativeGameNames {
         elements.add(name);
     }
 
+    public void convertAndUpdateToGame(List<String> alternativeNames, Game game) {
+        removeLegacyNames(alternativeNames);
+        addUpdateName(alternativeNames, game);
+    }
+
+    private void removeLegacyNames(List<String> alternativeNames) {
+        elements.stream()
+            .filter(element -> !alternativeNames.contains(element.getValue()))
+            .forEach(AlternativeGameName::delete);
+    }
+
+    private void addUpdateName(List<String> alternativeNames, Game game) {
+        alternativeNames.stream()
+            .filter(name -> !contains(name))
+            .forEach(name -> add(new AlternativeGameName(name, game)));
+    }
+
     public void remove(final AlternativeGameName alternativeGameName) {
         if (!contains(alternativeGameName.getValue())) {
             throw new BabbleNotFoundException(String.format("존재하지 않는 이름 입니다.(%s)", alternativeGameName.getValue()));
         }
 
         alternativeGameName.delete();
-    }
-
-    public void deleteAll() {
-        for (AlternativeGameName element : getElements()) {
-            element.delete();
-        }
     }
 
     public boolean contains(final String name) {
@@ -67,7 +69,7 @@ public class AlternativeGameNames {
             .collect(Collectors.toList());
     }
 
-    private List<AlternativeGameName> getElements() {
+    public List<AlternativeGameName> getElements() {
         return elements.stream()
             .filter(AlternativeGameName::isNotDeleted)
             .collect(Collectors.toList());

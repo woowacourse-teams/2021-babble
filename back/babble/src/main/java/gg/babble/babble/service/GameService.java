@@ -40,7 +40,7 @@ public class GameService {
     }
 
     public Game findGameById(final Long id) {
-        return gameRepository.findById(id)
+        return gameRepository.findByIdAndDeletedFalse(id)
             .orElseThrow(() -> new BabbleNotFoundException(String.format("존재하지 않는 게임 Id(%d) 입니다.", id)));
     }
 
@@ -63,7 +63,7 @@ public class GameService {
         Game game = findGameById(gameId);
         game.update(request.getName(), request.getAlternativeNames(), request.getImages());
 
-        return GameWithImageResponse.from(game);
+        return GameWithImageResponse.from(findGameById(gameId));
     }
 
     @Transactional

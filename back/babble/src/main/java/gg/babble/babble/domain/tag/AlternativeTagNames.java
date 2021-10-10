@@ -69,7 +69,7 @@ public class AlternativeTagNames {
             .collect(Collectors.toList());
     }
 
-    private List<AlternativeTagName> getElements() {
+    public List<AlternativeTagName> getElements() {
         return elements.stream()
             .filter(AlternativeTagName::isNotDeleted)
             .collect(Collectors.toList());

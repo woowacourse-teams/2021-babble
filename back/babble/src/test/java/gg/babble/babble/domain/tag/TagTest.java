@@ -162,7 +162,7 @@ class TagTest {
         tag.addNames(alternativeNames);
 
         // then
-        assertThat(tag.getAlternativeNames()).hasSameSizeAs(alternativeNames).containsAll(alternativeNames);
+        assertThat(tag.getAlternativeTagNames().getNames()).hasSameSizeAs(alternativeNames).containsAll(alternativeNames);
     }
 
     @DisplayName("복수 개의 이름 추가시 이미 존재하는 이름이면 예외 처리")

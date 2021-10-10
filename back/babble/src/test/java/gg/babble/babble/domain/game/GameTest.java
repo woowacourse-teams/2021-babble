@@ -9,6 +9,7 @@ import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
 import gg.babble.babble.exception.BabbleDuplicatedException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -42,7 +43,7 @@ class GameTest {
         Game target = new Game("새로운 게임", Collections.singletonList("새로운 이미지"));
 
         // when
-        game.update(target);
+        game.update(target.getName(), new ArrayList<>(), target.getImages());
 
         // then
         assertThat(game.getId()).isEqualTo(1L);
@@ -58,6 +59,7 @@ class GameTest {
 
         // when
         AlternativeGameName alternativeGameName = new AlternativeGameName("망겜", game);
+        game.addAlternativeName(alternativeGameName);
 
         // then
         assertThat(game.getAlternativeGameNames()).isEqualTo(new AlternativeGameNames(Collections.singletonList(alternativeGameName)));
@@ -69,11 +71,13 @@ class GameTest {
         // given
         Game game = new Game(1L, "오래된 게임", Collections.singletonList("오래된 이미지"));
         AlternativeGameName alternativeGameName = new AlternativeGameName(1L, "흥겜", game);
+        game.addAlternativeName(alternativeGameName);
         Game target = new Game("새로운 게임", Collections.singletonList("새로운 이미지"));
         AlternativeGameName alternativeTargetGameName = new AlternativeGameName(1L, "망겜", target);
+        target.addAlternativeName(alternativeGameName);
 
         // when
-        game.update(target);
+        game.update(target.getName(), target.getAlternativeNames(), target.getImages());
 
         // then
         assertThat(game.getId()).isEqualTo(1L);
@@ -88,8 +92,11 @@ class GameTest {
         // given
         Game game = new Game(1L, "오래된 게임", Collections.singletonList("오래된 이미지"));
         AlternativeGameName alternativeGameName = new AlternativeGameName("흥겜", game);
+        game.addAlternativeName(alternativeGameName);
+
         // when
         game.removeAlternativeName(alternativeGameName);
+
         // then
         assertThat(game.hasName(alternativeGameName.getValue())).isFalse();
         assertThat(alternativeGameName.isDeleted()).isTrue();

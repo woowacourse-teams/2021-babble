@@ -126,10 +126,6 @@ public class Tag {
         return !hasName(name);
     }
 
-    public List<String> getAlternativeNames() {
-        return alternativeTagNames.getNames();
-    }
-
     public String getName() {
         return name.getValue();
     }

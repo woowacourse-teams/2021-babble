@@ -88,16 +88,9 @@ public class Game {
         return rooms.totalHeadCount();
     }
 
-    public void update(final Game target) {
-        this.name = target.name;
-        this.images = target.images;
-        this.alternativeGameNames = target.alternativeGameNames;
-    }
-
     public void update(String name, List<String> alternativeNames, List<String> images) {
         this.name = name;
-        this.alternativeGameNames.deleteAll();
-        AlternativeGameNames.convertAndAddToGame(alternativeNames, this);
+        this.alternativeGameNames.convertAndUpdateToGame(alternativeNames, this);
         this.images = images;
     }
 
@@ -109,7 +102,7 @@ public class Game {
         validateToAddNames(names);
 
         for (String name : names) {
-            new AlternativeGameName(name, this);
+            addAlternativeName(new AlternativeGameName(name, this));
         }
     }
 
@@ -132,10 +125,6 @@ public class Game {
         }
 
         alternativeGameNames.add(alternativeGameName);
-
-        if (alternativeGameName.getGame() != this) {
-            alternativeGameName.setGame(this);
-        }
     }
 
     public void removeAlternativeName(final AlternativeGameName alternativeGameName) {
