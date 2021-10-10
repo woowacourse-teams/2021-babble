@@ -1,5 +1,7 @@
 package gg.babble.babble.domain.tag;
 
+import gg.babble.babble.domain.game.AlternativeGameName;
+import gg.babble.babble.domain.game.Game;
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.ArrayList;
@@ -26,21 +28,30 @@ public class AlternativeTagNames {
         this.elements = elements;
     }
 
-    public static AlternativeTagNames convertAndAddToTag(List<String> alternativeNames, Tag tag) {
-        List<AlternativeTagName> alternativeTagNames = alternativeNames.stream()
-            .map(TagName::new)
-            .map(tagName -> new AlternativeTagName(tagName, tag))
-            .collect(Collectors.toList());
-
-        return new AlternativeTagNames(alternativeTagNames);
-    }
-
     public void add(final AlternativeTagName name) {
         if (contains(name.getValue())) {
             throw new BabbleDuplicatedException(String.format("이미 존재하는 이름 입니다.(%s)", name.getValue()));
         }
 
         elements.add(name);
+    }
+
+    public void convertAndUpdateToTag(List<String> alternativeNames, Tag tag) {
+        removeLegacyNames(alternativeNames);
+        addUpdateName(alternativeNames, tag);
+    }
+
+    private void removeLegacyNames(List<String> alternativeNames) {
+        elements.stream()
+            .filter(element -> !alternativeNames.contains(element.getName()))
+            .forEach(AlternativeTagName::delete);
+    }
+
+    private void addUpdateName(List<String> alternativeNames, Tag tag) {
+        alternativeNames.stream()
+            .map(TagName::new)
+            .filter(name -> !contains(name))
+            .forEach(name -> add(new AlternativeTagName(name, tag)));
     }
 
     public void remove(final AlternativeTagName alternativeTagName) {
