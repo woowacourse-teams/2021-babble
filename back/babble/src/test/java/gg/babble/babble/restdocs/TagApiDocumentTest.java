@@ -73,7 +73,11 @@ public class TagApiDocumentTest extends ApiDocumentTest {
                 responseFields(
                     fieldWithPath("[].id").description("태그 Id"),
                     fieldWithPath("[].name").description("태그 이름"),
-                    fieldWithPath("[].alternativeNames").description("대체 이름"))));
+                    fieldWithPath("[].alternativeNames[]").description("대체 이름 객체"),
+                    fieldWithPath("[].alternativeNames[].id").description("대체 이름 ID"),
+                    fieldWithPath("[].alternativeNames[].name").description("대체 이름")
+                )
+            ));
     }
 
     @DisplayName("태그를 추가한다.")
@@ -106,7 +110,8 @@ public class TagApiDocumentTest extends ApiDocumentTest {
                 responseFields(
                     fieldWithPath("id").description("태그 ID"),
                     fieldWithPath("name").description("태그 이름"),
-                    fieldWithPath("alternativeNames").description("대체 이름")
+                    fieldWithPath("alternativeNames[].id").description("대체 이름 ID"),
+                    fieldWithPath("alternativeNames[].name").description("대체 이름")
                 )
             ));
     }
@@ -159,7 +164,8 @@ public class TagApiDocumentTest extends ApiDocumentTest {
                 responseFields(
                     fieldWithPath("id").description("태그 ID"),
                     fieldWithPath("name").description("태그 이름"),
-                    fieldWithPath("alternativeNames").description("대체 이름")
+                    fieldWithPath("alternativeNames[].id").description("대체 이름 ID"),
+                    fieldWithPath("alternativeNames[].name").description("대체 이름")
                 )
             ));
     }

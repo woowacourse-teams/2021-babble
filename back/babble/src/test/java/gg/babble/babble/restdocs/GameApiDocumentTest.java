@@ -66,14 +66,15 @@ public class GameApiDocumentTest extends ApiDocumentTest {
             .andExpect(jsonPath("$[0].images").value(hasSize(1)))
             .andExpect(jsonPath("$[0].images").value(containsInAnyOrder(IMAGE_1)))
             .andExpect(jsonPath("$[0].alternativeNames").value(hasSize(2)))
-            .andExpect(jsonPath("$[0].alternativeNames").value(containsInAnyOrder(ALTERNATIVE_NAME1, ALTERNATIVE_NAME2)))
+            .andExpect(jsonPath("[0].alternativeNames[0].name").value(ALTERNATIVE_NAME1))
+            .andExpect(jsonPath("[0].alternativeNames[1].name").value(ALTERNATIVE_NAME2))
             .andExpect(jsonPath("$[1].id").value(games.get(1).getId()))
             .andExpect(jsonPath("$[1].name").value(games.get(1).getName()))
             .andExpect(jsonPath("$[1].headCount").value(0))
             .andExpect(jsonPath("$[1].images").value(hasSize(2)))
             .andExpect(jsonPath("$[1].images").value(containsInAnyOrder(IMAGE_1, IMAGE_2)))
             .andExpect(jsonPath("$[1].alternativeNames").value(hasSize(1)))
-            .andExpect(jsonPath("$[1].alternativeNames[0]").value(ALTERNATIVE_NAME3))
+            .andExpect(jsonPath("[1].alternativeNames[0].name").value(ALTERNATIVE_NAME3))
             .andExpect(jsonPath("$[2].id").value(games.get(2).getId()))
             .andExpect(jsonPath("$[2].name").value(games.get(2).getName()))
             .andExpect(jsonPath("$[2].headCount").value(0))
@@ -87,7 +88,11 @@ public class GameApiDocumentTest extends ApiDocumentTest {
                     fieldWithPath("[].name").description("게임 이름"),
                     fieldWithPath("[].headCount").description("게임의 참가자 수"),
                     fieldWithPath("[].images").description("이미지 목록"),
-                    fieldWithPath("[].alternativeNames").description("대체 이름"))));
+                    fieldWithPath("[].alternativeNames[]").description("대체 이름 객체"),
+                    fieldWithPath("[].alternativeNames[].id").description("대체 이름 ID"),
+                    fieldWithPath("[].alternativeNames[].name").description("대체 이름")
+                )
+            ));
     }
 
     @DisplayName("단일 게임 이미지 조회")
@@ -136,13 +141,18 @@ public class GameApiDocumentTest extends ApiDocumentTest {
             .andExpect(jsonPath("$.name").value(games.get(0).getName()))
             .andExpect(jsonPath("$.images").value(IMAGE_1))
             .andExpect(jsonPath("$.alternativeNames").value(hasSize(2)))
-            .andExpect(jsonPath("$.alternativeNames").value(containsInAnyOrder(ALTERNATIVE_NAME1, ALTERNATIVE_NAME2)))
+            .andExpect(jsonPath("alternativeNames[0].name").value(ALTERNATIVE_NAME1))
+            .andExpect(jsonPath("alternativeNames[1].name").value(ALTERNATIVE_NAME2))
 
             .andDo(document("read-game",
                 responseFields(fieldWithPath("id").description("게임 Id"),
                     fieldWithPath("name").description("게임 이름"),
                     fieldWithPath("images").description("게임 이미지 목록"),
-                    fieldWithPath("alternativeNames").description("대체 이름"))));
+                    fieldWithPath("alternativeNames[]").description("대체 이름 객체"),
+                    fieldWithPath("alternativeNames[].id").description("대체 이름 ID"),
+                    fieldWithPath("alternativeNames[].name").description("대체 이름")
+                )
+            ));
     }
 
     @DisplayName("게임을 추가한다.")
@@ -169,7 +179,7 @@ public class GameApiDocumentTest extends ApiDocumentTest {
             .andExpect(jsonPath("$.images").value(hasSize(3)))
             .andExpect(jsonPath("$.images[0]").value(IMAGE_1))
             .andExpect(jsonPath("$.alternativeNames").value(hasSize(1)))
-            .andExpect(jsonPath("$.alternativeNames").value(alternativeNames.get(0)))
+            .andExpect(jsonPath("alternativeNames[0].name").value(alternativeNames.get(0)))
 
             .andDo(document("insert-game",
                 requestFields(
@@ -181,7 +191,9 @@ public class GameApiDocumentTest extends ApiDocumentTest {
                     fieldWithPath("id").description("게임 ID"),
                     fieldWithPath("name").description("게임 이름"),
                     fieldWithPath("images").description("게임 이미지 목록"),
-                    fieldWithPath("alternativeNames").description("대체 이름")
+                    fieldWithPath("alternativeNames[]").description("대체 이름 객체"),
+                    fieldWithPath("alternativeNames[].id").description("대체 이름 ID"),
+                    fieldWithPath("alternativeNames[].name").description("대체 이름")
                 )
             ));
     }
@@ -211,7 +223,7 @@ public class GameApiDocumentTest extends ApiDocumentTest {
             .andExpect(jsonPath("$.images").value(hasSize(3)))
             .andExpect(jsonPath("$.images[0]").value(IMAGE_1))
             .andExpect(jsonPath("$.alternativeNames").value(hasSize(1)))
-            .andExpect(jsonPath("$.alternativeNames").value(alternativeNames.get(0)))
+            .andExpect(jsonPath("alternativeNames[0].name").value(alternativeNames.get(0)))
 
             .andDo(document("insert-game",
                 requestFields(
@@ -223,7 +235,8 @@ public class GameApiDocumentTest extends ApiDocumentTest {
                     fieldWithPath("id").description("게임 ID"),
                     fieldWithPath("name").description("게임 이름"),
                     fieldWithPath("images").description("게임 이미지 목록"),
-                    fieldWithPath("alternativeNames").description("대체 이름")
+                    fieldWithPath("alternativeNames[].id").description("대체 이름 Id"),
+                    fieldWithPath("alternativeNames[].name").description("대체 이름")
                 )
             ));
     }
@@ -300,7 +313,8 @@ public class GameApiDocumentTest extends ApiDocumentTest {
                     fieldWithPath("id").description("게임 ID"),
                     fieldWithPath("name").description("게임 이름"),
                     fieldWithPath("images").description("게임 이미지 목록"),
-                    fieldWithPath("alternativeNames").description("대체 이름")
+                    fieldWithPath("alternativeNames[].id").description("대체 이름 Id"),
+                    fieldWithPath("alternativeNames[].name").description("대체 이름")
                 )
             ));
     }
