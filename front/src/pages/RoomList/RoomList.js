@@ -27,24 +27,62 @@ import { useChattingModal } from '../../contexts/ChattingModalProvider';
 import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 import { useHistory } from 'react-router-dom';
 import useInterval from '../../hooks/useInterval';
+import useScript from '../../hooks/useScript';
 import { useUser } from '../../contexts/UserProvider';
 
 const RoomList = ({ match }) => {
-  const history = useHistory();
   const [tagList, setTagList] = useState([]);
   const [selectedTagList, setSelectedTagList] = useState([]);
   const [roomList, setRoomList] = useState([]);
   const [currentGame, setCurrentGame] = useState({});
-  const { user, changeUser } = useUser();
-  const { openChatting, closeChatting, isChattingModalOpen } =
-    useChattingModal();
-  const { openModal } = useDefaultModal();
 
   // TODO: 임시 방편. onChangeInput을 SearchInput 내부로 집어넣으면서 사라질 운명
   const [autoCompleteTagList, setAutoCompleteTagList] = useState([]);
   const searchRef = useRef(null);
 
+  const { user, changeUser } = useUser();
+  const { openChatting, closeChatting, isChattingModalOpen } =
+    useChattingModal();
+  const { openModal } = useDefaultModal();
+
+  useScript('https://developers.kakao.com/sdk/js/kakao.js');
+  const history = useHistory();
+
   const { gameId } = match.params;
+
+  const getRoomDataWhenEnterWithLink = async () => {
+    const { roomId } = match.params;
+    const response = await axios.get(`${BASE_URL}/api/rooms/${roomId}`);
+    const { game, tags } = response.data;
+
+    try {
+      const response = await axios.post(`${BASE_URL}/api/users`, {
+        nickname: getRandomNickname(),
+      });
+      const generatedUser = response.data;
+
+      setSessionStorage('nickname', generatedUser.nickname);
+
+      changeUser({ id: generatedUser.id, nickname: generatedUser.nickname });
+    } catch (error) {
+      openModal(<ModalError>{error}</ModalError>);
+    }
+
+    if (roomId) {
+      if (match.url.includes(`/chat/${roomId}`)) {
+        history.push(`/games/${gameId}`);
+        openChatting(
+          <ChattingRoom game={game} tags={tags} roomId={Number(roomId)} />
+        );
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (match.params.roomId) {
+      getRoomDataWhenEnterWithLink();
+    }
+  }, []);
 
   const getGame = async () => {
     try {
@@ -115,6 +153,7 @@ const RoomList = ({ match }) => {
       if (isChattingModalOpen) {
         closeChatting();
       }
+
       openChatting(<ChattingRoom game={game} tags={tags} roomId={roomId} />);
     } catch (error) {
       openModal(<ModalError>{error}</ModalError>);
