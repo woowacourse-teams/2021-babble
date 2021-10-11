@@ -27,8 +27,16 @@ const App = () => {
             path={`${PATH.ROOM_LIST}/:gameId${PATH.MAKE_ROOM}`}
             component={MakeRoom}
           />
-          <Route path={`${PATH.ROOM_LIST}/:gameId`} component={RoomList} />
-          <Route path={PATH.ADMIN} component={BabbleManagement} exact />
+          <Route
+            path={`${PATH.ROOM_LIST}/:gameId`}
+            component={RoomList}
+            exact
+          />
+          <Route
+            path={`${PATH.ROOM_LIST}/:gameId/chat/:roomId`}
+            component={RoomList}
+            exact
+          />
           <Route component={NotFound} />
         </Switch>
       </Main>

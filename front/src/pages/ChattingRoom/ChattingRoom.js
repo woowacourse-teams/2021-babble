@@ -16,6 +16,7 @@ import { FaChevronUp } from '@react-icons/all-files/fa/FaChevronUp';
 import { FaUsers } from '@react-icons/all-files/fa/FaUsers';
 import { IoCloseOutline } from '@react-icons/all-files/io5/IoCloseOutline';
 import { IoRemove } from '@react-icons/all-files/io5/IoRemove';
+import KakaoShareButton from '../../components/KakaoShareButton/KakaoShareButton';
 import LinearLayout from '../../core/Layout/LinearLayout';
 import Participants from '../../chunks/Participants/Participants';
 import PropTypes from 'prop-types';
@@ -205,6 +206,7 @@ const ChattingRoom = ({ tags, game, roomId }) => {
                 <span className='room-number-text'>번 방</span>
               </Subtitle3>
               <Subtitle3>{game.name}</Subtitle3>
+              <KakaoShareButton gameId={game.id} roomId={roomId} />
             </LinearLayout>
             <LinearLayout direction='row'>
               <button className='room-minimize' onClick={minimize}>
@@ -287,6 +289,7 @@ ChattingRoom.propTypes = {
     name: PropTypes.string,
   }),
   roomId: PropTypes.number,
+  match: PropTypes.object,
 };
 
 export default ChattingRoom;
