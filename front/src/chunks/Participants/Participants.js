@@ -12,22 +12,29 @@ import { useUser } from '../../contexts/UserProvider';
 
 const Participants = ({ participants }) => {
   const { user } = useUser();
-  const [copied, setCopied] = useState(false); // 요거 지우면 됨, setState import도 삭제
+  const [copySuccess, setCopySuccess] = useState(false);
+  const [copyFailed, setCopyFailed] = useState(false);
 
   const copyNickname = (e) => {
     const nickname = e.target.textContent;
+
     if (navigator.clipboard) {
       navigator.clipboard.writeText(nickname);
-      setCopied(true); // 삭제해야함!
-      e.target.classList.add('copied');
 
-      setTimeout(() => {
-        e.target.classList.remove('copied');
-        setCopied(false); // 삭제해야함!
-      }, 200);
+      setCopySuccess(true);
+      setCopyFailed(false);
     } else {
-      console.log('클립보드가 없습니다.');
+      setCopySuccess(false);
+      setCopyFailed(true);
     }
+
+    e.target.classList.add('animate');
+
+    setTimeout(() => {
+      e.target.classList.remove('animate');
+      setCopySuccess(false);
+      setCopyFailed(false);
+    }, 500);
   };
 
   return (
@@ -53,9 +60,15 @@ const Participants = ({ participants }) => {
             )}
           </Avatar>
         ))}
-        {/* 삭제 */}
-        <div className={`notice ${copied ? 'copied' : ''}`}>
-          <Caption2>닉네임이 복사되었습니다!</Caption2>
+        <div
+          className={`notice${copySuccess || copyFailed ? ' animate' : ''}${
+            copyFailed ? ' failed' : ''
+          }`}
+        >
+          <Caption2>
+            {copySuccess && '닉네임이 복사되었습니다!'}
+            {copyFailed && '닉네임 복사에 실패했습니다.'}
+          </Caption2>
         </div>
       </LinearLayout>
     </aside>
