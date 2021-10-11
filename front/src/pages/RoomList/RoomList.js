@@ -31,21 +31,22 @@ import useScript from '../../hooks/useScript';
 import { useUser } from '../../contexts/UserProvider';
 
 const RoomList = ({ match }) => {
-  useScript('https://developers.kakao.com/sdk/js/kakao.js');
   const [tagList, setTagList] = useState([]);
   const [selectedTagList, setSelectedTagList] = useState([]);
   const [roomList, setRoomList] = useState([]);
   const [currentGame, setCurrentGame] = useState({});
+
+  // TODO: 임시 방편. onChangeInput을 SearchInput 내부로 집어넣으면서 사라질 운명
+  const [autoCompleteTagList, setAutoCompleteTagList] = useState([]);
+  const searchRef = useRef(null);
+
   const { user, changeUser } = useUser();
   const { openChatting, closeChatting, isChattingModalOpen } =
     useChattingModal();
   const { openModal } = useDefaultModal();
 
+  useScript('https://developers.kakao.com/sdk/js/kakao.js');
   const history = useHistory();
-
-  // TODO: 임시 방편. onChangeInput을 SearchInput 내부로 집어넣으면서 사라질 운명
-  const [autoCompleteTagList, setAutoCompleteTagList] = useState([]);
-  const searchRef = useRef(null);
 
   const { gameId } = match.params;
 
