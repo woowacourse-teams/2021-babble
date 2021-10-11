@@ -43,6 +43,7 @@
     "compression-webpack-plugin": "^8.0.1",
     "css-loader": "^5.2.6",
     "cypress": "^8.2.0",
+    "dotenv": "^10.0.0",
     "error-overlay-webpack-plugin": "^0.4.2",
     "eslint": "^7.30.0",
     "eslint-config-prettier": "^8.3.0",

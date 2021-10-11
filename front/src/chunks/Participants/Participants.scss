@@ -28,7 +28,7 @@
       cursor: pointer;
     }
 
-    .caption2.copied {
+    .caption2.animate {
       transform: translate(0, 0);
       animation: shake 0.2s linear both;
     }
@@ -58,10 +58,14 @@
 
     bottom: 0;
     color: f.primary(babble-pink);
-    transition: 0.2s;
+    transition: opacity 0.5s;
 
-    &.copied {
+    &.animate {
       opacity: 1;
+    }
+
+    &.failed {
+      color: f.grey-scale(10);
     }
   }
 }
