@@ -42,11 +42,14 @@ const TagManagement = ({ tags = [] }) => {
         <Subtitle1>태그 등록</Subtitle1>
         <form className='register-tag'>
           <Subtitle3>태그 이름</Subtitle3>
-          <TextInput placeholder='태그 이름' />
+          <TextInput name='tag-name' placeholder='태그 이름' />
 
           <Subtitle3>대체 이름(복수 개 가능)</Subtitle3>
           <div className='register-alternative-tag-name'>
-            <TextInput placeholder='태그 대체 이름' />
+            <TextInput
+              name='tag-alternative-name'
+              placeholder='태그 대체 이름'
+            />
             <SquareButton size='block'>
               <Body1>등록</Body1>
             </SquareButton>

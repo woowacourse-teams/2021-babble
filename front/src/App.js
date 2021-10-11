@@ -37,6 +37,7 @@ const App = () => {
             component={RoomList}
             exact
           />
+          <Route path={PATH.ADMIN} component={BabbleManagement} exact />
           <Route component={NotFound} />
         </Switch>
       </Main>
