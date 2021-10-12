@@ -23,9 +23,9 @@ jobs:
         env:
           ENV_API_KEY: ${{ secrets.KAKAO_KEY }}
         run: |
-          touch .env
-          echo REACT_APP_KAKAO_KEY="$ENV_API_KEY" >> .env
-          cat .env
+          echo "REACT_APP_KAKAO_KEY=$REACT_APP_KAKAO_KEY" >> .env
+        env:
+          REACT_APP_KAKAO_KEY: ${{ secrets.KAKAO_KEY }}
 
       - name: 패키지 설치
         working-directory: ./front
