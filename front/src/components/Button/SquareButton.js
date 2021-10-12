@@ -7,14 +7,16 @@ const SquareButton = ({
   size = 'medium',
   type = 'button',
   colored = true,
+  name,
   children,
-  ...rest
+  onClickButton = () => {},
 }) => {
   return (
     <button
       type={type}
       className={`square-button ${size} ${colored ? 'colored' : 'line'}`}
-      {...rest}
+      name={name}
+      onClick={onClickButton}
     >
       {children}
     </button>
@@ -23,9 +25,10 @@ const SquareButton = ({
 
 SquareButton.propTypes = {
   size: PropTypes.oneOf(['tiny', 'small', 'medium', 'large', 'block']),
-  type: PropTypes.oneOf(['button', 'submit']),
+  type: PropTypes.oneOf(['button', 'submit', 'reset']),
+  name: PropTypes.string,
   colored: PropTypes.bool,
-  onClick: PropTypes.func,
+  onClickButton: PropTypes.func,
   children: PropTypes.node,
 };
 
