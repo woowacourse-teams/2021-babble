@@ -10,12 +10,6 @@ const path = require('path');
 const { DefinePlugin } = require('webpack');
 
 module.exports = (env, options) => {
-  const envKey = dotenv.config().parsed;
-  const envKeys = Object.keys(envKey).reduce((prev, next) => {
-    prev[`process.env.${next}`] = JSON.stringify(envKey[next]);
-    return prev;
-  }, {});
-
   const config = {
     entry: './index.js',
 
@@ -87,7 +81,9 @@ module.exports = (env, options) => {
         algorithm: 'gzip',
         test: /\.(js|css|html|ttf)$/,
       }),
-      new DefinePlugin(envKeys),
+      new DefinePlugin({
+        'process.env': JSON.stringify(dotenv.config().parsed),
+      }),
     ],
 
     optimization: {
