@@ -1,0 +1,16 @@
+@use '../../../style/functions' as f;
+@use '../../../style/variables' as v;
+@use '../../../style/mixins' as m;
+
+.management-container {
+  margin: 0 auto;
+  max-width: 102.66664rem;
+  padding: 3rem;
+
+  & > section {
+    margin-top: 3rem;
+    border: 1px solid f.grey-scale(4);
+    border-radius: f.border-radius(large-container);
+    padding: 3rem;
+  }
+}

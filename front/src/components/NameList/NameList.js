@@ -5,7 +5,12 @@ import { Tag, TagErasable } from '..';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const NameList = ({ list, erasable, onClickNames = null }) => {
+const NameList = ({
+  list = [],
+  erasable,
+  onClickName = () => {},
+  onDeleteName = () => {},
+}) => {
   return (
     <div className='name-list-container'>
       {!list.length ? (
@@ -14,13 +19,14 @@ const NameList = ({ list, erasable, onClickNames = null }) => {
         list.map((item) =>
           erasable ? (
             <TagErasable
-              onClickTagName={() => onClickNames(item.id)}
+              onDeleteTag={() => onDeleteName(item.id)}
+              onClickTagName={() => onClickName(item.id)}
               key={item.id}
             >
               {item.name}
             </TagErasable>
           ) : (
-            <Tag onClickTagName={onClickNames} key={item.id}>
+            <Tag onClickTagName={() => onClickName(item.id)} key={item.id}>
               {item.name}
             </Tag>
           )
@@ -38,7 +44,8 @@ NameList.propTypes = {
     })
   ),
   erasable: PropTypes.bool,
-  onClickNames: PropTypes.func,
+  onClickName: PropTypes.func,
+  onDeleteName: PropTypes.func,
 };
 
 export default NameList;

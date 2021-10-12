@@ -62,11 +62,9 @@ public class TagApiDocumentTest extends ApiDocumentTest {
             .andExpect(jsonPath("$.[0].id").value(tags.get(0).getId()))
             .andExpect(jsonPath("$.[0].name").value(tags.get(0).getName()))
             .andExpect(jsonPath("$.[0].alternativeNames").value(hasSize(2)))
-            .andExpect(jsonPath("$.[0].alternativeNames").value(Matchers.containsInAnyOrder(ALTERNATIVE_NAME1, ALTERNATIVE_NAME2)))
             .andExpect(jsonPath("$.[1].id").value(tags.get(1).getId()))
             .andExpect(jsonPath("$.[1].name").value(tags.get(1).getName()))
             .andExpect(jsonPath("$.[1].alternativeNames").value(hasSize(1)))
-            .andExpect(jsonPath("$.[1].alternativeNames").value(Matchers.containsInAnyOrder(ALTERNATIVE_NAME3)))
             .andExpect(jsonPath("$.[2].id").value(tags.get(2).getId()))
             .andExpect(jsonPath("$.[2].name").value(tags.get(2).getName()))
             .andExpect(jsonPath("$.[2].alternativeNames").value(hasSize(0)))
@@ -75,7 +73,11 @@ public class TagApiDocumentTest extends ApiDocumentTest {
                 responseFields(
                     fieldWithPath("[].id").description("태그 Id"),
                     fieldWithPath("[].name").description("태그 이름"),
-                    fieldWithPath("[].alternativeNames").description("대체 이름"))));
+                    fieldWithPath("[].alternativeNames[]").description("대체 이름 객체"),
+                    fieldWithPath("[].alternativeNames[].id").description("대체 이름 ID"),
+                    fieldWithPath("[].alternativeNames[].name").description("대체 이름")
+                )
+            ));
     }
 
     @DisplayName("태그를 추가한다.")
@@ -99,7 +101,6 @@ public class TagApiDocumentTest extends ApiDocumentTest {
             .andExpect(jsonPath("$.id").isNumber())
             .andExpect(jsonPath("$.name").value(tagName))
             .andExpect(jsonPath("$.alternativeNames.length()").value(alternativeNames.size()))
-            .andExpect(jsonPath("$.alternativeNames").value(contains(alternativeNames.toArray())))
 
             .andDo(document("insert-tag",
                 requestFields(
@@ -109,7 +110,8 @@ public class TagApiDocumentTest extends ApiDocumentTest {
                 responseFields(
                     fieldWithPath("id").description("태그 ID"),
                     fieldWithPath("name").description("태그 이름"),
-                    fieldWithPath("alternativeNames").description("대체 이름")
+                    fieldWithPath("alternativeNames[].id").description("대체 이름 ID"),
+                    fieldWithPath("alternativeNames[].name").description("대체 이름")
                 )
             ));
     }
@@ -153,7 +155,6 @@ public class TagApiDocumentTest extends ApiDocumentTest {
             .andExpect(jsonPath("$.id").isNumber())
             .andExpect(jsonPath("$.name").value(tagName))
             .andExpect(jsonPath("$.alternativeNames.length()").value(alternativeNames.size()))
-            .andExpect(jsonPath("$.alternativeNames").value(contains(alternativeNames.toArray())))
 
             .andDo(document("update-tag",
                 requestFields(
@@ -163,7 +164,8 @@ public class TagApiDocumentTest extends ApiDocumentTest {
                 responseFields(
                     fieldWithPath("id").description("태그 ID"),
                     fieldWithPath("name").description("태그 이름"),
-                    fieldWithPath("alternativeNames").description("대체 이름")
+                    fieldWithPath("alternativeNames[].id").description("대체 이름 ID"),
+                    fieldWithPath("alternativeNames[].name").description("대체 이름")
                 )
             ));
     }

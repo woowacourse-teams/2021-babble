@@ -1,48 +1,40 @@
-@use '../../../style/mixins' as m;
 @use '../../../style/functions' as f;
+@use '../../../style/mixins' as m;
 
-.game-management-container {
+.tag-management-container {
   @include m.top-left-indents;
 
-  .subtitle1,
-  .subtitle3 {
-    margin-top: 2rem;
-  }
-
-  .name-list-container {
-    margin-top: 1rem;
-  }
-
-  .game-management-wrapper {
+  .tag-management-wrapper {
     @include m.top-left-indents;
     width: calc(100% - #{f.indent(one-left-depth)});
 
     & > .name-list-container {
       @include m.top-left-indents;
+
+      margin-bottom: 2rem;
       width: calc(100% - #{f.indent(one-left-depth)});
     }
 
-    .register-edit-game {
+    .register-tag {
       @include m.top-left-indents;
 
-      .game-submit {
-        margin-top: 1rem;
+      & > .input-container {
+        margin: 1rem 0;
       }
 
-      .game-name-input,
-      .game-alternative-input {
-        margin-top: 1rem;
-        display: flex;
+      .input-container {
+        input[type='text'] {
+          text-align: left;
 
-        .input-container {
-          input[type='text'] {
-            text-align: left;
-
-            &.input-inner {
-              margin-left: 0;
-            }
+          &.input-inner {
+            margin-left: 0;
           }
         }
+      }
+
+      .register-alternative-tag-name {
+        display: flex;
+        margin: 1rem 0;
 
         button {
           margin-left: 1rem;
@@ -52,7 +44,8 @@
         }
       }
 
-      .game-submit {
+      .tag-submit {
+        margin-top: 1rem;
         height: 5rem;
       }
     }
@@ -60,10 +53,10 @@
 }
 
 @include m.media(tablet) {
-  .game-management-container
-    .game-management-wrapper
-    .register-edit-game
-    .game-alternative-input {
+  .tag-management-container
+    .tag-management-wrapper
+    .register-tag
+    .register-alternative-tag-name {
     display: block;
 
     button {

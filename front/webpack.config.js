@@ -5,8 +5,9 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const CompressionPlugin = require('compression-webpack-plugin');
-
+const dotenv = require('dotenv');
 const path = require('path');
+const { DefinePlugin } = require('webpack');
 
 module.exports = (env, options) => {
   const config = {
@@ -79,6 +80,9 @@ module.exports = (env, options) => {
       new CompressionPlugin({
         algorithm: 'gzip',
         test: /\.(js|css|html|ttf)$/,
+      }),
+      new DefinePlugin({
+        'process.env': JSON.stringify(dotenv.config().parsed),
       }),
     ],
 

@@ -15,9 +15,10 @@ class AlternativeTagNameTest {
     void setUp() {
         tag = new Tag("1시간");
         alternativeTagName = new AlternativeTagName(new TagName("1hour"), tag);
+        tag.addAlternativeName(alternativeTagName);
     }
 
-    @DisplayName("AlternativeTagName을 생성하면 자동으로 Tag에 추가됨")
+    @DisplayName("AlternativeTagName을 생성 후 Tag 추가")
     @Test
     void constructAlternativeGameName() {
         assertThat(tag.getAlternativeTagNames().contains(alternativeTagName.getValue())).isTrue();
