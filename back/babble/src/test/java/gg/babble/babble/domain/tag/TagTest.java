@@ -43,6 +43,7 @@ class TagTest {
 
         // when
         AlternativeTagName alternativeName = new AlternativeTagName(new TagName("1hour"), tag);
+        tag.addAlternativeName(alternativeName);
 
         // then
         assertThat(tag.getAlternativeTagNames()).isEqualTo(new AlternativeTagNames(Collections.singletonList(alternativeName)));
@@ -61,6 +62,8 @@ class TagTest {
 
         AlternativeTagName alternativeTagName1 = new AlternativeTagName(1L, new TagName(name1), tag);
         AlternativeTagName alternativeTagName2 = new AlternativeTagName(2L, new TagName(name2), tag);
+        tag.addAlternativeName(alternativeTagName1);
+        tag.addAlternativeName(alternativeTagName2);
 
         // then
         assertThat(tag.getAlternativeTagNames().getNames()).containsExactly(name1, name2);
@@ -75,10 +78,12 @@ class TagTest {
 
         // when
         Tag tag = new Tag(1L, tagName);
-        AlternativeTagName alternativeTagName = new AlternativeTagName(1L, new TagName(name), tag);
+        AlternativeTagName alternativeTagName1 = new AlternativeTagName(1L, new TagName(name), tag);
+        AlternativeTagName alternativeTagName2 = new AlternativeTagName(2L, new TagName(name), tag);
+        tag.addAlternativeName(alternativeTagName1);
 
         // then
-        assertThatThrownBy(() -> new AlternativeTagName(2L, new TagName(name), tag)).isInstanceOf(BabbleDuplicatedException.class);
+        assertThatThrownBy(() -> tag.addAlternativeName(alternativeTagName2)).isInstanceOf(BabbleDuplicatedException.class);
     }
 
     @DisplayName("태그 이름과 대체 이름이 중복되는 경우 예외가 발생한다.")
@@ -89,9 +94,10 @@ class TagTest {
 
         // when
         Tag tag = new Tag(1L, name);
+        AlternativeTagName alternativeTagName = new AlternativeTagName(new TagName(name), tag);
 
         // then
-        assertThatThrownBy(() -> new AlternativeTagName(new TagName(name), tag))
+        assertThatThrownBy(() -> tag.addAlternativeName(alternativeTagName))
             .isExactlyInstanceOf(BabbleDuplicatedException.class);
     }
 
@@ -108,7 +114,7 @@ class TagTest {
         Tag target = new Tag(updateTagName);
         target.addNames(Collections.singletonList(updateAlternativeTagName));
 
-        tag.update(target);
+        tag.update(updateTagName, Collections.singletonList(updateAlternativeTagName));
 
         // then
         assertThat(tag.getName()).isEqualTo(updateTagName);
@@ -121,6 +127,7 @@ class TagTest {
         // given
         Tag tag = new Tag(1L, "1시간");
         AlternativeTagName alternativeName = new AlternativeTagName(new TagName("1hour"), tag);
+        tag.addAlternativeName(alternativeName);
 
         // when
         assertThat(tag.isDeleted()).isFalse();
@@ -139,6 +146,7 @@ class TagTest {
         // given
         Tag tag = new Tag(1L, "1시간");
         AlternativeTagName alternativeName = new AlternativeTagName(new TagName("1hour"), tag);
+        tag.addAlternativeName(alternativeName);
 
         // when
         assertThat(tag.isDeleted()).isFalse();
@@ -162,7 +170,7 @@ class TagTest {
         tag.addNames(alternativeNames);
 
         // then
-        assertThat(tag.getAlternativeNames()).hasSameSizeAs(alternativeNames).containsAll(alternativeNames);
+        assertThat(tag.getAlternativeTagNames().getNames()).hasSameSizeAs(alternativeNames).containsAll(alternativeNames);
     }
 
     @DisplayName("복수 개의 이름 추가시 이미 존재하는 이름이면 예외 처리")

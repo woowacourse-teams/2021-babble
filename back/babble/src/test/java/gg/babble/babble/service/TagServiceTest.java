@@ -7,6 +7,7 @@ import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.dto.request.TagCreateRequest;
 import gg.babble.babble.dto.request.TagUpdateRequest;
+import gg.babble.babble.dto.response.AlternativeTagNameResponse;
 import gg.babble.babble.dto.response.TagResponse;
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleNotFoundException;
@@ -66,7 +67,8 @@ public class TagServiceTest extends ApplicationTest {
             // then
             assertThat(response.getId()).isNotNull();
             assertThat(response.getName()).isEqualTo(tagName);
-            assertThat(response.getAlternativeNames()).containsAll(alternativeNames);
+            assertThat(response.getAlternativeNames().stream().map(AlternativeTagNameResponse::getName))
+                .containsAll(alternativeNames);
         }
 
         @DisplayName("대체 이름간 중복이 존재할 경우 예외가 발생한다.")
@@ -117,7 +119,8 @@ public class TagServiceTest extends ApplicationTest {
             // then
             assertThat(response.getId()).isEqualTo(tag.getId());
             assertThat(response.getName()).isEqualTo(updateTagName);
-            assertThat(response.getAlternativeNames()).isEqualTo(updateAlternativeTagNames);
+            assertThat(response.getAlternativeNames().stream().map(AlternativeTagNameResponse::getName))
+                .containsAll(updateAlternativeTagNames);
         }
 
         @DisplayName("id에 해당하는 태그가 존재하지 않으면 예외가 발생한다.")

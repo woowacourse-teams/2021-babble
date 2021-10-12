@@ -66,7 +66,7 @@ public class Tag {
         validateToAddNames(tagNames);
 
         for (TagName tagName : tagNames) {
-            new AlternativeTagName(tagName, this);
+            addAlternativeName(new AlternativeTagName(tagName, this));
         }
     }
 
@@ -83,21 +83,17 @@ public class Tag {
         }
     }
 
-    public void addAlternativeName(final AlternativeTagName name) {
-        if (hasName(name.getValue())) {
-            throw new BabbleDuplicatedException(String.format("이미 존재하는 이름 입니다.(%s)", name.getValue()));
+    public void addAlternativeName(final AlternativeTagName alternativeTagName) {
+        if (hasName(alternativeTagName.getValue())) {
+            throw new BabbleDuplicatedException(String.format("이미 존재하는 이름 입니다.(%s)", alternativeTagName.getValue()));
         }
 
-        alternativeTagNames.add(name);
-
-        if (name.getTag() != this) {
-            name.setTag(this);
-        }
+        alternativeTagNames.add(alternativeTagName);
     }
 
-    public void update(Tag target) {
-        this.name = target.name;
-        this.alternativeTagNames = target.alternativeTagNames;
+    public void update(String name, List<String> alternativeNames) {
+        this.name = new TagName(name);
+        this.alternativeTagNames.convertAndUpdateToTag(alternativeNames, this);
     }
 
     public void removeAlternativeName(final AlternativeTagName alternativeTagName) {
@@ -123,10 +119,6 @@ public class Tag {
 
     public boolean hasNotName(final TagName name) {
         return !hasName(name);
-    }
-
-    public List<String> getAlternativeNames() {
-        return alternativeTagNames.getNames();
     }
 
     public String getName() {
