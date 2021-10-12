@@ -14,9 +14,13 @@
   .navigation-container {
     padding: 1rem 0;
 
-    .page-layout a {
-      svg {
-        width: 8rem;
+    .page-layout {
+      align-items: center;
+
+      a {
+        svg {
+          width: 8rem;
+        }
       }
     }
   }
