@@ -12,11 +12,9 @@ const { DefinePlugin } = require('webpack');
 module.exports = (env, options) => {
   const envKey = dotenv.config().parsed;
   const envKeys = Object.keys(envKey).reduce((prev, next) => {
-    prev[next] = JSON.stringify(envKey[next]);
+    prev[`process.env.${next}`] = JSON.stringify(envKey[next]);
     return prev;
   }, {});
-
-  console.log(envKeys);
 
   const config = {
     entry: './index.js',

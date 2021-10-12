@@ -14,7 +14,7 @@ const KakaoShareButton = ({ gameId, roomId }) => {
       const kakao = window.Kakao;
 
       if (!kakao.isInitialized()) {
-        kakao.init(process.env.REACT_APP_KAKAO_KEY);
+        kakao.init(process.env.KAKAO_KEY);
       }
 
       kakao.Link.createCustomButton({
