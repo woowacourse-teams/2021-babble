@@ -306,7 +306,7 @@ const RoomList = ({ match }) => {
             <NicknameSection />
             <SquareButton
               size='medium'
-              onClick={() => onConfirm(() => enterMakeRoomPage())}
+              onClickButton={() => onConfirm(() => enterMakeRoomPage())}
               colored
             >
               <Body2>방 생성하기</Body2>
