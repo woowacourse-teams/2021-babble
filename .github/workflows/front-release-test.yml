@@ -16,6 +16,9 @@ jobs:
           node-version: 14
 
       - name: env 파일 만들기
+        shell: bash
+        env:
+          ENV_API_KEY: ${{ secrets.KAKAO_KEY }}
         run: |
           echo "REACT_APP_KAKAO_KEY=$REACT_APP_KAKAO_KEY" >> .env
         env:
