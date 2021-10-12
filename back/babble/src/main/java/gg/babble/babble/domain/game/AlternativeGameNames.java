@@ -33,22 +33,45 @@ public class AlternativeGameNames {
         elements.add(name);
     }
 
+    public void convertAndUpdateToGame(List<String> alternativeNames, Game game) {
+        removeLegacyNames(alternativeNames);
+        addUpdateName(alternativeNames, game);
+    }
+
+    private void removeLegacyNames(List<String> alternativeNames) {
+        elements.stream()
+            .filter(element -> !alternativeNames.contains(element.getValue()))
+            .forEach(AlternativeGameName::delete);
+    }
+
+    private void addUpdateName(List<String> alternativeNames, Game game) {
+        alternativeNames.stream()
+            .filter(name -> !contains(name))
+            .forEach(name -> add(new AlternativeGameName(name, game)));
+    }
+
     public void remove(final AlternativeGameName alternativeGameName) {
         if (!contains(alternativeGameName.getValue())) {
             throw new BabbleNotFoundException(String.format("존재하지 않는 이름 입니다.(%s)", alternativeGameName.getValue()));
         }
 
-        elements.remove(alternativeGameName);
+        alternativeGameName.delete();
     }
 
     public boolean contains(final String name) {
-        return elements.stream()
+        return getElements().stream()
             .anyMatch(alternativeName -> alternativeName.getValue().equals(name));
     }
 
     public List<String> getNames() {
-        return elements.stream()
+        return getElements().stream()
             .map(AlternativeGameName::getValue)
+            .collect(Collectors.toList());
+    }
+
+    public List<AlternativeGameName> getElements() {
+        return elements.stream()
+            .filter(AlternativeGameName::isNotDeleted)
             .collect(Collectors.toList());
     }
 

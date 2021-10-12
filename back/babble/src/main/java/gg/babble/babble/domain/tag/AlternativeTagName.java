@@ -43,19 +43,7 @@ public class AlternativeTagName {
     public AlternativeTagName(final Long id, final TagName tagName, final Tag tag) {
         this.id = id;
         this.value = tagName;
-
-        setTag(tag);
-    }
-
-    public void setTag(final Tag tag) {
-        Tag previousTag = this.tag;
         this.tag = tag;
-
-        if (Objects.nonNull(previousTag) && previousTag.hasName(value)) {
-            previousTag.removeAlternativeName(this);
-        }
-
-        tag.addAlternativeName(this);
     }
 
     public void delete() {
@@ -68,6 +56,10 @@ public class AlternativeTagName {
 
     public boolean isNotDeleted() {
         return !isDeleted();
+    }
+
+    public String getName() {
+        return value.getValue();
     }
 
     @Override

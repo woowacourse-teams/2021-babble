@@ -1,5 +1,7 @@
 package gg.babble.babble.domain.tag;
 
+import gg.babble.babble.domain.game.AlternativeGameName;
+import gg.babble.babble.domain.game.Game;
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.ArrayList;
@@ -34,6 +36,24 @@ public class AlternativeTagNames {
         elements.add(name);
     }
 
+    public void convertAndUpdateToTag(List<String> alternativeNames, Tag tag) {
+        removeLegacyNames(alternativeNames);
+        addUpdateName(alternativeNames, tag);
+    }
+
+    private void removeLegacyNames(List<String> alternativeNames) {
+        elements.stream()
+            .filter(element -> !alternativeNames.contains(element.getName()))
+            .forEach(AlternativeTagName::delete);
+    }
+
+    private void addUpdateName(List<String> alternativeNames, Tag tag) {
+        alternativeNames.stream()
+            .map(TagName::new)
+            .filter(name -> !contains(name))
+            .forEach(name -> add(new AlternativeTagName(name, tag)));
+    }
+
     public void remove(final AlternativeTagName alternativeTagName) {
         if (!contains(alternativeTagName.getValue())) {
             throw new BabbleNotFoundException(String.format("존재하지 않는 이름 입니다.(%s)", alternativeTagName.getValue().getValue()));
@@ -60,7 +80,7 @@ public class AlternativeTagNames {
             .collect(Collectors.toList());
     }
 
-    private List<AlternativeTagName> getElements() {
+    public List<AlternativeTagName> getElements() {
         return elements.stream()
             .filter(AlternativeTagName::isNotDeleted)
             .collect(Collectors.toList());
