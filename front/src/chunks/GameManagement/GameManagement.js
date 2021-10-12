@@ -62,7 +62,11 @@ const GameManagement = () => {
         <form className='register-edit-game'>
           <Subtitle3>게임 이름</Subtitle3>
           <div className='game-name-input'>
-            <TextInput value={selectedGame.name} placeholder='게임 이름' />
+            <TextInput
+              name='game-name'
+              value={selectedGame.name}
+              placeholder='게임 이름'
+            />
           </div>
 
           <ImageRegister />
@@ -71,12 +75,11 @@ const GameManagement = () => {
           <Subtitle3>대체 이름(복수 개 가능)</Subtitle3>
 
           <div className='game-alternative-input'>
-            <TextInput name='' maxLength='' placeholder='대체 이름' />
+            <TextInput name='game-alternative-name' placeholder='대체 이름' />
             <SquareButton size='block'>
               <Body1>등록</Body1>
             </SquareButton>
           </div>
-
           <NameList list={selectedGame.alternativeNames} erasable />
 
           <div className='game-submit'>

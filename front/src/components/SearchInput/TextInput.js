@@ -6,8 +6,8 @@ import PropTypes from 'prop-types';
 
 const TextInput = ({
   value,
-  name,
-  maxLength,
+  name = '',
+  maxLength = 50,
   onChangeInput = null,
   isContentSelected = true,
   placeholder = '닉네임을 입력해주세요.',

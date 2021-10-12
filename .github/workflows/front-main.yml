@@ -18,6 +18,12 @@ jobs:
         with:
           node-version: 14
 
+      - name: env 파일 만들기
+        run: |
+          touch .env
+          echo KAKAO_KEY=${{ secrets.KAKAO_KEY }} >> .env
+          cat .env
+
       - name: 패키지 설치
         working-directory: ./front
         run: npm install
