@@ -4,7 +4,7 @@
 .name-list-container {
   width: 100%;
   padding: 1.8rem 1.2rem;
-  height: 16rem;
+  max-height: 16rem;
   border: 1px solid f.grey-scale(6);
   border-radius: f.border-radius(large-container);
   font-size: 1.3rem;

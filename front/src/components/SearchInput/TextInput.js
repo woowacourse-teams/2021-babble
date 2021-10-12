@@ -5,12 +5,13 @@ import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 const TextInput = ({
-  value,
-  name = '',
+  name,
   maxLength = 50,
-  onChangeInput = null,
+  defaultValue = null,
+  onChangeInput = () => {},
   isContentSelected = true,
   placeholder = '닉네임을 입력해주세요.',
+  inputRef = null,
 }) => {
   const containerRef = useRef(null);
 
@@ -39,19 +40,21 @@ const TextInput = ({
         onChange={onChangeInput}
         onFocus={onFocusInput}
         onBlur={onBlurInput}
-        defaultValue={value}
+        defaultValue={defaultValue}
+        ref={inputRef}
       />
     </div>
   );
 };
 
 TextInput.propTypes = {
-  value: PropTypes.string,
+  defaultValue: PropTypes.string,
   name: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
   maxLength: PropTypes.number,
   onChangeInput: PropTypes.func,
   isContentSelected: PropTypes.bool,
+  inputRef: PropTypes.object,
 };
 
 export default TextInput;

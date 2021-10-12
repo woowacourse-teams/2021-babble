@@ -7,12 +7,12 @@ import React from 'react';
 
 const BabbleManagement = () => {
   return (
-    <div className='management-container'>
+    <main className='management-container'>
       <Headline1>관리자 페이지</Headline1>
       <AdminManagement />
       <GameManagement />
       <TagManagement />
-    </div>
+    </main>
   );
 };
 
