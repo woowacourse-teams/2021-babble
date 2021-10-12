@@ -68,7 +68,7 @@ const ChangeNickname = () => {
       <div className='control-inputs'>
         <Subtitle3>닉네임 변경하기</Subtitle3>
         <TextInput
-          value={user.nickname}
+          defaultValue={user.nickname}
           name='nickname'
           placeholder='닉네임을 입력해주세요.'
           maxLength={NICKNAME_MAX_LENGTH}

@@ -12,13 +12,13 @@ const ImagePreview = ({ imageList }) => {
       <Subtitle3>이미지 Preview</Subtitle3>
       <div className='image-preview-wrapper'>
         <div className='preview'>
-          <img src={bigImage} alt='Big image preview' />
+          <img src={bigImage.imagePath} alt='Big image preview' />
         </div>
         <div className='preview'>
-          <img src={middleImage} alt='Middle image preview' />
+          <img src={middleImage.imagePath} alt='Middle image preview' />
         </div>
         <div className='preview'>
-          <img src={smallImage} alt='Small image preview' />
+          <img src={smallImage.imagePath} alt='Small image preview' />
         </div>
       </div>
     </section>
@@ -28,5 +28,7 @@ const ImagePreview = ({ imageList }) => {
 export default ImagePreview;
 
 ImagePreview.propTypes = {
-  imageList: PropTypes.arrayOf(PropTypes.string).isRequired,
+  imageList: PropTypes.arrayOf(
+    PropTypes.shape({ name: PropTypes.string, imagePath: PropTypes.string })
+  ).isRequired,
 };
