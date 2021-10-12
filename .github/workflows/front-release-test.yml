@@ -18,7 +18,7 @@ jobs:
       - name: env 파일 만들기
         run: |
           touch .env
-          echo KAKAO_KEY=${{ secrets.KAKAO_KEY }} >> .env
+          echo REACT_APP_KAKAO_KEY=${{ secrets.KAKAO_KEY }} >> .env
           cat .env
 
       - name: 패키지 설치
