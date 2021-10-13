@@ -1,18 +1,11 @@
 package gg.babble.babble.restdocs;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import gg.babble.babble.domain.admin.Administrator;
 import gg.babble.babble.dto.response.AdministratorResponse;
 import java.util.HashMap;
 import java.util.List;
@@ -20,98 +13,123 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
 import org.springframework.restdocs.RestDocumentationContextProvider;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.web.context.WebApplicationContext;
 
 public class AdministratorApiDocumentTest extends ApiDocumentTest {
 
     @BeforeEach
-    public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) throws Exception {
-        super.setUp(webApplicationContext, restDocumentation);
-        administratorRepository.save(new Administrator("127.0.0.1", "localhost"));
+    protected void setUp(RestDocumentationContextProvider restDocumentation) throws Exception {
+        super.setUp(restDocumentation);
     }
 
     @DisplayName("관리자 전체 조회한다.")
     @Test
-    void findAllAdministrator() throws Exception {
-        관리자_전체_조회()
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.[0].id").isNumber())
-            .andExpect(jsonPath("$.[0].ip").value("127.0.0.1"))
-            .andExpect(jsonPath("$.[0].name").value("localhost"))
-
-            .andDo(document("read-administrators",
+    void findAllAdministrator() {
+        localhost_관리자가_추가_됨();
+        List<AdministratorResponse> response = given()
+            .filter(document("read-administrators",
                 responseFields(
                     fieldWithPath("[].id").description("관리자 ID"),
                     fieldWithPath("[].ip").description("관리자 IP 주소"),
-                    fieldWithPath("[].name").description("관리자 이름")
-                )
-            ));
+                    fieldWithPath("[].name").description("관리자 이름"))))
+            .when().get("/api/admins")
+            .then().statusCode(HttpStatus.OK.value())
+            .extract().body().jsonPath().getList(".", AdministratorResponse.class);
+
+        assertThat(response).hasSize(1);
+        assertThat(response.get(0).getId()).isNotNull();
+        assertThat(response.get(0).getIp()).isEqualTo("127.0.0.1");
+        assertThat(response.get(0).getName()).isEqualTo("localhost");
     }
 
-    private ResultActions 관리자_전체_조회() throws Exception {
-        return mockMvc.perform(get("/api/admins")
-            .accept(MediaType.APPLICATION_JSON_VALUE));
+    @DisplayName("관리자 전체 조회한다.(X-Forwarded-For)")
+    @Test
+    void findAllAdministratorWithXForwardedForHeader() {
+        localhost_관리자가_추가_됨();
+        List<AdministratorResponse> response = given()
+            .header("X-Forwarded-For", "127.0.0.1")
+            .filter(document("read-administrators",
+                responseFields(
+                    fieldWithPath("[].id").description("관리자 ID"),
+                    fieldWithPath("[].ip").description("관리자 IP 주소"),
+                    fieldWithPath("[].name").description("관리자 이름"))))
+            .when().get("/api/admins")
+            .then().statusCode(HttpStatus.OK.value())
+            .extract().body().jsonPath().getList(".", AdministratorResponse.class);
+
+        assertThat(response).hasSize(1);
+        assertThat(response.get(0).getId()).isNotNull();
+        assertThat(response.get(0).getIp()).isEqualTo("127.0.0.1");
+        assertThat(response.get(0).getName()).isEqualTo("localhost");
+    }
+
+    @DisplayName("등록되지 않는 유저는 관리자 전체 조회를 할 수 없다.(X-Forwarded-For)")
+    @Test
+    void findAllAdministratorWithInvalidIp() {
+        localhost_관리자가_추가_됨();
+        given().header("X-Forwarded-For", "127.0.0.2")
+            .when().get("/api/admins")
+            .then().statusCode(HttpStatus.UNAUTHORIZED.value());
     }
 
     @DisplayName("관리자 IP를 추가한다.")
     @Test
-    void createAdministrator() throws Exception {
-        // given
+    void createAdministrator() {
+        localhost_관리자가_추가_됨();
         String ip = "111.111.11.11";
         String name = "포츈집";
 
-        // when
         Map<String, Object> body = new HashMap<>();
         body.put("ip", ip);
         body.put("name", name);
 
-        // then
-        관리자_IP_추가_됨(body)
-            .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.id").isNumber())
-            .andExpect(jsonPath("$.ip").value(ip))
-            .andExpect(jsonPath("$.name").value(name))
-
-            .andDo(document("insert-administrator",
+        AdministratorResponse response = given()
+            .body(body)
+            .filter(document("create-administrator",
                 requestFields(
                     fieldWithPath("ip").description("관리자 IP 주소"),
-                    fieldWithPath("name").description("관리자 이름")
-                ),
+                    fieldWithPath("name").description("관리자 이름")),
                 responseFields(
                     fieldWithPath("id").description("관리자 ID"),
                     fieldWithPath("ip").description("관리자 IP 주소"),
-                    fieldWithPath("name").description("관리자 이름")
-                )
-            ));
+                    fieldWithPath("name").description("관리자 이름"))))
+            .when().post("/api/admins")
+            .then().statusCode(HttpStatus.CREATED.value())
+            .extract().body().as(AdministratorResponse.class);
 
-        관리자_전체_조회()
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$", hasSize(2)));
-    }
+        assertThat(response.getId()).isNotNull();
+        assertThat(response.getIp()).isEqualTo(ip);
+        assertThat(response.getName()).isEqualTo(name);
 
-    private ResultActions 관리자_IP_추가_됨(final Map<String, Object> body) throws Exception {
-        return mockMvc.perform(post("/api/admins")
-            .accept(MediaType.APPLICATION_JSON_VALUE)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .content(objectMapper.writeValueAsString(body)).characterEncoding("utf-8"));
+        List<AdministratorResponse> administrators = 관리자_전체_조회_됨();
+        assertThat(administrators).hasSize(2);
     }
 
     @DisplayName("관리자 IP를 삭제한다.")
     @Test
-    void deleteAdministrator() throws Exception {
-        String response = 관리자_전체_조회().andReturn().getResponse().getContentAsString();
-        Long idToDelete = objectMapper.readValue(
-            response, new TypeReference<List<AdministratorResponse>>() {
-            }).get(0).getId();
+    void deleteAdministrator() {
+        localhost_관리자가_추가_됨();
+        Long idToDelete = 관리자_전체_조회_됨().get(0).getId();
 
-        mockMvc.perform(delete("/api/admins/" + idToDelete)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isNoContent())
-            .andDo(document("delete-administrators"));
+        given()
+            .filter(document("delete-administrator"))
+            .when().delete("/api/admins/{idToDelete}", idToDelete)
+            .then().statusCode(HttpStatus.NO_CONTENT.value());
 
-        관리자_전체_조회().andExpect(status().isUnauthorized());
+        관리자_전체_조회_시_인증_실패();
+    }
+
+    private List<AdministratorResponse> 관리자_전체_조회_됨() {
+        return given()
+            .when().get("/api/admins")
+            .then().statusCode(HttpStatus.OK.value())
+            .extract().body().jsonPath().getList(".", AdministratorResponse.class);
+    }
+
+    private void 관리자_전체_조회_시_인증_실패() {
+        given()
+            .when().get("/api/admins")
+            .then().statusCode(HttpStatus.UNAUTHORIZED.value());
     }
 }

@@ -1,23 +1,25 @@
 package gg.babble.babble.restdocs;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static gg.babble.babble.restdocs.GameApiDocumentTest.게임이_저장_됨;
+import static gg.babble.babble.restdocs.TagApiDocumentTest.assertThatSameAlternativeTagNames;
+import static gg.babble.babble.restdocs.TagApiDocumentTest.태그가_저장_됨;
+import static gg.babble.babble.restdocs.UserApiDocumentTest.유저가_생성_됨;
+import static gg.babble.babble.restdocs.websocket.ChattingTest.유저가_방에_입장_함;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
-import gg.babble.babble.domain.Session;
-import gg.babble.babble.domain.game.Game;
-import gg.babble.babble.domain.room.MaxHeadCount;
-import gg.babble.babble.domain.room.Room;
-import gg.babble.babble.domain.tag.Tag;
-import gg.babble.babble.domain.user.User;
 import gg.babble.babble.dto.request.TagRequest;
-import java.util.ArrayList;
+import gg.babble.babble.dto.response.CreatedRoomResponse;
+import gg.babble.babble.dto.response.FoundRoomResponse;
+import gg.babble.babble.dto.response.GameWithImageResponse;
+import gg.babble.babble.dto.response.TagResponse;
+import gg.babble.babble.dto.response.UserResponse;
+import gg.babble.babble.restdocs.client.ResponseRepository;
+import gg.babble.babble.restdocs.preprocessor.BigListPreprocessor;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -26,75 +28,76 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
 import org.springframework.restdocs.RestDocumentationContextProvider;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.web.context.WebApplicationContext;
 
 public class RoomApiDocumentTest extends ApiDocumentTest {
 
     private static final int COUNT_OF_ONE_PAGE = 16;
     private static final int ROOM_COUNT = 20;
     private static final String ALTERNATIVE_NAME = "실딱";
+    private static final int MAX_HEAD_COUNT = 20;
 
-    // 태그, 유저, 방, 게임
-    private final List<Tag> tags = new ArrayList<>();
-    private final List<Room> rooms = new ArrayList<>();
-    private final List<Game> games = new ArrayList<>();
+    private ResponseRepository<TagResponse, Long> tagResponseRepository;
+    private ResponseRepository<CreatedRoomResponse, Long> createdRoomResponseRepository;
+    private ResponseRepository<UserResponse, Long> userResponseRepository;
+    private Map<Long, Long> sessions;
+    private GameWithImageResponse game;
 
     @BeforeEach
-    public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) throws Exception {
-        super.setUp(webApplicationContext, restDocumentation);
-        tags.add(tagRepository.save(new Tag("실버")));
-        tags.add(tagRepository.save(new Tag("2시간")));
-        tags.add(tagRepository.save(new Tag("솔로랭크")));
+    public void setUp(RestDocumentationContextProvider restDocumentation) throws Exception {
+        super.setUp(restDocumentation);
+        localhost_관리자가_추가_됨();
+        tagResponseRepository = new ResponseRepository<>(TagResponse::getId);
+        createdRoomResponseRepository = new ResponseRepository<>(CreatedRoomResponse::getRoomId);
+        userResponseRepository = new ResponseRepository<>(UserResponse::getId);
+        sessions = new HashMap<>();
 
-        tags.get(0).addNames(Collections.singletonList(ALTERNATIVE_NAME));
+        tagResponseRepository.add(태그가_저장_됨("실버", Collections.singletonList(ALTERNATIVE_NAME)));
+        tagResponseRepository.add(태그가_저장_됨("2시간", Collections.emptyList()));
+        tagResponseRepository.add(태그가_저장_됨("솔로랭크", Collections.emptyList()));
 
-        games.add(gameRepository.save(new Game("League Of Legends1", Collections.singletonList("image1"))));
-        games.add(gameRepository.save(new Game("League Of Legends2", Collections.singletonList("image2"))));
-        games.add(gameRepository.save(new Game("League Of Legends3", Collections.singletonList("image3"))));
+        game = 게임이_저장_됨("League Of Legends1", Collections.singletonList("image1"), Collections.emptyList());
 
         for (int i = 0; i < ROOM_COUNT; i++) {
-            User user = userRepository.save(new User("user" + i));
-            Room room = roomRepository.save(new Room(games.get(0), tags, new MaxHeadCount(20)));
-            rooms.add(room);
-            sessionRepository.save(new Session(String.valueOf(i), user, room));
+            UserResponse user = 유저가_생성_됨("user" + i);
+            CreatedRoomResponse room = 방이_생성_됨(game.getId(), tagResponseRepository.getAllIds(), MAX_HEAD_COUNT);
+
+            userResponseRepository.add(user);
+            createdRoomResponseRepository.add(room);
+            유저가_방에_입장_함(user.getId(), room.getRoomId(), port);
+            sessions.put(room.getRoomId(), user.getId());
         }
+    }
+
+    public static CreatedRoomResponse 방이_생성_됨(final Long gameId, final List<Long> tagIds, final int maxHeadCount) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("gameId", gameId);
+        body.put("tags", tagRequestsFromTagIds(tagIds));
+        body.put("maxHeadCount", maxHeadCount);
+
+        return given().body(body)
+            .when().post("/api/rooms")
+            .then().statusCode(HttpStatus.CREATED.value())
+            .extract().as(CreatedRoomResponse.class);
+    }
+
+    private static List<TagRequest> tagRequestsFromTagIds(final List<Long> ids) {
+        return ids.stream()
+            .map(TagRequest::new)
+            .collect(Collectors.toList());
     }
 
     @DisplayName("방을 생성한다.")
     @Test
-    public void createRoomTest() throws Exception {
+    public void createRoomTest() {
         Map<String, Object> body = new HashMap<>();
-        body.put("gameId", games.get(0).getId());
+        body.put("gameId", game.getId());
         body.put("maxHeadCount", 20);
-        body.put("tags", tagRequestsFromTags());
-        mockMvc.perform(post("/api/rooms").characterEncoding("utf-8")
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(body)).characterEncoding("utf-8"))
-            .andDo(MockMvcResultHandlers.print())
-            .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.roomId").isNumber())
-            .andExpect(jsonPath("$.createdDate").isString())
-            .andExpect(jsonPath("$.game.id").value(games.get(0).getId()))
-            .andExpect(jsonPath("$.game.name").value(games.get(0).getName()))
-            .andExpect(jsonPath("$.tags").isArray())
-            .andExpect(jsonPath("$.tags", hasSize(tags.size())))
-            .andExpect(jsonPath("$.maxHeadCount").value(20))
-            .andExpect(jsonPath("$.tags[0].id").value(tags.get(0).getId()))
-            .andExpect(jsonPath("$.tags[0].name").value(tags.get(0).getName()))
-            .andExpect(jsonPath("$.tags[0].alternativeNames[0].name").value(ALTERNATIVE_NAME))
-            .andExpect(jsonPath("$.tags[1].id").value(tags.get(1).getId()))
-            .andExpect(jsonPath("$.tags[1].name").value(tags.get(1).getName()))
-            .andExpect(jsonPath("$.tags[1].alternativeNames").value(hasSize(0)))
-            .andExpect(jsonPath("$.tags[2].id").value(tags.get(2).getId()))
-            .andExpect(jsonPath("$.tags[2].name").value(tags.get(2).getName()))
-            .andExpect(jsonPath("$.tags[1].alternativeNames").value(hasSize(0)))
+        body.put("tags", tagRequestsFromTagIds(tagResponseRepository.getAllIds()));
 
-            .andDo(document("create-room",
+        CreatedRoomResponse response = given().body(body)
+            .filter(document("create-room",
                 requestFields(fieldWithPath("gameId").description("게임 Id"),
                     fieldWithPath("maxHeadCount").description("최대 참가 인원"),
                     fieldWithPath("tags[].id").description("태그 Id")),
@@ -108,43 +111,37 @@ public class RoomApiDocumentTest extends ApiDocumentTest {
                     fieldWithPath("tags[].alternativeNames").description("대체 이름"),
                     fieldWithPath("tags[].alternativeNames[]").description("대체 이름 객체"),
                     fieldWithPath("tags[].alternativeNames[].id").description("대체 이름 ID"),
-                    fieldWithPath("tags[].alternativeNames[].name").description("대체 이름")
-                )
-            ));
+                    fieldWithPath("tags[].alternativeNames[].name").description("대체 이름"))))
+            .when().post("/api/rooms")
+            .then().statusCode(HttpStatus.CREATED.value())
+            .extract().body().as(CreatedRoomResponse.class);
+
+        assertThat(response.getRoomId()).isNotNull();
+        assertThat(response.getCreatedDate()).isNotNull();
+        assertThat(response.getGame().getId()).isEqualTo(game.getId());
+        assertThat(response.getGame().getName()).isEqualTo(game.getName());
+        assertThat(response.getTags()).hasSize(tagResponseRepository.getSize());
+
+        assertThatSameTagsWithRepository(response.getTags());
     }
 
-    private List<TagRequest> tagRequestsFromTags() {
-        return tags.stream().map(tag -> new TagRequest(tag.getId())).collect(Collectors.toList());
+    private void assertThatSameTagsWithRepository(final List<TagResponse> tagResponses) {
+        assertThat(tagResponses).hasSize(tagResponseRepository.getSize());
+
+        for (TagResponse tagResponse : tagResponses) {
+            TagResponse expectedTagResponse = tagResponseRepository.get(tagResponse.getId());
+            assertThat(tagResponse.getId()).isEqualTo(expectedTagResponse.getId());
+            assertThat(tagResponse.getName()).isEqualTo(expectedTagResponse.getName());
+            assertThatSameAlternativeTagNames(tagResponse.getAlternativeNames(), expectedTagResponse.getAlternativeNames());
+        }
     }
 
     @DisplayName("방을 조회한다.")
     @Test
-    public void readRoomTest() throws Exception {
-        mockMvc.perform(get("/api/rooms/" + rooms.get(0).getId())
-                .accept(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.roomId").value(rooms.get(0).getId()))
-            .andExpect(jsonPath("$.createdDate").isString())
-            .andExpect(jsonPath("$.game.id").value(rooms.get(0).getGame().getId()))
-            .andExpect(jsonPath("$.game.name").value(rooms.get(0).getGame().getName()))
-            .andExpect(jsonPath("$.host.id").isNumber())
-            .andExpect(jsonPath("$.host.nickname").isString())
-            .andExpect(jsonPath("$.host.avatar").isString())
-            .andExpect(jsonPath("$.headCount.current").isNumber())
-            .andExpect(jsonPath("$.headCount.max").isNumber())
-            .andExpect(jsonPath("$.tags").isArray())
-            .andExpect(jsonPath("$.tags", hasSize(3)))
-            .andExpect(jsonPath("$.tags[0].id").value(tags.get(0).getId()))
-            .andExpect(jsonPath("$.tags[0].name").value(tags.get(0).getName()))
-            .andExpect(jsonPath("$.tags[0].alternativeNames[0].name").value(ALTERNATIVE_NAME))
-            .andExpect(jsonPath("$.tags[1].id").value(tags.get(1).getId()))
-            .andExpect(jsonPath("$.tags[1].name").value(tags.get(1).getName()))
-            .andExpect(jsonPath("$.tags[1].alternativeNames").value(hasSize(0)))
-            .andExpect(jsonPath("$.tags[2].id").value(tags.get(2).getId()))
-            .andExpect(jsonPath("$.tags[2].name").value(tags.get(2).getName()))
-            .andExpect(jsonPath("$.tags[1].alternativeNames").value(hasSize(0)))
+    public void readRoomTest() {
+        Long idToFind = createdRoomResponseRepository.getAnyId();
 
-            .andDo(document("read-room",
+        FoundRoomResponse response = given().filter(document("read-room",
                 responseFields(fieldWithPath("roomId").description("방 Id"),
                     fieldWithPath("createdDate").description("방 생성 시각"),
                     fieldWithPath("game.id").description("게임 Id"),
@@ -158,95 +155,86 @@ public class RoomApiDocumentTest extends ApiDocumentTest {
                     fieldWithPath("tags[].name").description("태그 이름"),
                     fieldWithPath("tags[].alternativeNames").description("대체 이름 객체"),
                     fieldWithPath("tags[].alternativeNames[].id").description("대체 이름 Id"),
-                    fieldWithPath("tags[].alternativeNames[].name").description("대체 이름 Name")
-                )
-            ));
+                    fieldWithPath("tags[].alternativeNames[].name").description("대체 이름 Name"))))
+            .when().get("/api/rooms/{id}", idToFind)
+            .then().statusCode(HttpStatus.OK.value())
+            .extract().body().as(FoundRoomResponse.class);
+
+        assertThatFoundRoomResponse(idToFind, response);
     }
 
-    private void testRoomResponseOfOnePage(final ResultActions actions) throws Exception {
-        for (int indexOfPage = 0; indexOfPage < COUNT_OF_ONE_PAGE; indexOfPage++) {
-            actions
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[%d].roomId", indexOfPage).isNumber())
-                .andExpect(jsonPath("$[%d].createdDate", indexOfPage).isString())
-                .andExpect(jsonPath("$[%d].game.id", indexOfPage).value(games.get(0).getId()))
-                .andExpect(jsonPath("$[%d].host.id", indexOfPage).isNumber())
-                .andExpect(jsonPath("$[%d].game.name", indexOfPage).value(games.get(0).getName()))
-                .andExpect(jsonPath("$[%d].host.nickname", indexOfPage).isString())
-                .andExpect(jsonPath("$[%d].host.avatar", indexOfPage).isString())
-                .andExpect(jsonPath("$[%d].headCount.current", indexOfPage).isNumber())
-                .andExpect(jsonPath("$[%d].headCount.max", indexOfPage).isNumber())
-                .andExpect(jsonPath("$[%d].tags", indexOfPage).isArray())
-                .andExpect(jsonPath("$[%d].tags.length()", indexOfPage).value(tags.size()))
-                .andExpect(jsonPath("$[%d].tags[0].name", indexOfPage).value(tags.get(0).getName()))
-                .andExpect(jsonPath("$[%d].tags[0].alternativeNames[0].name", indexOfPage).value(ALTERNATIVE_NAME))
-                .andExpect(jsonPath("$[%d].tags[1].name", indexOfPage).value(tags.get(1).getName()))
-                .andExpect(jsonPath("$[%d].tags[1].alternativeNames", indexOfPage).value(hasSize(0)))
-                .andExpect(jsonPath("$[%d].tags[2].name", indexOfPage).value(tags.get(2).getName()))
-                .andExpect(jsonPath("$[%d].tags[2].alternativeNames", indexOfPage).value(hasSize(0)));
-        }
-    }
+    private void assertThatFoundRoomResponse(final Long roomId, final FoundRoomResponse response) {
+        UserResponse expectedHost = userResponseRepository.get(sessions.get(roomId));
 
-    private void describeRoomResponse(final ResultActions actions) throws Exception {
-        actions.andDo(document("read-game-rooms-without-page-and-tags",
-            responseFields(fieldWithPath("[].roomId").description("방 Id"),
-                fieldWithPath("[].createdDate").description("방 생성 시각"),
-                fieldWithPath("[].game.id").description("게임 Id"),
-                fieldWithPath("[].game.name").description("게임 이름"),
-                fieldWithPath("[].host.id").description("호스트 Id"),
-                fieldWithPath("[].host.nickname").description("호스트 닉네임"),
-                fieldWithPath("[].host.avatar").description("호스트 아바타"),
-                fieldWithPath("[].headCount.current").description("현재 참가 인원"),
-                fieldWithPath("[].headCount.max").description("최대 참가 인원"),
-                fieldWithPath("[].tags[].id").description("태그 Id"),
-                fieldWithPath("[].tags[].name").description("태그 이름"),
-                fieldWithPath("[].tags[].alternativeNames[]").description("대체 이름 객체"),
-                fieldWithPath("[].tags[].alternativeNames[].id").description("대체 이름 ID"),
-                fieldWithPath("[].tags[].alternativeNames[].name").description("대체 이름")
-                )
-        ));
-    }
-
-    @DisplayName("page 번호와 태그 없이 게임에 해당하는 방 목록을 조회한다.")
-    @Test
-    public void readGameRoomsWithoutPageAndTagsTest() throws Exception {
-        ResultActions actions = mockMvc.perform(get("/api/rooms?gameId=" + games.get(0).getId())
-            .accept(MediaType.APPLICATION_JSON_VALUE));
-
-        testRoomResponseOfOnePage(actions);
-        describeRoomResponse(actions);
+        assertThat(response.getRoomId()).isEqualTo(roomId);
+        assertThat(response.getCreatedDate()).isNotNull();
+        assertThat(response.getGame().getId()).isEqualTo(game.getId());
+        assertThat(response.getGame().getName()).isEqualTo(game.getName());
+        assertThat(response.getHost().getId()).isEqualTo(expectedHost.getId());
+        assertThat(response.getHost().getNickname()).isEqualTo(expectedHost.getNickname());
+        assertThat(response.getHost().getAvatar()).isEqualTo(expectedHost.getAvatar());
+        assertThat(response.getHeadCount().getCurrent()).isEqualTo(1);
+        assertThat(response.getHeadCount().getMax()).isEqualTo(MAX_HEAD_COUNT);
+        assertThatSameTagsWithRepository(response.getTags());
     }
 
     @DisplayName("태그 없이 게임과 page 번호에 해당하는 방 목록을 조회한다.")
     @Test
-    public void readGameRoomsWithoutTagsTest() throws Exception {
-        ResultActions actions = mockMvc.perform(get("/api/rooms?gameId=" + games.get(0).getId() + "&page=1")
-            .accept(MediaType.APPLICATION_JSON_VALUE));
+    public void readGameRoomsWithoutTagsTest() {
+        List<FoundRoomResponse> responses = given()
+            .when().get("/api/rooms?gameId={gameId}&page=1", game.getId())
+            .then().statusCode(HttpStatus.OK.value())
+            .extract().jsonPath().getList(".", FoundRoomResponse.class);
 
-        actions.andDo(MockMvcResultHandlers.print());
-
-        testRoomResponseOfOnePage(actions);
-        describeRoomResponse(actions);
+        assertThat(responses).hasSize(COUNT_OF_ONE_PAGE);
+        for (FoundRoomResponse response : responses) {
+            assertThatFoundRoomResponse(response.getRoomId(), response);
+        }
     }
 
     @DisplayName("page 번호 없이 게임과 태그에 해당하는 방 목록을 조회한다.")
     @Test
-    public void readGameRoomsWithoutPageTest() throws Exception {
-        ResultActions actions = mockMvc.perform(get("/api/rooms?gameId=" + games.get(0).getId() + "&tagIds=" + tags.get(0).getId() + "," + tags.get(1).getId())
-            .accept(MediaType.APPLICATION_JSON_VALUE));
+    public void readGameRoomsWithoutPageTest() {
+        List<Long> tagIds = tagResponseRepository.getAllIds();
+        List<FoundRoomResponse> responses = given()
+            .when().get("/api/rooms?gameId={gameId}&tagIds={tagId1},{tagsId2}", game.getId(), tagIds.get(0), tagIds.get(1))
+            .then().statusCode(HttpStatus.OK.value())
+            .extract().jsonPath().getList(".", FoundRoomResponse.class);
 
-        testRoomResponseOfOnePage(actions);
-        describeRoomResponse(actions);
+        assertThat(responses).hasSize(COUNT_OF_ONE_PAGE);
+        for (FoundRoomResponse response : responses) {
+            assertThatFoundRoomResponse(response.getRoomId(), response);
+        }
     }
 
     @DisplayName("게임과 page 번호, 태그에 해당하는 방 목록을 조회한다.")
     @Test
-    public void readGameRoomsTest() throws Exception {
-        ResultActions actions = mockMvc
-            .perform(get("/api/rooms?gameId=" + games.get(0).getId() + "&tagIds=" + tags.get(0).getId() + "," + tags.get(1).getId() + "&page=1")
-                .accept(MediaType.APPLICATION_JSON_VALUE));
+    public void readGameRoomsTest() {
+        List<Long> tagIds = tagResponseRepository.getAllIds();
+        List<FoundRoomResponse> responses = given().filter(document("read-rooms",
+                preprocessResponse(new BigListPreprocessor()),
+                responseFields(
+                    fieldWithPath("[].roomId").description("방 Id"),
+                    fieldWithPath("[].createdDate").description("방 생성 시각"),
+                    fieldWithPath("[].game.id").description("게임 Id"),
+                    fieldWithPath("[].game.name").description("게임 이름"),
+                    fieldWithPath("[].host.id").description("호스트 Id"),
+                    fieldWithPath("[].host.nickname").description("호스트 닉네임"),
+                    fieldWithPath("[].host.avatar").description("호스트 아바타"),
+                    fieldWithPath("[].headCount.current").description("현재 참가 인원"),
+                    fieldWithPath("[].headCount.max").description("최대 참가 인원"),
+                    fieldWithPath("[].tags[].id").description("태그 Id"),
+                    fieldWithPath("[].tags[].name").description("태그 이름"),
+                    fieldWithPath("[].tags[].alternativeNames[]").description("대체 이름 객체"),
+                    fieldWithPath("[].tags[].alternativeNames[].id").description("대체 이름 ID"),
+                    fieldWithPath("[].tags[].alternativeNames[].name").description("대체 이름"))))
+            .when().get("/api/rooms?gameId={gameId}&tagIds={tagId1},{tagId2}&page=1", game.getId(), tagIds.get(0), tagIds.get(1))
+            .then().statusCode(HttpStatus.OK.value())
+            .extract().body().jsonPath().getList(".", FoundRoomResponse.class);
 
-        testRoomResponseOfOnePage(actions);
-        describeRoomResponse(actions);
+        assertThat(responses).hasSize(COUNT_OF_ONE_PAGE);
+        for (FoundRoomResponse response : responses) {
+            assertThatFoundRoomResponse(response.getRoomId(), response);
+        }
     }
 }
