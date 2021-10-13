@@ -10,6 +10,7 @@ const SquareButton = ({
   name,
   children,
   onClickButton = () => {},
+  ...rest
 }) => {
   return (
     <button
@@ -17,6 +18,7 @@ const SquareButton = ({
       className={`square-button ${size} ${colored ? 'colored' : 'line'}`}
       name={name}
       onClick={onClickButton}
+      {...rest}
     >
       {children}
     </button>

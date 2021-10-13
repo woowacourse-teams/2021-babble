@@ -20,7 +20,7 @@ const AdminManagement = () => {
       const admins = response.data;
       setAdminList(admins);
     } catch (error) {
-      openModal(<ModalError>{error}</ModalError>);
+      openModal(<ModalError>{error.message}</ModalError>);
     }
   };
 

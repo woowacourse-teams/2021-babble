@@ -50,7 +50,7 @@ const GameManagement = () => {
 
       setGameList(games);
     } catch (error) {
-      openModal(<ModalError>{error}</ModalError>);
+      openModal(<ModalError>{error.message}</ModalError>);
     }
   };
 
@@ -92,39 +92,36 @@ const GameManagement = () => {
       try {
         await axios.delete(`${TEST_URL}/api/games/${gameId}`);
       } catch (error) {
-        openModal(<ModalError>{error}</ModalError>);
+        openModal(<ModalError>{error.message}</ModalError>);
       }
     }
   };
 
   const onSubmitForm = async (e) => {
     e.preventDefault();
-    // post 이미지
-    // gameDetail.imagePath
+
+    const form = e.currentTarget;
+
     if (isImageEditing) {
       try {
-        const imageResponse = await axios.post(
-          `${TEST_URL}/api/images`,
-          // TODO: 데이터 형식이 base 64라는 상상
-          gameImageToSend,
-          {
-            headers: {
-              'content-type': 'multipart/form-data',
-            },
-          }
+        const data = new FormData();
+        data.append(
+          'fileName',
+          `img/games/title/${gameNameRef.current.value}.jpg`
         );
+        data.append('file', gameImageToSend);
+
+        const imageResponse = await axios.post(`${TEST_URL}/api/images`, data);
 
         await axios.post(`${TEST_URL}/api/games`, {
-          name: gameNameRef.current,
+          name: gameNameRef.current.value,
           images: imageResponse.data,
           alternativeNames: gameDetail.alternativeNames,
         });
-
-        console.log(gameImageToSend);
-        console.log(imageResponse);
       } catch (error) {
-        openModal(<ModalError>{error}</ModalError>);
+        openModal(<ModalError>{error.message}</ModalError>);
       }
+      form.reset.click();
 
       return;
     }
@@ -134,6 +131,8 @@ const GameManagement = () => {
       images: gameDetail.images,
       alternativeNames: gameDetail.alternativeNames,
     });
+
+    form.reset.click();
   };
 
   const onResetForm = (e) => {
@@ -163,7 +162,7 @@ const GameManagement = () => {
     setIsEditing(false);
   };
 
-  const setGameImage = (filename, imageFile) => {
+  const setGameImageToShow = (filename, imageFile) => {
     setGameDetail((detail) => ({
       ...detail,
       images: [
@@ -230,9 +229,19 @@ const GameManagement = () => {
           erasable
         />
 
-        <Subtitle1>게임 {isEditing ? `수정` : '등록'}</Subtitle1>
-
         <form className='register-edit-game' onSubmit={onSubmitForm}>
+          <div className='register-edit-game-header'>
+            <Subtitle1>게임 {isEditing ? `수정` : '등록'}</Subtitle1>
+            <SquareButton
+              type='reset'
+              size='small'
+              name='reset'
+              onClickButton={onResetForm}
+            >
+              <Body1>초기화</Body1>
+            </SquareButton>
+          </div>
+
           <Subtitle3>게임 이름</Subtitle3>
           <div className='game-name-input'>
             <TextInput
@@ -242,12 +251,9 @@ const GameManagement = () => {
               placeholder='게임 이름'
             />
           </div>
-          <SquareButton type='reset' size='small' onClickButton={onResetForm}>
-            <Body1>초기화</Body1>
-          </SquareButton>
           <ImageRegister
             file={gameDetail.images[0]}
-            setFile={setGameImage}
+            setPreviewURL={setGameImageToShow}
             setRegisterFile={setGameImageToSend}
           />
           <ImagePreview imageList={gameDetail.images} />
