@@ -51,3 +51,20 @@
     }
   }
 }
+
+@include m.media(tablet) {
+  .tag-management-container
+    .tag-management-wrapper
+    .register-tag
+    .register-alternative-tag-name {
+    display: block;
+
+    button {
+      width: 100%;
+      max-width: none;
+      margin-left: 0;
+      height: 4rem;
+      margin-top: 1rem;
+    }
+  }
+}

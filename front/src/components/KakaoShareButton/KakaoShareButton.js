@@ -9,7 +9,6 @@ const KakaoShareButton = ({ gameId, roomId }) => {
     createKakaoButton();
   }, []);
 
-  console.log(process.env.REACT_APP_KAKAO_KEY);
   const createKakaoButton = () => {
     if (window.Kakao) {
       const kakao = window.Kakao;

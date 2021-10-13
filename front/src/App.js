@@ -12,6 +12,9 @@ const GameList = loadable(() => import('./pages/GameList/GameList'));
 const NotFound = loadable(() => import('./components/NotFound/NotFound'));
 const MakeRoom = loadable(() => import('./pages/MakeRoom/MakeRoom'));
 const RoomList = loadable(() => import('./pages/RoomList/RoomList'));
+const BabbleManagement = loadable(() =>
+  import('./pages/BabbleManagement/BabbleManagement')
+);
 
 const App = () => {
   return (
@@ -34,6 +37,7 @@ const App = () => {
             component={RoomList}
             exact
           />
+          <Route path={PATH.ADMIN} component={BabbleManagement} exact />
           <Route component={NotFound} />
         </Switch>
       </Main>
