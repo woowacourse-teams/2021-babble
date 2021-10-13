@@ -98,39 +98,127 @@ const GameManagement = () => {
   };
 
   const onSubmitForm = async (e) => {
+    // e.preventDefault();
+
+    // const form = e.currentTarget;
+    // if (isImageEditing) {
+    //   try {
+    //     const data = new FormData();
+    //     data.append(
+    //       'fileName',
+    //       `img/games/title/${gameNameRef.current.value}.jpg`
+    //     );
+    //     data.append('file', gameImageToSend);
+
+    //     const imageResponse = await axios.post(`${TEST_URL}/api/images`, data);
+
+    //     isEditing
+    //       ? await axios.put(`${TEST_URL}/api/games`, {
+    //           name: gameNameRef.current.value,
+    //           images: imageResponse.data,
+    //           alternativeNames: gameDetail.alternativeNames,
+    //         })
+    //       : await axios.post(`${TEST_URL}/api/games`, {
+    //           name: gameNameRef.current.value,
+    //           images: imageResponse.data,
+    //           alternativeNames: gameDetail.alternativeNames,
+    //         });
+    //   } catch (error) {
+    //     openModal(<ModalError>{error.message}</ModalError>);
+    //   }
+    //   form.reset.click();
+
+    //   return;
+    // }
+
+    // isEditing
+    //   ? await axios.put(`${TEST_URL}/api/games`, {
+    //       name: gameNameRef.current.value,
+    //       images: gameDetail.images,
+    //       alternativeNames: gameDetail.alternativeNames,
+    //     })
+    //   : await axios.post(`${TEST_URL}/api/games`, {
+    //       name: gameNameRef.current.value,
+    //       images: gameDetail.images,
+    //       alternativeNames: gameDetail.alternativeNames,
+    //     });
+
+    // form.reset.click();
+
+    // // // // // // // // // // // // // // // // // // // // // //
     e.preventDefault();
 
     const form = e.currentTarget;
+    if (isEditing) {
+      if (isImageEditing) {
+        // 게임 수정, 이미지 수정
+        try {
+          const data = new FormData();
+          data.append(
+            'fileName',
+            `img/games/title/${gameNameRef.current.value}.jpg`
+          );
 
-    if (isImageEditing) {
+          if (!gameImageToSend) {
+            alert('이미지를 등록해주세요!');
+            return;
+          }
+
+          data.append('file', gameImageToSend);
+
+          const imageResponse = await axios.post(
+            `${TEST_URL}/api/images`,
+            data
+          );
+
+          await axios.put(`${TEST_URL}/api/games`, {
+            name: gameNameRef.current.value,
+            images: imageResponse.data,
+            alternativeNames: gameDetail.alternativeNames,
+          });
+        } catch (error) {
+          openModal(<ModalError>{error.message}</ModalError>);
+        }
+
+        form.reset.click();
+        return;
+      }
+
+      // 게임 수정, 이미지 수정 X
       try {
-        const data = new FormData();
-        data.append(
-          'fileName',
-          `img/games/title/${gameNameRef.current.value}.jpg`
-        );
-        data.append('file', gameImageToSend);
+        if (!gameDetail.images[0].imagePath) {
+          alert('이미지를 등록해주세요!');
+          return;
+        }
 
-        const imageResponse = await axios.post(`${TEST_URL}/api/images`, data);
-
-        await axios.post(`${TEST_URL}/api/games`, {
+        await axios.put(`${TEST_URL}/api/games`, {
           name: gameNameRef.current.value,
-          images: imageResponse.data,
+          images: gameDetail.images,
           alternativeNames: gameDetail.alternativeNames,
         });
       } catch (error) {
         openModal(<ModalError>{error.message}</ModalError>);
       }
-      form.reset.click();
 
+      form.reset.click();
       return;
     }
 
-    await axios.post(`${TEST_URL}/api/games`, {
-      name: gameNameRef.current.value,
-      images: gameDetail.images,
-      alternativeNames: gameDetail.alternativeNames,
-    });
+    // 게임 새로 등록
+    try {
+      if (!gameDetail.images[0].imagePath) {
+        alert('이미지를 등록해주세요!');
+        return;
+      }
+
+      await axios.post(`${TEST_URL}/api/games`, {
+        name: gameNameRef.current.value,
+        images: gameDetail.images,
+        alternativeNames: gameDetail.alternativeNames,
+      });
+    } catch (error) {
+      openModal(<ModalError>{error.message}</ModalError>);
+    }
 
     form.reset.click();
   };

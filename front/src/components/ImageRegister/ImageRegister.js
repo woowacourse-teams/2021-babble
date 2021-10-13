@@ -42,7 +42,6 @@ const ImageRegister = ({ file, setPreviewURL, setRegisterFile }) => {
             accept='image/*'
             className='file-dropdown'
             onChange={handleFile}
-            required
           />
 
           {file.imagePath === '' ? (
