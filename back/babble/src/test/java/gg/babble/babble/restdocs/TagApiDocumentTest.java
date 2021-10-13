@@ -81,7 +81,7 @@ public class TagApiDocumentTest extends AcceptanceTest {
     }
 
     public static void assertThatSameAlternativeTagNames(final List<AlternativeTagNameResponse> actual, final List<AlternativeTagNameResponse> expected) {
-        assertThat(actual).hasSameSizeAs(actual);
+        assertThat(actual).hasSameSizeAs(expected);
 
         for (AlternativeTagNameResponse response : actual) {
             AlternativeTagNameResponse expectedAlternativeName = expected.stream()

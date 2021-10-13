@@ -154,7 +154,7 @@ public class GameApiDocumentTest extends AcceptanceTest {
     }
 
     private void assertThatSameAlternativeNames(final List<AlternativeGameNameResponse> actual, final List<AlternativeGameNameResponse> expected) {
-        assertThat(actual).hasSameSizeAs(actual);
+        assertThat(actual).hasSameSizeAs(expected);
 
         for (AlternativeGameNameResponse response : actual) {
             AlternativeGameNameResponse expectedAlternativeName = expected.stream()
