@@ -15,7 +15,7 @@ import gg.babble.babble.dto.response.MessageResponse;
 import gg.babble.babble.dto.response.SessionsResponse;
 import gg.babble.babble.dto.response.TagResponse;
 import gg.babble.babble.dto.response.UserResponse;
-import gg.babble.babble.restdocs.ApiDocumentTest;
+import gg.babble.babble.restdocs.AcceptanceTest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -43,7 +43,7 @@ import org.springframework.web.socket.messaging.WebSocketStompClient;
 import org.springframework.web.socket.sockjs.client.SockJsClient;
 import org.springframework.web.socket.sockjs.client.Transport;
 
-public class ChattingTest extends ApiDocumentTest {
+public class ChattingTest extends AcceptanceTest {
 
     private static final String SUBSCRIBE_ROOM_UPDATE_BROAD_ENDPOINT_FORMAT = "/topic/rooms/%s/users";
     private static final String SEND_ROOM_UPDATE_ENDPOINT_FORMAT = "/ws/rooms/%s/users";

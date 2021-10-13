@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 
-class SliderApiDocumentTest extends ApiDocumentTest {
+class SliderApiDocumentTest extends AcceptanceTest {
 
     private List<SliderResponse> sliders;
 

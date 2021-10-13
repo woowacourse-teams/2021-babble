@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 
-public class GameApiDocumentTest extends ApiDocumentTest {
+public class GameApiDocumentTest extends AcceptanceTest {
 
     private static final String ALTERNATIVE_NAME1 = "롤1";
     private static final String ALTERNATIVE_NAME2 = "리오레1";

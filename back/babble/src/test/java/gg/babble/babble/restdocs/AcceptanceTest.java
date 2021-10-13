@@ -33,7 +33,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 @ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public abstract class ApiDocumentTest {
+public abstract class AcceptanceTest {
 
     protected static RequestSpecification specification;
 

@@ -13,7 +13,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-public class UserApiDocumentTest extends ApiDocumentTest {
+public class UserApiDocumentTest extends AcceptanceTest {
 
     @DisplayName("유저를 생성한다.")
     @Test

@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 
-public class TagApiDocumentTest extends ApiDocumentTest {
+public class TagApiDocumentTest extends AcceptanceTest {
 
     private static final String ALTERNATIVE_NAME1 = "silver";
     private static final String ALTERNATIVE_NAME2 = "실딱이";

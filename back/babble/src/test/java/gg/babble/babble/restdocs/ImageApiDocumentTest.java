@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 
-public class ImageApiDocumentTest extends ApiDocumentTest {
+public class ImageApiDocumentTest extends AcceptanceTest {
 
     private static final String IMAGE_FILE_NAME = "test.jpg";
 

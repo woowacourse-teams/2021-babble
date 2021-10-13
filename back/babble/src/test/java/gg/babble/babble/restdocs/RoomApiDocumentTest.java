@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 
-public class RoomApiDocumentTest extends ApiDocumentTest {
+public class RoomApiDocumentTest extends AcceptanceTest {
 
     private static final int COUNT_OF_ONE_PAGE = 16;
     private static final int ROOM_COUNT = 20;

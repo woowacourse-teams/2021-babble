@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 
-public class AdministratorApiDocumentTest extends ApiDocumentTest {
+public class AdministratorApiDocumentTest extends AcceptanceTest {
 
     @BeforeEach
     protected void setUp(RestDocumentationContextProvider restDocumentation) throws Exception {
