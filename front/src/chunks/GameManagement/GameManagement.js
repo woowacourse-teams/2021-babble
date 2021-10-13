@@ -127,7 +127,7 @@ const GameManagement = () => {
     }
 
     await axios.post(`${TEST_URL}/api/games`, {
-      name: gameNameRef.current,
+      name: gameNameRef.current.value,
       images: gameDetail.images,
       alternativeNames: gameDetail.alternativeNames,
     });
@@ -249,6 +249,7 @@ const GameManagement = () => {
               inputRef={gameNameRef}
               maxLength={NICKNAME_MAX_LENGTH}
               placeholder='게임 이름'
+              required
             />
           </div>
           <ImageRegister

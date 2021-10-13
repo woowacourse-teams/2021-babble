@@ -7,11 +7,13 @@ import PropTypes from 'prop-types';
 const TextInput = ({
   name,
   maxLength = 50,
+  minLength = 1,
   defaultValue = null,
   onChangeInput = () => {},
   isContentSelected = true,
   placeholder = '닉네임을 입력해주세요.',
   inputRef = null,
+  required = false,
 }) => {
   const containerRef = useRef(null);
 
@@ -36,12 +38,14 @@ const TextInput = ({
         className='input-inner'
         name={name}
         maxLength={maxLength}
+        minLength={minLength}
         placeholder={placeholder}
         onChange={onChangeInput}
         onFocus={onFocusInput}
         onBlur={onBlurInput}
         defaultValue={defaultValue}
         ref={inputRef}
+        required={required}
       />
     </div>
   );
@@ -52,9 +56,11 @@ TextInput.propTypes = {
   name: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
   maxLength: PropTypes.number,
+  minLength: PropTypes.number,
   onChangeInput: PropTypes.func,
   isContentSelected: PropTypes.bool,
   inputRef: PropTypes.object,
+  required: PropTypes.bool,
 };
 
 export default TextInput;
