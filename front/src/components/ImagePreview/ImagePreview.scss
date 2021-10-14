@@ -12,6 +12,7 @@
 
     .preview {
       border: 1px solid f.grey-scale(5);
+      background: f.grey-scale(1);
       border-radius: f.border-radius(image-preview);
       overflow: hidden;
       margin-right: 1.5rem;
@@ -20,17 +21,17 @@
 
       &:first-child {
         width: 28rem;
-        aspect-ratio: auto 4/3;
+        aspect-ratio: auto 16/9;
       }
 
       &:nth-child(2) {
         width: 22rem;
-        aspect-ratio: auto 4/3;
+        aspect-ratio: auto 16/9;
       }
 
       &:last-child {
         width: 18rem;
-        aspect-ratio: auto 4/3;
+        aspect-ratio: auto 16/9;
         margin-right: 0;
       }
 

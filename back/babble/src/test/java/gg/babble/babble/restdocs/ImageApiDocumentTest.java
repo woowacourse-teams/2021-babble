@@ -1,106 +1,120 @@
 package gg.babble.babble.restdocs;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
-import gg.babble.babble.domain.admin.Administrator;
 import gg.babble.babble.restdocs.preprocessor.ImageBodyPreprocessor;
+import io.restassured.RestAssured;
 import java.io.File;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import org.hamcrest.Matchers;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.http.HttpStatus;
 import org.springframework.restdocs.RestDocumentationContextProvider;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.web.context.WebApplicationContext;
 
-public class ImageApiDocumentTest extends ApiDocumentTest {
+public class ImageApiDocumentTest extends AcceptanceTest {
 
     private static final String IMAGE_FILE_NAME = "test.jpg";
 
     private File file;
+    private List<String> fileNames;
 
     @BeforeEach
-    public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) throws Exception {
-        super.setUp(webApplicationContext, restDocumentation);
+    protected void setUp(final RestDocumentationContextProvider restDocumentation) throws Exception {
+        super.setUp(restDocumentation);
 
+        localhost_관리자가_추가_됨();
         deleteAllImageFile();
 
-        final ClassLoader classLoader = getClass().getClassLoader();
+        ClassLoader classLoader = getClass().getClassLoader();
         file = new File(Objects.requireNonNull(classLoader.getResource("test-image.jpg")).getFile());
-        s3Repository.save(IMAGE_FILE_NAME, Files.readAllBytes(Paths.get(file.getAbsolutePath())));
-        s3Repository.save("textFile.txt", "abc".getBytes(StandardCharsets.UTF_8));
-    }
-
-    @AfterEach
-    void tearDown() {
-        deleteAllImageFile();
+        fileNames = 파일이_저장됨(IMAGE_FILE_NAME, file);
+        localhost_관리자가_제거_됨();
     }
 
     private void deleteAllImageFile() {
-        final List<String> allImages = s3Repository.findAllImages();
+        final List<String> allImages = 이미지_파일_조회_됨();
 
         for (String image : allImages) {
-            s3Repository.delete(image);
+            파일이_삭제됨(image);
         }
+    }
+
+    private void 파일이_삭제됨(final String path) {
+        RestAssured.given(specification)
+            .param("fileName", path)
+            .when().delete("/api/images")
+            .then().statusCode(HttpStatus.NO_CONTENT.value());
+    }
+
+    private List<String> 파일이_저장됨(final String path, final File file) {
+        return RestAssured.given(specification)
+            .header("content-type", "multipart/form-data")
+            .multiPart("fileName", path)
+            .multiPart("file", file)
+            .when().post("/api/images")
+            .then().statusCode(HttpStatus.OK.value())
+            .extract().body().jsonPath().getList(".", String.class);
+    }
+
+    private List<String> 이미지_파일_조회_됨() {
+        return RestAssured.given(specification)
+            .when().get("/api/images")
+            .then().statusCode(HttpStatus.OK.value())
+            .extract().body().jsonPath().getList(".", String.class);
     }
 
     @DisplayName("이미지 파일 조회 테스트")
     @Test
     void findAllImages() throws Exception {
-        mockMvc.perform(get("/api/images")
-                .accept(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0]").value("test.jpg"))
-            .andDo(document("read-images",
+        List<String> responses = given().filter(document("read-images",
                 responseFields(
-                    fieldWithPath("[]").description("파일 경로"))));
+                    fieldWithPath("[]").description("파일 경로"))))
+            .when().get("/api/images")
+            .then().statusCode(HttpStatus.OK.value())
+            .extract().body().jsonPath().getList(".", String.class);
+
+        assertThat(responses).hasSameSizeAs(fileNames)
+            .containsAll(fileNames);
     }
 
     @DisplayName("이미지 파일 저장 테스트")
     @Test
-    void saveFile() throws Exception {
-        administratorRepository.save(new Administrator("127.0.0.1", "localhost"));
-        MockMultipartFile multipartFile = new MockMultipartFile("file", "test-image.jpg", "image/jpg", Files.readAllBytes(file.toPath()));
+    void saveFile() {
+        localhost_관리자가_추가_됨();
         String filePath = "img/new-file.jpg";
 
-        mockMvc.perform(multipart("/api/images")
-                .file(multipartFile)
-                .param("fileName", filePath))
-            .andDo(MockMvcResultHandlers.print())
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$").value(hasSize(3)))
-            .andExpect(jsonPath("$").value(Matchers.containsInAnyOrder("img/new-file-x640.jpg", "img/new-file-x1280.jpg", "img/new-file-x1920.jpg")))
-            .andDo(document("save-image",
+        List<String> responses = RestAssured.given(specification)
+            .header("content-type", "multipart/form-data")
+            .multiPart("fileName", filePath)
+            .multiPart("file", file)
+            .filter(document("create-image",
                 preprocessRequest(new ImageBodyPreprocessor()),
                 responseFields(
-                    fieldWithPath("[]").description("파일 경로"))));
+                    fieldWithPath("[]").description("파일 경로"))))
+            .when().post("/api/images")
+            .then().statusCode(HttpStatus.OK.value())
+            .extract().body().jsonPath().getList(".", String.class);
+
+        assertThat(responses).hasSize(3).containsAll(Arrays.asList("img/new-file-x640.jpg", "img/new-file-x1280.jpg", "img/new-file-x1920.jpg"));
     }
 
     @DisplayName("관리자 IP가 아닌 경우 이미지 저장 불가")
     @Test
     void saveFileUnauthorized() throws Exception {
-        MockMultipartFile mockMultipartFile = new MockMultipartFile("file", Files.readAllBytes(file.toPath()));
         String filePath = "img/new-file.jpg";
 
-        mockMvc.perform(multipart("/api/images")
-                .file(mockMultipartFile)
-                .param("fileName", filePath))
-            .andExpect(status().isUnauthorized());
+        RestAssured.given(specification)
+            .header("content-type", "multipart/form-data")
+            .multiPart("fileName", filePath)
+            .multiPart("file", file)
+            .when().post("/api/images")
+            .then().statusCode(HttpStatus.UNAUTHORIZED.value());
     }
 }

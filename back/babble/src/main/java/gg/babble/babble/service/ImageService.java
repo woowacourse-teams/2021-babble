@@ -48,4 +48,8 @@ public class ImageService {
 
         return result;
     }
+
+    public void deleteImage(final String fileName) {
+        s3Repository.delete(fileName);
+    }
 }

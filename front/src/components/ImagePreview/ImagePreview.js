@@ -12,13 +12,30 @@ const ImagePreview = ({ imageList }) => {
       <Subtitle3>이미지 Preview</Subtitle3>
       <div className='image-preview-wrapper'>
         <div className='preview'>
-          <img src={bigImage.imagePath} alt='Big image preview' />
+          <img
+            src={
+              bigImage.imagePath || 'https://babble.gg/img/logos/logo-small.png'
+            }
+            alt='Big image preview'
+          />
         </div>
         <div className='preview'>
-          <img src={middleImage.imagePath} alt='Middle image preview' />
+          <img
+            src={
+              middleImage.imagePath ||
+              'https://babble.gg/img/logos/logo-small.png'
+            }
+            alt='Middle image preview'
+          />
         </div>
         <div className='preview'>
-          <img src={smallImage.imagePath} alt='Small image preview' />
+          <img
+            src={
+              smallImage.imagePath ||
+              'https://babble.gg/img/logos/logo-small.png'
+            }
+            alt='Small image preview'
+          />
         </div>
       </div>
     </section>

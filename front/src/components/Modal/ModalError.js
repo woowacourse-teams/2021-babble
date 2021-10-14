@@ -14,7 +14,7 @@ const ModalError = ({ children }) => {
     <div className='error-container'>
       <Subtitle2>ERROR</Subtitle2>
       <Body2>{children}</Body2>
-      <RoundButton size='small' onClick={closeModal} colored>
+      <RoundButton size='small' onClickButton={closeModal} colored>
         <Caption1>확인하기</Caption1>
       </RoundButton>
     </div>
