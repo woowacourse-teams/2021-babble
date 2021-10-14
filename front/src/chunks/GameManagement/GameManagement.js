@@ -5,6 +5,7 @@ import { Body1, Headline2, Subtitle1, Subtitle3 } from '../../core/Typography';
 import { ModalError, SquareButton, TextInput } from '../../components';
 import React, { useEffect, useRef, useState } from 'react';
 
+import { BASE_URL } from '../../constants/api';
 import ImagePreview from '../../components/ImagePreview/ImagePreview';
 import ImageRegister from '../../components/ImageRegister/ImageRegister';
 import { NICKNAME_MAX_LENGTH } from '../../constants/chat';
