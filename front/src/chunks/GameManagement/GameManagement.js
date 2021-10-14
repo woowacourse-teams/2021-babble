@@ -62,25 +62,10 @@ const GameManagement = () => {
     setGameDetail({
       id: selectedGameDetails.id,
       alternativeNames: selectedGameDetails.alternativeNames,
-      // TODO: 나중에 API 바뀌면 아래로 변경
-      // images: selectedGameDetails.images.map((imagePath) => ({
-      //   name: `${selectedGameDetails.name}.png`,
-      //   imagePath,
-      // })),
-      images: [
-        {
-          name: `${selectedGameDetails.name}.png`,
-          imagePath: selectedGameDetails.thumbnail,
-        },
-        {
-          name: `${selectedGameDetails.name}.png`,
-          imagePath: selectedGameDetails.thumbnail,
-        },
-        {
-          name: `${selectedGameDetails.name}.png`,
-          imagePath: selectedGameDetails.thumbnail,
-        },
-      ],
+      images: selectedGameDetails.images.map((imagePath) => ({
+        name: `${selectedGameDetails.name}.png`,
+        imagePath,
+      })),
     });
 
     setIsEditing(true);

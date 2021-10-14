@@ -298,7 +298,7 @@ const RoomList = ({ match }) => {
 
   return (
     <div className='room-list-container'>
-      <MainImage imageSrc={currentGame.thumbnail} />
+      <MainImage imageSrc={currentGame.images[0]} />
       <PageLayout>
         <section className='room-list-header'>
           <Headline2>{currentGame.name}</Headline2>
