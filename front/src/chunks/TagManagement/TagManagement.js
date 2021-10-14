@@ -69,6 +69,8 @@ const TagManagement = () => {
         name: tagNameInputRef.current.value,
       };
       await axios.post(`${BASE_URL}/api/tags`, newTag);
+
+      getTags();
     } catch (error) {
       openModal(<ModalError>{error.message}</ModalError>);
     }
