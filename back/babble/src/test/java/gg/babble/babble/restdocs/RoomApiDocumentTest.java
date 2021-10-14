@@ -90,7 +90,7 @@ public class RoomApiDocumentTest extends AcceptanceTest {
 
     @DisplayName("방을 생성한다.")
     @Test
-    public void createRoomTest() {
+    void createRoomTest() {
         Map<String, Object> body = new HashMap<>();
         body.put("gameId", game.getId());
         body.put("maxHeadCount", 20);
@@ -138,7 +138,7 @@ public class RoomApiDocumentTest extends AcceptanceTest {
 
     @DisplayName("방을 조회한다.")
     @Test
-    public void readRoomTest() {
+    void readRoomTest() {
         Long idToFind = createdRoomResponseRepository.getAnyId();
 
         FoundRoomResponse response = given().filter(document("read-room",
@@ -180,7 +180,7 @@ public class RoomApiDocumentTest extends AcceptanceTest {
 
     @DisplayName("태그 없이 게임과 page 번호에 해당하는 방 목록을 조회한다.")
     @Test
-    public void readGameRoomsWithoutTagsTest() {
+    void readGameRoomsWithoutTagsTest() {
         List<FoundRoomResponse> responses = given()
             .when().get("/api/rooms?gameId={gameId}&page=1", game.getId())
             .then().statusCode(HttpStatus.OK.value())
@@ -194,7 +194,7 @@ public class RoomApiDocumentTest extends AcceptanceTest {
 
     @DisplayName("page 번호 없이 게임과 태그에 해당하는 방 목록을 조회한다.")
     @Test
-    public void readGameRoomsWithoutPageTest() {
+    void readGameRoomsWithoutPageTest() {
         List<Long> tagIds = tagResponseRepository.getAllIds();
         List<FoundRoomResponse> responses = given()
             .when().get("/api/rooms?gameId={gameId}&tagIds={tagId1},{tagsId2}", game.getId(), tagIds.get(0), tagIds.get(1))
@@ -209,7 +209,7 @@ public class RoomApiDocumentTest extends AcceptanceTest {
 
     @DisplayName("게임과 page 번호, 태그에 해당하는 방 목록을 조회한다.")
     @Test
-    public void readGameRoomsTest() {
+    void readGameRoomsTest() {
         List<Long> tagIds = tagResponseRepository.getAllIds();
         List<FoundRoomResponse> responses = given().filter(document("read-rooms",
                 preprocessResponse(new BigListPreprocessor()),

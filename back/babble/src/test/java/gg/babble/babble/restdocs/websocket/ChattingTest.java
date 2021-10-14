@@ -94,7 +94,7 @@ public class ChattingTest extends AcceptanceTest {
 
     @DisplayName("1번방에 입장하면, 자신을 포함한 1번방의 유저 정보들을 돌려받는다.")
     @Test
-    public void testUserJoinUpdate() throws InterruptedException, ExecutionException, TimeoutException {
+    void testUserJoinUpdate() throws InterruptedException, ExecutionException, TimeoutException {
         // init setting
         유저가_방에_입장_함(host.getId(), room.getRoomId(), roomContext);
         SessionsResponse response = blockingQueueForUsers.poll(5, SECONDS);
@@ -123,7 +123,7 @@ public class ChattingTest extends AcceptanceTest {
 
     @DisplayName("1번방에 있는 유저가 퇴장시, 자신을 포함한 1번방의 유저 정보들을 수신한다.")
     @Test
-    public void testUserExitTest() throws InterruptedException, ExecutionException, TimeoutException {
+    void testUserExitTest() throws InterruptedException, ExecutionException, TimeoutException {
 
         // host 입장 (host)
         유저가_방에_입장_함(host.getId(), room.getRoomId(), roomContext);
@@ -197,7 +197,7 @@ public class ChattingTest extends AcceptanceTest {
 
     @DisplayName("1번방에 유저가 입장하고, 메시지를 보내면, 메시지가 1번방에 브로드 캐스팅된다.")
     @Test
-    public void testUserUpdateEndpoint() throws InterruptedException, ExecutionException, TimeoutException {
+    void testUserUpdateEndpoint() throws InterruptedException, ExecutionException, TimeoutException {
 
         MessageResponse expectedMessageResponse = new MessageResponse(host, "철권 붐은 온다.", "chat");
 

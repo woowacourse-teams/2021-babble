@@ -59,7 +59,7 @@ public class TagApiDocumentTest extends AcceptanceTest {
 
     @DisplayName("전체 태그를 가져오는데 성공하면, 200응답 코드와 전체 태그를 가져온다.")
     @Test
-    public void tagsGetTest() {
+    void tagsGetTest() {
         List<TagResponse> responses = given().filter(document("read-tags",
                 responseFields(
                     fieldWithPath("[].id").description("태그 Id"),
