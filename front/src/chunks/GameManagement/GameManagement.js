@@ -47,7 +47,6 @@ const GameManagement = () => {
     try {
       const response = await axios.get(`${BASE_URL}/api/games`);
       const games = response.data;
-      console.log(games);
 
       setGameList(games);
     } catch (error) {
