@@ -7,7 +7,7 @@ import gg.babble.babble.exception.BabbleIllegalStatementException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class UrlParserTest {
+public class UrlParserTest {
 
     @DisplayName("올바른 구독 관련 url 주소를 넣으면, roomId를 파싱해서 리턴한다.")
     @Test

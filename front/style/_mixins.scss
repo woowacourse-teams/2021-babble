@@ -28,6 +28,30 @@
   margin: 0 auto;
 }
 
+@mixin custom-scrollbar {
+  &::-webkit-scrollbar {
+    width: 1.5rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: f.grey-scale(3);
+    border-radius: f.border-radius(large-container);
+    background-clip: padding-box;
+    border: 0.3rem solid transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: f.grey-scale(8);
+    border-radius: f.border-radius(large-container);
+    background-clip: padding-box;
+    border: 0.3rem solid transparent;
+  }
+
+  &::-webkit-scrollbar-thumb:active {
+    background-color: f.grey-scale(10);
+  }
+}
+
 @mixin mobile-cancel-confirm {
   button:not(:last-child) {
     margin-right: 1.8rem;
@@ -52,4 +76,9 @@
       @content;
     }
   }
+}
+
+@mixin top-left-indents {
+  margin-top: 1rem;
+  margin-left: 2rem;
 }

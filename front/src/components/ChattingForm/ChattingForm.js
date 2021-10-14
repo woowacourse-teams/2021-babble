@@ -11,7 +11,7 @@ const ChattingForm = ({ onSubmit }) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
 
-      const sendButton = e.target.closest('.chatting-form').send;
+      const sendButton = e.currentTarget.send;
       sendButton.click();
       return false;
     }

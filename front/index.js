@@ -1,9 +1,8 @@
-import './global.scss';
-
 import App from './src/App';
 import ChattingModalProvider from './src/contexts/ChattingModalProvider';
 import DefaultModalProvider from './src/contexts/DefaultModalProvider';
 import ErrorBoundary from './src/components/ErrorBoundary/ErrorBoundary';
+import PushNotificationProvider from './src/contexts/PushNotificationProvider';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -12,16 +11,19 @@ import UserProvider from './src/contexts/UserProvider';
 
 ReactDOM.render(
   <UserProvider>
-    <DefaultModalProvider>
-      <ChattingModalProvider>
-        <ErrorBoundary>
+    <PushNotificationProvider>
+      <DefaultModalProvider>
+        <ChattingModalProvider>
           <Router>
-            <ScrollToTop />
-            <App />
+            <ErrorBoundary>
+              <ScrollToTop />
+              <App />
+            </ErrorBoundary>
           </Router>
-        </ErrorBoundary>
-      </ChattingModalProvider>
-    </DefaultModalProvider>
+        </ChattingModalProvider>
+      </DefaultModalProvider>
+    </PushNotificationProvider>
   </UserProvider>,
+
   document.getElementById('root')
 );

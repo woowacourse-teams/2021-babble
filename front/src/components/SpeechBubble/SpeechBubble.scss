@@ -7,13 +7,10 @@
     &.row,
     &.col {
       align-items: flex-start;
+      gap: 0 1rem;
 
       span {
         margin-bottom: 0.3rem;
-      }
-
-      img {
-        margin-right: 1rem;
       }
     }
   }

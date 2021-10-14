@@ -76,7 +76,7 @@
         &:after {
           content: '채팅 중에는 닉네임을 바꿀 수 없어요.';
           position: absolute;
-          background-color: f.grey-scale(5);
+          background-color: f.grey-scale(4);
           color: f.grey-scale(black);
           padding: 1rem 1.2rem;
           border-radius: 0.6rem;
@@ -97,7 +97,7 @@
 
           width: 0;
           height: 0;
-          border-top: 0.8rem solid f.grey-scale(5);
+          border-top: 0.8rem solid f.grey-scale(4);
           border-right: 0.8rem solid transparent;
           border-left: 0.8rem solid transparent;
           border-bottom: 0.8rem solid none;
@@ -128,7 +128,7 @@
           &:after {
             content: '채팅 중에는 닉네임을 바꿀 수 없어요.';
             position: absolute;
-            background-color: f.grey-scale(5);
+            background-color: f.grey-scale(3);
             color: f.grey-scale(black);
             padding: 1rem 1.2rem;
             border-radius: 0.6rem;
@@ -149,7 +149,7 @@
 
             width: 0;
             height: 0;
-            border-top: 0.8rem solid f.grey-scale(5);
+            border-top: 0.8rem solid f.grey-scale(3);
             border-right: 0.8rem solid transparent;
             border-left: 0.8rem solid transparent;
             border-bottom: 0.8rem solid none;

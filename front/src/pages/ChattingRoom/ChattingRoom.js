@@ -1,17 +1,22 @@
 import './ChattingRoom.scss';
 
-import { FaChevronDown, FaChevronUp, FaUsers } from 'react-icons/fa';
+import { CONNECTION_URL, SEND_URL, SUBSCRIBE_URL } from '../../constants/api';
 import {
   ModalError,
   SpeechBubble,
   SpeechBubbleWithAvatar,
+  ToggleNotification,
 } from '../../components';
 import React, { useEffect, useRef, useState } from 'react';
 import { SESSION_ID_LENGTH, SOCKET_URL_DIVIDER } from '../../constants/chat';
 
 import Chatbox from '../../chunks/Chatbox/Chatbox';
-import { IoCloseOutline } from 'react-icons/io5';
-import { IoRemove } from 'react-icons/io5';
+import { FaChevronDown } from '@react-icons/all-files/fa/FaChevronDown';
+import { FaChevronUp } from '@react-icons/all-files/fa/FaChevronUp';
+import { FaUsers } from '@react-icons/all-files/fa/FaUsers';
+import { IoCloseOutline } from '@react-icons/all-files/io5/IoCloseOutline';
+import { IoRemove } from '@react-icons/all-files/io5/IoRemove';
+import KakaoShareButton from '../../components/KakaoShareButton/KakaoShareButton';
 import LinearLayout from '../../core/Layout/LinearLayout';
 import Participants from '../../chunks/Participants/Participants';
 import PropTypes from 'prop-types';
@@ -21,7 +26,8 @@ import { Subtitle3 } from '../../core/Typography';
 import TagList from '../../chunks/TagList/TagList';
 import { useChattingModal } from '../../contexts/ChattingModalProvider';
 import { useDefaultModal } from '../../contexts/DefaultModalProvider';
-import usePushNotification from '../../hooks/usePushNotification';
+import { usePushNotification } from '../../contexts/PushNotificationProvider';
+import useTabNotification from '../../hooks/useTabNotification';
 import { useUser } from '../../contexts/UserProvider';
 
 const ChattingRoom = ({ tags, game, roomId }) => {
@@ -41,7 +47,15 @@ const ChattingRoom = ({ tags, game, roomId }) => {
     user: { nickname, id: userId },
     changeCurrentRoomNumber,
   } = useUser();
-  const { fireNotificationWithTimeout } = usePushNotification();
+
+  const { fireNotificationWithTimeout, isNotificationOn } =
+    usePushNotification();
+  const { showNotificationCount } = useTabNotification();
+  const isNotificationOnRef = useRef(isNotificationOn);
+
+  useEffect(() => {
+    isNotificationOnRef.current = isNotificationOn;
+  }, [isNotificationOn]);
 
   // mobile
   const toggleParticipants = () => {
@@ -67,7 +81,7 @@ const ChattingRoom = ({ tags, game, roomId }) => {
   const sendMessage = (content, type) => {
     waitForConnectionReady(() => {
       stompClient.current.send(
-        `/ws/rooms/${roomId}/chat`,
+        SEND_URL.CHAT(roomId),
         {},
         JSON.stringify({ userId, content, type })
       );
@@ -85,7 +99,7 @@ const ChattingRoom = ({ tags, game, roomId }) => {
   };
 
   useEffect(() => {
-    const socket = new SockJS('https://api.babble.gg/connection');
+    const socket = new SockJS(CONNECTION_URL);
     stompClient.current = Stomp.over(socket);
 
     if (isConnected.current) {
@@ -104,7 +118,7 @@ const ChattingRoom = ({ tags, game, roomId }) => {
         );
 
         user_subscription.current = stompClient.current.subscribe(
-          `/topic/rooms/${roomId}/users`,
+          SUBSCRIBE_URL.USERS(roomId),
           (message) => {
             const users = JSON.parse(message.body);
             setParticipants(users);
@@ -112,7 +126,7 @@ const ChattingRoom = ({ tags, game, roomId }) => {
         );
 
         chat_subscription.current = stompClient.current.subscribe(
-          `/topic/rooms/${roomId}/chat`,
+          SUBSCRIBE_URL.CHAT(roomId),
           (message) => {
             const receivedTime = new Date().toLocaleTimeString([], {
               timeStyle: 'short',
@@ -124,11 +138,16 @@ const ChattingRoom = ({ tags, game, roomId }) => {
 
             if (
               user.nickname !== nickname &&
-              (document.hidden || !document.hasFocus())
+              (document.hidden || !document.hasFocus()) &&
+              type === 'chat'
             ) {
-              fireNotificationWithTimeout('Babble 채팅 메시지', 5000, {
-                body: `${user.nickname}: ${content}`,
-              });
+              if (isNotificationOnRef.current) {
+                fireNotificationWithTimeout('Babble 채팅 메시지', 3500, {
+                  body: `${user.nickname}: ${content}`,
+                });
+              }
+
+              showNotificationCount({ blinkMessage: 'New Message!' });
             }
 
             setChattings((prevChattings) => [
@@ -140,7 +159,7 @@ const ChattingRoom = ({ tags, game, roomId }) => {
 
         waitForConnectionReady(() => {
           stompClient.current.send(
-            `/ws/rooms/${roomId}/users`,
+            SEND_URL.USERS(roomId),
             {},
             JSON.stringify({ userId, sessionId })
           );
@@ -187,6 +206,7 @@ const ChattingRoom = ({ tags, game, roomId }) => {
                 <span className='room-number-text'>번 방</span>
               </Subtitle3>
               <Subtitle3>{game.name}</Subtitle3>
+              <KakaoShareButton gameId={game.id} roomId={roomId} />
             </LinearLayout>
             <LinearLayout direction='row'>
               <button className='room-minimize' onClick={minimize}>
@@ -222,6 +242,7 @@ const ChattingRoom = ({ tags, game, roomId }) => {
           }`}
         >
           <Participants participants={participants} />
+          <ToggleNotification />
         </div>
 
         <div className='modal-chatbox-container'>
@@ -268,6 +289,7 @@ ChattingRoom.propTypes = {
     name: PropTypes.string,
   }),
   roomId: PropTypes.number,
+  match: PropTypes.object,
 };
 
 export default ChattingRoom;

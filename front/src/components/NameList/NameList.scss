@@ -1,0 +1,40 @@
+@use '../../../style/functions' as f;
+@use '../../../style/mixins' as m;
+
+.name-list-container {
+  width: 100%;
+  padding: 1.8rem 1.2rem;
+  max-height: 16rem;
+  border: 1px solid f.grey-scale(6);
+  border-radius: f.border-radius(large-container);
+  font-size: 1.3rem;
+  display: flex;
+  flex-wrap: wrap;
+  overflow-y: auto;
+
+  @include m.custom-scrollbar;
+
+  .no-data {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .tag-container {
+    border: 1px solid f.grey-scale(8);
+    border-radius: f.border-radius(speech-bubble);
+    height: 2.8rem;
+    margin: 0.5rem 1rem;
+
+    .tag-content {
+      span {
+        cursor: pointer;
+
+        &:hover {
+          color: f.primary(babble-pink);
+        }
+      }
+    }
+  }
+}

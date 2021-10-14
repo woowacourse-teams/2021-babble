@@ -4,65 +4,83 @@ import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.room.Rooms;
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleNotFoundException;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.logging.log4j.util.Strings;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 @Getter
+@SQLDelete(sql = "UPDATE game SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Game {
 
     private static final String DEFAULT_IMAGE = "https://static-cdn.jtvnw.net/ttv-static/404_boxart-1080x1436.jpg";
-    @Embedded
-    private final Rooms rooms = new Rooms();
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NotNull(message = "게임 이름은 Null 일 수 없습니다.")
     private String name;
-    @NotNull(message = "게임 이미지는 Null 일 수 없습니다.")
-    private String image;
+
     @Embedded
     private AlternativeGameNames alternativeGameNames;
 
+    @NotNull(message = "게임 이미지는 Null 일 수 없습니다.")
+    @ElementCollection
+    @CollectionTable(name = "gameImages", joinColumns = @JoinColumn(name = "game_id"))
+    @Column(name = "game_image")
+    private List<String> images;
+
     @Column(nullable = false)
-    private boolean deleted = false;
+    private final boolean deleted = false;
+
+    @Embedded
+    private final Rooms rooms = new Rooms();
 
     public Game(final String name) {
-        this(null, name, DEFAULT_IMAGE, new AlternativeGameNames());
+        this(null, name, Collections.singletonList(DEFAULT_IMAGE), new AlternativeGameNames());
     }
 
     public Game(final Long id, final String name) {
-        this(id, name, DEFAULT_IMAGE, new AlternativeGameNames());
+        this(id, name, Collections.singletonList(DEFAULT_IMAGE), new AlternativeGameNames());
     }
 
-    public Game(final String name, final String image) {
-        this(null, name, image);
+    public Game(final String name, final List<String> images) {
+        this(null, name, images);
     }
 
-    public Game(final String name, final String image, final AlternativeGameNames alternativeGameNames) {
-        this(null, name, image, alternativeGameNames);
+    public Game(final String name, final List<String> images, final AlternativeGameNames alternativeGameNames) {
+        this(null, name, images, alternativeGameNames);
     }
 
-    public Game(final Long id, final String name, final String image) {
-        this(id, name, image, new AlternativeGameNames());
+    public Game(final Long id, final String name, final List<String> images) {
+        this(id, name, images, new AlternativeGameNames());
     }
 
-    public Game(final Long id, final String name, final String image, final AlternativeGameNames alternativeGameNames) {
+    public Game(final Long id, final String name, final List<String> images, final AlternativeGameNames alternativeGameNames) {
         this.id = id;
         this.name = name;
-        this.image = image;
+        this.images = images;
         this.alternativeGameNames = alternativeGameNames;
     }
 
@@ -70,14 +88,35 @@ public class Game {
         return rooms.totalHeadCount();
     }
 
-    public void update(final Game target) {
-        this.name = target.name;
-        this.image = target.image;
-        this.alternativeGameNames = target.alternativeGameNames;
+    public void update(String name, List<String> alternativeNames, List<String> images) {
+        this.name = name;
+        this.alternativeGameNames.convertAndUpdateToGame(alternativeNames, this);
+        this.images = images;
     }
 
-    public void addRoom(Room room) {
+    public void addRoom(final Room room) {
         rooms.addRoom(room);
+    }
+
+    public void addNames(final List<String> names) {
+        validateToAddNames(names);
+
+        for (String name : names) {
+            addAlternativeName(new AlternativeGameName(name, this));
+        }
+    }
+
+    private void validateToAddNames(final List<String> names) {
+        Set<String> nameSet = new HashSet<>(names);
+        if (nameSet.size() != names.size()) {
+            throw new BabbleDuplicatedException(String.format("중복된 값이 있습니다.(%s)", Strings.join(names, ',')));
+        }
+
+        for (String name : names) {
+            if (hasName(name)) {
+                throw new BabbleDuplicatedException(String.format("이미 존재하는 이름 입니다.(%s)", name));
+            }
+        }
     }
 
     public void addAlternativeName(final AlternativeGameName alternativeGameName) {
@@ -86,10 +125,6 @@ public class Game {
         }
 
         alternativeGameNames.add(alternativeGameName);
-
-        if (alternativeGameName.getGame() != this) {
-            alternativeGameName.setGame(this);
-        }
     }
 
     public void removeAlternativeName(final AlternativeGameName alternativeGameName) {
@@ -99,7 +134,7 @@ public class Game {
 
         alternativeGameNames.remove(alternativeGameName);
 
-        if (alternativeGameName.getGame().equals(this)) {
+        if (this.equals(alternativeGameName.getGame())) {
             alternativeGameName.delete();
         }
     }
@@ -112,8 +147,8 @@ public class Game {
         return !hasName(name);
     }
 
-    public void delete() {
-        this.deleted = true;
+    public List<String> getAlternativeNames() {
+        return alternativeGameNames.getNames();
     }
 
     @Override

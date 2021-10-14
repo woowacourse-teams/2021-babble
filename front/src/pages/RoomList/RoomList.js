@@ -3,6 +3,7 @@ import './RoomList.scss';
 import { Body2, Headline2 } from '../../core/Typography';
 import {
   MainImage,
+  ModalError,
   NicknameSection,
   Room,
   SearchInput,
@@ -11,9 +12,11 @@ import {
 import React, { useEffect, useRef, useState } from 'react';
 import { getSessionStorage, setSessionStorage } from '../../utils/storage';
 
+import { BASE_URL } from '../../constants/api';
 import ChattingRoom from '../ChattingRoom/ChattingRoom';
 import ModalConfirm from '../../components/Modal/ModalConfirm';
 import PATH from '../../constants/path';
+import { PATTERNS } from '../../constants/regex';
 import PageLayout from '../../core/Layout/PageLayout';
 import PropTypes from 'prop-types';
 import TagList from '../../chunks/TagList/TagList';
@@ -24,52 +27,96 @@ import { useChattingModal } from '../../contexts/ChattingModalProvider';
 import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 import { useHistory } from 'react-router-dom';
 import useInterval from '../../hooks/useInterval';
+import useScript from '../../hooks/useScript';
 import { useUser } from '../../contexts/UserProvider';
 
 const RoomList = ({ match }) => {
-  const history = useHistory();
   const [tagList, setTagList] = useState([]);
   const [selectedTagList, setSelectedTagList] = useState([]);
   const [roomList, setRoomList] = useState([]);
   const [currentGame, setCurrentGame] = useState({});
-  const { user, changeUser } = useUser();
-  const { openChatting, closeChatting, isChattingModalOpen } =
-    useChattingModal();
-  const { openModal } = useDefaultModal();
 
   // TODO: 임시 방편. onChangeInput을 SearchInput 내부로 집어넣으면서 사라질 운명
   const [autoCompleteTagList, setAutoCompleteTagList] = useState([]);
   const searchRef = useRef(null);
 
+  const { user, changeUser } = useUser();
+  const { openChatting, closeChatting, isChattingModalOpen } =
+    useChattingModal();
+  const { openModal } = useDefaultModal();
+
+  useScript('https://developers.kakao.com/sdk/js/kakao.js');
+  const history = useHistory();
+
   const { gameId } = match.params;
+
+  const getRoomDataWhenEnterWithLink = async () => {
+    const { roomId } = match.params;
+    const response = await axios.get(`${BASE_URL}/api/rooms/${roomId}`);
+    const { game, tags } = response.data;
+
+    try {
+      const response = await axios.post(`${BASE_URL}/api/users`, {
+        nickname: getRandomNickname(),
+      });
+      const generatedUser = response.data;
+
+      setSessionStorage('nickname', generatedUser.nickname);
+
+      changeUser({ id: generatedUser.id, nickname: generatedUser.nickname });
+    } catch (error) {
+      openModal(<ModalError>{error.message}</ModalError>);
+    }
+
+    if (roomId) {
+      if (match.url.includes(`/chat/${roomId}`)) {
+        history.push(`/games/${gameId}`);
+        openChatting(
+          <ChattingRoom game={game} tags={tags} roomId={Number(roomId)} />
+        );
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (match.params.roomId) {
+      getRoomDataWhenEnterWithLink();
+    }
+  }, []);
 
   const getGame = async () => {
     try {
-      const response = await axios.get(
-        `https://api.babble.gg/api/games/${gameId}`
-      );
+      const response = await axios.get(`${BASE_URL}/api/games/${gameId}`);
 
       setCurrentGame(response.data);
     } catch (error) {
-      console.error(error);
+      openModal(<ModalError>{error.message}</ModalError>);
     }
   };
 
   const getTags = async () => {
-    const response = await axios.get('https://api.babble.gg/api/tags');
-    const tags = response.data;
+    try {
+      const response = await axios.get(`${BASE_URL}/api/tags`);
+      const tags = response.data;
 
-    setTagList(tags);
-    setAutoCompleteTagList(tags);
+      setTagList(tags);
+      setAutoCompleteTagList(tags);
+    } catch (error) {
+      openModal(<ModalError>{error.message}</ModalError>);
+    }
   };
 
   const getRooms = async (tagIds) => {
-    const response = await axios.get('https://api.babble.gg/api/rooms', {
-      params: { gameId, tagIds, page: 1 },
-    });
-    const rooms = response.data;
+    try {
+      const response = await axios.get(`${BASE_URL}/api/rooms`, {
+        params: { gameId, tagIds, page: 1 },
+      });
+      const rooms = response.data;
 
-    setRoomList(rooms);
+      setRoomList(rooms);
+    } catch (error) {
+      openModal(<ModalError>{error.message}</ModalError>);
+    }
   };
 
   const selectTag = (tagName) => {
@@ -99,17 +146,17 @@ const RoomList = ({ match }) => {
 
     try {
       const response = await axios.get(
-        `https://api.babble.gg/api/rooms/${selectedRoomId}`
+        `${BASE_URL}/api/rooms/${selectedRoomId}`
       );
       const { tags, game, roomId } = response.data;
 
       if (isChattingModalOpen) {
         closeChatting();
       }
+
       openChatting(<ChattingRoom game={game} tags={tags} roomId={roomId} />);
     } catch (error) {
-      alert('방이 존재하지 않습니다.');
-      console.error(error);
+      openModal(<ModalError>{error.message}</ModalError>);
     }
   };
 
@@ -142,18 +189,15 @@ const RoomList = ({ match }) => {
   };
 
   const onChangeTagInput = (e) => {
-    const inputValue = e.target.value.replace(
-      /[^0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|a-z|A-Z]+/g,
-      ''
-    );
+    const inputValue = e.target.value.replace(PATTERNS.SPECIAL_CHARACTERS, '');
 
-    const searchResults = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]+/g.test(inputValue)
+    const searchResults = PATTERNS.KOREAN.test(inputValue)
       ? tagList.filter((tag) => {
-          const keywordRegExp = getKorRegExp(inputValue, {
+          const searchRegex = getKorRegExp(inputValue, {
             initialSearch: true,
             ignoreSpace: true,
           });
-          return tag.name.match(keywordRegExp);
+          return tag.name.match(searchRegex);
         })
       : tagList.filter((tag) => {
           const searchRegex = new RegExp(inputValue, 'gi');
@@ -164,7 +208,35 @@ const RoomList = ({ match }) => {
           );
         });
 
-    setAutoCompleteTagList(searchResults);
+    // 대안 이름으로 검색된 게임
+    const alternativeResults = PATTERNS.KOREAN.test(inputValue)
+      ? tagList.filter((tag) => {
+          const searchRegex = getKorRegExp(inputValue, {
+            initialSearch: true,
+            ignoreSpace: true,
+          });
+
+          return tag.alternativeNames.some((alternativeName) =>
+            alternativeName.match(searchRegex)
+          );
+        })
+      : tagList.filter((tag) => {
+          const searchRegex = new RegExp(inputValue, 'gi');
+          const alternativeNamesWithoutSpace = tag.alternativeNames.map(
+            (alternativeName) => alternativeName.replace(PATTERNS.SPACE, '')
+          );
+
+          return (
+            alternativeNamesWithoutSpace.some((alternativeName) =>
+              alternativeName.match(searchRegex)
+            ) ||
+            tag.alternativeNames.some((alternativeName) =>
+              alternativeName.match(searchRegex)
+            )
+          );
+        });
+
+    setAutoCompleteTagList([...searchResults, ...alternativeResults]);
   };
 
   const getUserId = async () => {
@@ -176,12 +248,16 @@ const RoomList = ({ match }) => {
       setSessionStorage('nickname', newUser.nickname);
     }
 
-    const response = await axios.post('https://api.babble.gg/api/users', {
-      nickname: newUser.nickname,
-    });
-    newUser.id = response.data.id;
-    newUser.nickname = response.data.nickname;
-    changeUser(newUser);
+    try {
+      const response = await axios.post(`${BASE_URL}/api/users`, {
+        nickname: newUser.nickname,
+      });
+      newUser.id = response.data.id;
+      newUser.nickname = response.data.nickname;
+      changeUser(newUser);
+    } catch (error) {
+      openModal(<ModalError>{error.message}</ModalError>);
+    }
   };
 
   useEffect(() => {
@@ -230,7 +306,7 @@ const RoomList = ({ match }) => {
             <NicknameSection />
             <SquareButton
               size='medium'
-              onClick={() => onConfirm(() => enterMakeRoomPage())}
+              onClickButton={() => onConfirm(() => enterMakeRoomPage())}
               colored
             >
               <Body2>방 생성하기</Body2>

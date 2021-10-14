@@ -4,20 +4,24 @@ import { Body2, Headline2 } from '../../core/Typography';
 import {
   DropdownInput,
   MainImage,
+  ModalError,
   RoundButton,
   SearchInput,
 } from '../../components';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 
+import { BASE_URL } from '../../constants/api';
 import ChattingRoom from '../ChattingRoom/ChattingRoom';
 import PATH from '../../constants/path';
+import { PATTERNS } from '../../constants/regex';
 import PageLayout from '../../core/Layout/PageLayout';
 import PropTypes from 'prop-types';
 import TagList from '../../chunks/TagList/TagList';
 import axios from 'axios';
 import getKorRegExp from '../../components/SearchInput/service/getKorRegExp';
 import { useChattingModal } from '../../contexts/ChattingModalProvider';
+import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 
 const MakeRoom = ({ match }) => {
   const location = useLocation();
@@ -27,6 +31,7 @@ const MakeRoom = ({ match }) => {
   const [selectedTagList, setSelectedTagList] = useState([]);
   const [maxHeadCount, setMaxHeadCount] = useState(0);
   const { openChatting, closeChatting } = useChattingModal();
+  const { openModal } = useDefaultModal();
 
   // TODO: 임시 방편. onChangeInput을 SearchInput 내부로 집어넣으면서 사라질 운명
   const [autoCompleteTagList, setAutoCompleteTagList] = useState([]);
@@ -42,20 +47,28 @@ const MakeRoom = ({ match }) => {
   const { gameName } = location.state;
 
   const getImage = async () => {
-    const response = await axios.get(
-      `https://api.babble.gg/api/games/${gameId}/images`
-    );
-    const image = response.data.image;
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/api/games/${gameId}/images`
+      );
+      const image = response.data.image;
 
-    setImageUrl(image);
+      setImageUrl(image);
+    } catch (error) {
+      openModal(<ModalError>{error.message}</ModalError>);
+    }
   };
 
   const getTags = async () => {
-    const response = await axios.get('https://api.babble.gg/api/tags');
-    const tags = response.data;
+    try {
+      const response = await axios.get(`${BASE_URL}/api/tags`);
+      const tags = response.data;
 
-    setTagList(tags);
-    setAutoCompleteTagList(tags);
+      setTagList(tags);
+      setAutoCompleteTagList(tags);
+    } catch (error) {
+      openModal(<ModalError>{error.message}</ModalError>);
+    }
   };
 
   const selectTag = (tagName) => {
@@ -84,7 +97,7 @@ const MakeRoom = ({ match }) => {
   const onChangeTagInput = (e) => {
     const inputValue = e.target.value;
 
-    const searchResults = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]+/g.test(inputValue)
+    const searchResults = PATTERNS.KOREAN.test(inputValue)
       ? tagList.filter((tag) => {
           const keywordRegExp = getKorRegExp(inputValue, {
             initialSearch: true,
@@ -94,7 +107,7 @@ const MakeRoom = ({ match }) => {
         })
       : tagList.filter((tag) => {
           const searchRegex = new RegExp(inputValue, 'gi');
-          const keywordWithoutSpace = tag.name.replace(/\s/g, '');
+          const keywordWithoutSpace = tag.name.replace(PATTERNS.SPACE, '');
           return (
             keywordWithoutSpace.match(searchRegex) ||
             tag.name.match(searchRegex)
@@ -110,7 +123,7 @@ const MakeRoom = ({ match }) => {
     try {
       // TODO: 테스트 서버에서 실제 배포 서버로 변경하기
       const tagIds = selectedTagList.map(({ id }) => ({ id }));
-      const response = await axios.post('https://api.babble.gg/api/rooms', {
+      const response = await axios.post(`${BASE_URL}/api/rooms`, {
         gameId,
         maxHeadCount,
         tags: tagIds,
@@ -125,7 +138,7 @@ const MakeRoom = ({ match }) => {
         state: { gameName },
       });
     } catch (error) {
-      alert('방 생성을 하는 데 오류가 있습니다.');
+      openModal(<ModalError>{error.message}</ModalError>);
     }
   };
 

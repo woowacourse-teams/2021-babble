@@ -1,14 +1,17 @@
 import './GameList.scss';
 
-import { GameCard, SearchInput, Slider } from '../../components';
+import { BABBLE_URL, BASE_URL } from '../../constants/api';
+import { GameCard, ModalError, SearchInput, Slider } from '../../components';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { Headline2 } from '../../core/Typography';
 import { Link } from 'react-router-dom';
 import PATH from '../../constants/path';
+import { PATTERNS } from '../../constants/regex';
 import PageLayout from '../../core/Layout/PageLayout';
 import axios from 'axios';
 import getKorRegExp from '../../components/SearchInput/service/getKorRegExp';
+import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 
 const GameList = () => {
   // const [sliderImageList, setSliderImageList] = useState([]);
@@ -16,21 +19,23 @@ const GameList = () => {
   const [selectedGames, setSelectedGames] = useState([]);
   const searchRef = useRef(null);
 
+  const { openModal } = useDefaultModal();
+
   const dummyImage = [
     {
       id: 0,
       info: 'Kartrider Rush Plus',
-      src: 'https://babble.gg/img/banners/kartrider.png',
+      src: `${BABBLE_URL}/img/banners/kartrider.png`,
     },
     {
       id: 1,
       info: 'APEX LEGENDS',
-      src: 'https://babble.gg/img/banners/apexlegends.png',
+      src: `${BABBLE_URL}/img/banners/apexlegends.png`,
     },
     {
       id: 2,
       info: 'Fortnite',
-      src: 'https://babble.gg/img/banners/fortnite.png',
+      src: `${BABBLE_URL}/img/banners/fortnite.png`,
     },
   ];
 
@@ -47,37 +52,67 @@ const GameList = () => {
   // };
 
   const getGames = async () => {
-    const response = await axios.get('https://api.babble.gg/api/games');
-    const games = response.data;
+    try {
+      const response = await axios.get(`${BASE_URL}/api/games`);
+      const games = response.data;
 
-    setGameList(games);
-    setSelectedGames(games);
+      setGameList(games);
+      setSelectedGames(games);
+    } catch (error) {
+      openModal(<ModalError>{error.message}</ModalError>);
+    }
   };
 
   const onChangeGameInput = (e) => {
-    const inputValue = e.target.value.replace(
-      /[^0-9|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|a-z|A-Z]+/g,
-      ''
-    );
+    const inputValue = e.target.value.replace(PATTERNS.SPECIAL_CHARACTERS, '');
 
-    const searchResults = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]+/g.test(inputValue)
+    const searchResults = PATTERNS.KOREAN.test(inputValue)
       ? gameList.filter((game) => {
-          const keywordRegExp = getKorRegExp(inputValue, {
+          const searchRegex = getKorRegExp(inputValue, {
             initialSearch: true,
             ignoreSpace: true,
           });
-          return game.name.match(keywordRegExp);
+
+          return game.name.match(searchRegex);
         })
       : gameList.filter((game) => {
           const searchRegex = new RegExp(inputValue, 'gi');
-          const keywordWithoutSpace = game.name.replace(/\s/g, '');
+          const nameWithoutSpace = game.name.replace(PATTERNS.SPACE, '');
+
           return (
-            keywordWithoutSpace.match(searchRegex) ||
-            game.name.match(searchRegex)
+            nameWithoutSpace.match(searchRegex) || game.name.match(searchRegex)
           );
         });
 
-    setSelectedGames(searchResults);
+    // 대안 이름으로 검색된 게임
+    const alternativeResults = PATTERNS.KOREAN.test(inputValue)
+      ? gameList.filter((game) => {
+          const searchRegex = getKorRegExp(inputValue, {
+            initialSearch: true,
+            ignoreSpace: true,
+          });
+
+          return game.alternativeNames.some((alternativeName) =>
+            alternativeName.match(searchRegex)
+          );
+        })
+      : gameList.filter((game) => {
+          const searchRegex = new RegExp(inputValue, 'gi');
+          const alternativeNamesWithoutSpace = game.alternativeNames.map(
+            (alternativeName) => alternativeName.replace(PATTERNS.SPACE, '')
+          );
+
+          return (
+            alternativeNamesWithoutSpace.some((alternativeName) =>
+              alternativeName.match(searchRegex)
+            ) ||
+            game.alternativeNames.some((alternativeName) =>
+              alternativeName.match(searchRegex)
+            )
+          );
+        });
+
+    setSelectedGames([...searchResults, ...alternativeResults]);
   };
 
   useEffect(() => {
@@ -96,9 +131,7 @@ const GameList = () => {
     // getSliderImages();
     getGames();
 
-    return () => {
-      stickyObserver && stickyObserver.disconnect();
-    };
+    return () => stickyObserver && stickyObserver.disconnect();
   }, []);
 
   return (

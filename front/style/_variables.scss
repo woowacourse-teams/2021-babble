@@ -11,6 +11,12 @@ $border-radius: (
   modal-minimize: 0.8rem 0.8rem 0 0,
   dots-container: 1.5rem,
   dot: 9999px,
+  large-container: 1rem,
+  image-preview: 1rem,
+);
+
+$indent: (
+  one-left-depth: 2rem,
 );
 
 $button-padding: (
@@ -52,6 +58,11 @@ $primary: (
   babble-pink-1: #eb0d5e,
   babble-pink-2: #c50048,
   babble-pink-3: #b60043,
+);
+
+$alert: (
+  confirm: #009f66,
+  fail: #ff1a00,
 );
 
 $shadow: (

@@ -1,19 +1,23 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const CompressionPlugin = require('compression-webpack-plugin');
+const dotenv = require('dotenv');
 const path = require('path');
+const { DefinePlugin } = require('webpack');
 
 module.exports = (env, options) => {
-  return {
+  const config = {
     entry: './index.js',
 
     output: {
       path: path.join(__dirname, '/dist'),
+      filename: '[name].js',
       publicPath: '/',
-      filename: 'bundle.js',
+      clean: true,
     },
 
     module: {
@@ -25,13 +29,26 @@ module.exports = (env, options) => {
         },
         {
           test: /\.(css|scss|sass)$/,
-          use: ['style-loader', 'css-loader', 'sass-loader'],
+          use: [
+            options.mode === 'development'
+              ? 'style-loader'
+              : MiniCssExtractPlugin.loader,
+            'css-loader',
+            'sass-loader',
+          ],
+        },
+        {
+          test: /\.(woff2|woff|ttf)$/i,
+          type: 'asset/resource',
+          generator: {
+            filename: 'fonts/[name][ext]',
+          },
         },
       ],
     },
 
     resolve: {
-      extensions: ['.js', '.jsx', 'scss'],
+      extensions: ['.js', '.jsx', '.scss'],
     },
 
     devServer: {
@@ -39,7 +56,7 @@ module.exports = (env, options) => {
       publicPath: '/',
       hot: true,
       inline: true,
-      host: 'localhost',
+      host: '0.0.0.0',
       port: 3000,
       historyApiFallback: true,
     },
@@ -48,7 +65,6 @@ module.exports = (env, options) => {
 
     plugins: [
       new ErrorOverlayPlugin(),
-      new CleanWebpackPlugin(),
       new ESLintPlugin(),
       new HtmlWebpackPlugin({
         template: 'index.html',
@@ -58,7 +74,53 @@ module.exports = (env, options) => {
         fileName: 'manifest.json',
         basePath: './public/',
       }),
+      new MiniCssExtractPlugin({
+        filename: `[name].[chunkhash].css`,
+      }),
+      new CompressionPlugin({
+        algorithm: 'gzip',
+        test: /\.(js|css|html|ttf)$/,
+      }),
+      new DefinePlugin({
+        'process.env': JSON.stringify(dotenv.config().parsed),
+      }),
     ],
+
+    optimization: {
+      minimize: options.mode === 'development' ? false : true,
+      splitChunks: {
+        cacheGroups: {
+          default: false,
+          vendors: false,
+          defaultVendors: false,
+          framework: {
+            chunks: 'all',
+            name: 'framework',
+            filename: '[name].js',
+            test: /(?<!node_modules.*)[\\/]node_modules[\\/](react|react-dom|react-router-dom)[\\/]/,
+            priority: 30,
+          },
+          library: {
+            chunks: 'all',
+            minChunks: 2,
+            priority: 20,
+            test: /[\\/]node_modules[\\/]/,
+            name: 'library',
+            filename: '[name].js',
+            reuseExistingChunk: true,
+          },
+          repetition: {
+            chunks: 'all',
+            minChunks: 2,
+            priority: 10,
+            test: /[\\/]src[\\/]/,
+            name: 'repetition',
+            filename: '[name].js',
+            reuseExistingChunk: true,
+          },
+        },
+      },
+    },
 
     target: 'web',
 
@@ -66,4 +128,10 @@ module.exports = (env, options) => {
       hints: false,
     },
   };
+
+  if (options.mode === 'development') {
+    config.plugins.push(new BundleAnalyzerPlugin());
+  }
+
+  return config;
 };

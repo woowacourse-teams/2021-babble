@@ -1,0 +1,51 @@
+@use '../../../style/functions' as f;
+
+.input-register-container {
+  .input-drag-drop {
+    margin-top: 1rem;
+
+    .caption1 {
+      display: block;
+      float: right;
+      margin-top: 0.5rem;
+      margin-right: 1rem;
+    }
+
+    input[type='file'] {
+      position: absolute;
+      opacity: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    .drag-drop-zone {
+      position: relative;
+      width: 100%;
+      min-height: 10rem;
+      max-height: 30rem;
+      border-radius: f.border-radius(image-preview);
+      border: 1px solid f.grey-scale(5);
+      background: f.grey-scale(1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .input-image-preview {
+      width: 100%;
+      height: 30rem;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
+  }
+}

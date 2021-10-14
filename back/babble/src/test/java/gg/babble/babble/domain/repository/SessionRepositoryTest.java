@@ -13,14 +13,9 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles("test")
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = Replace.NONE)
 class SessionRepositoryTest {
 
     @Autowired
@@ -61,10 +56,10 @@ class SessionRepositoryTest {
         Session session = sessionRepository.save(세션_객체를_생성한다());
 
         // when
-        session.delete();
+        sessionRepository.deleteById(session.getId());
 
         // then
-        assertThat(sessionRepository.findBySessionIdAndDeletedFalse(session.getSessionId())).isNotPresent();
+        assertThat(sessionRepository.findBySessionId(session.getSessionId())).isEmpty();
     }
 
     @DisplayName("sessionId로 조회를 시도할 때 삭제된 세션은 조회되지 않는다.")
@@ -74,15 +69,15 @@ class SessionRepositoryTest {
         Session session = sessionRepository.save(세션_객체를_생성한다());
 
         // then
-        assertThat(sessionRepository.findBySessionIdAndDeletedFalse(session.getSessionId())).isPresent();
-        session.delete();
-        assertThat(sessionRepository.findBySessionIdAndDeletedFalse(session.getSessionId())).isNotPresent();
+        assertThat(sessionRepository.findBySessionId(session.getSessionId())).isPresent();
+        sessionRepository.deleteById(session.getId());
+        assertThat(sessionRepository.findBySessionId(session.getSessionId())).isNotPresent();
     }
 
     private Session 세션_객체를_생성한다() {
         Tag tag = tagRepository.save(new Tag("초보만"));
         List<Tag> tags = Collections.singletonList(tag);
-        Game game = gameRepository.save(new Game("게임 이름", "게임 이미지"));
+        Game game = gameRepository.save(new Game("게임 이름", Collections.singletonList("게임 이미지")));
         MaxHeadCount maxHeadCount = new MaxHeadCount(4);
         Room room = roomRepository.save(new Room(game, tags, maxHeadCount));
         User user = userRepository.save(new User("코 파는 알리스타"));

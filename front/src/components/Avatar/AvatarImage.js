@@ -8,7 +8,9 @@ const AvatarImage = ({
   size,
 }) => {
   return (
-    <img src={imageSrc} alt='Avatar Image' className={`avatar-image ${size}`} />
+    <div className={`avatar-image-container ${size}`}>
+      <img src={imageSrc} alt='Avatar Image' className='avatar-image' />
+    </div>
   );
 };
 

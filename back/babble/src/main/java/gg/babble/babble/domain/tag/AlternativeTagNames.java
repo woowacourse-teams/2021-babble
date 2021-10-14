@@ -1,11 +1,14 @@
 package gg.babble.babble.domain.tag;
 
+import gg.babble.babble.domain.game.AlternativeGameName;
+import gg.babble.babble.domain.game.Game;
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleNotFoundException;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
+import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
@@ -13,15 +16,15 @@ import javax.validation.constraints.NotNull;
 @Embeddable
 public class AlternativeTagNames {
 
-    @OneToMany(mappedBy = "tag")
+    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
     @NotNull(message = "대안 이름들은 Null 일 수 없습니다.")
-    private final Set<AlternativeTagName> elements;
+    private final List<AlternativeTagName> elements;
 
     public AlternativeTagNames() {
-        this(new HashSet<>());
+        this(new ArrayList<>());
     }
 
-    public AlternativeTagNames(final Set<AlternativeTagName> elements) {
+    public AlternativeTagNames(final List<AlternativeTagName> elements) {
         this.elements = elements;
     }
 
@@ -29,7 +32,26 @@ public class AlternativeTagNames {
         if (contains(name.getValue())) {
             throw new BabbleDuplicatedException(String.format("이미 존재하는 이름 입니다.(%s)", name.getValue()));
         }
+
         elements.add(name);
+    }
+
+    public void convertAndUpdateToTag(List<String> alternativeNames, Tag tag) {
+        removeLegacyNames(alternativeNames);
+        addUpdateName(alternativeNames, tag);
+    }
+
+    private void removeLegacyNames(List<String> alternativeNames) {
+        elements.stream()
+            .filter(element -> !alternativeNames.contains(element.getName()))
+            .forEach(AlternativeTagName::delete);
+    }
+
+    private void addUpdateName(List<String> alternativeNames, Tag tag) {
+        alternativeNames.stream()
+            .map(TagName::new)
+            .filter(name -> !contains(name))
+            .forEach(name -> add(new AlternativeTagName(name, tag)));
     }
 
     public void remove(final AlternativeTagName alternativeTagName) {
@@ -37,19 +59,31 @@ public class AlternativeTagNames {
             throw new BabbleNotFoundException(String.format("존재하지 않는 이름 입니다.(%s)", alternativeTagName.getValue().getValue()));
         }
 
-        elements.remove(alternativeTagName);
+        alternativeTagName.delete();
+    }
+
+    public void deleteAll() {
+        for (AlternativeTagName element : getElements()) {
+            element.delete();
+        }
     }
 
     public boolean contains(final TagName name) {
-        return elements.stream()
+        return getElements().stream()
             .anyMatch(alternativeName -> alternativeName.isSameName(name));
     }
 
-    public Set<String> getNames() {
-        return elements.stream()
+    public List<String> getNames() {
+        return getElements().stream()
             .map(AlternativeTagName::getValue)
             .map(TagName::getValue)
-            .collect(Collectors.toSet());
+            .collect(Collectors.toList());
+    }
+
+    public List<AlternativeTagName> getElements() {
+        return elements.stream()
+            .filter(AlternativeTagName::isNotDeleted)
+            .collect(Collectors.toList());
     }
 
     @Override

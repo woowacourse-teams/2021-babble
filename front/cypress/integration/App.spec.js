@@ -1,3 +1,4 @@
+import { BASE_URL } from '../../src/constants/api';
 import roomData from '../fixtures/example.json';
 
 const GAME_ID = 75;
@@ -29,7 +30,7 @@ describe('E2E 테스트', () => {
   it('사용자는 찾은 게임을 클릭해 방 목록으로 들어갈 수 있다.', () => {
     cy.intercept(
       'GET',
-      `https://api.babble.gg/api/rooms?gameId=${GAME_ID}&tagIds=&page=1`,
+      `${BASE_URL}/api/rooms?gameId=${GAME_ID}&tagIds=&page=1`,
       {
         fixture: 'example.json',
       }
@@ -118,7 +119,9 @@ describe('E2E 테스트', () => {
       cy.get('textarea').type('ㅎㅇㅎㅇ{enter}');
     });
 
-    cy.get('.mine').contains('ㅎㅇㅎㅇ').should('be.visible');
+    cy.get('.mine', { timeout: 6000 })
+      .contains('ㅎㅇㅎㅇ')
+      .should('be.visible');
   });
 
   it('사용자는 접속한 채팅방을 최소화 할 수 있다.', () => {

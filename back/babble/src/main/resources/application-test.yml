@@ -1,0 +1,34 @@
+spring:
+
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+
+  test:
+    database:
+      replace: NONE
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: validate
+    generate-ddl: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+        show_sql: false
+        format_sql: true
+        use_sql_comment: false
+
+  flyway:
+    enabled: true
+
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2
+    s3:
+      bucket:
+        name: babble-back-test

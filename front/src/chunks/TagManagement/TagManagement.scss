@@ -1,0 +1,70 @@
+@use '../../../style/functions' as f;
+@use '../../../style/mixins' as m;
+
+.tag-management-container {
+  @include m.top-left-indents;
+
+  .tag-management-wrapper {
+    @include m.top-left-indents;
+    width: calc(100% - #{f.indent(one-left-depth)});
+
+    & > .name-list-container {
+      @include m.top-left-indents;
+
+      margin-bottom: 2rem;
+      width: calc(100% - #{f.indent(one-left-depth)});
+    }
+
+    .register-tag {
+      @include m.top-left-indents;
+
+      & > .input-container {
+        margin: 1rem 0;
+      }
+
+      .input-container {
+        input[type='text'] {
+          text-align: left;
+
+          &.input-inner {
+            margin-left: 0;
+          }
+        }
+      }
+
+      .register-alternative-tag-name {
+        display: flex;
+        margin: 1rem 0;
+
+        button {
+          margin-left: 1rem;
+          flex-basis: 15%;
+          max-width: 9rem;
+          height: inherit;
+        }
+      }
+
+      .tag-submit {
+        margin-top: 1rem;
+        height: 5rem;
+      }
+    }
+  }
+}
+
+@include m.media(tablet) {
+  .tag-management-container
+    .tag-management-wrapper
+    .register-tag
+    .register-alternative-tag-name {
+    display: block;
+
+    button {
+      width: 100%;
+      max-width: none;
+      margin-left: 0;
+      height: 4rem;
+      margin-top: 1rem;
+    }
+  }
+}

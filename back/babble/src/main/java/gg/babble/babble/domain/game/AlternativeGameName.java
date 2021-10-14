@@ -12,8 +12,12 @@ import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Getter
+@SQLDelete(sql = "UPDATE alternative_game_name SET deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class AlternativeGameName {
@@ -31,7 +35,7 @@ public class AlternativeGameName {
     @NotNull(message = "게임은 Null 일 수 없습니다.")
     private Game game;
 
-    private boolean isDeleted = false;
+    private boolean deleted = false;
 
     public AlternativeGameName(final String value, final Game game) {
         this(null, value, game);
@@ -40,27 +44,15 @@ public class AlternativeGameName {
     public AlternativeGameName(final Long id, final String value, final Game game) {
         this.id = id;
         this.value = value;
-        setGame(game);
-    }
-
-    public void setGame(final Game game) {
-        final Game previousGame = this.game;
         this.game = game;
-
-        if (Objects.nonNull(previousGame) && previousGame.hasName(value)) {
-            previousGame.removeAlternativeName(this);
-        }
-
-        if (game.hasNotName(value)) {
-            game.addAlternativeName(this);
-        }
     }
 
     public void delete() {
-        if (game.hasName(value)) {
-            game.removeAlternativeName(this);
-        }
-        isDeleted = true;
+        deleted = true;
+    }
+
+    public boolean isNotDeleted() {
+        return !isDeleted();
     }
 
     @Override

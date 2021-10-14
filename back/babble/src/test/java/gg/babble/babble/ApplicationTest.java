@@ -5,7 +5,9 @@ import gg.babble.babble.domain.repository.AlternativeGameNameRepository;
 import gg.babble.babble.domain.repository.AlternativeTagNameRepository;
 import gg.babble.babble.domain.repository.GameRepository;
 import gg.babble.babble.domain.repository.RoomRepository;
+import gg.babble.babble.domain.repository.S3Repository;
 import gg.babble.babble.domain.repository.SessionRepository;
+import gg.babble.babble.domain.repository.SliderRepository;
 import gg.babble.babble.domain.repository.TagRepository;
 import gg.babble.babble.domain.repository.UserRepository;
 import io.restassured.RestAssured;
@@ -14,10 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-@ActiveProfiles("test")
 @Transactional
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class ApplicationTest {
@@ -41,6 +41,9 @@ public class ApplicationTest {
     protected GameRepository gameRepository;
 
     @Autowired
+    protected S3Repository s3Repository;
+
+    @Autowired
     protected AlternativeGameNameRepository alternativeGameNameRepository;
 
     @Autowired
@@ -48,6 +51,9 @@ public class ApplicationTest {
 
     @Autowired
     protected TagRepository tagRepository;
+
+    @Autowired
+    protected SliderRepository sliderRepository;
 
     @BeforeEach
     protected void setUp() {

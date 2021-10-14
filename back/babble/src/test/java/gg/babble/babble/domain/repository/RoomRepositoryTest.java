@@ -20,16 +20,11 @@ import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles("test")
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = Replace.NONE)
 public class RoomRepositoryTest {
 
     @Autowired
@@ -51,7 +46,7 @@ public class RoomRepositoryTest {
     @Test
     void createRoom() {
         // given
-        Game game = gameRepository.save(new Game("게임 이름", "게임 이미지"));
+        Game game = gameRepository.save(new Game("게임 이름", Collections.singletonList("게임 이미지")));
         List<Tag> tags = Collections.singletonList(tagRepository.save(new Tag("초보만")));
         MaxHeadCount maxHeadCount = new MaxHeadCount(4);
         Room room = new Room(game, tags, maxHeadCount);
@@ -71,14 +66,14 @@ public class RoomRepositoryTest {
     @Test
     void findRoomById() {
         // given
-        Game game = gameRepository.save(new Game("게임 이름", "게임 이미지"));
+        Game game = gameRepository.save(new Game("게임 이름", Collections.singletonList("게임 이미지")));
         List<Tag> tags = Collections.singletonList(tagRepository.save(new Tag("초보만")));
         MaxHeadCount maxHeadCount = new MaxHeadCount(4);
 
         Room room = roomRepository.save(new Room(game, tags, maxHeadCount));
 
         // when
-        Room savedRoom = roomRepository.findByIdAndDeletedFalse(room.getId())
+        Room savedRoom = roomRepository.findById(room.getId())
             .orElseThrow(BabbleNotFoundException::new);
 
         // then
@@ -89,32 +84,11 @@ public class RoomRepositoryTest {
         assertThatThrownBy(savedRoom::getHost).isInstanceOf(BabbleIllegalStatementException.class);
     }
 
-    @DisplayName("삭제된 방은 조회되지 않는다.")
-    @Test
-    void findRoomByIdException() {
-        // given
-        Game game = gameRepository.save(new Game("게임 이름", "게임 이미지"));
-        List<Tag> tags = Collections.singletonList(tagRepository.save(new Tag("초보만")));
-        MaxHeadCount maxHeadCount = new MaxHeadCount(4);
-        User user = userRepository.save(new User("와일더"));
-        Room room = roomRepository.save(new Room(game, tags, maxHeadCount));
-
-        Session session = new Session("1234", user, room);
-        sessionRepository.save(session);
-
-        // when
-        room.exitSession(session);
-
-        // then
-        assertThat(room.isDeleted()).isTrue();
-        assertThat(roomRepository.findByIdAndDeletedFalse(room.getId())).isNotPresent();
-    }
-
     @DisplayName("게임 ID를 기준으로 최신순 방 목록을 검색한다.")
     @Test
     void findByGameId() {
         // given
-        Game game = gameRepository.save(new Game("게임 이름", "게임 이미지"));
+        Game game = gameRepository.save(new Game("게임 이름", Collections.singletonList("게임 이미지")));
         Tag tag = tagRepository.save(new Tag("초보만"));
         List<Tag> tags = new ArrayList<>(Collections.singletonList(tag));
         Room room1 = createRoomWithGameAndTags(game, tags);
@@ -132,16 +106,14 @@ public class RoomRepositoryTest {
     @Test
     void findByGameIdAndTags() {
         // given
-        Game game = gameRepository.save(new Game("게임 이름", "게임 이미지"));
+        Game game = gameRepository.save(new Game("게임 이름", Collections.singletonList("게임 이미지")));
         Tag tag1 = tagRepository.save(new Tag("2시간"));
         Tag tag2 = tagRepository.save(new Tag("실버"));
         Tag tag3 = tagRepository.save(new Tag("고수만"));
-        Tag tag4 = tagRepository.save(new Tag("초보만"));
 
         Room room1 = createRoomWithGameAndTags(game, Arrays.asList(tag1, tag2));
         Room room2 = createRoomWithGameAndTags(game, Arrays.asList(tag1, tag2));
         Room room3 = createRoomWithGameAndTags(game, Arrays.asList(tag1, tag2, tag3));
-        Room room4 = createRoomWithGameAndTags(game, Collections.singletonList(tag4));
 
         // when
         Pageable pageable = PageRequest.of(0, 16);
