@@ -1,10 +1,10 @@
 import './GameManagement.scss';
 
-import { BASE_URL, TEST_URL } from '../../constants/api';
 import { Body1, Headline2, Subtitle1, Subtitle3 } from '../../core/Typography';
 import { ModalError, SquareButton, TextInput } from '../../components';
 import React, { useEffect, useRef, useState } from 'react';
 
+import { BASE_URL } from '../../constants/api';
 import ImagePreview from '../../components/ImagePreview/ImagePreview';
 import ImageRegister from '../../components/ImageRegister/ImageRegister';
 import { NICKNAME_MAX_LENGTH } from '../../constants/chat';
@@ -90,7 +90,7 @@ const GameManagement = () => {
     // TODO: Custom modal로 바꾸는 작업 필요
     if (confirm('정말 삭제하시겠습니까?')) {
       try {
-        await axios.delete(`${TEST_URL}/api/games/${gameId}`);
+        await axios.delete(`${BASE_URL}/api/games/${gameId}`);
       } catch (error) {
         openModal(<ModalError>{error.message}</ModalError>);
       }
@@ -119,11 +119,11 @@ const GameManagement = () => {
           data.append('file', gameImageToSend);
 
           const imageResponse = await axios.post(
-            `${TEST_URL}/api/images`,
+            `${BASE_URL}/api/images`,
             data
           );
 
-          await axios.put(`${TEST_URL}/api/games/${gameDetail.id}`, {
+          await axios.put(`${BASE_URL}/api/games/${gameDetail.id}`, {
             name: gameNameRef.current.value,
             images: imageResponse.data,
             alternativeNames: gameDetail.alternativeNames,
@@ -145,13 +145,7 @@ const GameManagement = () => {
           return;
         }
 
-        console.dir({
-          name: gameNameRef.current.value,
-          images: gameDetail.images.map((image) => image.imagePath),
-          alternativeNames: gameDetail.alternativeNames,
-        });
-
-        await axios.put(`${TEST_URL}/api/games/${gameDetail.id}`, {
+        await axios.put(`${BASE_URL}/api/games/${gameDetail.id}`, {
           name: gameNameRef.current.value,
           images: gameDetail.images.map((image) => image.imagePath),
           alternativeNames: gameDetail.alternativeNames,
@@ -181,10 +175,9 @@ const GameManagement = () => {
 
       data.append('file', gameImageToSend);
 
-      const imageResponse = await axios.post(`${TEST_URL}/api/images`, data);
+      const imageResponse = await axios.post(`${BASE_URL}/api/images`, data);
 
-      console.log(imageResponse.data);
-      await axios.post(`${TEST_URL}/api/games`, {
+      await axios.post(`${BASE_URL}/api/games`, {
         name: gameNameRef.current.value,
         images: imageResponse.data,
         alternativeNames: gameDetail.alternativeNames,

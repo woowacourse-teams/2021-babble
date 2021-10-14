@@ -2,11 +2,11 @@ import './AdminManagement.scss';
 
 import React, { useEffect, useState } from 'react';
 
+import { BASE_URL } from '../../constants/api';
 import Headline2 from '../../core/Typography/Headline2';
 import { ModalError } from '../../components';
 import NameList from '../../components/NameList/NameList';
 import PropTypes from 'prop-types';
-import { TEST_URL } from '../../constants/api';
 import axios from 'axios';
 import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 
@@ -16,7 +16,7 @@ const AdminManagement = () => {
 
   const getAdmins = async () => {
     try {
-      const response = await axios.get(`${TEST_URL}/api/admins`);
+      const response = await axios.get(`${BASE_URL}/api/admins`);
       const admins = response.data;
       setAdminList(admins);
     } catch (error) {
