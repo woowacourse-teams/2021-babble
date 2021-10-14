@@ -1,4 +1,4 @@
-package gg.babble.babble.controller;
+package gg.babble.babble.restdocs.websocket;
 
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.socket.WebSocketHandler;

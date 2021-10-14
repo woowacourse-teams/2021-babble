@@ -73,11 +73,11 @@ include::{snippets}/create-user/response-fields.adoc[]
 
 ==== HTTP Request
 
-include::{snippets}/find-all-games/http-request.adoc[]
+include::{snippets}/read-games/http-request.adoc[]
 
 ==== HTTP Response
 
-include::{snippets}/find-all-games/http-response.adoc[]
+include::{snippets}/read-games/http-response.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
 include::{snippets}/read-games/response-fields.adoc[]
@@ -86,22 +86,22 @@ include::{snippets}/read-games/response-fields.adoc[]
 
 ==== HTTP Request
 
-include::{snippets}/find-game-by-id/http-request.adoc[]
+include::{snippets}/read-game/http-request.adoc[]
 
 ==== HTTP Response
 
-include::{snippets}/find-game-by-id/http-response.adoc[]
+include::{snippets}/read-game/http-response.adoc[]
 include::{snippets}/read-game/response-fields.adoc[]
 
 === 게임 이미지 리스트 조회 API
 
 ==== HTTP Request
 
-include::{snippets}/find-game-images/http-request.adoc[]
+include::{snippets}/read-game-images/http-request.adoc[]
 
 ==== HTTP Response
 
-include::{snippets}/find-game-images/http-response.adoc[]
+include::{snippets}/read-game-images/http-response.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
 include::{snippets}/read-game-images/response-fields.adoc[]
@@ -110,14 +110,14 @@ include::{snippets}/read-game-images/response-fields.adoc[]
 
 ==== HTTP Request
 
-include::{snippets}/find-game-image-by-id/http-request.adoc[]
+include::{snippets}/read-game-images/http-request.adoc[]
 
 ==== HTTP Response
 
-include::{snippets}/find-game-image-by-id/http-response.adoc[]
+include::{snippets}/read-game-images/http-response.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
-include::{snippets}/read-game-image/response-fields.adoc[]
+include::{snippets}/read-game-images/response-fields.adoc[]
 
 === 게임 등록 API
 
@@ -127,12 +127,16 @@ include::{snippets}/read-game-image/response-fields.adoc[]
 
 include::{snippets}/create-game/http-request.adoc[]
 
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/create-game/request-fields.adoc[]
+
 ==== HTTP Response
 
 include::{snippets}/create-game/http-response.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
-include::{snippets}/insert-game/response-fields.adoc[]
+include::{snippets}/create-game/response-fields.adoc[]
 
 === 게임 수정 API
 
@@ -140,11 +144,14 @@ include::{snippets}/insert-game/response-fields.adoc[]
 
 ==== HTTP Request
 
-include::{snippets}/edit-game/http-request.adoc[]
+include::{snippets}/update-game/http-request.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/update-game/request-fields.adoc[]
 
 ==== HTTP Response
 
-include::{snippets}/edit-game/http-response.adoc[]
+include::{snippets}/update-game/http-response.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
 include::{snippets}/update-game/response-fields.adoc[]
@@ -167,27 +174,40 @@ include::{snippets}/delete-game/http-response.adoc[]
 
 ==== HTTP Request
 
-include::{snippets}/read-room-test/http-request.adoc[]
+include::{snippets}/read-room/http-request.adoc[]
 
 ==== HTTP Response
 
-include::{snippets}/read-room-test/http-response.adoc[]
+include::{snippets}/read-room/http-response.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
 include::{snippets}/read-room/response-fields.adoc[]
+
+=== 방 리스트 조회 API
+
+==== HTTP Request
+
+include::{snippets}/read-rooms/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/read-rooms/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/read-rooms/response-fields.adoc[]
 
 === 방 생성 API
 
 ==== HTTP Request
 
-include::{snippets}/create-room-test/http-request.adoc[]
+include::{snippets}/create-room/http-request.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
 include::{snippets}/create-room/request-fields.adoc[]
 
 ==== HTTP Response
 
-include::{snippets}/create-room-test/http-response.adoc[]
+include::{snippets}/create-room/http-response.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
 include::{snippets}/create-room/response-fields.adoc[]
@@ -198,14 +218,14 @@ include::{snippets}/create-room/response-fields.adoc[]
 
 ==== HTTP Request
 
-include::{snippets}/tags-get-test/http-request.adoc[]
+include::{snippets}/read-tags/http-request.adoc[]
 
 ==== HTTP Response
 
-include::{snippets}/tags-get-test/http-response.adoc[]
+include::{snippets}/read-tags/http-response.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
-include::{snippets}/tags-get/response-fields.adoc[]
+include::{snippets}/read-tags/response-fields.adoc[]
 
 === 태그 등록 API
 
@@ -216,14 +236,14 @@ include::{snippets}/tags-get/response-fields.adoc[]
 include::{snippets}/create-tag/http-request.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
-include::{snippets}/insert-tag/request-fields.adoc[]
+include::{snippets}/create-tag/request-fields.adoc[]
 
 ==== HTTP Response
 
 include::{snippets}/create-tag/http-response.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
-include::{snippets}/insert-tag/response-fields.adoc[]
+include::{snippets}/create-tag/response-fields.adoc[]
 
 === 태그 수정 API
 
@@ -249,11 +269,11 @@ include::{snippets}/update-tag/response-fields.adoc[]
 
 ==== HTTP Request
 
-include::{snippets}/remove-tag/http-request.adoc[]
+include::{snippets}/delete-tag/http-request.adoc[]
 
 ==== HTTP Response
 
-include::{snippets}/remove-tag/http-response.adoc[]
+include::{snippets}/delete-tag/http-response.adoc[]
 
 == 이미지
 
@@ -261,7 +281,7 @@ include::{snippets}/remove-tag/http-response.adoc[]
 
 ==== HTTP Request
 
-include::{snippets}/find-all-images/http-request.adoc[]
+include::{snippets}/read-images/http-request.adoc[]
 
 ==== Http Response
 
@@ -277,14 +297,14 @@ include::{snippets}/read-Images/response-fields.adoc[]
 
 ==== HTTP Request
 
-include::{snippets}/save-image/http-request.adoc[]
+include::{snippets}/create-image/http-request.adoc[]
 
 ==== Http Response
 
-include::{snippets}/save-file/http-response.adoc[]
+include::{snippets}/create-image/http-response.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
-include::{snippets}/save-image/response-fields.adoc[]
+include::{snippets}/create-image/response-fields.adoc[]
 
 
 == 관리자
@@ -295,11 +315,11 @@ include::{snippets}/save-image/response-fields.adoc[]
 
 ==== HTTP Request
 
-include::{snippets}/find-all-administrator/http-request.adoc[]
+include::{snippets}/read-administrators/http-request.adoc[]
 
 ==== HTTP Response
 
-include::{snippets}/find-all-administrator/http-response.adoc[]
+include::{snippets}/read-administrators/http-response.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
 include::{snippets}/read-administrators/response-fields.adoc[]
@@ -309,23 +329,26 @@ include::{snippets}/read-administrators/response-fields.adoc[]
 ==== HTTP Request
 
 include::{snippets}/create-administrator//http-request.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/create-administrator/request-fields.adoc[]
 
 ==== HTTP Response
 
 include::{snippets}/create-administrator/http-response.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
-include::{snippets}/insert-administrator/response-fields.adoc[]
+include::{snippets}/create-administrator/response-fields.adoc[]
 
 === 관리자 삭제 API
 
 ==== HTTP Request
 
-include::{snippets}/delete-administrators/http-request.adoc[]
+include::{snippets}/delete-administrator/http-request.adoc[]
 
 ==== HTTP Response
 
-include::{snippets}/delete-administrators/http-response.adoc[]
+include::{snippets}/delete-administrator/http-response.adoc[]
 
 == 슬라이더
 
@@ -333,27 +356,30 @@ include::{snippets}/delete-administrators/http-response.adoc[]
 
 ==== HTTP Request
 
-include::{snippets}/find-all-administrator/http-request.adoc[]
+include::{snippets}/read-sliders/http-request.adoc[]
 
 ==== HTTP Response
 
-include::{snippets}/read-slider/http-response.adoc[]
+include::{snippets}/read-sliders/http-response.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
-include::{snippets}/read-slider/response-fields.adoc[]
+include::{snippets}/read-sliders/response-fields.adoc[]
 
 === 슬라이더 등록 API
 
 ==== HTTP Request
 
-include::{snippets}/insert-slider/http-request.adoc[]
+include::{snippets}/create-slider/http-request.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/create-slider/request-fields.adoc[]
 
 ==== HTTP Response
 
-include::{snippets}/insert-slider/http-response.adoc[]
+include::{snippets}/create-slider/http-response.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
-include::{snippets}/insert-administrator/response-fields.adoc[]
+include::{snippets}/create-slider/response-fields.adoc[]
 
 === 슬라이더 삭제 API
 
@@ -369,11 +395,11 @@ include::{snippets}/delete-slider/http-response.adoc[]
 
 ==== HTTP Request
 
-include::{snippets}/update-slider-order/http-request.adoc[]
+include::{snippets}/update-slider/http-request.adoc[]
 
 ==== HTTP Response
 
-include::{snippets}/update-slider-order/http-response.adoc[]
+include::{snippets}/update-slider/http-response.adoc[]
 
 
 == WebSocket

@@ -3,6 +3,7 @@ package gg.babble.babble.controller;
 import gg.babble.babble.service.ImageService;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,5 +29,11 @@ public class ImageController {
     @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<List<String>> saveImage(@RequestParam("file") final MultipartFile file, @RequestParam("fileName") String fileName) {
         return ResponseEntity.ok(imageService.resizeAndSaveImage(file, fileName));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteImage(@RequestParam("fileName") String fileName) {
+        imageService.deleteImage(fileName);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -7,16 +7,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class IndexPageGameResponse {
 
-    private final Long id;
-    private final String name;
-    private final int headCount;
-    private final List<String> images;
-    private final List<AlternativeGameNameResponse> alternativeNames;
+    private Long id;
+    private String name;
+    private int headCount;
+    private List<String> images;
+    private List<AlternativeGameNameResponse> alternativeNames;
 
     public static List<IndexPageGameResponse> listFrom(final Games games) {
         return games.toList()

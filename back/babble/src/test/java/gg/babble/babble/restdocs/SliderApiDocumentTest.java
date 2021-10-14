@@ -1,18 +1,13 @@
 package gg.babble.babble.restdocs;
 
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
-import gg.babble.babble.domain.admin.Administrator;
-import gg.babble.babble.domain.slider.Slider;
+import gg.babble.babble.dto.response.SliderResponse;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -20,109 +15,150 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
 import org.springframework.restdocs.RestDocumentationContextProvider;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.web.context.WebApplicationContext;
 
-class SliderApiDocumentTest extends ApiDocumentTest {
+class SliderApiDocumentTest extends AcceptanceTest {
 
-    private Slider slider1;
-    private Slider slider2;
-    private Slider slider3;
+    private List<SliderResponse> sliders;
 
     @BeforeEach
-    public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) throws Exception {
-        super.setUp(webApplicationContext, restDocumentation);
+    public void setUp(RestDocumentationContextProvider restDocumentation) throws Exception {
+        super.setUp(restDocumentation);
+        sliders = new ArrayList<>();
 
-        slider1 = sliderRepository.save(new Slider("test/url/1"));
-        slider2 = sliderRepository.save(new Slider("test/url/2"));
-        slider3 = sliderRepository.save(new Slider("test/url/3"));
-
-        administratorRepository.save(new Administrator("127.0.0.1", "localhost"));
+        localhost_관리자가_추가_됨();
+        sliders.add(슬라이더_추가_됨("test/url/1"));
+        sliders.add(슬라이더_추가_됨("test/url/2"));
+        sliders.add(슬라이더_추가_됨("test/url/3"));
+        localhost_관리자가_제거_됨();
     }
+
+    private SliderResponse 슬라이더_추가_됨(final String url) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("sliderUrl", "testPath");
+
+        return given().body(body)
+            .when().post("/api/sliders")
+            .then().statusCode(HttpStatus.OK.value())
+            .extract().body().as(SliderResponse.class);
+    }
+
 
     @DisplayName("전체 슬라이더를 조회한다.")
     @Test
-    void findAllSliders() throws Exception {
-        mockMvc.perform(get("/api/sliders")
-            .accept(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].id").value(slider1.getId()))
-            .andExpect(jsonPath("$[0].url").value(slider1.url()))
-            .andExpect(jsonPath("$[1].id").value(slider2.getId()))
-            .andExpect(jsonPath("$[1].url").value(slider2.url()))
-            .andExpect(jsonPath("$[2].id").value(slider3.getId()))
-            .andExpect(jsonPath("$[2].url").value(slider3.url()))
-
-            .andDo(document("read-slider",
+    void findAllSliders() {
+        List<SliderResponse> responses = given().filter(document("read-sliders",
                 responseFields(
                     fieldWithPath("[].id").description("슬라이더 Id"),
-                    fieldWithPath("[].url").description("주소"))
-            ));
+                    fieldWithPath("[].url").description("주소"))))
+            .when().get("/api/sliders")
+            .then().statusCode(HttpStatus.OK.value())
+            .extract().jsonPath().getList(".", SliderResponse.class);
+
+        assertThatSliderOrder(responses, sliders);
+    }
+
+    private void assertThatSliderOrder(final List<SliderResponse> actual, final List<SliderResponse> expected) {
+        assertThat(actual).hasSameSizeAs(expected);
+
+        for (int i = 0; i < expected.size(); i++) {
+            SliderResponse expectedSlider = expected.get(i);
+            SliderResponse actualSlider = actual.get(i);
+
+            assertThat(actualSlider.getId()).isEqualTo(expectedSlider.getId());
+            assertThat(actualSlider.getUrl()).isEqualTo(expectedSlider.getUrl());
+        }
     }
 
     @DisplayName("슬라이더를 추가한다.")
     @Test
-    void insertSlider() throws Exception {
+    void insertSlider() {
+        localhost_관리자가_추가_됨();
         Map<String, Object> body = new HashMap<>();
         body.put("sliderUrl", "testPath");
-        mockMvc.perform(post("/api/sliders")
-            .accept(MediaType.APPLICATION_JSON_VALUE)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .content(objectMapper.writeValueAsString(body)).characterEncoding("utf-8"))
-            .andDo(MockMvcResultHandlers.print())
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.id").isNumber())
-            .andExpect(jsonPath("$.url").isString())
 
-            .andDo(document("insert-slider",
+        SliderResponse response = given().body(body)
+            .filter(document("create-slider",
                 requestFields(fieldWithPath("sliderUrl").description("주소")),
                 responseFields(fieldWithPath("id").description("슬라이더 Id"),
-                    fieldWithPath("url").description("주소"))
-            ));
+                    fieldWithPath("url").description("주소"))))
+            .when().post("/api/sliders")
+            .then().statusCode(HttpStatus.OK.value())
+            .extract().as(SliderResponse.class);
+
+        assertThat(response.getId()).isNotNull();
+        assertThat(response.getUrl()).isEqualTo("testPath");
+    }
+
+    @DisplayName("허용하지 않은 Ip는 슬라이더를 추가할 수 없다.")
+    @Test
+    void insertSliderWithInvalidIp() {
+        Map<String, Object> body = new HashMap<>();
+        body.put("sliderUrl", "testPath");
+
+        given().body(body)
+            .when().post("/api/sliders")
+            .then().statusCode(HttpStatus.UNAUTHORIZED.value());
     }
 
     @DisplayName("슬라이더 순서를 변경한다.")
     @Test
-    void updateSlider() throws Exception {
+    void updateSlider() {
+        localhost_관리자가_추가_됨();
         Map<String, Object> body = new HashMap<>();
-        List<Long> ids = Arrays.asList(slider1.getId(), slider3.getId(), slider2.getId());
+        List<Long> ids = Arrays.asList(sliders.get(0).getId(), sliders.get(2).getId(), sliders.get(1).getId());
         body.put("ids", ids);
-        mockMvc.perform(put("/api/sliders")
-            .accept(MediaType.APPLICATION_JSON_VALUE)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .content(objectMapper.writeValueAsString(body)).characterEncoding("utf-8"))
-            .andDo(MockMvcResultHandlers.print())
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].id").value(slider1.getId()))
-            .andExpect(jsonPath("$[0].url").value(slider1.url()))
-            .andExpect(jsonPath("$[1].id").value(slider3.getId()))
-            .andExpect(jsonPath("$[1].url").value(slider3.url()))
-            .andExpect(jsonPath("$[2].id").value(slider2.getId()))
-            .andExpect(jsonPath("$[2].url").value(slider2.url()))
 
-            .andDo(document("update-slider-order",
+        List<SliderResponse> responses = given().body(body)
+            .filter(document("update-slider",
                 requestFields(fieldWithPath("ids").description("슬라이더 Id")),
                 responseFields(fieldWithPath("[].id").description("슬라이더 Id"),
-                    fieldWithPath("[].url").description("주소"))
-            ));
+                    fieldWithPath("[].url").description("주소"))))
+            .when().put("/api/sliders")
+            .then().statusCode(HttpStatus.OK.value())
+            .extract().jsonPath().getList(".", SliderResponse.class);
+
+        assertThatSliderOrder(responses, Arrays.asList(sliders.get(0), sliders.get(2), sliders.get(1)));
+    }
+
+    @DisplayName("허용하지 않는 Ip는 슬라이더 순서를 변경할 수 없다.")
+    @Test
+    void updateSliderWithInvalidIp() {
+        Map<String, Object> body = new HashMap<>();
+        List<Long> ids = Arrays.asList(sliders.get(0).getId(), sliders.get(2).getId(), sliders.get(1).getId());
+        body.put("ids", ids);
+
+        given().body(body)
+            .when().put("/api/sliders")
+            .then().statusCode(HttpStatus.UNAUTHORIZED.value());
     }
 
     @DisplayName("슬라이더를 제거한다.")
     @Test
     void deleteSlider() throws Exception {
-        mockMvc.perform(delete("/api/sliders/" + slider1.getId())
-            .accept(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isNoContent())
-            .andDo(document("delete-slider"));
+        localhost_관리자가_추가_됨();
 
-        mockMvc.perform(get("/api/sliders")
-            .accept(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].id").value(slider2.getId()))
-            .andExpect(jsonPath("$[0].url").value(slider2.url()))
-            .andExpect(jsonPath("$[1].id").value(slider3.getId()))
-            .andExpect(jsonPath("$[1].url").value(slider3.url()));
+        given().filter(document("delete-slider"))
+            .when().delete("/api/sliders/{id}", sliders.get(0).getId())
+            .then().statusCode(HttpStatus.NO_CONTENT.value());
+
+        List<SliderResponse> responses = 슬라이더가_조회_됨();
+        assertThatSliderOrder(responses, Arrays.asList(sliders.get(1), sliders.get(2)));
+    }
+
+    private List<SliderResponse> 슬라이더가_조회_됨() {
+        return given()
+            .when().get("/api/sliders")
+            .then().statusCode(HttpStatus.OK.value())
+            .extract().jsonPath().getList(".", SliderResponse.class);
+    }
+
+    @DisplayName("허용하지 않는 Ip는 슬라이더 순서를 변경할 수 없다.")
+    @Test
+    void deleteSliderWithInvalidIp() {
+        given()
+            .when().delete("/api/sliders/{id}", sliders.get(0).getId())
+            .then().statusCode(HttpStatus.UNAUTHORIZED.value());
     }
 }

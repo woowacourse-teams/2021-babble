@@ -12,8 +12,8 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class SliderResponse {
 
     private Long id;
