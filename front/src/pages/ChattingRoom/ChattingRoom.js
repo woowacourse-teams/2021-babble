@@ -96,6 +96,7 @@ const ChattingRoom = ({ tags, game, roomId }) => {
 
     sendMessage(content, 'chat');
     e.target.reset();
+    e.target.chat.focus();
   };
 
   useEffect(() => {

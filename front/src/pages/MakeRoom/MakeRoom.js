@@ -51,7 +51,7 @@ const MakeRoom = ({ match }) => {
       const response = await axios.get(
         `${BASE_URL}/api/games/${gameId}/images`
       );
-      const image = response.data.image;
+      const image = response.data.images[0];
 
       setImageUrl(image);
     } catch (error) {
