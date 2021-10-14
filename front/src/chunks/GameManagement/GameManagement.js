@@ -1,10 +1,10 @@
 import './GameManagement.scss';
 
-import { BASE_URL, TEST_URL } from '../../constants/api';
 import { Body1, Headline2, Subtitle1, Subtitle3 } from '../../core/Typography';
 import { ModalError, SquareButton, TextInput } from '../../components';
 import React, { useEffect, useRef, useState } from 'react';
 
+import { BASE_URL } from '../../constants/api';
 import ImagePreview from '../../components/ImagePreview/ImagePreview';
 import ImageRegister from '../../components/ImageRegister/ImageRegister';
 import { NICKNAME_MAX_LENGTH } from '../../constants/chat';
@@ -50,7 +50,7 @@ const GameManagement = () => {
 
       setGameList(games);
     } catch (error) {
-      openModal(<ModalError>{error}</ModalError>);
+      openModal(<ModalError>{error.message}</ModalError>);
     }
   };
 
@@ -90,50 +90,105 @@ const GameManagement = () => {
     // TODO: Custom modal로 바꾸는 작업 필요
     if (confirm('정말 삭제하시겠습니까?')) {
       try {
-        await axios.delete(`${TEST_URL}/api/games/${gameId}`);
+        await axios.delete(`${BASE_URL}/api/games/${gameId}`);
       } catch (error) {
-        openModal(<ModalError>{error}</ModalError>);
+        openModal(<ModalError>{error.message}</ModalError>);
       }
     }
   };
 
   const onSubmitForm = async (e) => {
     e.preventDefault();
-    // post 이미지
-    // gameDetail.imagePath
-    if (isImageEditing) {
-      try {
-        const imageResponse = await axios.post(
-          `${TEST_URL}/api/images`,
-          // TODO: 데이터 형식이 base 64라는 상상
-          gameImageToSend,
-          {
-            headers: {
-              'content-type': 'multipart/form-data',
-            },
-          }
-        );
 
-        await axios.post(`${TEST_URL}/api/games`, {
-          name: gameNameRef.current,
-          images: imageResponse.data,
+    const form = e.currentTarget;
+    if (isEditing) {
+      if (isImageEditing) {
+        // 게임 수정, 이미지 수정
+        try {
+          const data = new FormData();
+          data.append(
+            'fileName',
+            `img/games/title/${gameNameRef.current.value}.jpg`
+          );
+
+          if (!gameImageToSend) {
+            alert('이미지를 등록해주세요!');
+            return;
+          }
+
+          data.append('file', gameImageToSend);
+
+          const imageResponse = await axios.post(
+            `${BASE_URL}/api/images`,
+            data
+          );
+
+          await axios.put(`${BASE_URL}/api/games/${gameDetail.id}`, {
+            name: gameNameRef.current.value,
+            images: imageResponse.data,
+            alternativeNames: gameDetail.alternativeNames,
+          });
+
+          alert('정상적으로 수정되었습니다!');
+        } catch (error) {
+          openModal(<ModalError>{error.message}</ModalError>);
+        }
+
+        form.reset.click();
+        return;
+      }
+
+      // 게임 수정, 이미지 수정 X
+      try {
+        if (!gameDetail.images[0].imagePath) {
+          alert('이미지를 등록해주세요!');
+          return;
+        }
+
+        await axios.put(`${BASE_URL}/api/games/${gameDetail.id}`, {
+          name: gameNameRef.current.value,
+          images: gameDetail.images.map((image) => image.imagePath),
           alternativeNames: gameDetail.alternativeNames,
         });
 
-        console.log(gameImageToSend);
-        console.log(imageResponse);
+        alert('정상적으로 수정되었습니다!');
       } catch (error) {
-        openModal(<ModalError>{error}</ModalError>);
+        openModal(<ModalError>{error.message}</ModalError>);
       }
 
+      form.reset.click();
       return;
     }
 
-    await axios.post(`${TEST_URL}/api/games`, {
-      name: gameNameRef.current,
-      images: gameDetail.images,
-      alternativeNames: gameDetail.alternativeNames,
-    });
+    // 게임 새로 등록
+    try {
+      const data = new FormData();
+      data.append(
+        'fileName',
+        `img/games/title/${gameNameRef.current.value}.jpg`
+      );
+
+      if (!gameImageToSend) {
+        alert('이미지를 등록해주세요!');
+        return;
+      }
+
+      data.append('file', gameImageToSend);
+
+      const imageResponse = await axios.post(`${BASE_URL}/api/images`, data);
+
+      await axios.post(`${BASE_URL}/api/games`, {
+        name: gameNameRef.current.value,
+        images: imageResponse.data,
+        alternativeNames: gameDetail.alternativeNames,
+      });
+
+      alert('정상적으로 등록되었습니다!');
+    } catch (error) {
+      openModal(<ModalError>{error.message}</ModalError>);
+    }
+
+    form.reset.click();
   };
 
   const onResetForm = (e) => {
@@ -161,9 +216,10 @@ const GameManagement = () => {
     });
     setGameImageToSend('');
     setIsEditing(false);
+    setIsImageEditing(false);
   };
 
-  const setGameImage = (filename, imageFile) => {
+  const setGameImageToShow = (filename, imageFile) => {
     setGameDetail((detail) => ({
       ...detail,
       images: [
@@ -175,8 +231,8 @@ const GameManagement = () => {
     setIsImageEditing(true);
   };
 
-  const registerAlternativeName = ({ currentTarget }) => {
-    const altName = currentTarget.form['alternative-name'].value.trim();
+  const registerAlternativeName = (e) => {
+    const altName = e.currentTarget.form['alternative-name'].value.trim();
     if (!altName) {
       alternativeNameRef.current.value = '';
       alert('내용을 입력하세요!');
@@ -213,6 +269,13 @@ const GameManagement = () => {
     }));
   };
 
+  const preventEnterSubmit = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      return;
+    }
+  };
+
   useEffect(() => {
     getGameList();
   }, []);
@@ -230,9 +293,23 @@ const GameManagement = () => {
           erasable
         />
 
-        <Subtitle1>게임 {isEditing ? `수정` : '등록'}</Subtitle1>
+        <form
+          className='register-edit-game'
+          onSubmit={onSubmitForm}
+          onKeyDown={preventEnterSubmit}
+        >
+          <div className='register-edit-game-header'>
+            <Subtitle1>게임 {isEditing ? `수정` : '등록'}</Subtitle1>
+            <SquareButton
+              type='reset'
+              size='small'
+              name='reset'
+              onClickButton={onResetForm}
+            >
+              <Body1>초기화</Body1>
+            </SquareButton>
+          </div>
 
-        <form className='register-edit-game' onSubmit={onSubmitForm}>
           <Subtitle3>게임 이름</Subtitle3>
           <div className='game-name-input'>
             <TextInput
@@ -240,14 +317,12 @@ const GameManagement = () => {
               inputRef={gameNameRef}
               maxLength={NICKNAME_MAX_LENGTH}
               placeholder='게임 이름'
+              required
             />
           </div>
-          <SquareButton type='reset' size='small' onClickButton={onResetForm}>
-            <Body1>초기화</Body1>
-          </SquareButton>
           <ImageRegister
             file={gameDetail.images[0]}
-            setFile={setGameImage}
+            setPreviewURL={setGameImageToShow}
             setRegisterFile={setGameImageToSend}
           />
           <ImagePreview imageList={gameDetail.images} />
@@ -260,6 +335,7 @@ const GameManagement = () => {
               maxLength={NICKNAME_MAX_LENGTH}
               inputRef={alternativeNameRef}
               placeholder='대체 이름'
+              // onKeyDownInput={preventEnterSubmit}
             />
             <SquareButton size='block' onClickButton={registerAlternativeName}>
               <Body1>등록</Body1>

@@ -35,7 +35,7 @@ const TagManagement = () => {
       const tags = response.data;
       setTagList(tags);
     } catch (error) {
-      openModal(<ModalError>{error}</ModalError>);
+      openModal(<ModalError>{error.message}</ModalError>);
     }
   };
 
@@ -54,7 +54,7 @@ const TagManagement = () => {
         await axios.delete(`${BASE_URL}/api/tags/${tagId}`);
         getTags();
       } catch (error) {
-        openModal(<ModalError>{error}</ModalError>);
+        openModal(<ModalError>{error.message}</ModalError>);
       }
     }
   };
@@ -70,15 +70,29 @@ const TagManagement = () => {
       };
       await axios.post(`${BASE_URL}/api/tags`, newTag);
     } catch (error) {
-      openModal(<ModalError>{error}</ModalError>);
+      openModal(<ModalError>{error.message}</ModalError>);
     }
   };
 
   const registerAlternativeName = () => {
-    if (!alternativeNameInputRef.current.value) return;
+    const name = alternativeNameInputRef.current.value.trim();
+
+    if (!name) {
+      alternativeNameInputRef.current.value = '';
+      alert('내용을 입력하세요!');
+      return;
+    }
+
+    const duplicatedAltNameIndex = alternativeNamesToRegister.findIndex(
+      (currentName) => currentName.name === name
+    );
+    if (duplicatedAltNameIndex !== -1) {
+      alternativeNameInputRef.current.value = '';
+      alert('중복된 이름입니다!');
+      return;
+    }
 
     const id = getNumberId();
-    const name = alternativeNameInputRef.current.value;
     setAlternativeNamesToRegister([
       ...alternativeNamesToRegister,
       { id, name },

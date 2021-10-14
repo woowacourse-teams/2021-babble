@@ -55,7 +55,7 @@ const MakeRoom = ({ match }) => {
 
       setImageUrl(image);
     } catch (error) {
-      openModal(<ModalError>{error}</ModalError>);
+      openModal(<ModalError>{error.message}</ModalError>);
     }
   };
 
@@ -67,7 +67,7 @@ const MakeRoom = ({ match }) => {
       setTagList(tags);
       setAutoCompleteTagList(tags);
     } catch (error) {
-      openModal(<ModalError>{error}</ModalError>);
+      openModal(<ModalError>{error.message}</ModalError>);
     }
   };
 
@@ -138,7 +138,7 @@ const MakeRoom = ({ match }) => {
         state: { gameName },
       });
     } catch (error) {
-      openModal(<ModalError>{error}</ModalError>);
+      openModal(<ModalError>{error.message}</ModalError>);
     }
   };
 

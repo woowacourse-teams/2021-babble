@@ -8,7 +8,7 @@ import { ModalError } from '..';
 import PropTypes from 'prop-types';
 import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 
-const ImageRegister = ({ file, setFile, setRegisterFile }) => {
+const ImageRegister = ({ file, setPreviewURL, setRegisterFile }) => {
   const { openModal } = useDefaultModal();
   const imageInputRef = useRef(null);
 
@@ -16,27 +16,18 @@ const ImageRegister = ({ file, setFile, setRegisterFile }) => {
     const newFile = imageInputRef.current.files[0];
     const filename = newFile.name;
 
-    const binaryReader = new FileReader();
-    const base64Reader = new FileReader();
+    const imageReader = new FileReader();
 
-    binaryReader.readAsBinaryString(newFile);
-    binaryReader.onload = () => {
+    imageReader.readAsDataURL(newFile);
+    imageReader.onload = () => {
       imageInputRef.current.value = null;
 
-      setRegisterFile(binaryReader.result);
-    };
-    binaryReader.onerror = () => {
-      openModal(<ModalError>{binaryReader.error}</ModalError>);
+      setRegisterFile(newFile);
+      setPreviewURL(filename, imageReader.result);
     };
 
-    base64Reader.readAsDataURL(newFile);
-    base64Reader.onload = () => {
-      imageInputRef.current.value = null;
-
-      setFile(filename, base64Reader.result);
-    };
-    base64Reader.onerror = () => {
-      openModal(<ModalError>{base64Reader.error}</ModalError>);
+    imageReader.onerror = () => {
+      openModal(<ModalError>{imageReader.error}</ModalError>);
     };
   };
 
@@ -72,7 +63,7 @@ ImageRegister.propTypes = {
     name: PropTypes.string,
     imagePath: PropTypes.string,
   }),
-  setFile: PropTypes.func,
+  setPreviewURL: PropTypes.func,
   setRegisterFile: PropTypes.func,
 };
 

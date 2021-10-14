@@ -65,7 +65,7 @@ const RoomList = ({ match }) => {
 
       changeUser({ id: generatedUser.id, nickname: generatedUser.nickname });
     } catch (error) {
-      openModal(<ModalError>{error}</ModalError>);
+      openModal(<ModalError>{error.message}</ModalError>);
     }
 
     if (roomId) {
@@ -90,7 +90,7 @@ const RoomList = ({ match }) => {
 
       setCurrentGame(response.data);
     } catch (error) {
-      openModal(<ModalError>{error}</ModalError>);
+      openModal(<ModalError>{error.message}</ModalError>);
     }
   };
 
@@ -102,7 +102,7 @@ const RoomList = ({ match }) => {
       setTagList(tags);
       setAutoCompleteTagList(tags);
     } catch (error) {
-      openModal(<ModalError>{error}</ModalError>);
+      openModal(<ModalError>{error.message}</ModalError>);
     }
   };
 
@@ -115,7 +115,7 @@ const RoomList = ({ match }) => {
 
       setRoomList(rooms);
     } catch (error) {
-      openModal(<ModalError>{error}</ModalError>);
+      openModal(<ModalError>{error.message}</ModalError>);
     }
   };
 
@@ -156,7 +156,7 @@ const RoomList = ({ match }) => {
 
       openChatting(<ChattingRoom game={game} tags={tags} roomId={roomId} />);
     } catch (error) {
-      openModal(<ModalError>{error}</ModalError>);
+      openModal(<ModalError>{error.message}</ModalError>);
     }
   };
 
@@ -256,7 +256,7 @@ const RoomList = ({ match }) => {
       newUser.nickname = response.data.nickname;
       changeUser(newUser);
     } catch (error) {
-      openModal(<ModalError>{error}</ModalError>);
+      openModal(<ModalError>{error.message}</ModalError>);
     }
   };
 
