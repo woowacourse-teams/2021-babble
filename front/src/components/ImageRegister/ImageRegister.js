@@ -44,11 +44,11 @@ const ImageRegister = ({ file, setPreviewURL, setRegisterFile }) => {
             onChange={handleFile}
           />
 
-          {file.imagePath === '' ? (
+          {!file || file.imagePath === '' ? (
             <BsPlusCircle size='30' color='#8d8d8d' />
           ) : (
             <div className='input-image-preview'>
-              <img src={file.imagePath} alt='preview-image' />
+              <img src={file.imagePath ?? ''} alt='preview-image' />
             </div>
           )}
         </div>

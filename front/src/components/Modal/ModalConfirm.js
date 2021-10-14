@@ -21,10 +21,10 @@ const ModalConfirm = ({ confirmCallback, children }) => {
       <Subtitle2>확인하기</Subtitle2>
       <Body2>{children}</Body2>
       <LinearLayout direction='row'>
-        <RoundButton size='small' onClick={closeModal}>
+        <RoundButton size='small' onClickButton={closeModal}>
           <Caption1>취소하기</Caption1>
         </RoundButton>
-        <RoundButton size='small' onClick={confirm} colored>
+        <RoundButton size='small' onClickButton={confirm} colored>
           <Caption1>확인하기</Caption1>
         </RoundButton>
       </LinearLayout>
