@@ -93,13 +93,14 @@ const GameList = () => {
           });
 
           return game.alternativeNames.some((alternativeName) =>
-            alternativeName.match(searchRegex)
+            alternativeName.name.match(searchRegex)
           );
         })
       : gameList.filter((game) => {
           const searchRegex = new RegExp(inputValue, 'gi');
           const alternativeNamesWithoutSpace = game.alternativeNames.map(
-            (alternativeName) => alternativeName.replace(PATTERNS.SPACE, '')
+            (alternativeName) =>
+              alternativeName.name.replace(PATTERNS.SPACE, '')
           );
 
           return (
@@ -107,12 +108,13 @@ const GameList = () => {
               alternativeName.match(searchRegex)
             ) ||
             game.alternativeNames.some((alternativeName) =>
-              alternativeName.match(searchRegex)
+              alternativeName.name.match(searchRegex)
             )
           );
         });
 
-    setSelectedGames([...searchResults, ...alternativeResults]);
+    const result = new Set([...searchResults, ...alternativeResults]);
+    setSelectedGames([...result]);
   };
 
   useEffect(() => {
@@ -153,11 +155,11 @@ const GameList = () => {
           </section>
         </div>
         <div className='game-list'>
-          {selectedGames.map(({ id, name, headCount, thumbnail }) => (
+          {selectedGames.map(({ id, name, headCount, images }) => (
             <Link to={`${PATH.ROOM_LIST}/${id}`} key={id}>
               <GameCard
                 gameName={name}
-                imageSrc={thumbnail}
+                imageSrc={images[2] ?? images[0]}
                 participants={headCount}
               />
             </Link>
