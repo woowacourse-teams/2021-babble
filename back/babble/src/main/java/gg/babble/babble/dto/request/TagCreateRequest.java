@@ -21,6 +21,7 @@ public class TagCreateRequest {
     public Tag toEntity() {
         Tag tag = new Tag(name);
         tag.addNames(alternativeNames);
+
         return tag;
     }
 }

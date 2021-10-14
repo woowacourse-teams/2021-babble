@@ -3,7 +3,8 @@ package gg.babble.babble.service;
 import gg.babble.babble.domain.game.Game;
 import gg.babble.babble.domain.game.Games;
 import gg.babble.babble.domain.repository.GameRepository;
-import gg.babble.babble.dto.request.GameRequest;
+import gg.babble.babble.dto.request.GameCreateRequest;
+import gg.babble.babble.dto.request.GameUpdateRequest;
 import gg.babble.babble.dto.response.GameImageResponse;
 import gg.babble.babble.dto.response.GameWithImageResponse;
 import gg.babble.babble.dto.response.IndexPageGameResponse;
@@ -39,7 +40,7 @@ public class GameService {
     }
 
     public Game findGameById(final Long id) {
-        return gameRepository.findById(id)
+        return gameRepository.findByIdAndDeletedFalse(id)
             .orElseThrow(() -> new BabbleNotFoundException(String.format("존재하지 않는 게임 Id(%d) 입니다.", id)));
     }
 
@@ -51,18 +52,18 @@ public class GameService {
     }
 
     @Transactional
-    public GameWithImageResponse insertGame(final GameRequest request) {
+    public GameWithImageResponse insertGame(final GameCreateRequest request) {
         Game game = gameRepository.save(request.toEntity());
 
         return GameWithImageResponse.from(game);
     }
 
     @Transactional
-    public GameWithImageResponse updateGame(final Long gameId, final GameRequest request) {
+    public GameWithImageResponse updateGame(final Long gameId, final GameUpdateRequest request) {
         Game game = findGameById(gameId);
-        game.update(request.toEntity());
+        game.update(request.getName(), request.getAlternativeNames(), request.getImages());
 
-        return GameWithImageResponse.from(game);
+        return GameWithImageResponse.from(findGameById(gameId));
     }
 
     @Transactional

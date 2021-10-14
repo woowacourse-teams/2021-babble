@@ -51,9 +51,9 @@ public class TagService {
     @Transactional
     public TagResponse updateTag(final Long tagId, final TagUpdateRequest request) {
         Tag tag = findById(tagId);
-        tag.update(request.toEntity());
+        tag.update(request.getName(), request.getAlternativeNames());
 
-        return TagResponse.from(tag);
+        return TagResponse.from(findById(tagId));
     }
 
     @Transactional

@@ -1,4 +1,5 @@
 @use '../../../style/functions' as f;
+@use '../../../style/mixins' as m;
 
 .image-preview-container {
   width: 100%;
@@ -11,6 +12,7 @@
 
     .preview {
       border: 1px solid f.grey-scale(5);
+      background: f.grey-scale(1);
       border-radius: f.border-radius(image-preview);
       overflow: hidden;
       margin-right: 1.5rem;
@@ -18,18 +20,18 @@
       display: flex;
 
       &:first-child {
-        min-width: 28rem;
-        min-height: 21rem;
+        width: 28rem;
+        aspect-ratio: auto 16/9;
       }
 
       &:nth-child(2) {
-        min-width: 22rem;
-        min-height: 16.5rem;
+        width: 22rem;
+        aspect-ratio: auto 16/9;
       }
 
       &:last-child {
-        min-width: 18rem;
-        min-height: 13.5rem;
+        width: 18rem;
+        aspect-ratio: auto 16/9;
         margin-right: 0;
       }
 
@@ -37,6 +39,20 @@
         width: 100%;
         height: auto;
         object-fit: contain;
+      }
+    }
+  }
+}
+
+@include m.media(tablet) {
+  .image-preview-container {
+    .image-preview-wrapper {
+      flex-direction: column;
+      align-items: start;
+
+      .preview {
+        margin-top: 1rem;
+        margin-right: 0;
       }
     }
   }

@@ -9,8 +9,10 @@ import gg.babble.babble.domain.room.MaxHeadCount;
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
-import gg.babble.babble.dto.request.GameRequest;
+import gg.babble.babble.dto.request.GameCreateRequest;
+import gg.babble.babble.dto.request.GameUpdateRequest;
 import gg.babble.babble.dto.request.SessionRequest;
+import gg.babble.babble.dto.response.AlternativeGameNameResponse;
 import gg.babble.babble.dto.response.GameImageResponse;
 import gg.babble.babble.dto.response.GameWithImageResponse;
 import gg.babble.babble.dto.response.IndexPageGameResponse;
@@ -122,7 +124,7 @@ class GameServiceTest extends ApplicationTest {
     @Test
     void insertGame() {
         // given
-        GameRequest request = new GameRequest("너구리 게임", defaultImages, Collections.singletonList("너구리"));
+        GameCreateRequest request = new GameCreateRequest("너구리 게임", defaultImages, Collections.singletonList("너구리"));
 
         // when
         GameWithImageResponse response = gameService.insertGame(request);
@@ -131,15 +133,16 @@ class GameServiceTest extends ApplicationTest {
         assertThat(response.getId()).isNotNull();
         assertThat(response.getName()).isEqualTo(request.getName());
         assertThat(response.getImages()).containsExactlyInAnyOrderElementsOf(request.getImages());
-        assertThat(response.getAlternativeNames()).containsExactlyInAnyOrderElementsOf(request.getAlternativeNames());
+        assertThat(response.getAlternativeNames().stream().map(AlternativeGameNameResponse::getName))
+            .containsExactlyInAnyOrderElementsOf(request.getAlternativeNames());
     }
 
     @DisplayName("단일 게임 정보를 편집한다.")
     @Test
     void updateGame() {
         // given
-        GameWithImageResponse insertGameResponse = gameService.insertGame(new GameRequest("너구리 게임", defaultImages, Collections.emptyList()));
-        GameRequest updateRequest = new GameRequest("너구리 게임 - 너굴맨!", defaultImages, Collections.emptyList());
+        GameWithImageResponse insertGameResponse = gameService.insertGame(new GameCreateRequest("너구리 게임", defaultImages, Collections.emptyList()));
+        GameUpdateRequest updateRequest = new GameUpdateRequest("너구리 게임 - 너굴맨!", defaultImages, Collections.emptyList());
 
         // when
         GameWithImageResponse updateGameResponse = gameService.updateGame(insertGameResponse.getId(), updateRequest);
@@ -147,14 +150,15 @@ class GameServiceTest extends ApplicationTest {
         // then
         assertThat(updateGameResponse.getId()).isEqualTo(insertGameResponse.getId());
         assertThat(updateGameResponse.getName()).isEqualTo(updateRequest.getName());
-        assertThat(updateGameResponse.getImages()).isEqualTo(updateRequest.getImages());
+        assertThat(updateGameResponse.getImages()).usingRecursiveComparison()
+            .isEqualTo(updateRequest.getImages());
     }
 
     @DisplayName("단일 게임을 삭제한다.")
     @Test
     void deleteGame() {
         // given
-        GameWithImageResponse insertGameResponse = gameService.insertGame(new GameRequest("너구리 게임", defaultImages, Collections.emptyList()));
+        GameWithImageResponse insertGameResponse = gameService.insertGame(new GameCreateRequest("너구리 게임", defaultImages, Collections.emptyList()));
 
         // when
         gameService.deleteGame(insertGameResponse.getId());

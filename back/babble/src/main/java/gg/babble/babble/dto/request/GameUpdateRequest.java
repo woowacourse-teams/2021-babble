@@ -1,6 +1,5 @@
 package gg.babble.babble.dto.request;
 
-import gg.babble.babble.domain.game.Game;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -12,7 +11,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GameRequest {
+public class GameUpdateRequest {
 
     @NotNull(message = "게임 이름은 Null 일 수 없습니다.")
     private String name;
@@ -22,11 +21,4 @@ public class GameRequest {
 
     @NotNull(message = "대안 이름은 Null 일 수 없습니다.")
     private List<String> alternativeNames;
-
-    public Game toEntity() {
-        final Game game = new Game(name, images);
-        game.addNames(alternativeNames);
-
-        return game;
-    }
 }

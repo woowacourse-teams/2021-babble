@@ -1,6 +1,7 @@
 package gg.babble.babble.controller;
 
-import gg.babble.babble.dto.request.GameRequest;
+import gg.babble.babble.dto.request.GameCreateRequest;
+import gg.babble.babble.dto.request.GameUpdateRequest;
 import gg.babble.babble.dto.response.GameImageResponse;
 import gg.babble.babble.dto.response.GameWithImageResponse;
 import gg.babble.babble.dto.response.IndexPageGameResponse;
@@ -48,14 +49,14 @@ public class GameController {
     }
 
     @PostMapping
-    public ResponseEntity<GameWithImageResponse> insertGame(@RequestBody final GameRequest request) {
+    public ResponseEntity<GameWithImageResponse> insertGame(@RequestBody final GameCreateRequest request) {
         GameWithImageResponse response = gameService.insertGame(request);
         return ResponseEntity.created(URI.create(String.format("api/games/%s", response.getId())))
             .body(response);
     }
 
     @PutMapping(value = "/{gameId}")
-    public ResponseEntity<GameWithImageResponse> updateGame(@PathVariable final Long gameId, @RequestBody final GameRequest request) {
+    public ResponseEntity<GameWithImageResponse> updateGame(@PathVariable final Long gameId, @RequestBody final GameUpdateRequest request) {
         return ResponseEntity.ok(gameService.updateGame(gameId, request));
     }
 

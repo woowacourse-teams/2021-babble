@@ -1,87 +1,102 @@
 package gg.babble.babble.restdocs;
 
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.not;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
-import gg.babble.babble.domain.admin.Administrator;
-import gg.babble.babble.domain.tag.Tag;
-import java.util.ArrayList;
+import gg.babble.babble.dto.response.AlternativeTagNameResponse;
+import gg.babble.babble.dto.response.TagResponse;
+import gg.babble.babble.restdocs.client.ResponseRepository;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.hamcrest.Matchers;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
 import org.springframework.restdocs.RestDocumentationContextProvider;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.web.context.WebApplicationContext;
 
-public class TagApiDocumentTest extends ApiDocumentTest {
+public class TagApiDocumentTest extends AcceptanceTest {
 
     private static final String ALTERNATIVE_NAME1 = "silver";
     private static final String ALTERNATIVE_NAME2 = "실딱이";
     private static final String ALTERNATIVE_NAME3 = "2hours";
-    private final List<Tag> tags = new ArrayList<>();
+    private static final String 실버 = "실버";
+    private static final String _2시간 = "2시간";
+    private static final String 솔로랭크 = "솔로랭크";
+
+    private ResponseRepository<TagResponse, Long> tagResponseRepository;
 
     @BeforeEach
-    public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) throws Exception {
-        super.setUp(webApplicationContext, restDocumentation);
+    public void setUp(RestDocumentationContextProvider restDocumentation) throws Exception {
+        super.setUp(restDocumentation);
 
-        tags.add(tagRepository.save(new Tag("실버")));
-        tags.add(tagRepository.save(new Tag("2시간")));
-        tags.add(tagRepository.save(new Tag("솔로랭크")));
+        tagResponseRepository = new ResponseRepository<>(TagResponse::getId);
+        localhost_관리자가_추가_됨();
+        tagResponseRepository.add(태그가_저장_됨(실버, Arrays.asList(ALTERNATIVE_NAME1, ALTERNATIVE_NAME2)));
+        tagResponseRepository.add(태그가_저장_됨(_2시간, Collections.singletonList(ALTERNATIVE_NAME3)));
+        tagResponseRepository.add(태그가_저장_됨(솔로랭크, Collections.emptyList()));
+        localhost_관리자가_제거_됨();
+    }
 
-        tags.get(0).addNames(Arrays.asList(ALTERNATIVE_NAME1, ALTERNATIVE_NAME2));
-        tags.get(1).addNames(Collections.singletonList(ALTERNATIVE_NAME3));
+    public static TagResponse 태그가_저장_됨(final String tagName, final List<String> alternativeNames) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("name", tagName);
+        body.put("alternativeNames", alternativeNames);
+
+        return given().body(body)
+            .when().post("/api/tags")
+            .then().statusCode(HttpStatus.OK.value())
+            .extract().body().as(TagResponse.class);
+
     }
 
     @DisplayName("전체 태그를 가져오는데 성공하면, 200응답 코드와 전체 태그를 가져온다.")
     @Test
-    public void tagsGetTest() throws Exception {
-        mockMvc.perform(get("/api/tags")
-                .accept(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$").exists())
-            .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$", hasSize(3)))
-            .andExpect(jsonPath("$.[0].id").value(tags.get(0).getId()))
-            .andExpect(jsonPath("$.[0].name").value(tags.get(0).getName()))
-            .andExpect(jsonPath("$.[0].alternativeNames").value(hasSize(2)))
-            .andExpect(jsonPath("$.[0].alternativeNames").value(Matchers.containsInAnyOrder(ALTERNATIVE_NAME1, ALTERNATIVE_NAME2)))
-            .andExpect(jsonPath("$.[1].id").value(tags.get(1).getId()))
-            .andExpect(jsonPath("$.[1].name").value(tags.get(1).getName()))
-            .andExpect(jsonPath("$.[1].alternativeNames").value(hasSize(1)))
-            .andExpect(jsonPath("$.[1].alternativeNames").value(Matchers.containsInAnyOrder(ALTERNATIVE_NAME3)))
-            .andExpect(jsonPath("$.[2].id").value(tags.get(2).getId()))
-            .andExpect(jsonPath("$.[2].name").value(tags.get(2).getName()))
-            .andExpect(jsonPath("$.[2].alternativeNames").value(hasSize(0)))
-
-            .andDo(document("tags-get",
+    void tagsGetTest() {
+        List<TagResponse> responses = given().filter(document("read-tags",
                 responseFields(
                     fieldWithPath("[].id").description("태그 Id"),
                     fieldWithPath("[].name").description("태그 이름"),
-                    fieldWithPath("[].alternativeNames").description("대체 이름"))));
+                    fieldWithPath("[].alternativeNames[]").description("대체 이름 객체"),
+                    fieldWithPath("[].alternativeNames[].id").description("대체 이름 ID"),
+                    fieldWithPath("[].alternativeNames[].name").description("대체 이름"))))
+            .when().get("/api/tags")
+            .then().statusCode(HttpStatus.OK.value())
+            .extract().body().jsonPath().getList(".", TagResponse.class);
+
+        assertThat(responses).hasSize(tagResponseRepository.getSize());
+        for (TagResponse response : responses) {
+            TagResponse expectedTag = tagResponseRepository.get(response.getId());
+            assertThat(response.getName()).isEqualTo(expectedTag.getName());
+            assertThat(response.getAlternativeNames()).hasSameSizeAs(expectedTag.getAlternativeNames());
+            assertThatSameAlternativeTagNames(response.getAlternativeNames(), expectedTag.getAlternativeNames());
+        }
+    }
+
+    public static void assertThatSameAlternativeTagNames(final List<AlternativeTagNameResponse> actual, final List<AlternativeTagNameResponse> expected) {
+        assertThat(actual).hasSameSizeAs(expected);
+
+        for (AlternativeTagNameResponse response : actual) {
+            AlternativeTagNameResponse expectedAlternativeName = expected.stream()
+                .filter(alternativeTagName -> alternativeTagName.getId().equals(response.getId()))
+                .findAny()
+                .orElseThrow(IllegalAccessError::new);
+            assertThat(response.getId()).isEqualTo(expectedAlternativeName.getId());
+            assertThat(response.getName()).isEqualTo(expectedAlternativeName.getName());
+        }
     }
 
     @DisplayName("태그를 추가한다.")
     @Test
-    void createTag() throws Exception {
-        administratorRepository.save(new Administrator("127.0.0.1", "localhost"));
+    void createTag() {
+        localhost_관리자가_추가_됨();
 
         String tagName = "ROOT";
         List<String> alternativeNames = Arrays.asList("blood lord", "darkness of mine", "i'm necessary one");
@@ -90,33 +105,39 @@ public class TagApiDocumentTest extends ApiDocumentTest {
         body.put("name", tagName);
         body.put("alternativeNames", alternativeNames);
 
-        mockMvc.perform(post("/api/tags")
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(body)).characterEncoding("utf-8"))
-            .andDo(MockMvcResultHandlers.print())
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.id").isNumber())
-            .andExpect(jsonPath("$.name").value(tagName))
-            .andExpect(jsonPath("$.alternativeNames.length()").value(alternativeNames.size()))
-            .andExpect(jsonPath("$.alternativeNames").value(contains(alternativeNames.toArray())))
-
-            .andDo(document("insert-tag",
+        TagResponse response = given().body(body)
+            .filter(document("create-tag",
                 requestFields(
                     fieldWithPath("name").description("태그 이름"),
-                    fieldWithPath("alternativeNames").description("대체 이름")
-                ),
+                    fieldWithPath("alternativeNames").description("대체 이름")),
                 responseFields(
                     fieldWithPath("id").description("태그 ID"),
                     fieldWithPath("name").description("태그 이름"),
-                    fieldWithPath("alternativeNames").description("대체 이름")
-                )
-            ));
+                    fieldWithPath("alternativeNames[].id").description("대체 이름 ID"),
+                    fieldWithPath("alternativeNames[].name").description("대체 이름"))))
+            .when().post("/api/tags")
+            .then().statusCode(HttpStatus.OK.value())
+            .extract().body().as(TagResponse.class);
+
+        assertThat(response.getId()).isNotNull();
+        assertThat(response.getName()).isEqualTo(tagName);
+
+        assertThatEqualsAlternativeNames(response, alternativeNames);
+    }
+
+    private void assertThatEqualsAlternativeNames(final TagResponse response, final List<String> alternativeNames) {
+        List<String> actualAlternativeNames = response.getAlternativeNames()
+            .stream()
+            .filter(alternativeTagName -> Objects.nonNull(alternativeTagName.getId()))
+            .map(AlternativeTagNameResponse::getName)
+            .collect(Collectors.toList());
+        assertThat(actualAlternativeNames).hasSameSizeAs(alternativeNames)
+            .containsAll(alternativeNames);
     }
 
     @DisplayName("등록되어 있지 않은 관리자의 경우 태그를 추가할 수 없다.")
     @Test
-    void createTagWithInvalidAdministrator() throws Exception {
+    void createTagWithInvalidAdministrator() {
         String tagName = "ROOT";
         List<String> alternativeNames = Arrays.asList("blood lord", "darkness of mine", "i'm necessary one");
 
@@ -124,18 +145,15 @@ public class TagApiDocumentTest extends ApiDocumentTest {
         body.put("name", tagName);
         body.put("alternativeNames", alternativeNames);
 
-        mockMvc.perform(post("/api/tags")
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(body)).characterEncoding("utf-8"))
-            .andDo(MockMvcResultHandlers.print())
-            .andExpect(status().isUnauthorized());
+        given().body(body)
+            .when().post("/api/tags")
+            .then().statusCode(HttpStatus.UNAUTHORIZED.value());
     }
 
     @DisplayName("태그를 수정한다.")
     @Test
-    void updateTag() throws Exception {
-        administratorRepository.save(new Administrator("127.0.0.1", "localhost"));
+    void updateTag() {
+        localhost_관리자가_추가_됨();
 
         String tagName = "SILVER ROOT";
         List<String> alternativeNames = Arrays.asList("ultra", "amazing", "necessary root");
@@ -143,73 +161,74 @@ public class TagApiDocumentTest extends ApiDocumentTest {
         Map<String, Object> body = new HashMap<>();
         body.put("name", tagName);
         body.put("alternativeNames", alternativeNames);
+        long idToUpdate = tagResponseRepository.getAnyId();
 
-        mockMvc.perform(put("/api/tags/" + tags.get(0).getId())
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(body)).characterEncoding("utf-8"))
-            .andDo(MockMvcResultHandlers.print())
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.id").isNumber())
-            .andExpect(jsonPath("$.name").value(tagName))
-            .andExpect(jsonPath("$.alternativeNames.length()").value(alternativeNames.size()))
-            .andExpect(jsonPath("$.alternativeNames").value(contains(alternativeNames.toArray())))
-
-            .andDo(document("update-tag",
+        TagResponse response = given().body(body)
+            .filter(document("update-tag",
                 requestFields(
                     fieldWithPath("name").description("태그 이름"),
-                    fieldWithPath("alternativeNames").description("대체 이름")
-                ),
+                    fieldWithPath("alternativeNames").description("대체 이름")),
                 responseFields(
                     fieldWithPath("id").description("태그 ID"),
                     fieldWithPath("name").description("태그 이름"),
-                    fieldWithPath("alternativeNames").description("대체 이름")
-                )
-            ));
+                    fieldWithPath("alternativeNames[].id").description("대체 이름 ID"),
+                    fieldWithPath("alternativeNames[].name").description("대체 이름"))))
+            .when().put("/api/tags/{id}", idToUpdate)
+            .then().statusCode(HttpStatus.OK.value())
+            .extract().body().as(TagResponse.class);
+
+        assertThat(response.getId()).isEqualTo(idToUpdate);
+        assertThat(response.getName()).isEqualTo(tagName);
+        assertThatEqualsAlternativeNames(response, alternativeNames);
     }
 
     @DisplayName("등록되어 있지 않은 관리자의 경우 태그를 수정할 수 없다.")
     @Test
-    void updateTagWithInvalidAdministrator() throws Exception {
+    void updateTagWithInvalidAdministrator() {
         String tagName = "SILVER ROOT";
         List<String> alternativeNames = Arrays.asList("ultra", "amazing", "necessary root");
+        long idToUpdate = tagResponseRepository.getAnyId();
 
         Map<String, Object> body = new HashMap<>();
         body.put("name", tagName);
         body.put("alternativeNames", alternativeNames);
 
-        mockMvc.perform(put("/api/tags/" + tags.get(0).getId())
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(body)).characterEncoding("utf-8"))
-            .andDo(MockMvcResultHandlers.print())
-            .andExpect(status().isUnauthorized());
+        given().body(body)
+            .when().put("/api/tags/{id}", idToUpdate)
+            .then().statusCode(HttpStatus.UNAUTHORIZED.value());
     }
 
     @DisplayName("태그를 삭제한다")
     @Test
-    void deleteTag() throws Exception {
-        administratorRepository.save(new Administrator("127.0.0.1", "localhost"));
+    void deleteTag() {
+        localhost_관리자가_추가_됨();
 
-        mockMvc.perform(delete("/api/tags/" + tags.get(0).getId()).
-                accept(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isNoContent())
-            .andDo(document("remove-tag"));
+        long idToDelete = tagResponseRepository.getAnyId();
+        given().filter(document("delete-tag"))
+            .when().delete("/api/tags/{id}", idToDelete)
+            .then().statusCode(HttpStatus.NO_CONTENT.value());
 
-        mockMvc.perform(get("/api/tags")
-                .accept(MediaType.APPLICATION_JSON_VALUE))
-            .andDo(MockMvcResultHandlers.print())
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.length()").value(2))
-            .andExpect(jsonPath("$[0].id").value(not(tags.get(0).getId())))
-            .andExpect(jsonPath("$[1].id").value(not(tags.get(0).getId())));
+        태그가_존재하지_않음(idToDelete);
+    }
+
+    private void 태그가_존재하지_않음(final Long id) {
+        List<TagResponse> responses = given()
+            .when().get("/api/tags")
+            .then().statusCode(HttpStatus.OK.value())
+            .extract().body().jsonPath().getList(".", TagResponse.class);
+
+        for (TagResponse response : responses) {
+            assertThat(response.getId()).isNotEqualTo(id);
+        }
     }
 
     @DisplayName("등록되어 있지 않은 관리자의 경우 게임을 삭제할 수 없다.")
     @Test
-    void deleteTagWithInvalidAdministrator() throws Exception {
-        mockMvc.perform(delete("/api/tags/" + tags.get(0).getId()).
-                accept(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isUnauthorized());
+    void deleteTagWithInvalidAdministrator() {
+        long idToDelete = tagResponseRepository.getAnyId();
+
+        given()
+            .when().delete("/api/tags/{id}", idToDelete)
+            .then().statusCode(HttpStatus.UNAUTHORIZED.value());
     }
 }

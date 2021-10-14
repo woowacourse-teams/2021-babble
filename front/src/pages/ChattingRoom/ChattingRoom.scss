@@ -122,48 +122,48 @@
 }
 
 @include m.media(mobile-down, mobile) {
-  .modal-header-container {
-    .room-info {
-      .room-nav {
-        h5 {
-          margin-right: 1rem;
-        }
+  .modal-chatting-room {
+    .modal-header-container {
+      .room-info {
+        .room-nav {
+          h5:nth-child(2) {
+            margin-right: 0;
+          }
 
-        .linear-layout:first-child {
-          width: calc(100% - 5.8rem);
+          .linear-layout:first-child {
+            width: calc(100% - 5.8rem);
 
-          .subtitle3 {
-            &:first-child {
-              width: fit-content;
-              color: f.grey-scale(11);
-              border-radius: 0.5rem;
-              border: 0.1rem solid f.grey-scale(11);
-              padding: 0.4rem;
-              font-size: 1.2rem;
-            }
+            .subtitle3 {
+              &:first-child {
+                width: fit-content;
+                color: f.grey-scale(11);
+                border-radius: 0.5rem;
+                border: 0.1rem solid f.grey-scale(11);
+                padding: 0.4rem;
+                font-size: 1.2rem;
+              }
 
-            &:last-child {
-              padding: 0.5rem 0;
-              white-space: nowrap;
-              overflow: hidden;
-              text-overflow: ellipsis;
-            }
+              &:nth-child(2) {
+                padding: 0.5rem 0;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
 
-            .room-number-text {
-              display: none;
+              .room-number-text {
+                display: none;
+              }
             }
           }
-        }
 
-        .linear-layout:last-child {
-          float: right;
-          text-align: right;
+          .linear-layout:last-child {
+            float: right;
+            text-align: right;
+          }
         }
       }
     }
-  }
 
-  .modal-chatting-room {
     .modal-body-container {
       overflow-x: hidden;
       height: calc(100% - 5.4rem);

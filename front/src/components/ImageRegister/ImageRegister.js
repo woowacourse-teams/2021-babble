@@ -1,33 +1,33 @@
 import './ImageRegister.scss';
 
 import { Caption1, Subtitle3 } from '../../core/Typography';
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 
 import { BsPlusCircle } from '@react-icons/all-files/bs/BsPlusCircle';
 import { ModalError } from '..';
+import PropTypes from 'prop-types';
 import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 
-const ImageRegister = () => {
-  const fileInputRef = useRef(null);
-  const [file, setFile] = useState({ name: '', imagePath: '' });
-
+const ImageRegister = ({ file, setPreviewURL, setRegisterFile }) => {
   const { openModal } = useDefaultModal();
+  const imageInputRef = useRef(null);
 
-  const handleFile = ({ target }) => {
-    const file = target.files[0];
-    const filename = file.name;
+  const handleFile = () => {
+    const newFile = imageInputRef.current.files[0];
+    const filename = newFile.name;
 
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      setFile((prevData) => ({
-        ...prevData,
-        name: filename,
-        imagePath: reader.result,
-      }));
+    const imageReader = new FileReader();
+
+    imageReader.readAsDataURL(newFile);
+    imageReader.onload = () => {
+      imageInputRef.current.value = null;
+
+      setRegisterFile(newFile);
+      setPreviewURL(filename, imageReader.result);
     };
-    reader.onerror = () => {
-      openModal(<ModalError>{reader.error}</ModalError>);
+
+    imageReader.onerror = () => {
+      openModal(<ModalError>{imageReader.error}</ModalError>);
     };
   };
 
@@ -37,12 +37,13 @@ const ImageRegister = () => {
       <div className='input-drag-drop'>
         <div className='drag-drop-zone'>
           <input
+            ref={imageInputRef}
             type='file'
             accept='image/*'
             className='file-dropdown'
             onChange={handleFile}
-            ref={fileInputRef}
           />
+
           {file.imagePath === '' ? (
             <BsPlusCircle size='30' color='#8d8d8d' />
           ) : (
@@ -55,6 +56,15 @@ const ImageRegister = () => {
       </div>
     </section>
   );
+};
+
+ImageRegister.propTypes = {
+  file: PropTypes.shape({
+    name: PropTypes.string,
+    imagePath: PropTypes.string,
+  }),
+  setPreviewURL: PropTypes.func,
+  setRegisterFile: PropTypes.func,
 };
 
 export default ImageRegister;
