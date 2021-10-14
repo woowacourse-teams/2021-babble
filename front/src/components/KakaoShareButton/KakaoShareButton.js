@@ -2,30 +2,37 @@ import './KakaoShareButton.scss';
 
 import React, { useEffect } from 'react';
 
+import { ModalError } from '../Modal/ModalError';
 import PropTypes from 'prop-types';
+import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 
 const KakaoShareButton = ({ gameId, roomId }) => {
+  const { openModal } = useDefaultModal();
+
   useEffect(() => {
     createKakaoButton();
   }, []);
 
   const createKakaoButton = () => {
-    if (window.Kakao) {
-      const kakao = window.Kakao;
-
-      if (!kakao.isInitialized()) {
-        kakao.init(process.env.REACT_APP_KAKAO_KEY);
-      }
-
-      kakao.Link.createCustomButton({
-        container: '#kakao-link-button',
-        templateId: 63115,
-        templateArgs: {
-          gameId,
-          roomId,
-        },
-      });
+    if (!window.Kakao) {
+      openModal(<ModalError>공유하기 오류입니다.</ModalError>);
+      return;
     }
+
+    const kakao = window.Kakao;
+
+    if (!kakao.isInitialized()) {
+      kakao.init(process.env.REACT_APP_KAKAO_KEY);
+    }
+
+    kakao.Link.createCustomButton({
+      container: '#kakao-link-button',
+      templateId: 63115,
+      templateArgs: {
+        gameId,
+        roomId,
+      },
+    });
   };
 
   return (
