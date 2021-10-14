@@ -98,54 +98,6 @@ const GameManagement = () => {
   };
 
   const onSubmitForm = async (e) => {
-    // e.preventDefault();
-
-    // const form = e.currentTarget;
-    // if (isImageEditing) {
-    //   try {
-    //     const data = new FormData();
-    //     data.append(
-    //       'fileName',
-    //       `img/games/title/${gameNameRef.current.value}.jpg`
-    //     );
-    //     data.append('file', gameImageToSend);
-
-    //     const imageResponse = await axios.post(`${TEST_URL}/api/images`, data);
-
-    //     isEditing
-    //       ? await axios.put(`${TEST_URL}/api/games`, {
-    //           name: gameNameRef.current.value,
-    //           images: imageResponse.data,
-    //           alternativeNames: gameDetail.alternativeNames,
-    //         })
-    //       : await axios.post(`${TEST_URL}/api/games`, {
-    //           name: gameNameRef.current.value,
-    //           images: imageResponse.data,
-    //           alternativeNames: gameDetail.alternativeNames,
-    //         });
-    //   } catch (error) {
-    //     openModal(<ModalError>{error.message}</ModalError>);
-    //   }
-    //   form.reset.click();
-
-    //   return;
-    // }
-
-    // isEditing
-    //   ? await axios.put(`${TEST_URL}/api/games`, {
-    //       name: gameNameRef.current.value,
-    //       images: gameDetail.images,
-    //       alternativeNames: gameDetail.alternativeNames,
-    //     })
-    //   : await axios.post(`${TEST_URL}/api/games`, {
-    //       name: gameNameRef.current.value,
-    //       images: gameDetail.images,
-    //       alternativeNames: gameDetail.alternativeNames,
-    //     });
-
-    // form.reset.click();
-
-    // // // // // // // // // // // // // // // // // // // // // //
     e.preventDefault();
 
     const form = e.currentTarget;
@@ -171,11 +123,13 @@ const GameManagement = () => {
             data
           );
 
-          await axios.put(`${TEST_URL}/api/games`, {
+          await axios.put(`${TEST_URL}/api/games/${gameDetail.id}`, {
             name: gameNameRef.current.value,
             images: imageResponse.data,
             alternativeNames: gameDetail.alternativeNames,
           });
+
+          alert('정상적으로 수정되었습니다!');
         } catch (error) {
           openModal(<ModalError>{error.message}</ModalError>);
         }
@@ -191,11 +145,19 @@ const GameManagement = () => {
           return;
         }
 
-        await axios.put(`${TEST_URL}/api/games`, {
+        console.dir({
           name: gameNameRef.current.value,
-          images: gameDetail.images,
+          images: gameDetail.images.map((image) => image.imagePath),
           alternativeNames: gameDetail.alternativeNames,
         });
+
+        await axios.put(`${TEST_URL}/api/games/${gameDetail.id}`, {
+          name: gameNameRef.current.value,
+          images: gameDetail.images.map((image) => image.imagePath),
+          alternativeNames: gameDetail.alternativeNames,
+        });
+
+        alert('정상적으로 수정되었습니다!');
       } catch (error) {
         openModal(<ModalError>{error.message}</ModalError>);
       }
@@ -206,16 +168,29 @@ const GameManagement = () => {
 
     // 게임 새로 등록
     try {
-      if (!gameDetail.images[0].imagePath) {
+      const data = new FormData();
+      data.append(
+        'fileName',
+        `img/games/title/${gameNameRef.current.value}.jpg`
+      );
+
+      if (!gameImageToSend) {
         alert('이미지를 등록해주세요!');
         return;
       }
 
+      data.append('file', gameImageToSend);
+
+      const imageResponse = await axios.post(`${TEST_URL}/api/images`, data);
+
+      console.log(imageResponse.data);
       await axios.post(`${TEST_URL}/api/games`, {
         name: gameNameRef.current.value,
-        images: gameDetail.images,
+        images: imageResponse.data,
         alternativeNames: gameDetail.alternativeNames,
       });
+
+      alert('정상적으로 등록되었습니다!');
     } catch (error) {
       openModal(<ModalError>{error.message}</ModalError>);
     }
@@ -248,6 +223,7 @@ const GameManagement = () => {
     });
     setGameImageToSend('');
     setIsEditing(false);
+    setIsImageEditing(false);
   };
 
   const setGameImageToShow = (filename, imageFile) => {
@@ -262,8 +238,8 @@ const GameManagement = () => {
     setIsImageEditing(true);
   };
 
-  const registerAlternativeName = ({ currentTarget }) => {
-    const altName = currentTarget.form['alternative-name'].value.trim();
+  const registerAlternativeName = (e) => {
+    const altName = e.currentTarget.form['alternative-name'].value.trim();
     if (!altName) {
       alternativeNameRef.current.value = '';
       alert('내용을 입력하세요!');
@@ -300,6 +276,13 @@ const GameManagement = () => {
     }));
   };
 
+  const preventEnterSubmit = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      return;
+    }
+  };
+
   useEffect(() => {
     getGameList();
   }, []);
@@ -317,7 +300,11 @@ const GameManagement = () => {
           erasable
         />
 
-        <form className='register-edit-game' onSubmit={onSubmitForm}>
+        <form
+          className='register-edit-game'
+          onSubmit={onSubmitForm}
+          onKeyDown={preventEnterSubmit}
+        >
           <div className='register-edit-game-header'>
             <Subtitle1>게임 {isEditing ? `수정` : '등록'}</Subtitle1>
             <SquareButton
@@ -355,6 +342,7 @@ const GameManagement = () => {
               maxLength={NICKNAME_MAX_LENGTH}
               inputRef={alternativeNameRef}
               placeholder='대체 이름'
+              // onKeyDownInput={preventEnterSubmit}
             />
             <SquareButton size='block' onClickButton={registerAlternativeName}>
               <Body1>등록</Body1>
