@@ -52,6 +52,7 @@ const TagManagement = () => {
     if (confirm('정말 삭제하시겠습니까?')) {
       try {
         await axios.delete(`${BASE_URL}/api/tags/${tagId}`);
+        resetForm();
         getTags();
       } catch (error) {
         openModal(<ModalError>{error.message}</ModalError>);
@@ -65,10 +66,15 @@ const TagManagement = () => {
 
     try {
       const newTag = {
-        alternativeNames: alternativeNamesToRegister,
+        alternativeNames: alternativeNamesToRegister.map(
+          (altName) => altName.name
+        ),
         name: tagNameInputRef.current.value,
       };
       await axios.post(`${BASE_URL}/api/tags`, newTag);
+
+      resetForm();
+      getTags();
     } catch (error) {
       openModal(<ModalError>{error.message}</ModalError>);
     }
@@ -108,6 +114,23 @@ const TagManagement = () => {
     setAlternativeNamesToRegister(targetAltName);
   };
 
+  const resetForm = () => {
+    tagNameInputRef.current.value = '';
+    alternativeNameInputRef.current.value = '';
+    setSelectedTag({
+      id: -1,
+      name: '',
+      alternativeNames: [],
+    });
+    setAlternativeNamesToRegister([]);
+  };
+
+  const preventEnterSubmit = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  };
+
   useEffect(() => {
     getTags();
   }, []);
@@ -128,7 +151,11 @@ const TagManagement = () => {
         <NameList list={selectedTag.alternativeNames} erasable />
 
         <Subtitle1>태그 등록</Subtitle1>
-        <form className='register-tag' onSubmit={submitTag}>
+        <form
+          className='register-tag'
+          onSubmit={submitTag}
+          onKeyDown={preventEnterSubmit}
+        >
           <Subtitle3>태그 이름</Subtitle3>
           <TextInput
             name='tag-name'
