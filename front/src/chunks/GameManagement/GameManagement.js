@@ -5,7 +5,6 @@ import { Body1, Headline2, Subtitle1, Subtitle3 } from '../../core/Typography';
 import { ModalError, SquareButton, TextInput } from '../../components';
 import React, { useEffect, useRef, useState } from 'react';
 
-import { BASE_URL } from '../../constants/api';
 import ImagePreview from '../../components/ImagePreview/ImagePreview';
 import ImageRegister from '../../components/ImageRegister/ImageRegister';
 import { NICKNAME_MAX_LENGTH } from '../../constants/chat';
@@ -183,7 +182,9 @@ const GameManagement = () => {
       await axios.post(`${BASE_URL}/api/games`, {
         name: gameNameRef.current.value,
         images: fullURLResponse,
-        alternativeNames: gameDetail.alternativeNames,
+        alternativeNames: gameDetail.alternativeNames.map(
+          (altName) => altName.name
+        ),
       });
 
       alert('정상적으로 등록되었습니다!');
