@@ -6,14 +6,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class TagResponse {
 
-    private final Long id;
-    private final String name;
-    private final List<AlternativeTagNameResponse> alternativeNames;
+    private Long id;
+    private String name;
+    private List<AlternativeTagNameResponse> alternativeNames;
 
     public static TagResponse from(final Tag tag) {
         return new TagResponse(
