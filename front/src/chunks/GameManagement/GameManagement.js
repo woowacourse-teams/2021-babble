@@ -1,10 +1,10 @@
 import './GameManagement.scss';
 
+import { BABBLE_URL, BASE_URL } from '../../constants/api';
 import { Body1, Headline2, Subtitle1, Subtitle3 } from '../../core/Typography';
 import { ModalError, SquareButton, TextInput } from '../../components';
 import React, { useEffect, useRef, useState } from 'react';
 
-import { BASE_URL } from '../../constants/api';
 import ImagePreview from '../../components/ImagePreview/ImagePreview';
 import ImageRegister from '../../components/ImageRegister/ImageRegister';
 import { NICKNAME_MAX_LENGTH } from '../../constants/chat';
@@ -47,6 +47,7 @@ const GameManagement = () => {
     try {
       const response = await axios.get(`${BASE_URL}/api/games`);
       const games = response.data;
+      console.log(games);
 
       setGameList(games);
     } catch (error) {
@@ -64,7 +65,7 @@ const GameManagement = () => {
       alternativeNames: selectedGameDetails.alternativeNames,
       images: selectedGameDetails.images.map((imagePath) => ({
         name: `${selectedGameDetails.name}.png`,
-        imagePath,
+        imagePath: imagePath ?? '',
       })),
     });
 
@@ -76,6 +77,7 @@ const GameManagement = () => {
     if (confirm('정말 삭제하시겠습니까?')) {
       try {
         await axios.delete(`${BASE_URL}/api/games/${gameId}`);
+        getGameList();
       } catch (error) {
         openModal(<ModalError>{error.message}</ModalError>);
       }
@@ -108,12 +110,19 @@ const GameManagement = () => {
             data
           );
 
+          const fullURLResponse = imageResponse.data.map(
+            (url) => `${BABBLE_URL}/${url}`
+          );
+
+          console.log(fullURLResponse);
+
           await axios.put(`${BASE_URL}/api/games/${gameDetail.id}`, {
             name: gameNameRef.current.value,
-            images: imageResponse.data,
+            images: fullURLResponse,
             alternativeNames: gameDetail.alternativeNames,
           });
 
+          getGameList();
           alert('정상적으로 수정되었습니다!');
         } catch (error) {
           openModal(<ModalError>{error.message}</ModalError>);
@@ -136,6 +145,7 @@ const GameManagement = () => {
           alternativeNames: gameDetail.alternativeNames,
         });
 
+        getGameList();
         alert('정상적으로 수정되었습니다!');
       } catch (error) {
         openModal(<ModalError>{error.message}</ModalError>);
@@ -150,7 +160,7 @@ const GameManagement = () => {
       const data = new FormData();
       data.append(
         'fileName',
-        `img/games/title/${gameNameRef.current.value}.jpg`
+        `${BABBLE_URL}/img/games/title/${gameNameRef.current.value}.jpg`
       );
 
       if (!gameImageToSend) {
@@ -168,6 +178,7 @@ const GameManagement = () => {
         alternativeNames: gameDetail.alternativeNames,
       });
 
+      getGameList();
       alert('정상적으로 등록되었습니다!');
     } catch (error) {
       openModal(<ModalError>{error.message}</ModalError>);
