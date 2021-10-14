@@ -77,6 +77,7 @@ const GameManagement = () => {
     if (confirm('정말 삭제하시겠습니까?')) {
       try {
         await axios.delete(`${BASE_URL}/api/games/${gameId}`);
+        onResetForm();
         getGameList();
       } catch (error) {
         openModal(<ModalError>{error.message}</ModalError>);
@@ -114,20 +115,21 @@ const GameManagement = () => {
             (url) => `${BABBLE_URL}/${url}`
           );
 
-          console.log(fullURLResponse);
-
           await axios.put(`${BASE_URL}/api/games/${gameDetail.id}`, {
             name: gameNameRef.current.value,
             images: fullURLResponse,
-            alternativeNames: gameDetail.alternativeNames,
+            alternativeNames: gameDetail.alternativeNames.map(
+              (altName) => altName.name
+            ),
           });
 
-          getGameList();
           alert('정상적으로 수정되었습니다!');
         } catch (error) {
+          console.error(error);
           openModal(<ModalError>{error.message}</ModalError>);
         }
 
+        getGameList();
         form.reset.click();
         return;
       }
@@ -142,15 +144,17 @@ const GameManagement = () => {
         await axios.put(`${BASE_URL}/api/games/${gameDetail.id}`, {
           name: gameNameRef.current.value,
           images: gameDetail.images.map((image) => image.imagePath),
-          alternativeNames: gameDetail.alternativeNames,
+          alternativeNames: gameDetail.alternativeNames.map(
+            (altName) => altName.name
+          ),
         });
 
-        getGameList();
         alert('정상적으로 수정되었습니다!');
       } catch (error) {
         openModal(<ModalError>{error.message}</ModalError>);
       }
 
+      getGameList();
       form.reset.click();
       return;
     }
@@ -160,7 +164,7 @@ const GameManagement = () => {
       const data = new FormData();
       data.append(
         'fileName',
-        `${BABBLE_URL}/img/games/title/${gameNameRef.current.value}.jpg`
+        `img/games/title/${gameNameRef.current.value}.jpg`
       );
 
       if (!gameImageToSend) {
@@ -172,23 +176,32 @@ const GameManagement = () => {
 
       const imageResponse = await axios.post(`${BASE_URL}/api/images`, data);
 
+      const fullURLResponse = imageResponse.data.map(
+        (url) => `${BABBLE_URL}/${url}`
+      );
+
       await axios.post(`${BASE_URL}/api/games`, {
         name: gameNameRef.current.value,
-        images: imageResponse.data,
-        alternativeNames: gameDetail.alternativeNames,
+        images: fullURLResponse,
+        alternativeNames: gameDetail.alternativeNames.map(
+          (altName) => altName.name
+        ),
       });
 
-      getGameList();
       alert('정상적으로 등록되었습니다!');
     } catch (error) {
       openModal(<ModalError>{error.message}</ModalError>);
     }
 
+    getGameList();
     form.reset.click();
   };
 
   const onResetForm = (e) => {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
+
     gameNameRef.current.value = '';
     alternativeNameRef.current.value = '';
 

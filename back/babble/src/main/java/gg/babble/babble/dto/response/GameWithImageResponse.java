@@ -6,15 +6,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class GameWithImageResponse {
 
-    private final Long id;
-    private final String name;
-    private final List<String> images;
-    private final List<AlternativeGameNameResponse> alternativeNames;
+    private Long id;
+    private String name;
+    private List<String> images;
+    private List<AlternativeGameNameResponse> alternativeNames;
 
     public static GameWithImageResponse from(final Game game) {
         return new GameWithImageResponse(

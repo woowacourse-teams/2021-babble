@@ -7,17 +7,19 @@ import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Builder
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class CreatedRoomResponse {
 
-    private final Long roomId;
-    private final String createdDate;
-    private final GameResponse game;
-    private final int maxHeadCount;
-    private final List<TagResponse> tags;
+    private Long roomId;
+    private String createdDate;
+    private GameResponse game;
+    private int maxHeadCount;
+    private List<TagResponse> tags;
 
     public static CreatedRoomResponse from(final Room room) {
         return CreatedRoomResponse.builder()
