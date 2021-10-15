@@ -83,7 +83,7 @@ const ChangeNickname = () => {
         </span>
       </div>
       <div className='control-buttons'>
-        <RoundButton onClick={closeModal} size='small'>
+        <RoundButton onClickButton={closeModal} size='small'>
           <Caption1>취소하기</Caption1>
         </RoundButton>
         <RoundButton type='submit' size='small' colored>
