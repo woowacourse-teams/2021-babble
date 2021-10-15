@@ -93,14 +93,13 @@ const GameList = () => {
           });
 
           return game.alternativeNames.some((alternativeName) =>
-            alternativeName.name.match(searchRegex)
+            alternativeName.match(searchRegex)
           );
         })
       : gameList.filter((game) => {
           const searchRegex = new RegExp(inputValue, 'gi');
           const alternativeNamesWithoutSpace = game.alternativeNames.map(
-            (alternativeName) =>
-              alternativeName.name.replace(PATTERNS.SPACE, '')
+            (alternativeName) => alternativeName.replace(PATTERNS.SPACE, '')
           );
 
           return (
@@ -108,13 +107,12 @@ const GameList = () => {
               alternativeName.match(searchRegex)
             ) ||
             game.alternativeNames.some((alternativeName) =>
-              alternativeName.name.match(searchRegex)
+              alternativeName.match(searchRegex)
             )
           );
         });
 
-    const result = new Set([...searchResults, ...alternativeResults]);
-    setSelectedGames([...result]);
+    setSelectedGames([...searchResults, ...alternativeResults]);
   };
 
   useEffect(() => {
