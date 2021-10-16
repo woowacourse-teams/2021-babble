@@ -11,11 +11,9 @@ import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
 import gg.babble.babble.dto.request.SessionRequest;
-import gg.babble.babble.dto.response.SessionsResponse;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import javax.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +21,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 class EnterExitServiceTest extends ApplicationTest {
 
     @Autowired
-    private EnterExitService enterExitService;
+    private EntryService entryService;
 
     @Autowired
     private RoomRepository roomRepository;
-
-    @Autowired
-    private EntityManager entityManager;
 
     @DisplayName("세션을 생성(방에 유저 입장)한다.")
     @Test
@@ -44,11 +39,10 @@ class EnterExitServiceTest extends ApplicationTest {
         SessionRequest request = new SessionRequest(user.getId(), "1A2B3C4D");
 
         // when
-        SessionsResponse response = enterExitService.enter(room.getId(), request);
+        entryService.enter(room.getId(), request);
 
         // then
-        assertThat(response.getHost()).usingRecursiveComparison()
-            .isEqualTo(user);
+        assertThat(sessionRepository.findBySessionId(request.getSessionId())).isPresent();
     }
 
     @DisplayName("세션을 삭제(방에 유저 퇴장)한다.")
@@ -58,7 +52,7 @@ class EnterExitServiceTest extends ApplicationTest {
         Session session = 세션을_생성한다();
 
         // when
-        enterExitService.exit(session.getSessionId());
+        entryService.exit(session.getSessionId());
 
         // then
         assertThat(sessionRepository.findBySessionId(session.getSessionId()))
@@ -83,7 +77,7 @@ class EnterExitServiceTest extends ApplicationTest {
         sessionRepository.save(session);
         assertThat(roomRepository.findById(room.getId())).isPresent();
 
-        enterExitService.exit(session.getSessionId());
+        entryService.exit(session.getSessionId());
         assertThat(roomRepository.findById(room.getId())).isEmpty();
     }
 

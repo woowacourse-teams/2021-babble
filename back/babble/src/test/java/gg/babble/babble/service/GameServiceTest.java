@@ -40,7 +40,7 @@ class GameServiceTest extends ApplicationTest {
     private GameService gameService;
 
     @Autowired
-    private EnterExitService enterExitService;
+    private EntryService entryService;
 
     private final List<String> defaultImages = Arrays.asList(DEFAULT_IMAGE, DEFAULT_IMAGE, DEFAULT_IMAGE);
 
@@ -93,8 +93,8 @@ class GameServiceTest extends ApplicationTest {
         User 루트 = userRepository.save(new User("루트"));
         User 와일더 = userRepository.save(new User("와일더"));
 
-        enterExitService.enter(room.getId(), new SessionRequest(루트.getId(), "1111"));
-        enterExitService.enter(room.getId(), new SessionRequest(와일더.getId(), "2222"));
+        entryService.enter(room.getId(), new SessionRequest(루트.getId(), "1111"));
+        entryService.enter(room.getId(), new SessionRequest(와일더.getId(), "2222"));
 
         // when
         List<IndexPageGameResponse> expectedResponses = Arrays.asList(
