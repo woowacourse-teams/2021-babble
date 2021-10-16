@@ -41,6 +41,9 @@ dependencies {
     // redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
+    // apache-commons-validator
+    implementation 'commons-validator:commons-validator:1.7'
+
     // web-socket
     implementation 'org.webjars:webjars-locator-core'
     implementation 'org.webjars:sockjs-client:1.0.2'

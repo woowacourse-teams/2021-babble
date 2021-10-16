@@ -4,13 +4,9 @@ import gg.babble.babble.domain.message.Content;
 import gg.babble.babble.domain.user.User;
 import gg.babble.babble.dto.request.MessageRequest;
 import gg.babble.babble.dto.response.ChatResponse;
-import gg.babble.babble.dto.response.EntryResponse;
 import gg.babble.babble.dto.response.MessageResponse;
 import gg.babble.babble.dto.response.UserResponse;
-import javax.annotation.PostConstruct;
-import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 @Service

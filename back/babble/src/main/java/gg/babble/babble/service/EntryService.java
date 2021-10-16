@@ -8,11 +8,7 @@ import gg.babble.babble.dto.request.SessionRequest;
 import gg.babble.babble.dto.response.EntryResponse;
 import gg.babble.babble.dto.response.SessionsResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
-import javax.annotation.PostConstruct;
-import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.listener.ChannelTopic;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
