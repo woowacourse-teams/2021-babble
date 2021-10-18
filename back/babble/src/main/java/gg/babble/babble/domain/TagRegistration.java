@@ -4,6 +4,7 @@ import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.tag.Tag;
 import java.util.Objects;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,12 +33,12 @@ public class TagRegistration {
     private Long id;
 
     @NotNull(message = "방은 Null 일 수 없습니다.")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
     private Room room;
 
     @NotNull(message = "태그는 Null 일 수 없습니다.")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tag_id")
     private Tag tag;
 

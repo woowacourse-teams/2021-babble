@@ -3,6 +3,7 @@ package gg.babble.babble.domain.tag;
 import java.util.Objects;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,7 +30,7 @@ public class AlternativeTagName {
     @Embedded
     private TagName value;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tag_id")
     @NotNull(message = "게임은 Null 일 수 없습니다.")
     private Tag tag;
