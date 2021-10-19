@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 
 const TextInput = ({
   name,
+  type = 'border',
   maxLength = 50,
   minLength = 1,
   defaultValue = null,
@@ -33,7 +34,10 @@ const TextInput = ({
   }, []);
 
   return (
-    <div className='input-container' ref={containerRef}>
+    <div
+      className={`input-container ${type === 'borderless' ? 'borderless' : ''}`}
+      ref={containerRef}
+    >
       <input
         type='text'
         className='input-inner'
@@ -55,6 +59,7 @@ const TextInput = ({
 
 TextInput.propTypes = {
   defaultValue: PropTypes.string,
+  type: PropTypes.oneOf(['border', 'borderless']),
   name: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
   maxLength: PropTypes.number,

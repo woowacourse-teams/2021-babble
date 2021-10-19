@@ -9,9 +9,9 @@
   width: 100%;
   height: fit-content;
   padding: 1rem 1.6rem 1rem 1.4rem;
-  border: 2px solid f.grey-scale(5);
   transition: 0.2s linear;
   border-radius: 0.8rem;
+  border: 2px solid f.grey-scale(5);
 
   input[type='text'] {
     text-align: center;
@@ -33,6 +33,14 @@
 
   svg {
     cursor: pointer;
+  }
+
+  &.borderless {
+    border: none;
+
+    &.focused {
+      border: none;
+    }
   }
 
   &.focused {
