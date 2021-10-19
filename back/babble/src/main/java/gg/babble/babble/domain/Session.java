@@ -4,7 +4,6 @@ import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.user.User;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
