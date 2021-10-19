@@ -27,7 +27,7 @@ jobs:
 
     - name: Web Application Server 빌드 진행
       working-directory: ./back/babble
-      run: ./gradlew build
+      run: SPRING_DATASOURCE_PASSWORD=${{ secrets.JUNIT_DB_PASSWORD }} SPRING_REDIS_PASSWORD=gosutalkspace=${{ secrets.SPRING_REDIS_PASSWORD }} ./gradlew build
 
     - name: JDK 11 버전으로 변경
       uses: actions/setup-java@v2
@@ -37,7 +37,7 @@ jobs:
 
     - name: SonarQube 빌드 진행
       working-directory: ./back/babble
-      run: ./gradlew sonarqube -Dsonar.projectKey=babble-sonarqube -Dsonar.host.url=${{ secrets.SONARQUBE_SERVER_URL }} -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}
+      run: SPRING_PROFILES_ACTIVE=local ./gradlew sonarqube -Dsonar.projectKey=babble-sonarqube -Dsonar.host.url=${{ secrets.SONARQUBE_SERVER_URL }} -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}
 
     - name: SCP 명령을 이용해 테스트용 서버로 jar 파일 전송
       working-directory: ./back/babble
