@@ -219,4 +219,6 @@
     ex) `hotfix/bugs`
 
 ## 💻 5. Tech Stacks
-![tech-stack](./images/babble-tech-stack.png)
+
+![tech-stack](./images/babble-tech-stack-1.png)
+![tech-stack](./images/babble-tech-stack-2.png)
