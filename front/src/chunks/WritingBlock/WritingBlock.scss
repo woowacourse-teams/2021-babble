@@ -1,0 +1,92 @@
+@use '../../../style/variables' as v;
+@use '../../../style/functions' as f;
+
+.writing-section {
+  .input-container.borderless {
+    padding-left: 0;
+  }
+
+  .writing-header {
+    display: flex;
+    justify-content: space-between;
+
+    .subtitle1 {
+      display: inline-block;
+    }
+
+    .category {
+      max-width: 30rem;
+      width: 30rem;
+
+      .input-container {
+        width: 100%;
+        box-shadow: v.$light-box-shadow;
+      }
+    }
+  }
+
+  .writing-form {
+    margin-top: 2rem;
+
+    .writing-block {
+      width: 100%;
+      height: 60rem;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid f.grey-scale(6);
+      border-radius: f.border-radius(large-container);
+      box-shadow: v.$light-box-shadow;
+
+      .title {
+        display: flex;
+        align-items: center;
+        height: 10rem;
+        margin: 0 2rem;
+
+        .input-inner {
+          font-size: 2.6rem;
+          text-align: left;
+        }
+      }
+
+      .editor-container {
+        height: 44rem;
+        width: calc(100% - 4rem);
+        margin: 0 2rem;
+
+        .ql-toolbar {
+          width: 100%;
+          height: 4rem;
+        }
+
+        .editor {
+          height: calc(100% - 4rem);
+          width: 100%;
+        }
+      }
+
+      .writing-info {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        height: 6rem;
+        width: calc(100% - 6rem);
+        margin: 0 2rem;
+
+        .input-container {
+          max-width: 20rem;
+
+          .input-inner {
+            font-size: 1.4rem;
+            text-align: left;
+          }
+        }
+      }
+    }
+
+    .square-button {
+      height: 5rem;
+      margin-top: 2rem;
+    }
+  }
+}
