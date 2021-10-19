@@ -18,6 +18,10 @@
     font-size: 1.6rem;
   }
 
+  input[type='text']:read-only {
+    text-align: left;
+  }
+
   input[type='number'] {
     cursor: pointer;
     font-size: 1.6rem;
