@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 
 const TextInput = ({
   name,
+  border = true,
   maxLength = 50,
   minLength = 1,
   defaultValue = null,
@@ -18,14 +19,6 @@ const TextInput = ({
 }) => {
   const containerRef = useRef(null);
 
-  const onFocusInput = () => {
-    containerRef.current.classList.add('focused');
-  };
-
-  const onBlurInput = () => {
-    containerRef.current.classList.remove('focused');
-  };
-
   useEffect(() => {
     if (isContentSelected) {
       containerRef.current.querySelector('.input-inner').select();
@@ -33,7 +26,10 @@ const TextInput = ({
   }, []);
 
   return (
-    <div className='input-container' ref={containerRef}>
+    <div
+      className={`input-container ${border ? '' : 'borderless'}`}
+      ref={containerRef}
+    >
       <input
         type='text'
         className='input-inner'
@@ -42,8 +38,6 @@ const TextInput = ({
         minLength={minLength}
         placeholder={placeholder}
         onChange={onChangeInput}
-        onFocus={onFocusInput}
-        onBlur={onBlurInput}
         defaultValue={defaultValue}
         ref={inputRef}
         onKeyDown={onKeyDownInput}
@@ -55,6 +49,7 @@ const TextInput = ({
 
 TextInput.propTypes = {
   defaultValue: PropTypes.string,
+  border: PropTypes.bool,
   name: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
   maxLength: PropTypes.number,

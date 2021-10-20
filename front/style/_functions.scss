@@ -63,6 +63,15 @@
   @return null;
 }
 
+@function font-size($key) {
+  @if map-has-key($font-size, $key) {
+    @return map-get($font-size, $key);
+  }
+
+  @warn "Unknown `#{$key}` in $font-size!";
+  @return null;
+}
+
 @function z-index($key) {
   @if map-has-key($z-index, $key) {
     @return map-get($z-index, $key);

@@ -9,29 +9,41 @@
   width: 100%;
   height: fit-content;
   padding: 1rem 1.6rem 1rem 1.4rem;
-  border: 2px solid f.grey-scale(5);
   transition: 0.2s linear;
-  border-radius: 0.8rem;
+  border-radius: f.border-radius(modal);
+  border: 2px solid f.grey-scale(5);
 
   input[type='text'] {
     text-align: center;
-    font-size: 1.6rem;
+    font-size: f.font-size(medium);
+  }
+
+  input[type='text']:read-only {
+    text-align: left;
   }
 
   input[type='number'] {
     cursor: pointer;
-    font-size: 1.6rem;
+    font-size: f.font-size(medium);
   }
 
   input[type='search'] {
-    font-size: 1.8rem;
+    font-size: f.font-size(large);
   }
 
   svg {
     cursor: pointer;
   }
 
-  &.focused {
+  &.borderless {
+    border: none;
+
+    &:focus-within {
+      border: none;
+    }
+  }
+
+  &:focus-within {
     border: 2px solid f.primary(babble-pink);
   }
 
@@ -84,12 +96,12 @@
 @include m.media(mobile-down, mobile) {
   .input-container {
     .input-inner {
-      font-size: 1.5rem;
+      font-size: f.font-size(medium-mobile);
       margin-left: 0.7rem;
     }
 
     input[type='search'] {
-      font-size: 1.6rem;
+      font-size: f.font-size(medium);
     }
 
     svg {
