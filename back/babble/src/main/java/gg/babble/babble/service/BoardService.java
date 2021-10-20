@@ -41,7 +41,7 @@ public class BoardService {
     @Transactional
     public BoardResponse update(final BoardUpdateRequest request) {
         Board board = find(request.getId());
-        board.update(request.getTitle(), request.getContent(), request.getCategory());
+        board.update(request.getTitle(), request.getContent(), request.getCategory(), request.getPassword());
 
         return BoardResponse.from(board);
     }

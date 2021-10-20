@@ -95,12 +95,17 @@ public class Board {
         return account.getNickname();
     }
 
-    public void update(final String title, final String content, final String category) {
+    public void update(final String title, final String content, final String category, final String password) {
+        validatePassword(password);
         post.update(title, content);
         this.category = Category.of(category);
     }
 
     public void delete(final String password) {
+        validatePassword(password);
+    }
+
+    private void validatePassword(final String password) {
         if (account.isWrongPassword(password)) {
             throw new BabbleIllegalArgumentException("올바르지 않은 비밀번호가 입력 되었습니다.");
         }
