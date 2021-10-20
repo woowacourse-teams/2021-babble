@@ -10,6 +10,13 @@ spring:
     database:
       replace: NONE
 
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 11MB
+      location: ${java:io:tmpdir}
+
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
