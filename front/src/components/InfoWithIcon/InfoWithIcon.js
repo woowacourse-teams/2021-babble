@@ -4,9 +4,9 @@ import { Caption2 } from '../../core/Typography';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const InfoWithIcon = ({ icon, content }) => {
+const InfoWithIcon = ({ icon, content = '', color = 'grey' }) => {
   return (
-    <span className='watch-container'>
+    <span className={`watch-container ${color}`}>
       {icon}
       <Caption2>{content}</Caption2>
     </span>
@@ -15,6 +15,7 @@ const InfoWithIcon = ({ icon, content }) => {
 
 InfoWithIcon.propTypes = {
   icon: PropTypes.node,
+  color: PropTypes.string,
   content: PropTypes.string,
 };
 export default InfoWithIcon;

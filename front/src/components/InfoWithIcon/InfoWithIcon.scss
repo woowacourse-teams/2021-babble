@@ -1,7 +1,21 @@
+@use '../../../style/functions' as f;
+
 .watch-container {
   display: flex;
   align-items: center;
   user-select: none;
+
+  &.grey {
+    color: f.grey-scale(10);
+  }
+
+  &.babble-pink {
+    color: f.primary(babble-pink);
+  }
+
+  &.red {
+    color: f.primary(babble-pink-3);
+  }
 
   .caption2 {
     margin-left: 0.2rem;
