@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 const TextInput = ({
   name,
-  type = 'border',
+  border = true,
   maxLength = 50,
   minLength = 1,
   defaultValue = null,
@@ -27,7 +27,7 @@ const TextInput = ({
 
   return (
     <div
-      className={`input-container ${type === 'borderless' ? 'borderless' : ''}`}
+      className={`input-container ${border ? '' : 'borderless'}`}
       ref={containerRef}
     >
       <input
