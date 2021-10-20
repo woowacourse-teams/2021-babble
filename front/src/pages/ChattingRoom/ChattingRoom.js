@@ -199,7 +199,6 @@ const ChattingRoom = ({ tags, game, roomId }) => {
   useEffect(() => {
     const prevChat = chattings[chattings.length - 2];
     const currentChat = chattings[chattings.length - 1];
-    console.log(chattings);
 
     if (prevChat) {
       if (
