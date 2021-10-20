@@ -54,7 +54,7 @@
         top: -3.6rem;
         left: 50%;
         transform: translateX(-50%);
-        font-size: 12px;
+        font-size: f.font-size(small);
       }
 
       &:before {
