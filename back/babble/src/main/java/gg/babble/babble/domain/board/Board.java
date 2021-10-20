@@ -19,22 +19,26 @@ import org.hibernate.annotations.Where;
 
 @Getter
 @SQLDelete(sql = "UPDATE board SET deleted = true WHERE id = ?")
-@Where(clause = "deleted = false")
+@Where(clause = "deleted=false")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Board {
 
-    @Column(nullable = false)
-    private final boolean deleted = false;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Embedded
     private Post post;
+
     @Embedded
     private Account account;
+
     @Enumerated(value = EnumType.STRING)
     private Category category;
+
+    @Column(nullable = false)
+    private final boolean deleted = false;
 
     public Board(final String title, final String content, final String category, final String nickname, final String password) {
         this(new Post(title, content), new Account(nickname, password), Category.of(category));
@@ -67,11 +71,11 @@ public class Board {
     }
 
     public Long view() {
-        return post.getView();
+        return post.getViewCount();
     }
 
     public Long like() {
-        return post.getLike();
+        return post.getLikeCount();
     }
 
     public String category() {
