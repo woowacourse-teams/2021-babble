@@ -66,7 +66,7 @@ const WritingBlock = () => {
           <div className='title'>
             <TextInput
               name='title'
-              type='borderless'
+              border={false}
               placeholder='제목을 입력하세요.'
               required
             />
@@ -77,14 +77,14 @@ const WritingBlock = () => {
           <div className='writing-info'>
             <TextInput
               name='nickname'
-              type='borderless'
+              border={false}
               placeholder='닉네임'
               required
             />
             <TextInput
               name='password'
               minLength={4}
-              type='borderless'
+              border={false}
               placeholder='비밀번호(4자 이상)'
               required
             />

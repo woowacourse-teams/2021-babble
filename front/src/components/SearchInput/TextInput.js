@@ -49,7 +49,7 @@ const TextInput = ({
 
 TextInput.propTypes = {
   defaultValue: PropTypes.string,
-  type: PropTypes.oneOf(['border', 'borderless']),
+  border: PropTypes.bool,
   name: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
   maxLength: PropTypes.number,
