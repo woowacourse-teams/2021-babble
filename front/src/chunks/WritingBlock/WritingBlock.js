@@ -13,6 +13,7 @@ const WritingBlock = () => {
   const editorRef = useRef(null);
 
   useEffect(() => {
+    // TODO: api 완성되면 더미데이터 제거
     setCategories([
       '자유',
       'League of Legends',
@@ -32,7 +33,7 @@ const WritingBlock = () => {
           [{ align: [] }],
           [{ color: [] }, { background: [] }],
           [{ indent: '-1' }, { indent: '+1' }],
-          ['link', 'image', 'video', 'code-block'],
+          ['link', 'image', 'video'],
         ],
       },
       placeholder: '내용을 입력하세요.',
@@ -52,6 +53,7 @@ const WritingBlock = () => {
         <Subtitle1>게시글 작성</Subtitle1>
         <div className='category'>
           <DropdownInput
+            type='text'
             placeholder='카테고리를 선택하세요.'
             dropdownKeywords={categories}
             inputValue={selectedCategory}
@@ -83,7 +85,6 @@ const WritingBlock = () => {
               name='password'
               type='borderless'
               placeholder='비밀번호를 입력하세요.'
-              maxLength={4}
               required
             />
           </div>
