@@ -21,12 +21,10 @@ const SearchInput = ({
   const inputRef = useRef(null);
 
   const onFocusInput = () => {
-    containerRef.current.classList.add('focused');
     autoCompleteRef.current.classList.add('show');
   };
 
   const onBlurInput = () => {
-    containerRef.current.classList.remove('focused');
     autoCompleteRef.current.classList.remove('show');
   };
 

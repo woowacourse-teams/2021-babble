@@ -19,14 +19,6 @@ const TextInput = ({
 }) => {
   const containerRef = useRef(null);
 
-  const onFocusInput = () => {
-    containerRef.current.classList.add('focused');
-  };
-
-  const onBlurInput = () => {
-    containerRef.current.classList.remove('focused');
-  };
-
   useEffect(() => {
     if (isContentSelected) {
       containerRef.current.querySelector('.input-inner').select();
@@ -46,8 +38,6 @@ const TextInput = ({
         minLength={minLength}
         placeholder={placeholder}
         onChange={onChangeInput}
-        onFocus={onFocusInput}
-        onBlur={onBlurInput}
         defaultValue={defaultValue}
         ref={inputRef}
         onKeyDown={onKeyDownInput}

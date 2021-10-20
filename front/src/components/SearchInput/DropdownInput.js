@@ -18,12 +18,10 @@ const DropdownInput = ({
   const inputRef = useRef(null);
 
   const onFocusInput = () => {
-    containerRef.current.classList.add('focused');
     dropdownRef.current.classList.add('show');
   };
 
   const onBlurInput = () => {
-    containerRef.current.classList.remove('focused');
     dropdownRef.current.classList.remove('show');
   };
 
@@ -31,7 +29,6 @@ const DropdownInput = ({
     const selectedValue = Number(e.target.textContent);
     setInputValue(selectedValue);
 
-    containerRef.current.classList.remove('focused');
     dropdownRef.current.classList.remove('show');
   };
 

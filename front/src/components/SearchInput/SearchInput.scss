@@ -10,7 +10,7 @@
   height: fit-content;
   padding: 1rem 1.6rem 1rem 1.4rem;
   transition: 0.2s linear;
-  border-radius: 0.8rem;
+  border-radius: f.border-radius(modal);
   border: 2px solid f.grey-scale(5);
 
   input[type='text'] {
@@ -38,12 +38,12 @@
   &.borderless {
     border: none;
 
-    &.focused {
+    &:focus-within {
       border: none;
     }
   }
 
-  &.focused {
+  &:focus-within {
     border: 2px solid f.primary(babble-pink);
   }
 
