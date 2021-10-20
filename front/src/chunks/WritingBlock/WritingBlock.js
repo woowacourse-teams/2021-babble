@@ -78,14 +78,14 @@ const WritingBlock = () => {
             <TextInput
               name='nickname'
               type='borderless'
-              placeholder='닉네임을 입력하세요.'
+              placeholder='닉네임'
               required
             />
             <TextInput
               name='password'
               minLength={4}
               type='borderless'
-              placeholder='비밀번호를 입력하세요.'
+              placeholder='비밀번호(4자 이상)'
               required
             />
           </div>
