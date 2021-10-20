@@ -11,6 +11,7 @@ const DropdownInput = ({
   type = 'number',
   dropdownKeywords,
   inputValue,
+  defaultInputValue = '',
   setInputValue,
 }) => {
   const [dropdownList, setDropdownList] = useState([]);
@@ -27,9 +28,10 @@ const DropdownInput = ({
   };
 
   const onSelectItem = (e) => {
-    const selectedValue = Number.isNaN(e.target.textContent)
+    const selectedValue = isNaN(e.target.textContent)
       ? e.target.textContent
       : Number(e.target.textContent);
+
     setInputValue(selectedValue);
 
     dropdownRef.current.classList.remove('show');
@@ -44,7 +46,7 @@ const DropdownInput = ({
       <input
         type={type}
         className='input-inner'
-        value={inputValue ? inputValue : ''}
+        value={inputValue ? inputValue : defaultInputValue}
         placeholder={placeholder}
         onFocus={onFocusInput}
         onBlur={onBlurInput}
@@ -79,6 +81,7 @@ DropdownInput.propTypes = {
   placeholder: PropTypes.string,
   type: PropTypes.oneOf(['text', 'number']),
   inputValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  defaultInputValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   setInputValue: PropTypes.func,
   dropdownKeywords: PropTypes.arrayOf(
     PropTypes.oneOfType([PropTypes.number, PropTypes.string])
