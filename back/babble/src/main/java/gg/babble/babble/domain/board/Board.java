@@ -6,6 +6,7 @@ import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -16,7 +17,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+@EntityListeners(AuditingEntityListener.class)
 @Getter
 @SQLDelete(sql = "UPDATE board SET deleted = true WHERE id = ?")
 @Where(clause = "deleted=false")
@@ -36,6 +41,14 @@ public class Board {
 
     @Enumerated(value = EnumType.STRING)
     private Category category;
+
+    @CreatedDate
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
 
     @Column(nullable = false)
     private final boolean deleted = false;
@@ -59,14 +72,10 @@ public class Board {
     }
 
     public String createdAt() {
-        LocalDateTime createdAt = post.getCreatedAt();
-
         return createdAt.toString();
     }
 
     public String updatedAt() {
-        LocalDateTime updatedAt = post.getUpdatedAt();
-
         return updatedAt.toString();
     }
 
@@ -91,6 +100,12 @@ public class Board {
         this.category = Category.of(category);
     }
 
+    public void delete(final String password) {
+        if (account.isWrongPassword(password)) {
+            throw new BabbleIllegalArgumentException("올바르지 않은 비밀번호가 입력 되었습니다.");
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -106,11 +121,5 @@ public class Board {
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    public void delete(final String password) {
-        if (account.isWrongPassword(password)) {
-            throw new BabbleIllegalArgumentException("올바르지 않은 비밀번호가 입력 되었습니다.");
-        }
     }
 }

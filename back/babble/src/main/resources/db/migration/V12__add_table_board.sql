@@ -8,9 +8,8 @@ create table board
     nickname   varchar(255),
     password   varchar(255),
     category   varchar(255)  not null,
-    created_date  timestamp,
-    updated_date  timestamp,
-    deleted_date  timestamp,
+    created_at  timestamp,
+    updated_at  timestamp,
     deleted boolean      not null,
 
     primary key (id)
