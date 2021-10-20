@@ -43,6 +43,16 @@
       &.no-time {
         margin-bottom: 0.5rem;
       }
+
+      &.no-nickname {
+        margin-bottom: -0.3rem;
+      }
+    }
+
+    .others-container {
+      &.no-time {
+        margin-bottom: -1.1rem;
+      }
     }
   }
 
