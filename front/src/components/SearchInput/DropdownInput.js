@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 
 const DropdownInput = ({
   placeholder = '방 인원을 선택해주세요.',
+  type = 'number',
   dropdownKeywords,
   inputValue,
   setInputValue,
@@ -26,7 +27,9 @@ const DropdownInput = ({
   };
 
   const onSelectItem = (e) => {
-    const selectedValue = Number(e.target.textContent);
+    const selectedValue = Number.isNaN(e.target.textContent)
+      ? e.target.textContent
+      : Number(e.target.textContent);
     setInputValue(selectedValue);
 
     dropdownRef.current.classList.remove('show');
@@ -39,7 +42,7 @@ const DropdownInput = ({
   return (
     <div className='input-container' ref={containerRef}>
       <input
-        type='text'
+        type={type}
         className='input-inner'
         value={inputValue ? inputValue : ''}
         placeholder={placeholder}
@@ -74,6 +77,7 @@ const DropdownInput = ({
 
 DropdownInput.propTypes = {
   placeholder: PropTypes.string,
+  type: PropTypes.oneOf(['text', 'number']),
   inputValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   setInputValue: PropTypes.func,
   dropdownKeywords: PropTypes.arrayOf(
