@@ -1,25 +1,30 @@
 import './SpeechBubble.scss';
 
+import { PATTERNS } from '../../constants/regex';
 import PropTypes from 'prop-types';
 import React from 'react';
+import ReactHtmlParser from 'react-html-parser';
 
 const SpeechBubble = ({ time, type = 'mine', children }) => {
-  const chat = { children: null };
+  const linkReg = new RegExp(PATTERNS.LINKS);
+  const linkArray = children.match(linkReg);
+  const chat = { children: children };
 
-  if (children.includes('https://') || children.includes('http://')) {
-    chat.children = (
-      <a href={children} target='_blank' rel='noopener noreferrer'>
-        {children}
-      </a>
+  if (linkArray) {
+    const innerElement = linkArray.map((link) =>
+      children.replace(
+        link,
+        `<a href="${link}" target='_blank' rel='noopener noreferrer'>${link}</a>`
+      )
     );
-    console.log(chat);
-  } else {
-    chat.children = children;
+
+    chat.children = innerElement.join('');
   }
+
   return (
     <div className={`speech-bubble-container ${type}-container`}>
       <div className={`speech-bubble ${type}`}>
-        <pre className='text'>{chat.children}</pre>
+        <pre className='text'>{ReactHtmlParser(chat.children)}</pre>
         <time className='time'>{time}</time>
       </div>
     </div>
