@@ -7,7 +7,7 @@ footer {
   border-top: 1px solid f.grey-scale(4);
   width: 100%;
   padding: 3rem;
-  font-size: 1rem;
+  font-size: f.font-size(footer);
   margin-top: 10rem;
 
   & > * {

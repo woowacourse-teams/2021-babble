@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -35,11 +36,11 @@ public class Session {
     @NotNull(message = "세션 Id는 Null 일 수 없습니다.")
     private String sessionId;
     @NotNull(message = "유저는 Null 일 수 없습니다.")
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
     @NotNull(message = "방은 Null 일 수 없습니다.")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
     private Room room;
     @CreatedDate

@@ -2,7 +2,7 @@ import './KakaoShareButton.scss';
 
 import React, { useEffect } from 'react';
 
-import { ModalError } from '../Modal/ModalError';
+import ModalError from '../Modal/ModalError';
 import PropTypes from 'prop-types';
 import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 
