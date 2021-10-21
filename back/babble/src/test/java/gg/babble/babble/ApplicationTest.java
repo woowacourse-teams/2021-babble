@@ -3,6 +3,7 @@ package gg.babble.babble;
 import gg.babble.babble.domain.repository.AdministratorRepository;
 import gg.babble.babble.domain.repository.AlternativeGameNameRepository;
 import gg.babble.babble.domain.repository.AlternativeTagNameRepository;
+import gg.babble.babble.domain.repository.BoardRepository;
 import gg.babble.babble.domain.repository.GameRepository;
 import gg.babble.babble.domain.repository.RoomRepository;
 import gg.babble.babble.domain.repository.S3Repository;
@@ -54,6 +55,9 @@ public class ApplicationTest {
 
     @Autowired
     protected SliderRepository sliderRepository;
+
+    @Autowired
+    protected BoardRepository boardRepository;
 
     @BeforeEach
     protected void setUp() {
