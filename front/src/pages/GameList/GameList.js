@@ -99,7 +99,8 @@ const GameList = () => {
       : gameList.filter((game) => {
           const searchRegex = new RegExp(inputValue, 'gi');
           const alternativeNamesWithoutSpace = game.alternativeNames.map(
-            (alternativeName) => alternativeName.replace(PATTERNS.SPACE, '')
+            (alternativeName) =>
+              alternativeName.name.replace(PATTERNS.SPACE, '')
           );
 
           return (
@@ -107,7 +108,7 @@ const GameList = () => {
               alternativeName.match(searchRegex)
             ) ||
             game.alternativeNames.some((alternativeName) =>
-              alternativeName.match(searchRegex)
+              alternativeName.name.match(searchRegex)
             )
           );
         });
