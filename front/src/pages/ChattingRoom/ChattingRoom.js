@@ -206,27 +206,16 @@ const ChattingRoom = ({ tags, game, roomId }) => {
         prevChat.user.id === currentChat.user.id &&
         prevChat.type === 'chat'
       ) {
-        setChattings((prevChattings) =>
-          prevChattings.map((chat, index) => {
-            const lastElementIndex = prevChattings.length - 1;
-            const secondLastElementIndex = prevChattings.length - 2;
-            if (
-              index === lastElementIndex &&
-              prevChattings[index - 1].user.id === prevChattings[index].user.id
-            ) {
-              return {
-                ...chat,
-                user: { ...chat.user, avatar: null, nickname: null },
-              };
-            }
+        const partialChattings = chattings.slice(0, chattings.length - 2);
 
-            if (index === secondLastElementIndex) {
-              return { ...chat, receivedTime: null };
-            }
-
-            return chat;
-          })
-        );
+        setChattings(() => [
+          ...partialChattings,
+          { ...prevChat, receivedTime: null },
+          {
+            ...currentChat,
+            user: { ...currentChat.user, avatar: null, nickname: null },
+          },
+        ]);
       }
     }
   }, [chattings]);
