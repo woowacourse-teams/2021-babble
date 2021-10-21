@@ -401,6 +401,85 @@ include::{snippets}/update-slider/http-request.adoc[]
 
 include::{snippets}/update-slider/http-response.adoc[]
 
+== 게시판
+
+=== 게시글 등록 API
+
+==== HTTP Request
+
+include::{snippets}/create-board/http-request.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/create-board/request-fields.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/create-board/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/create-board/response-fields.adoc[]
+
+=== 게시글 단일 조회 API
+
+==== HTTP Request
+
+include::{snippets}/read-board/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/read-board/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/read-board/response-fields.adoc[]
+
+=== 게시판 전체 조회 API
+
+==== HTTP Request
+
+include::{snippets}/read-boards/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/read-boards/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/read-boards/response-fields.adoc[]
+
+=== 게시판 검색 API
+
+==== HTTP Request
+
+include::{snippets}/search-boards/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/search-boards/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/search-boards/response-fields.adoc[]
+
+=== 게시글 수정 API
+
+==== HTTP Request
+
+include::{snippets}/update-board/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/update-board/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/update-board/response-fields.adoc[]
+
+=== 게시글 삭제 API
+
+==== HTTP Request
+
+include::{snippets}/delete-board/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/delete-board/http-response.adoc[]
 
 == WebSocket
 

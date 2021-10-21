@@ -238,7 +238,7 @@ public class BoardApiDocumentTest extends AcceptanceTest {
         body.put("password", "123456");
 
         given().body(body)
-            .filter(document("update-board",
+            .filter(document("delete-board",
                 requestFields(fieldWithPath("id").description("검색어"),
                     fieldWithPath("password").description("비밀번호"))))
             .when().delete("/api/board")
