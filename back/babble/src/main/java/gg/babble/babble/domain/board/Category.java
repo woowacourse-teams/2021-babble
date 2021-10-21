@@ -6,7 +6,8 @@ import java.util.Arrays;
 public enum Category {
     FREE("자유"),
     SUGGESTIONS("건의"),
-    GAME("게임명");
+    GAME("게임"),
+    NOTICE("공지");
 
     private final String name;
 
@@ -23,5 +24,9 @@ public enum Category {
 
     public String getName() {
         return name;
+    }
+
+    public boolean isNotice() {
+        return this == NOTICE;
     }
 }

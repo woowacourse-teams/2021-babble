@@ -19,12 +19,13 @@ public class BoardResponse {
     private String nickname;
     private String createdAt;
     private String updatedAt;
+    private boolean notice;
 
     private long view;
     private long like;
 
     public static BoardResponse from(final Board board) {
         return new BoardResponse(board.getId(), board.title(), board.content(), board.category(), board.nickname(), board.createdAt(), board.updatedAt(),
-            board.view(), board.like());
+            board.isNotice(), board.view(), board.like());
     }
 }

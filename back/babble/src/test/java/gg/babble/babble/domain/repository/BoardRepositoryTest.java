@@ -40,7 +40,7 @@ class BoardRepositoryTest {
             "345678"));
         post4 = boardRepository.save(new Board("게임 좀 추가해줘요.",
             "",
-            "게임명",
+            "게임",
             "게임이좋아",
             "123456"));
     }

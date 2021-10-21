@@ -127,4 +127,8 @@ public class Board {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    public boolean isNotice() {
+        return category.isNotice();
+    }
 }

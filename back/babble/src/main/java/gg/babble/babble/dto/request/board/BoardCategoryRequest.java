@@ -9,8 +9,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BoardReadRequest {
+public class BoardCategoryRequest {
 
-    private String keyword;
-    private String type;
+    private String category;
 }
