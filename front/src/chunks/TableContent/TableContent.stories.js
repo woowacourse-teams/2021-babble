@@ -6,11 +6,7 @@ export default {
   component: TableContent,
 };
 
-const TableContentTemplate = (args) => (
-  <div>
-    <TableContent {...args} />
-  </div>
-);
+const TableContentTemplate = (args) => <TableContent {...args} />;
 
 export const Default = TableContentTemplate.bind({});
 

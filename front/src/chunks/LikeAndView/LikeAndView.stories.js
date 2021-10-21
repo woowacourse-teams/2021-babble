@@ -6,11 +6,7 @@ export default {
   component: LikeAndView,
 };
 
-const LikeAndViewTemplate = (args) => (
-  <div>
-    <LikeAndView {...args} />
-  </div>
-);
+const LikeAndViewTemplate = (args) => <LikeAndView {...args} />;
 
 export const Default = LikeAndViewTemplate.bind({});
 
