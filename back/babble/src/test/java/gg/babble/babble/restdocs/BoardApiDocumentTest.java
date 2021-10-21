@@ -58,7 +58,6 @@ public class BoardApiDocumentTest extends AcceptanceTest {
             "123123"));
     }
 
-    @Test
     private BoardResponse 게시글_추가(final String title, final String content, final String category, final String nickname, final String password) {
         Map<String, Object> body = new HashMap<>();
         body.put("title", title);
@@ -273,8 +272,7 @@ public class BoardApiDocumentTest extends AcceptanceTest {
         response.then().statusCode(HttpStatus.NOT_FOUND.value());
     }
 
-    @Test
-    Response 게시글_조회(final Long id) {
+    private Response 게시글_조회(final Long id) {
         return given()
             .when().get("/api/board/{id}", id);
     }
