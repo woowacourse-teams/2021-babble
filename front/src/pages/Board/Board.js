@@ -75,7 +75,7 @@ const Board = () => {
             defaultInputValue='전체'
             inputValue={category}
             setInputValue={setCategory}
-            dropdownKeywords={['전체', '글 + 제목', '글쓴이', '카테고리']}
+            dropdownKeywords={['전체', '글 + 제목', '글쓴이']}
           />
         </div>
         <div className='board-wrapper'>
