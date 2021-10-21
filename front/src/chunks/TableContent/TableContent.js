@@ -18,6 +18,13 @@ const TableContent = ({
 }) => {
   const { title, category, viewCount, likeCount, author, createdAt, notice } =
     boardDetails;
+
+  const handleCategoryClick = (e) => {
+    e.stopPropagation();
+
+    onCategoryClick();
+  };
+
   return (
     <main className='table-content-container' onClick={onContentClick}>
       <div className='table-content-details'>
@@ -35,7 +42,7 @@ const TableContent = ({
           <Body2>{title}</Body2>
 
           <span className='table-infos'>
-            <button onClick={onCategoryClick} className='category-search'>
+            <button onClick={handleCategoryClick} className='category-search'>
               <Caption2>{category}</Caption2>
             </button>
             <LikeAndView view={viewCount} like={likeCount} />
