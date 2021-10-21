@@ -14,7 +14,7 @@ const Board = () => {
   const [category, setCategory] = useState('');
 
   //TODO: Dummy Data -> 나중에 고칠 예정
-  const [boards, setBoards] = useState([
+  const [posts, setPosts] = useState([
     {
       id: 1,
       title: '롤드컵 존잼 ;; ㄷㄷ',
@@ -47,14 +47,14 @@ const Board = () => {
     },
   ]);
 
-  const getBoards = async () => {
+  const getPosts = async () => {
     // TODO: API 확정되면 Dummy Data와 함께 맞추어 고칠 예정
     // const response = await axios.get(`${BASE_URL}/board`);
-    // setBoards(response.data);
+    // setPosts(response.data);
   };
 
   useEffect(() => {
-    getBoards();
+    getPosts();
   }, []);
 
   return (
@@ -79,10 +79,10 @@ const Board = () => {
           />
         </div>
         <div className='board-wrapper'>
-          {boards.map((board) => (
-            <div className='content-wrapper' key={board.id}>
+          {posts.map((post) => (
+            <div className='content-wrapper' key={post.id}>
               <TableContent
-                boardDetails={board}
+                boardDetails={post}
                 onTitleClick={() => {}}
                 onCategoryClick={() => {}}
               />
