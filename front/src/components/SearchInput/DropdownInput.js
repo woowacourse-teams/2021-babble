@@ -28,7 +28,7 @@ const DropdownInput = ({
   };
 
   const onSelectItem = (e) => {
-    const selectedValue = isNaN(e.target.textContent)
+    const selectedValue = Number.isNaN(Number(e.target.textContent))
       ? e.target.textContent
       : Number(e.target.textContent);
 
