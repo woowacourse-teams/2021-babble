@@ -112,7 +112,8 @@ const GameList = () => {
           );
         });
 
-    setSelectedGames([...searchResults, ...alternativeResults]);
+    const result = new Set([...searchResults, ...alternativeResults]);
+    setSelectedGames([...result]);
   };
 
   useEffect(() => {
