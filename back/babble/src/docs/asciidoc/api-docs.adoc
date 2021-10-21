@@ -458,6 +458,19 @@ include::{snippets}/search-boards/http-response.adoc[]
 [cols="^,^,^",options="headers"]
 include::{snippets}/search-boards/response-fields.adoc[]
 
+=== 게시판 카테고리 검색 API
+
+==== HTTP Request
+
+include::{snippets}/category-boards/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/category-boards/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/category-boards/response-fields.adoc[]
+
 === 게시글 수정 API
 
 ==== HTTP Request

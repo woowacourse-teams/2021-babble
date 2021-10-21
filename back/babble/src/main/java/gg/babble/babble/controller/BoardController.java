@@ -1,5 +1,6 @@
 package gg.babble.babble.controller;
 
+import gg.babble.babble.dto.request.board.BoardCategoryRequest;
 import gg.babble.babble.dto.request.board.BoardCreateRequest;
 import gg.babble.babble.dto.request.board.BoardDeleteRequest;
 import gg.babble.babble.dto.request.board.BoardSearchRequest;
@@ -45,6 +46,12 @@ public class BoardController {
     @GetMapping("/search")
     public ResponseEntity<BoardSearchResponse> search(@RequestBody final BoardSearchRequest request) {
         BoardSearchResponse response = boardService.search(request);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/category")
+    public ResponseEntity<List<BoardResponse>> searchByCategory(@RequestBody final BoardCategoryRequest request) {
+        List<BoardResponse> response = boardService.findByCategory(request);
         return ResponseEntity.ok(response);
     }
 
