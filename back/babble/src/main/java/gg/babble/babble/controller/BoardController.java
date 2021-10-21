@@ -42,7 +42,7 @@ public class BoardController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping
+    @GetMapping("/search")
     public ResponseEntity<BoardSearchResponse> search(@RequestBody final BoardSearchRequest request) {
         BoardSearchResponse response = boardService.search(request);
         return ResponseEntity.ok(response);
