@@ -6,7 +6,7 @@ import React from 'react';
 
 const InfoWithIcon = ({ icon, content = '', color = 'grey' }) => {
   return (
-    <span className={`watch-container ${color}`}>
+    <span className={`info-with-icon-container ${color}`}>
       {icon}
       <Caption2>{content}</Caption2>
     </span>
