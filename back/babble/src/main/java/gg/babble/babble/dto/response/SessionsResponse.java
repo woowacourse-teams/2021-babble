@@ -1,5 +1,6 @@
 package gg.babble.babble.dto.response;
 
+import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.user.User;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,7 +22,14 @@ public class SessionsResponse {
         return new SessionsResponse(null, null);
     }
 
-    public static SessionsResponse of(final User host, final List<User> guests) {
+    public static SessionsResponse of(final Room room) {
+        if (room.isEmpty()) {
+            return empty();
+        }
+        return SessionsResponse.of(room.getHost(), room.getGuests());
+    }
+
+    private static SessionsResponse of(final User host, final List<User> guests) {
         List<UserResponse> guestResponses = guests.stream()
             .map(UserResponse::from)
             .collect(Collectors.toList());

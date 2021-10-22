@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExitResponse {
+public class EntryResponse {
 
     private Long roomId;
     private SessionsResponse sessionsResponse;

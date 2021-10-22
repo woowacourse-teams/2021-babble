@@ -1,7 +1,5 @@
 package gg.babble.babble.domain.tag;
 
-import gg.babble.babble.domain.game.AlternativeGameName;
-import gg.babble.babble.domain.game.Game;
 import gg.babble.babble.exception.BabbleDuplicatedException;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.ArrayList;
