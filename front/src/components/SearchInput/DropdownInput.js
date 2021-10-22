@@ -8,9 +8,11 @@ import PropTypes from 'prop-types';
 
 const DropdownInput = ({
   placeholder = '방 인원을 선택해주세요.',
+  type = 'number',
   dropdownKeywords,
-  maxHeadCount,
-  setMaxHeadCount,
+  inputValue,
+  defaultInputValue = '',
+  setInputValue,
 }) => {
   const [dropdownList, setDropdownList] = useState([]);
   const containerRef = useRef(null);
@@ -18,20 +20,20 @@ const DropdownInput = ({
   const inputRef = useRef(null);
 
   const onFocusInput = () => {
-    containerRef.current.classList.add('focused');
     dropdownRef.current.classList.add('show');
   };
 
   const onBlurInput = () => {
-    containerRef.current.classList.remove('focused');
     dropdownRef.current.classList.remove('show');
   };
 
   const onSelectItem = (e) => {
-    const selectedValue = Number(e.target.textContent);
-    setMaxHeadCount(selectedValue);
+    const selectedValue = Number.isNaN(Number(e.target.textContent))
+      ? e.target.textContent
+      : Number(e.target.textContent);
 
-    containerRef.current.classList.remove('focused');
+    setInputValue(selectedValue);
+
     dropdownRef.current.classList.remove('show');
   };
 
@@ -42,9 +44,9 @@ const DropdownInput = ({
   return (
     <div className='input-container' ref={containerRef}>
       <input
-        type='number'
+        type={type}
         className='input-inner'
-        value={maxHeadCount ? maxHeadCount : ''}
+        value={inputValue ? inputValue : defaultInputValue}
         placeholder={placeholder}
         onFocus={onFocusInput}
         onBlur={onBlurInput}
@@ -77,9 +79,13 @@ const DropdownInput = ({
 
 DropdownInput.propTypes = {
   placeholder: PropTypes.string,
-  maxHeadCount: PropTypes.number,
-  setMaxHeadCount: PropTypes.func,
-  dropdownKeywords: PropTypes.arrayOf(PropTypes.number),
+  type: PropTypes.oneOf(['text', 'number']),
+  inputValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  defaultInputValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  setInputValue: PropTypes.func,
+  dropdownKeywords: PropTypes.arrayOf(
+    PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+  ),
 };
 
 export default DropdownInput;

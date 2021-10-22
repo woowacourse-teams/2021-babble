@@ -15,7 +15,7 @@
     height: 100%;
     flex-basis: 85%;
     border-radius: 1rem;
-    font-size: 1.3rem;
+    font-size: f.font-size(chat);
 
     &::-webkit-scrollbar {
       display: none;
@@ -34,7 +34,7 @@
     }
 
     .chat-area {
-      font-size: 1.6rem;
+      font-size: f.font-size(medium);
     }
   }
 }

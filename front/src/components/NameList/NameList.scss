@@ -7,7 +7,7 @@
   max-height: 16rem;
   border: 1px solid f.grey-scale(6);
   border-radius: f.border-radius(large-container);
-  font-size: 1.3rem;
+  font-size: f.font-size(chat);
   display: flex;
   flex-wrap: wrap;
   overflow-y: auto;

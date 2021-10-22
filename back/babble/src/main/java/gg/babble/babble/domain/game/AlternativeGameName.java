@@ -3,6 +3,7 @@ package gg.babble.babble.domain.game;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,7 +31,7 @@ public class AlternativeGameName {
     @NotNull(message = "대안 이름은 Null 일 수 없습니다.")
     private String value;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "game_id")
     @NotNull(message = "게임은 Null 일 수 없습니다.")
     private Game game;

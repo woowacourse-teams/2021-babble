@@ -9,35 +9,59 @@
   width: 100%;
   height: fit-content;
   padding: 1rem 1.6rem 1rem 1.4rem;
-  border: 2px solid f.grey-scale(5);
   transition: 0.2s linear;
-  border-radius: 0.8rem;
+  border-radius: f.border-radius(modal);
+  border: 2px solid f.grey-scale(5);
 
   input[type='text'] {
     text-align: center;
-    font-size: 1.6rem;
+    font-size: f.font-size(medium);
+  }
+
+  input[type='text']:read-only {
+    text-align: left;
+    cursor: pointer;
   }
 
   input[type='number'] {
     cursor: pointer;
-    font-size: 1.6rem;
+    font-size: f.font-size(medium);
   }
 
   input[type='search'] {
-    font-size: 1.8rem;
+    font-size: f.font-size(large);
   }
 
   svg {
     cursor: pointer;
   }
 
-  &.focused {
+  &.borderless {
+    border: none;
+
+    &:focus-within {
+      border: none;
+    }
+  }
+
+  &:focus-within {
     border: 2px solid f.primary(babble-pink);
   }
 
   .input-inner {
     width: 100%;
     margin-left: 1rem;
+
+    &.text-search {
+      font-size: 1.6rem;
+
+      &::-webkit-search-decoration,
+      &::-webkit-search-cancel-button,
+      &::-webkit-search-results-button,
+      &::-webkit-search-results-decoration {
+        display: none;
+      }
+    }
   }
 
   .keyword-list-container {
@@ -84,12 +108,12 @@
 @include m.media(mobile-down, mobile) {
   .input-container {
     .input-inner {
-      font-size: 1.5rem;
+      font-size: f.font-size(medium-mobile);
       margin-left: 0.7rem;
     }
 
     input[type='search'] {
-      font-size: 1.6rem;
+      font-size: f.font-size(medium);
     }
 
     svg {
