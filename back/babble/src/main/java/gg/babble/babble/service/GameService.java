@@ -11,6 +11,7 @@ import gg.babble.babble.dto.response.IndexPageGameResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +27,13 @@ public class GameService {
 
     public List<IndexPageGameResponse> findSortedGames() {
         Games games = new Games(gameRepository.findAll());
+        games.sortedByHeadCount();
+
+        return IndexPageGameResponse.listFrom(games);
+    }
+
+    public List<IndexPageGameResponse> findSortedGamesByName(final String name, final Pageable pageable) {
+        Games games = new Games(gameRepository.findAllByName(name, pageable));
         games.sortedByHeadCount();
 
         return IndexPageGameResponse.listFrom(games);

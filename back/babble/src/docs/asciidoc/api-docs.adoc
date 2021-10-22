@@ -71,6 +71,8 @@ include::{snippets}/create-user/response-fields.adoc[]
 
 === 게임 리스트 조회 API
 
+> Deprecated
+
 ==== HTTP Request
 
 include::{snippets}/read-games/http-request.adoc[]
@@ -81,6 +83,19 @@ include::{snippets}/read-games/http-response.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
 include::{snippets}/read-games/response-fields.adoc[]
+
+=== 게임 리스트 조회 API (Pagination)
+
+==== HTTP Request
+
+include::{snippets}/read-games-beta/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/read-games-beta/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/read-games-beta/response-fields.adoc[]
 
 === 게임 단일 조회 API
 
