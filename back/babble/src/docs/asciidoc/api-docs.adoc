@@ -270,6 +270,19 @@ include::{snippets}/read-tags-beta/http-response.adoc[]
 [cols="^,^,^",options="headers"]
 include::{snippets}/read-tags-beta/response-fields.adoc[]
 
+=== 태그 단일 조회 API
+
+==== HTTP Request
+
+include::{snippets}/read-tag/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/read-tag/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/read-tag/response-fields.adoc[]
+
 === 태그 등록 API
 
 > Accessible only from allowed ip.

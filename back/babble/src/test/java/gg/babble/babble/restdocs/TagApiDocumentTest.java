@@ -85,6 +85,28 @@ public class TagApiDocumentTest extends AcceptanceTest {
         }
     }
 
+    @DisplayName("태그 단일 조회")
+    @Test
+    void getTag() {
+        Long idToFind = tagResponseRepository.getAnyId();
+
+        TagResponse response = given().filter(document("read-tag",
+                responseFields(
+                    fieldWithPath("id").description("태그 Id"),
+                    fieldWithPath("name").description("태그 이름"),
+                    fieldWithPath("alternativeNames[]").description("대체 이름 객체"),
+                    fieldWithPath("alternativeNames[].id").description("대체 이름 ID"),
+                    fieldWithPath("alternativeNames[].name").description("대체 이름"))))
+            .when().get("/api/tags/{id}", idToFind)
+            .then().statusCode(HttpStatus.OK.value())
+            .extract().body().as(TagResponse.class);
+
+        TagResponse expectedTag = tagResponseRepository.get(idToFind);
+        assertThat(response.getName()).isEqualTo(expectedTag.getName());
+        assertThat(response.getAlternativeNames()).hasSameSizeAs(expectedTag.getAlternativeNames());
+        assertThatSameAlternativeTagNames(response.getAlternativeNames(), expectedTag.getAlternativeNames());
+    }
+
     @DisplayName("태그 이름 검색")
     @Test
     void getTagNames() {

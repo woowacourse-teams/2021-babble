@@ -31,6 +31,11 @@ public class TagController {
         return ResponseEntity.ok(tagService.findAll());
     }
 
+    @GetMapping("/{tagId}")
+    public ResponseEntity<TagResponse> getTag(@PathVariable final Long tagId) {
+        return ResponseEntity.ok(tagService.findById(tagId));
+    }
+
     @PostMapping
     public ResponseEntity<TagResponse> createTag(@Valid @RequestBody final TagCreateRequest request) {
         TagResponse response = tagService.createTag(request);

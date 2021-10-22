@@ -34,13 +34,17 @@ public class TagService {
 
     public List<Tag> findAllById(final List<TagRequest> tagRequests) {
         return tagRequests.stream()
-            .map(tagRequest -> findById(tagRequest.getId()))
+            .map(tagRequest -> findEntityById(tagRequest.getId()))
             .collect(Collectors.toList());
     }
 
-    private Tag findById(final Long id) {
+    private Tag findEntityById(final Long id) {
         return tagRepository.findByIdAndDeletedFalse(id)
             .orElseThrow(() -> new BabbleNotFoundException(String.format("[%d]는 존재하지 않는 태그 ID입니다.", id)));
+    }
+
+    public TagResponse findById(final Long tagId) {
+        return TagResponse.from(findEntityById(tagId));
     }
 
     public List<TagResponse> findAll() {
@@ -60,15 +64,15 @@ public class TagService {
 
     @Transactional
     public TagResponse updateTag(final Long tagId, final TagUpdateRequest request) {
-        Tag tag = findById(tagId);
+        Tag tag = findEntityById(tagId);
         tag.update(request.getName(), request.getAlternativeNames());
 
-        return TagResponse.from(findById(tagId));
+        return TagResponse.from(findEntityById(tagId));
     }
 
     @Transactional
     public void deleteTag(final Long tagId) {
-        Tag tag = findById(tagId);
+        Tag tag = findEntityById(tagId);
         tag.delete();
     }
 }
