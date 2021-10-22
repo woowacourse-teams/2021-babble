@@ -2,15 +2,21 @@ package gg.babble.babble.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import gg.babble.babble.domain.tag.AlternativeTagName;
 import gg.babble.babble.domain.tag.Tag;
+import gg.babble.babble.domain.tag.TagName;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.PageRequest;
 
 @DataJpaTest
 public class TagRepositoryTest {
+
+    @Autowired
+    private AlternativeTagNameRepository alternativeTagNameRepository;
 
     @Autowired
     private TagRepository tagRepository;
@@ -59,5 +65,33 @@ public class TagRepositoryTest {
 
         // then
         assertThat(tagRepository.findByIdAndDeletedFalse(tag.getId())).isNotPresent();
+    }
+
+    @DisplayName("태그 이름을 검색한다.")
+    @Test
+    void findByKeyword() {
+        Tag tag1 = tagRepository.save(new Tag("2시간"));
+        Tag tag2 = tagRepository.save(new Tag("3hours"));
+        tagRepository.save(new Tag("30분"));
+
+        alternativeTagNameRepository.save(new AlternativeTagName(new TagName("2hours"), tag1));
+        alternativeTagNameRepository.save(new AlternativeTagName(new TagName("3시간"), tag2));
+
+        List<Tag> foundTags = tagRepository.findAllByKeyword("시간", PageRequest.of(0, 100));
+
+        assertThat(foundTags).hasSize(2)
+            .contains(tag1, tag2);
+    }
+
+    @DisplayName("태그 이름 검색에 페이지네이션을 적용한다.")
+    @Test
+    void findByKeywordLimit() {
+        for (int i = 0; i < 150; i++) {
+            tagRepository.save(new Tag(i + "시간"));
+        }
+
+        List<Tag> foundTags = tagRepository.findAllByKeyword("시간", PageRequest.of(0, 100));
+
+        assertThat(foundTags).hasSize(100);
     }
 }

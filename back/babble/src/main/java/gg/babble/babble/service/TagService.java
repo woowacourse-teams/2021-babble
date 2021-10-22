@@ -5,10 +5,12 @@ import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.dto.request.TagCreateRequest;
 import gg.babble.babble.dto.request.TagRequest;
 import gg.babble.babble.dto.request.TagUpdateRequest;
+import gg.babble.babble.dto.response.TagNameResponse;
 import gg.babble.babble.dto.response.TagResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,10 +18,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class TagService {
 
+    private static final PageRequest TAG_NAME_PAGE = PageRequest.of(0, 100);
+
     private final TagRepository tagRepository;
 
     public TagService(final TagRepository tagRepository) {
         this.tagRepository = tagRepository;
+    }
+
+    public List<TagNameResponse> findTagNames(final String keyword) {
+        List<Tag> tags = tagRepository.findAllByKeyword(keyword, TAG_NAME_PAGE);
+
+        return TagNameResponse.listFrom(tags);
     }
 
     public List<Tag> findAllById(final List<TagRequest> tagRequests) {
