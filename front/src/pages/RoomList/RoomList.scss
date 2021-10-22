@@ -1,5 +1,6 @@
 @use '../../../style/mixins' as m;
 @use '../../../style/variables' as v;
+@use '../../../style/functions' as f;
 
 .room-list-container {
   width: 100%;
@@ -244,7 +245,7 @@
                 padding: 0.2rem 0.7rem;
 
                 .caption1 {
-                  font-size: 1.2rem;
+                  font-size: f.font-size(small);
                 }
               }
             }

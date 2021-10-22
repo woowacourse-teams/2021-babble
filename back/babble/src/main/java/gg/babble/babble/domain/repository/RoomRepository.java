@@ -19,6 +19,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     @Query("select r "
         + "from Room r "
-        + "where r.deleted = false and r.sessions.sessions.size > 0 and r.game.id = ?1 order by r.createdAt desc")
+        + "where r.deleted = false and r.sessions.sessions.size > 0 and r.game.id = ?1 "
+        + "order by r.createdAt desc")
     List<Room> findByGameIdAndDeletedFalse(final Long gameId, final Pageable pageable);
 }

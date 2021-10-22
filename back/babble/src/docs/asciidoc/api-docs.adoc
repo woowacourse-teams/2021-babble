@@ -299,6 +299,11 @@ include::{snippets}/read-Images/response-fields.adoc[]
 
 include::{snippets}/create-image/http-request.adoc[]
 
+이미지 최대 크기: 10MB
+HTTP 요청 최대 크기: 11MB
+
+모든 이미지 파일이 Progressive JPEG 파일로 변환되어 저장됩니다.
+
 ==== Http Response
 
 include::{snippets}/create-image/http-response.adoc[]
@@ -433,4 +438,3 @@ include::{snippets}/../../src/docs/custom-snippets/chat-send/web-socket-request.
 ==== WebSocket Subscribe
 
 include::{snippets}/../../src/docs/custom-snippets/chat-send/web-socket-response.adoc[]
-

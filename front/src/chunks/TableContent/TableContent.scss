@@ -1,0 +1,46 @@
+@use '../../../style/functions' as f;
+
+.table-content-container {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+
+  &:hover {
+    .body2 {
+      color: f.primary(babble-pink);
+    }
+  }
+
+  .table-content-details {
+    display: flex;
+
+    & > span:first-child {
+      margin-right: 1rem;
+    }
+  }
+
+  .table-infos {
+    display: flex;
+    align-items: center;
+    margin-top: 0.5rem;
+
+    .category-search {
+      .caption2 {
+        max-width: 15rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      &:hover {
+        color: f.primary(babble-pink);
+      }
+    }
+
+    .caption2:first-child {
+      border-right: 1px solid black;
+      padding-right: 1rem;
+      margin-right: 1rem;
+    }
+  }
+}

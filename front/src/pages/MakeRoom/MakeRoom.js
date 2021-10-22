@@ -142,6 +142,10 @@ const MakeRoom = ({ match }) => {
     }
   };
 
+  const selectMaxHeadCount = (count) => {
+    setMaxHeadCount(Number(count));
+  };
+
   useEffect(() => {
     getImage();
     getTags();
@@ -157,8 +161,8 @@ const MakeRoom = ({ match }) => {
             {/* TODO: DropdownInput 컴포넌트에서 도메인 제거하기 */}
             <DropdownInput
               dropdownKeywords={[...Array(21).keys()].slice(2)}
-              maxHeadCount={maxHeadCount}
-              setMaxHeadCount={setMaxHeadCount}
+              inputValue={maxHeadCount}
+              setInputValue={selectMaxHeadCount}
             />
             <SearchInput
               autoCompleteKeywords={autoCompleteTagList}

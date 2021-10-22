@@ -4,6 +4,7 @@ import '../style/fonts.scss';
 import { Footer, Main, NavBar } from './components';
 import { Route, Switch } from 'react-router-dom';
 
+import Board from './pages/Board/Board';
 import PATH from './constants/path';
 import React from 'react';
 import loadable from '@loadable/component';
@@ -38,6 +39,7 @@ const App = () => {
             exact
           />
           <Route path={PATH.ADMIN} component={BabbleManagement} exact />
+          <Route path={PATH.BOARD} component={Board} />
           <Route component={NotFound} />
         </Switch>
       </Main>

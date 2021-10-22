@@ -36,6 +36,17 @@ spring:
         dialect: org.hibernate.dialect.MySQL5Dialect
         use_sql_comment: false
 
+  redis:
+    host: 192.168.2.114
+    port: 6379
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 11MB
+      location: ${java:io:tmpdir}
+
 cloud:
   aws:
     region:

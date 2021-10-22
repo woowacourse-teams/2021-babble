@@ -25,7 +25,7 @@
     .form {
       margin: 1rem 0;
       display: inline-block;
-      font-size: 1.1rem;
+      font-size: f.font-size(tiny);
       max-width: fit-content;
 
       &.error {

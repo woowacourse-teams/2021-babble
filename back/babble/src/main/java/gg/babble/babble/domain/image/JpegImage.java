@@ -18,7 +18,9 @@ import javax.imageio.ImageWriter;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.ImageOutputStream;
 
-public class MutableImage {
+public class JpegImage {
+
+    public static final String EXTENSION = "jpg";
 
     private static final float COMPRESSION_QUALITY = 1.0f;
     private static final IIOMetadata EMPTY_STREAM_METADATA = null;
@@ -27,19 +29,27 @@ public class MutableImage {
 
     private final BufferedImage bufferedImage;
 
-    private MutableImage(final BufferedImage bufferedImage) {
+    private JpegImage(final BufferedImage bufferedImage) {
         this.bufferedImage = bufferedImage;
     }
 
-    public static MutableImage of(final byte[] image) {
+    public static JpegImage of(final byte[] image) {
         try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(image);
             BufferedInputStream bufferedInputStream = new BufferedInputStream(byteArrayInputStream)) {
-            BufferedImage bufferedImage = ImageIO.read(bufferedInputStream);
-            validateBufferedImage(bufferedImage);
-            return new MutableImage(bufferedImage);
+            BufferedImage targetImage = ImageIO.read(bufferedInputStream);
+            validateBufferedImage(targetImage);
+
+            return redrawForJpeg(targetImage.getWidth(), targetImage.getHeight(), targetImage);
         } catch (IOException ioException) {
             throw new BabbleIOException("이미지 입출력 중에 오류가 발생했습니다.");
         }
+    }
+
+    private static JpegImage redrawForJpeg(final int width, final int height, final Image image) {
+        BufferedImage outputImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        outputImage.getGraphics().drawImage(image, 0, 0, null);
+
+        return new JpegImage(outputImage);
     }
 
     private static void validateBufferedImage(final BufferedImage bufferedImage) {
@@ -48,19 +58,16 @@ public class MutableImage {
         }
     }
 
-    public MutableImage resize(final ImageSize imageSize) {
+    public JpegImage resize(final ImageSize imageSize) {
         Image resultingImage = bufferedImage.getScaledInstance(imageSize.getWidth(), imageSize.getHeight(), Image.SCALE_SMOOTH);
-        BufferedImage outputImage = new BufferedImage(imageSize.getWidth(), imageSize.getHeight(), BufferedImage.TYPE_INT_RGB);
-        outputImage.getGraphics().drawImage(resultingImage, 0, 0, null);
-
-        return new MutableImage(outputImage);
+        return redrawForJpeg(imageSize.getWidth(), imageSize.getHeight(), resultingImage);
     }
 
-    public byte[] compress(final String extension) {
+    public byte[] compress() {
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             ImageOutputStream imageOutputStream = ImageIO.createImageOutputStream(byteArrayOutputStream)) {
 
-            ImageWriter writer = getImageWriter(extension, imageOutputStream);
+            ImageWriter writer = getImageWriter(imageOutputStream);
             ImageWriteParam param = getCompressionParam(writer);
 
             writer.write(EMPTY_STREAM_METADATA, new IIOImage(bufferedImage, EMPTY_THUMBNAILS, EMPTY_METADATA), param);
@@ -72,10 +79,10 @@ public class MutableImage {
         }
     }
 
-    private ImageWriter getImageWriter(final String extension, final ImageOutputStream imageOutputStream) {
-        Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName(extension);
+    private ImageWriter getImageWriter(final ImageOutputStream imageOutputStream) {
+        Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName(EXTENSION);
         if (!writers.hasNext()) {
-            throw new BabbleIllegalArgumentException(String.format("No writers found for (%s)", extension));
+            throw new BabbleIllegalArgumentException(String.format("No writers found for (%s)", EXTENSION));
         }
         ImageWriter writer = writers.next();
         writer.setOutput(imageOutputStream);
@@ -88,6 +95,7 @@ public class MutableImage {
         if (param.canWriteCompressed()) {
             param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
             param.setCompressionQuality(COMPRESSION_QUALITY);
+            param.setProgressiveMode(ImageWriteParam.MODE_DEFAULT);
         }
         return param;
     }
