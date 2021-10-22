@@ -167,7 +167,8 @@ public class BoardApiDocumentTest extends AcceptanceTest {
             .then().statusCode(HttpStatus.OK.value())
             .extract().body().as(BoardResponse.class);
 
-        assertThat(response).usingRecursiveComparison().ignoringFields("id", "createdAt", "updatedAt").isEqualTo(board);
+        assertThat(response).usingRecursiveComparison().ignoringFields("id", "createdAt", "updatedAt", "view").isEqualTo(board);
+        assertThat(response.getView()).isEqualTo(1L);
     }
 
     @DisplayName("게시글을 전체 조회한다.")
