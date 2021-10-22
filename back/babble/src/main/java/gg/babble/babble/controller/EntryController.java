@@ -10,11 +10,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 @Controller
-public class EnterExitController {
+public class EntryController {
 
     private final EntryService entryService;
 
-    public EnterExitController(final EntryService entryService) {
+    public EntryController(final EntryService entryService) {
         this.entryService = entryService;
     }
 

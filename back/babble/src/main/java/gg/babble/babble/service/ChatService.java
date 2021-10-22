@@ -26,7 +26,7 @@ public class ChatService {
         User user = userService.findById(messageRequest.getUserId());
         Content content = new Content(messageRequest.getContent());
 
-        MessageResponse message = new MessageResponse(UserResponse.from(user), content.getValue(), messageRequest.getType());
+        MessageResponse message = MessageResponse.from(user, content.getValue(), messageRequest.getType());
         ChatResponse response = new ChatResponse(roomId, message);
         redisTemplate.convertAndSend(CHANNEL_NAME, response);
     }
