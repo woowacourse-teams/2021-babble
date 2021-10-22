@@ -13,7 +13,7 @@ import org.apache.commons.validator.routines.InetAddressValidator;
 @Embeddable
 public class Ip {
 
-    private static final InetAddressValidator validator = InetAddressValidator.getInstance();
+    private static final InetAddressValidator IP_VALIDATOR = InetAddressValidator.getInstance();
 
     @Column(name = "ip", unique = true)
     @NotNull
@@ -25,7 +25,7 @@ public class Ip {
     }
 
     private void validateToConstruct(final String value) {
-        if (!validator.isValid(value)) {
+        if (!IP_VALIDATOR.isValid(value)) {
             throw new BabbleIllegalArgumentException(String.format("%s는 IP 형식에 맞지 않습니다.", value));
         }
     }
