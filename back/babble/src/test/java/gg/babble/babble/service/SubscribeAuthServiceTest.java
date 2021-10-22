@@ -23,7 +23,7 @@ public class SubscribeAuthServiceTest extends ApplicationTest {
     private SubscribeAuthService subscribeAuthService;
 
     @Autowired
-    private EnterExitService enterExitService;
+    private EntryService entryService;
 
     @DisplayName("새로운 유저가 방에 들어오더라도, 정원초과가 발생하지 않으면 예외가 발생하지 않는다.")
     @Test
@@ -44,7 +44,7 @@ public class SubscribeAuthServiceTest extends ApplicationTest {
         // given
         Room room = prepareDummyRoom();
         User 포츈 = userRepository.save(new User("포츈"));
-        enterExitService.enter(room.getId(), new SessionRequest(포츈.getId(), "1111"));
+        entryService.enter(room.getId(), new SessionRequest(포츈.getId(), "1111"));
 
         // when, then
         assertThatThrownBy(
@@ -58,7 +58,7 @@ public class SubscribeAuthServiceTest extends ApplicationTest {
         Room room = roomRepository.save(new Room(game, Collections.singletonList(tag), new MaxHeadCount(2)));
         User 루트 = userRepository.save(new User("루트"));
 
-        enterExitService.enter(room.getId(), new SessionRequest(루트.getId(), "1111"));
+        entryService.enter(room.getId(), new SessionRequest(루트.getId(), "1111"));
 
         return room;
     }
