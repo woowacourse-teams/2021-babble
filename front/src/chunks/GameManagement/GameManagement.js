@@ -72,7 +72,7 @@ const GameManagement = () => {
   };
 
   const onDeleteGame = async (gameId) => {
-    // TODO: Custom modal로 바꾸는 작업 필요
+    // TODO: Custom modal로 바꾸는 작업 필요!
     if (confirm('정말 삭제하시겠습니까?')) {
       try {
         await axios.delete(`${BASE_URL}/api/games/${gameId}`);
