@@ -21,7 +21,7 @@ public class GameBetaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<IndexPageGameResponse>> findIndexPageGamesByName(@RequestParam(defaultValue = "") final String name, final Pageable pageable) {
-        return ResponseEntity.ok(gameService.findSortedGamesByName(name, pageable));
+    public ResponseEntity<List<IndexPageGameResponse>> findIndexPageGamesByName(@RequestParam(defaultValue = "") final String keyword, final Pageable pageable) {
+        return ResponseEntity.ok(gameService.findSortedGamesByName(keyword, pageable));
     }
 }

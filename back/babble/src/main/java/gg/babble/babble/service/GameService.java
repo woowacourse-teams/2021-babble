@@ -32,8 +32,8 @@ public class GameService {
         return IndexPageGameResponse.listFrom(games);
     }
 
-    public List<IndexPageGameResponse> findSortedGamesByName(final String name, final Pageable pageable) {
-        Games games = new Games(gameRepository.findAllByName(name, pageable));
+    public List<IndexPageGameResponse> findSortedGamesByName(final String keyword, final Pageable pageable) {
+        Games games = new Games(gameRepository.findAllByName(keyword, pageable));
         games.sortedByHeadCount();
 
         return IndexPageGameResponse.listFrom(games);

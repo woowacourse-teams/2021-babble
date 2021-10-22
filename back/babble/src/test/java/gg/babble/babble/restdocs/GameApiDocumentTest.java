@@ -124,7 +124,7 @@ public class GameApiDocumentTest extends AcceptanceTest {
                     fieldWithPath("[].alternativeNames[]").description("대체 이름 객체"),
                     fieldWithPath("[].alternativeNames[].id").description("대체 이름 ID"),
                     fieldWithPath("[].alternativeNames[].name").description("대체 이름"))))
-            .when().get("/api/beta/games?name=" + nameToSearch + "&page=1")
+            .when().get("/api/beta/games?keyword=" + nameToSearch + "&page=1")
             .then().statusCode(HttpStatus.OK.value())
             .extract().body().jsonPath().getList(".", IndexPageGameResponse.class);
 

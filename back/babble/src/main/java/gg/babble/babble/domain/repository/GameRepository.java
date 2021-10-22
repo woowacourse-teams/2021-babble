@@ -19,8 +19,8 @@ public interface GameRepository extends JpaRepository<Game, Long> {
         + "    left join room on room.deleted = false and room.game_id = game.id\n"
         + "    left join session on session.deleted = false and session.room_id = room.id\n"
         + "where game.deleted = false\n"
-        + "    and (alternative_game_name.name like %:name% or game.name like %:name%)\n"
+        + "    and (alternative_game_name.name like %:keyword% or game.name like %:keyword%)\n"
         + "group by game.id\n"
         + "order by sum(case when session.id is null then 0 else 1 end) desc", nativeQuery = true)
-    List<Game> findAllByName(@Param("name") final String name, final Pageable pageable);
+    List<Game> findAllByName(@Param("keyword") final String keyword, final Pageable pageable);
 }
