@@ -13,6 +13,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -65,6 +66,13 @@ public class BoardController {
     public ResponseEntity<BoardResponse> update(@RequestBody final BoardUpdateRequest request) {
         BoardResponse response = boardService.update(request);
         return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/{boardId}/like")
+    public ResponseEntity<BoardResponse> like(@PathVariable final Long boardId) {
+        BoardResponse response = boardService.like(boardId);
+        return ResponseEntity.created(URI.create(String.format("api/board/%s", response.getId())))
+            .body(response);
     }
 
     @DeleteMapping

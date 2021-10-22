@@ -109,6 +109,43 @@ public class BoardApiDocumentTest extends AcceptanceTest {
         assertThat(response).usingRecursiveComparison().ignoringFields("id", "createdAt", "updatedAt").isEqualTo(board);
     }
 
+    @DisplayName("게시글을 조회수를 증가시킨다.")
+    @Test
+    void addViewCount() {
+        BoardResponse board = boardResponses.get(0);
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("title", board.getTitle());
+        body.put("content", board.getContent());
+        body.put("category", board.getCategory());
+        body.put("nickname", board.getNickname());
+        body.put("password", "123456");
+
+        BoardResponse response = given().body(body)
+            .filter(document("create-board",
+                requestFields(fieldWithPath("title").description("제목"),
+                    fieldWithPath("content").description("내용"),
+                    fieldWithPath("category").description("카테고리"),
+                    fieldWithPath("nickname").description("닉네임"),
+                    fieldWithPath("password").description("비밀번호")),
+                responseFields(fieldWithPath("id").description("게시글 Id"),
+                    fieldWithPath("id").description("게시글 Id"),
+                    fieldWithPath("title").description("제목"),
+                    fieldWithPath("content").description("내용"),
+                    fieldWithPath("category").description("카테고리"),
+                    fieldWithPath("nickname").description("닉네임"),
+                    fieldWithPath("createdAt").description("생성 일자"),
+                    fieldWithPath("updatedAt").description("최근 수정 일자"),
+                    fieldWithPath("notice").description("공지사항"),
+                    fieldWithPath("view").description("조회수"),
+                    fieldWithPath("like").description("좋아요"))))
+            .when().post("/api/board")
+            .then().statusCode(HttpStatus.CREATED.value())
+            .extract().body().as(BoardResponse.class);
+
+        assertThat(response).usingRecursiveComparison().ignoringFields("id", "createdAt", "updatedAt").isEqualTo(board);
+    }
+
     @DisplayName("게시글을 단일 조회한다.")
     @Test
     void findBoard() {
@@ -250,6 +287,32 @@ public class BoardApiDocumentTest extends AcceptanceTest {
         assertThat(response.getContent()).isEqualTo("게장은 다 좋은 것이여~\n게장 만들기 게임도 추가해주세요. ㅎㅎ");
         assertThat(response.getCategory()).isEqualTo("건의");
         assertThat(response.getCreatedAt()).isEqualTo(board.getCreatedAt());
+    }
+
+    @DisplayName("게시글에 좋아요를 요청한다.")
+    @Test
+    void likeBoard() {
+        BoardResponse board = boardResponses.get(2);
+
+        BoardResponse response = given()
+            .filter(document("like-board",
+                responseFields(fieldWithPath("id").description("게시글 Id"),
+                    fieldWithPath("id").description("게시글 Id"),
+                    fieldWithPath("title").description("제목"),
+                    fieldWithPath("content").description("내용"),
+                    fieldWithPath("category").description("카테고리"),
+                    fieldWithPath("nickname").description("닉네임"),
+                    fieldWithPath("createdAt").description("생성 일자"),
+                    fieldWithPath("updatedAt").description("최근 수정 일자"),
+                    fieldWithPath("notice").description("공지사항"),
+                    fieldWithPath("view").description("조회수"),
+                    fieldWithPath("like").description("좋아요"))))
+            .when().patch("/api/board/{id}/like", board.getId())
+            .then().statusCode(HttpStatus.CREATED.value())
+            .extract().body().as(BoardResponse.class);
+
+        assertThat(response.getId()).isEqualTo(board.getId());
+        assertThat(response.getLike()).isEqualTo(1L);
     }
 
     @DisplayName("게시글을 삭제한다.")

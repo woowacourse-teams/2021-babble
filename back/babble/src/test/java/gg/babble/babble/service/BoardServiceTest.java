@@ -144,11 +144,27 @@ class BoardServiceTest extends ApplicationTest {
     @DisplayName("조회를 하면 view 가 증가한다.")
     @Test
     void viewCount() {
-        //given
-
         //when
+        boardService.findById(post1.getId());
+        boardService.findById(post1.getId());
+        boardService.findById(post1.getId());
+        boardService.findById(post1.getId());
+        BoardResponse response = boardService.findById(post1.getId());
 
         //then
+        assertThat(response.getView()).isEqualTo(5L);
+    }
+
+    @DisplayName("좋아요를 하면 like 가 증가한다.")
+    @Test
+    void likeCount() {
+        //when
+        boardService.like(post1.getId());
+        boardService.like(post1.getId());
+        BoardResponse response = boardService.like(post1.getId());
+
+        //then
+        assertThat(response.getLike()).isEqualTo(3L);
     }
 
     @DisplayName("원하는 제목로 검색을 한다.")

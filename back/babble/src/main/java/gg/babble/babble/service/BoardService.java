@@ -35,6 +35,19 @@ public class BoardService {
         return BoardResponse.from(board);
     }
 
+    @Transactional
+    public BoardResponse like(final Long id) {
+        Board board = find(id);
+        board.addLike();
+
+        return BoardResponse.from(board);
+    }
+
+    private Board find(final Long id) {
+        return boardRepository.findById(id)
+            .orElseThrow(() -> new BabbleNotFoundException(String.format("[%s]번 게시글은 존재하지 않습니다.", id)));
+    }
+
     public BoardSearchResponse search(final BoardSearchRequest request) {
         BoardSearchType boardSearchType = BoardSearchType.of(request.getType());
 
@@ -47,9 +60,10 @@ public class BoardService {
         return new BoardSearchResponse(result, request.getKeyword(), request.getType());
     }
 
+    @Transactional
     public BoardResponse findById(final Long id) {
-        Board board = boardRepository.findById(id)
-            .orElseThrow(() -> new BabbleNotFoundException(String.format("[%s]번 게시글은 존재하지 않습니다.", id)));
+        Board board = find(id);
+        board.addView();
 
         return BoardResponse.from(board);
     }
@@ -77,11 +91,6 @@ public class BoardService {
         board.update(request.getTitle(), request.getContent(), request.getCategory(), request.getPassword());
 
         return BoardResponse.from(board);
-    }
-
-    private Board find(final Long id) {
-        return boardRepository.findById(id)
-            .orElseThrow(() -> new BabbleNotFoundException(String.format("[%s]번 게시글은 존재하지 않습니다.", id)));
     }
 
     @Transactional

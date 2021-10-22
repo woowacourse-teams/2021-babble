@@ -484,6 +484,19 @@ include::{snippets}/update-board/http-response.adoc[]
 [cols="^,^,^",options="headers"]
 include::{snippets}/update-board/response-fields.adoc[]
 
+=== 게시글 좋아요 API
+
+==== HTTP Request
+
+include::{snippets}/like-board/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/like-board/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/like-board/response-fields.adoc[]
+
 === 게시글 삭제 API
 
 ==== HTTP Request

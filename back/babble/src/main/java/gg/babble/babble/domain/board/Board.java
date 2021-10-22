@@ -111,6 +111,18 @@ public class Board {
         }
     }
 
+    public boolean isNotice() {
+        return category.isNotice();
+    }
+
+    public void addView() {
+        post.addView();
+    }
+
+    public void addLike() {
+        post.addLike();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -126,9 +138,5 @@ public class Board {
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    public boolean isNotice() {
-        return category.isNotice();
     }
 }

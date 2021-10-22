@@ -24,4 +24,12 @@ public class Post {
         this.title = title;
         this.content = content;
     }
+
+    public void addView() {
+        viewCount += 1;
+    }
+
+    public void addLike() {
+        likeCount += 1;
+    }
 }
