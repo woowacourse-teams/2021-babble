@@ -16,8 +16,8 @@ const LikeAndView = ({ like, view }) => {
 };
 
 LikeAndView.propTypes = {
-  like: PropTypes.string,
-  view: PropTypes.string,
+  like: PropTypes.number,
+  view: PropTypes.number,
 };
 
 export default LikeAndView;
