@@ -9,6 +9,10 @@ spring:
     hibernate:
       ddl-auto: validate
 
+  redis:
+    host: 192.168.2.114
+    port: 6379
+
   servlet:
     multipart:
       enabled: true

@@ -2,7 +2,6 @@ package gg.babble.babble.dto.request;
 
 import gg.babble.babble.domain.tag.Tag;
 import java.util.List;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

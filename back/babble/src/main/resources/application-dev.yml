@@ -16,6 +16,10 @@ spring:
       max-request-size: 11MB
       location: ${java:io:tmpdir}
 
+  redis:
+    host: 192.168.2.45
+    port: 6379
+
 cloud:
   aws:
     region:
