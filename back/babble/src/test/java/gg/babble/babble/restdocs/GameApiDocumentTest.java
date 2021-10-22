@@ -76,6 +76,7 @@ public class GameApiDocumentTest extends AcceptanceTest {
     void findAllGames() {
         List<IndexPageGameResponse> responses = given()
             .filter(document("read-games",
+                preprocessResponse(new BigListPreprocessor()),
                 responseFields(
                     fieldWithPath("[].id").description("게임 Id"),
                     fieldWithPath("[].name").description("게임 이름"),
@@ -167,6 +168,7 @@ public class GameApiDocumentTest extends AcceptanceTest {
         String findToKeyword = "롤";
 
         List<GameNameResponse> responses = given().filter(document("read-games-names",
+                preprocessResponse(new BigListPreprocessor()),
                 responseFields(
                     fieldWithPath("[].id").description("게임 Id"),
                     fieldWithPath("[].name").description("게임 이름")
