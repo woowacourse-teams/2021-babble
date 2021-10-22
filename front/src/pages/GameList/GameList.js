@@ -93,7 +93,7 @@ const GameList = () => {
           });
 
           return game.alternativeNames.some((alternativeName) =>
-            alternativeName.match(searchRegex)
+            alternativeName.name.match(searchRegex)
           );
         })
       : gameList.filter((game) => {
@@ -113,7 +113,8 @@ const GameList = () => {
           );
         });
 
-    setSelectedGames([...searchResults, ...alternativeResults]);
+    const result = new Set([...searchResults, ...alternativeResults]);
+    setSelectedGames([...result]);
   };
 
   useEffect(() => {
