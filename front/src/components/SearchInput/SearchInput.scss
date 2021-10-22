@@ -20,6 +20,7 @@
 
   input[type='text']:read-only {
     text-align: left;
+    cursor: pointer;
   }
 
   input[type='number'] {
@@ -50,6 +51,17 @@
   .input-inner {
     width: 100%;
     margin-left: 1rem;
+
+    &.text-search {
+      font-size: 1.6rem;
+
+      &::-webkit-search-decoration,
+      &::-webkit-search-cancel-button,
+      &::-webkit-search-results-button,
+      &::-webkit-search-results-decoration {
+        display: none;
+      }
+    }
   }
 
   .keyword-list-container {

@@ -1,0 +1,33 @@
+@use '../../../style/functions' as f;
+
+.board-container {
+  .board-header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .board-search {
+    display: flex;
+    margin-bottom: 1rem;
+    margin-top: 3rem;
+    max-width: 55rem;
+
+    *:not(:last-child) {
+      margin-right: 1rem;
+    }
+  }
+
+  .board-wrapper {
+    border-radius: f.border-radius(large-container);
+    border: 1px solid f.grey-scale(4);
+    padding: 1rem 2rem;
+
+    .content-wrapper {
+      padding: 1.5rem 1rem;
+
+      &:not(:last-child) {
+        border-bottom: 1px solid f.grey-scale(4);
+      }
+    }
+  }
+}

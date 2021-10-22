@@ -9,7 +9,11 @@ const SpeechBubbleWithAvatar = ({ size = 'small', time, user, children }) => {
   return (
     <div className='speech-bubble-container'>
       <LinearLayout direction='row'>
-        <AvatarImage imageSrc={user.avatar} size={size} />
+        <AvatarImage
+          imageSrc={user.avatar}
+          size={size}
+          visibility={user.avatar ? '' : 'hidden'}
+        />
         <LinearLayout direction='col'>
           <Caption2>{user.nickname}</Caption2>
           <SpeechBubble type='others' time={time}>
