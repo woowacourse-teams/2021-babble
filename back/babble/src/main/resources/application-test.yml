@@ -20,13 +20,6 @@ spring:
     hibernate:
       ddl-auto: validate
 
-  servlet:
-    multipart:
-      enabled: true
-      max-file-size: 10MB
-      max-request-size: 11MB
-      location: ${java:io:tmpdir}
-
   redis:
     host: 192.168.2.135
     port: 6379
