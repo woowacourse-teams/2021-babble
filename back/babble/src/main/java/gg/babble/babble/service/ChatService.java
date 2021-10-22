@@ -5,7 +5,6 @@ import gg.babble.babble.domain.user.User;
 import gg.babble.babble.dto.request.MessageRequest;
 import gg.babble.babble.dto.response.ChatResponse;
 import gg.babble.babble.dto.response.MessageResponse;
-import gg.babble.babble.dto.response.UserResponse;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
