@@ -2,7 +2,7 @@ import MainImage from './MainImage';
 import React from 'react';
 
 export default {
-  title: 'chunks/MainImage',
+  title: 'components/MainImage',
   component: MainImage,
 };
 
@@ -15,6 +15,5 @@ const MainImageTemplate = (args) => (
 export const Default = MainImageTemplate.bind({});
 
 Default.args = {
-  imageSrc:
-    'https://d2bidcnq0n74fu.cloudfront.net/img/games/title/League-of-Legends.png',
+  imageSrc: 'https://babble.gg/img/games/title/League%20of%20Legends-x1920.jpg',
 };
