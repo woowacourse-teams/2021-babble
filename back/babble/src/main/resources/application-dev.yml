@@ -19,7 +19,6 @@ spring:
         username: babble
 
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: validate
     generate-ddl: true
