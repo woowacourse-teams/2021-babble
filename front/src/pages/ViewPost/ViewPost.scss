@@ -1,0 +1,68 @@
+@use '../../../style/functions' as f;
+@use '../../../style/variables' as v;
+
+.view-post-container {
+  .board-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+  }
+
+  .post-wrapper {
+    border-radius: f.border-radius(large-container);
+    border: 1px solid f.grey-scale(4);
+    padding: 2rem;
+
+    .post-header {
+      padding: 0 1rem 1rem 1rem;
+      border-bottom: 1px solid f.grey-scale(4);
+
+      .header-upper {
+        display: flex;
+        justify-content: space-between;
+
+        .subtitle2 {
+          padding: 1rem 0;
+        }
+
+        .like-and-view-container {
+          span:first-child {
+            margin-right: 0.8rem;
+          }
+        }
+      }
+
+      .header-lower {
+        display: flex;
+
+        *:nth-child(2) {
+          margin-right: 0.8rem;
+        }
+      }
+    }
+
+    .post-body {
+      padding: 2rem 1rem;
+      font-size: f.font-size(medium);
+
+      .like-button {
+        display: flex;
+        padding: 6rem 0 0 0;
+        justify-content: center;
+
+        .square-button {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: f.font-size(medium);
+          box-shadow: v.$light-box-shadow;
+
+          svg {
+            margin-right: 0.4rem;
+            margin-bottom: 0.1rem;
+          }
+        }
+      }
+    }
+  }
+}
