@@ -10,8 +10,8 @@ import useDebounce from '../../hooks/useDebounce';
 const SearchInput = ({
   placeholder = '태그를 검색해주세요.',
   autoCompleteKeywords,
-  onClickKeyword,
-  onChangeInput,
+  onClickKeyword = () => {},
+  onChangeInput = () => {},
   isResetable = true,
 }) => {
   const { debounce } = useDebounce();
