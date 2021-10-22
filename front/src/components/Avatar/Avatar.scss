@@ -35,6 +35,10 @@
   box-shadow: v.$box-shadow;
   overflow: hidden;
 
+  &.hidden {
+    visibility: hidden;
+  }
+
   &.small {
     min-width: f.avatar-size(small);
     width: f.avatar-size(small);

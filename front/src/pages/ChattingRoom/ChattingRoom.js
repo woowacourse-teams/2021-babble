@@ -196,6 +196,30 @@ const ChattingRoom = ({ tags, game, roomId }) => {
     };
   }, []);
 
+  useEffect(() => {
+    const prevChat = chattings[chattings.length - 2];
+    const currentChat = chattings[chattings.length - 1];
+
+    if (prevChat) {
+      if (
+        prevChat.receivedTime === currentChat.receivedTime &&
+        prevChat.user.id === currentChat.user.id &&
+        prevChat.type === 'chat'
+      ) {
+        const partialChattings = chattings.slice(0, chattings.length - 2);
+
+        setChattings(() => [
+          ...partialChattings,
+          { ...prevChat, receivedTime: null },
+          {
+            ...currentChat,
+            user: { ...currentChat.user, avatar: null, nickname: null },
+          },
+        ]);
+      }
+    }
+  }, [chattings]);
+
   return (
     <div className='modal-chatting-room'>
       <div className={`modal-header-container ${isTagsVisible ? 'open' : ''}`}>
