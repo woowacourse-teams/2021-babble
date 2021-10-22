@@ -22,5 +22,5 @@ public interface GameRepository extends JpaRepository<Game, Long> {
         + "    and (alternative_game_name.name like %:keyword% or game.name like %:keyword%)\n"
         + "group by game.id\n"
         + "order by sum(case when session.id is null then 0 else 1 end) desc", nativeQuery = true)
-    List<Game> findAllByName(@Param("keyword") final String keyword, final Pageable pageable);
+    List<Game> findAllByKeyword(@Param("keyword") final String keyword, final Pageable pageable);
 }

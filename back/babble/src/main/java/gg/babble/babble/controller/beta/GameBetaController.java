@@ -1,5 +1,6 @@
 package gg.babble.babble.controller.beta;
 
+import gg.babble.babble.dto.response.GameNameResponse;
 import gg.babble.babble.dto.response.IndexPageGameResponse;
 import gg.babble.babble.service.GameService;
 import java.util.List;
@@ -21,7 +22,13 @@ public class GameBetaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<IndexPageGameResponse>> findIndexPageGamesByName(@RequestParam(defaultValue = "") final String keyword, final Pageable pageable) {
+    public ResponseEntity<List<IndexPageGameResponse>> findIndexPageGamesByKeyword(@RequestParam(defaultValue = "") final String keyword,
+                                                                                   final Pageable pageable) {
         return ResponseEntity.ok(gameService.findSortedGamesByName(keyword, pageable));
+    }
+
+    @GetMapping("/names")
+    public ResponseEntity<List<GameNameResponse>> findGameNamesByKeyword(@RequestParam(defaultValue = "") final String keyword) {
+        return ResponseEntity.ok(gameService.findGameNamesByKeyword(keyword));
     }
 }

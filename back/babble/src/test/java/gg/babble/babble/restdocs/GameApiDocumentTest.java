@@ -9,6 +9,7 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
 
 import gg.babble.babble.dto.response.AlternativeGameNameResponse;
 import gg.babble.babble.dto.response.GameImageResponse;
+import gg.babble.babble.dto.response.GameNameResponse;
 import gg.babble.babble.dto.response.GameWithImageResponse;
 import gg.babble.babble.dto.response.IndexPageGameResponse;
 import gg.babble.babble.restdocs.client.ResponseRepository;
@@ -158,6 +159,23 @@ public class GameApiDocumentTest extends AcceptanceTest {
         assertThat(response.getGameId()).isEqualTo(idToFind);
         assertThat(response.getImages()).hasSize(1);
         assertThat(response.getImages().get(0)).isEqualTo(IMAGE_1);
+    }
+
+    @DisplayName("게임 이름 검색")
+    @Test
+    void findGameNames() {
+        String findToKeyword = "롤";
+
+        List<GameNameResponse> responses = given().filter(document("read-games-names",
+                responseFields(
+                    fieldWithPath("[].id").description("게임 Id"),
+                    fieldWithPath("[].name").description("게임 이름")
+                )))
+            .when().get("/api/beta/games/names?keyword={keyword}", findToKeyword)
+            .then().statusCode(HttpStatus.OK.value())
+            .extract().body().jsonPath().getList(".", GameNameResponse.class);
+
+        assertThat(responses).hasSize(15);
     }
 
     @DisplayName("전체 게임 이미지 목록 조회")

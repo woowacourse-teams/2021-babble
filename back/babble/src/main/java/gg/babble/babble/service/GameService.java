@@ -6,11 +6,13 @@ import gg.babble.babble.domain.repository.GameRepository;
 import gg.babble.babble.dto.request.GameCreateRequest;
 import gg.babble.babble.dto.request.GameUpdateRequest;
 import gg.babble.babble.dto.response.GameImageResponse;
+import gg.babble.babble.dto.response.GameNameResponse;
 import gg.babble.babble.dto.response.GameWithImageResponse;
 import gg.babble.babble.dto.response.IndexPageGameResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 public class GameService {
+
+    private static final PageRequest GAME_NAME_PAGE = PageRequest.of(0, 100);
 
     private final GameRepository gameRepository;
 
@@ -33,10 +37,15 @@ public class GameService {
     }
 
     public List<IndexPageGameResponse> findSortedGamesByName(final String keyword, final Pageable pageable) {
-        Games games = new Games(gameRepository.findAllByName(keyword, pageable));
-        games.sortedByHeadCount();
+        Games games = new Games(gameRepository.findAllByKeyword(keyword, pageable));
 
         return IndexPageGameResponse.listFrom(games);
+    }
+
+    public List<GameNameResponse> findGameNamesByKeyword(final String keyword) {
+        Games games = new Games(gameRepository.findAllByKeyword(keyword, GAME_NAME_PAGE));
+
+        return GameNameResponse.listFrom(games);
     }
 
     public GameImageResponse findGameImageById(final Long gameId) {

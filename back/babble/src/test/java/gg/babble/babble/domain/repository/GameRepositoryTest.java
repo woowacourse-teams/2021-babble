@@ -100,12 +100,12 @@ public class GameRepositoryTest {
         sessionRepository.flush();
 
         // when
-        List<Game> games = gameRepository.findAllByName("게임", PageRequest.of(0, 16));
+        List<Game> games = gameRepository.findAllByKeyword("게임", PageRequest.of(0, 16));
 
         // then
         assertThat(games).containsExactly(game1, game2, game3);
     }
-    
+
     @DisplayName("이름과 대체 이름에 해당 이름을 포함하고 있으면 모두 검색할 수 있다.")
     @Test
     void findAllByNameWithNameAndAlternativeName() {
@@ -115,7 +115,7 @@ public class GameRepositoryTest {
 
         alternativeGameNameRepository.save(new AlternativeGameName("오스!", game2));
 
-        List<Game> games = gameRepository.findAllByName("오스", PageRequest.of(0, 16));
+        List<Game> games = gameRepository.findAllByKeyword("오스", PageRequest.of(0, 16));
 
         assertThat(games).hasSize(2).contains(game1, game2);
     }
@@ -128,9 +128,8 @@ public class GameRepositoryTest {
             gameRepository.save(new Game("game" + i));
         }
         // when
-        List<Game> page0 = gameRepository.findAllByName("", PageRequest.of(0, 16));
-        List<Game> page1 = gameRepository.findAllByName("", PageRequest.of(1, 16));
-
+        List<Game> page0 = gameRepository.findAllByKeyword("", PageRequest.of(0, 16));
+        List<Game> page1 = gameRepository.findAllByKeyword("", PageRequest.of(1, 16));
 
         assertThat(page0).hasSize(16);
         assertThat(page1).hasSize(4);
