@@ -1,9 +1,7 @@
 package gg.babble.babble.controller;
 
-import gg.babble.babble.dto.request.board.BoardCategoryRequest;
 import gg.babble.babble.dto.request.board.BoardCreateRequest;
 import gg.babble.babble.dto.request.board.BoardDeleteRequest;
-import gg.babble.babble.dto.request.board.BoardSearchRequest;
 import gg.babble.babble.dto.request.board.BoardUpdateRequest;
 import gg.babble.babble.dto.response.BoardResponse;
 import gg.babble.babble.dto.response.BoardSearchResponse;
@@ -19,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping("/api/board")
@@ -44,15 +43,15 @@ public class BoardController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<BoardSearchResponse> search(@RequestBody final BoardSearchRequest request) {
-        BoardSearchResponse response = boardService.search(request);
+    @GetMapping("/search/args")
+    public ResponseEntity<BoardSearchResponse> search(@RequestParam(value = "type") final String type, @RequestParam(value = "keyword") final String keyword) {
+        BoardSearchResponse response = boardService.search(type, keyword);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/category")
-    public ResponseEntity<List<BoardResponse>> searchByCategory(@RequestBody final BoardCategoryRequest request) {
-        List<BoardResponse> response = boardService.findByCategory(request);
+    @GetMapping("/category/args")
+    public ResponseEntity<List<BoardResponse>> searchByCategory(@RequestParam final String category) {
+        List<BoardResponse> response = boardService.findByCategory(category);
         return ResponseEntity.ok(response);
     }
 

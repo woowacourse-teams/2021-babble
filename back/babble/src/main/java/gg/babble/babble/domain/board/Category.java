@@ -15,7 +15,7 @@ public enum Category {
         this.name = name;
     }
 
-    public static Category of(final String name) {
+    public static Category from(final String name) {
         return Arrays.stream(Category.values())
             .filter(category -> category.name.equals(name))
             .findAny()

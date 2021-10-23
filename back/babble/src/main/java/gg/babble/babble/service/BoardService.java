@@ -4,10 +4,8 @@ import gg.babble.babble.domain.board.Board;
 import gg.babble.babble.domain.board.BoardSearchType;
 import gg.babble.babble.domain.board.Category;
 import gg.babble.babble.domain.repository.BoardRepository;
-import gg.babble.babble.dto.request.board.BoardCategoryRequest;
 import gg.babble.babble.dto.request.board.BoardCreateRequest;
 import gg.babble.babble.dto.request.board.BoardDeleteRequest;
-import gg.babble.babble.dto.request.board.BoardSearchRequest;
 import gg.babble.babble.dto.request.board.BoardUpdateRequest;
 import gg.babble.babble.dto.response.BoardResponse;
 import gg.babble.babble.dto.response.BoardSearchResponse;
@@ -48,16 +46,16 @@ public class BoardService {
             .orElseThrow(() -> new BabbleNotFoundException(String.format("[%s]번 게시글은 존재하지 않습니다.", id)));
     }
 
-    public BoardSearchResponse search(final BoardSearchRequest request) {
-        BoardSearchType boardSearchType = BoardSearchType.of(request.getType());
+    public BoardSearchResponse search(final String type, final String keyword) {
+        BoardSearchType boardSearchType = BoardSearchType.from(type);
 
-        List<Board> boards = boardSearchType.compose(boardRepository, request.getKeyword());
+        List<Board> boards = boardSearchType.compose(boardRepository, keyword);
 
         List<BoardResponse> result = boards.stream()
             .map(BoardResponse::from)
             .collect(Collectors.toList());
 
-        return new BoardSearchResponse(result, request.getKeyword(), request.getType());
+        return new BoardSearchResponse(result, keyword, type);
     }
 
     @Transactional
@@ -68,8 +66,8 @@ public class BoardService {
         return BoardResponse.from(board);
     }
 
-    public List<BoardResponse> findByCategory(final BoardCategoryRequest request) {
-        Category category = Category.of(request.getCategory());
+    public List<BoardResponse> findByCategory(final String name) {
+        Category category = Category.from(name);
         List<Board> boards = boardRepository.findByCategory(category);
 
         return boards.stream()

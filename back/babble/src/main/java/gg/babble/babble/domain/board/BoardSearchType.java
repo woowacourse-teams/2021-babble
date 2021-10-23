@@ -24,7 +24,7 @@ public enum BoardSearchType {
         this.biFunction = biFunction;
     }
 
-    public static BoardSearchType of(final String type) {
+    public static BoardSearchType from(final String type) {
         return Arrays.stream(BoardSearchType.values())
             .filter(boardSearchType -> boardSearchType.type.equals(type))
             .findAny()

@@ -5,10 +5,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import gg.babble.babble.ApplicationTest;
 import gg.babble.babble.domain.board.Board;
-import gg.babble.babble.dto.request.board.BoardCategoryRequest;
 import gg.babble.babble.dto.request.board.BoardCreateRequest;
 import gg.babble.babble.dto.request.board.BoardDeleteRequest;
-import gg.babble.babble.dto.request.board.BoardSearchRequest;
 import gg.babble.babble.dto.request.board.BoardUpdateRequest;
 import gg.babble.babble.dto.response.BoardResponse;
 import gg.babble.babble.dto.response.BoardSearchResponse;
@@ -170,36 +168,22 @@ class BoardServiceTest extends ApplicationTest {
     @DisplayName("원하는 제목로 검색을 한다.")
     @Test
     void findByTitle() {
-        //given
-        BoardSearchRequest request = new BoardSearchRequest("간장게장", "title");
-
         //when
-        BoardSearchResponse boardSearchResponse = boardService.search(request);
+        BoardSearchResponse boardSearchResponse = boardService.search("title", "간장게장");
 
         //then
         List<BoardResponse> results = boardSearchResponse.getResults();
         assertThat(results).hasSize(1);
         BoardResponse response = results.get(0);
 
-        assertThat(response.getId()).isEqualTo(post5.getId());
-        assertThat(response.getTitle()).isEqualTo(post5.title());
-        assertThat(response.getContent()).isEqualTo(post5.content());
-        assertThat(response.getCategory()).isEqualTo(post5.category());
-        assertThat(response.getNickname()).isEqualTo(post5.nickname());
-        assertThat(response.getCreatedAt()).isEqualTo(post5.createdAt());
-        assertThat(response.getUpdatedAt()).isEqualTo(post5.updatedAt());
-        assertThat(response.getLike()).isEqualTo(post5.like());
-        assertThat(response.getView()).isEqualTo(post5.view());
+        assertThat(response).usingRecursiveComparison().isEqualTo(BoardResponse.from(post5));
     }
 
     @DisplayName("원하는 내용으로 검색을 한다.")
     @Test
     void findByContent() {
-        //given
-        BoardSearchRequest request = new BoardSearchRequest("간장게장", "titleAndContent");
-
         //when
-        BoardSearchResponse response = boardService.search(request);
+        BoardSearchResponse response = boardService.search("titleAndContent", "간장게장");
 
         //then
         assertThat(response.getResults()).hasSize(2);
@@ -208,11 +192,8 @@ class BoardServiceTest extends ApplicationTest {
     @DisplayName("원하는 작성자로 검색을 한다.")
     @Test
     void findByAuthor() {
-        //given
-        BoardSearchRequest request = new BoardSearchRequest("멘보샤", "author");
-
         //when
-        BoardSearchResponse response = boardService.search(request);
+        BoardSearchResponse response = boardService.search("author", "멘보샤");
 
         //then
         assertThat(response.getResults()).hasSize(2);
@@ -221,11 +202,8 @@ class BoardServiceTest extends ApplicationTest {
     @DisplayName("제목 + 내용 + 작성자를 모두 포함한 단어로 검색을 한다.")
     @Test
     void findByAll() {
-        //given
-        BoardSearchRequest request = new BoardSearchRequest("게장", "all");
-
         //when
-        BoardSearchResponse response = boardService.search(request);
+        BoardSearchResponse response = boardService.search("all", "게장");
 
         //then
         assertThat(response.getResults()).hasSize(3);
@@ -234,11 +212,8 @@ class BoardServiceTest extends ApplicationTest {
     @DisplayName("카테고리로 검색을 한다.")
     @Test
     void findByCategory() {
-        //given
-        BoardCategoryRequest request = new BoardCategoryRequest("자유");
-
         //when
-        List<BoardResponse> responses = boardService.findByCategory(request);
+        List<BoardResponse> responses = boardService.findByCategory("자유");
 
         //then
         assertThat(responses).hasSize(3);

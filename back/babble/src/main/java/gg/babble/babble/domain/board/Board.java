@@ -54,7 +54,7 @@ public class Board {
     private final boolean deleted = false;
 
     public Board(final String title, final String content, final String category, final String nickname, final String password) {
-        this(new Post(title, content), new Account(nickname, password), Category.of(category));
+        this(new Post(title, content), new Account(nickname, password), Category.from(category));
     }
 
     public Board(final Post post, final Account account, final Category category) {
@@ -98,7 +98,7 @@ public class Board {
     public void update(final String title, final String content, final String category, final String password) {
         validatePassword(password);
         post.update(title, content);
-        this.category = Category.of(category);
+        this.category = Category.from(category);
     }
 
     public void delete(final String password) {
