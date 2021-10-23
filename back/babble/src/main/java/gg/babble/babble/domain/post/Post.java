@@ -60,7 +60,7 @@ public class Post {
     private final boolean deleted = false;
 
     public Post(final String title, final String content, final String category, final String nickname, final String password) {
-        this(title, content, Category.from(category), new Account(nickname, password));
+        this(title, content, Category.getCategoryByName(category), new Account(nickname, password));
     }
 
     public Post(final String title, final String content, final Category category, final Account account) {
@@ -90,7 +90,7 @@ public class Post {
         validatePassword(password);
         this.title = title;
         this.content = content;
-        this.category = Category.from(category);
+        this.category = Category.getCategoryByName(category);
     }
 
     public void validatePassword(final String password) {

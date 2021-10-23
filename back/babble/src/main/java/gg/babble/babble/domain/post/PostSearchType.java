@@ -2,8 +2,9 @@ package gg.babble.babble.domain.post;
 
 import gg.babble.babble.domain.repository.PostRepository;
 import gg.babble.babble.exception.BabbleNotFoundException;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiFunction;
 import lombok.Getter;
 
@@ -13,6 +14,14 @@ public enum PostSearchType {
     TITLE_AND_CONTENT("titleAndContent", "제목 + 내용", PostRepository::findByTitleLikeOrContentLikeAndDeletedFalseOrderByCreatedAtDesc),
     AUTHOR("author", "작성자", PostRepository::findByAccount_NicknameLikeAndDeletedFalseOrderByCreatedAtDesc),
     ALL("all", "제목 + 내용 + 작성자", PostRepository::findByTitleLikeOrContentLikeAndDeletedFalseOrderByCreatedAt);
+
+    private static final Map<String, PostSearchType> POST_SEARCH_TYPE_MAP = new HashMap<>();
+
+    static {
+        for (PostSearchType postSearchType : values()) {
+            POST_SEARCH_TYPE_MAP.put(postSearchType.name, postSearchType);
+        }
+    }
 
     private final String type;
     private final String name;
@@ -24,11 +33,11 @@ public enum PostSearchType {
         this.biFunction = biFunction;
     }
 
-    public static PostSearchType from(final String type) {
-        return Arrays.stream(PostSearchType.values())
-            .filter(postSearchType -> postSearchType.type.equals(type))
-            .findAny()
-            .orElseThrow(() -> new BabbleNotFoundException(String.format("[%s] 이름의 타입은 존재하지 않습니다.", type)));
+    public static PostSearchType getPostSearchTypeByName(final String name) {
+        if (!POST_SEARCH_TYPE_MAP.containsKey(name)) {
+            throw new BabbleNotFoundException(String.format("[%s] 이름의 타입은 존재하지 않습니다.", name));
+        }
+        return POST_SEARCH_TYPE_MAP.get(name);
     }
 
     public List<Post> compose(final PostRepository postRepository, final String keyword) {

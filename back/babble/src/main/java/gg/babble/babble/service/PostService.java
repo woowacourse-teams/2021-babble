@@ -45,7 +45,7 @@ public class PostService {
     }
 
     public PostBaseResponse search(final String type, final String keyword) {
-        PostSearchType postSearchType = PostSearchType.from(type);
+        PostSearchType postSearchType = PostSearchType.getPostSearchTypeByName(type);
 
         List<Post> posts = postSearchType.compose(postRepository, keyword);
 
@@ -61,7 +61,7 @@ public class PostService {
     }
 
     public PostBaseResponse findByCategory(final String name) {
-        Category category = Category.from(name);
+        Category category = Category.getCategoryByName(name);
         List<Post> posts = postRepository.findByCategory(category);
 
         return PostBaseResponse.from(posts);

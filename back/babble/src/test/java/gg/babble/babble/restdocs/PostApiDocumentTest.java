@@ -198,7 +198,7 @@ public class PostApiDocumentTest extends AcceptanceTest {
     void searchPost() {
         Map<String, Object> body = new HashMap<>();
         body.put("keyword", "게장");
-        body.put("type", "titleAndContent");
+        body.put("type", "제목 + 내용");
 
         PostBaseResponse response = given().body(body)
             .filter(document("search-posts",

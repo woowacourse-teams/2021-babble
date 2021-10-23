@@ -169,7 +169,7 @@ class PostServiceTest extends ApplicationTest {
     @Test
     void findByTitle() {
         //when
-        PostBaseResponse postBaseResponse = postService.search("title", "간장게장");
+        PostBaseResponse postBaseResponse = postService.search("제목", "간장게장");
 
         //then
         List<PostResponse> results = postBaseResponse.toPostSearchResponse().getResults();
@@ -183,7 +183,7 @@ class PostServiceTest extends ApplicationTest {
     @Test
     void findByContent() {
         //when
-        PostBaseResponse response = postService.search("titleAndContent", "간장게장");
+        PostBaseResponse response = postService.search("제목 + 내용", "간장게장");
 
         //then
         assertThat(response.toPostSearchResponse().getResults()).hasSize(2);
@@ -193,7 +193,7 @@ class PostServiceTest extends ApplicationTest {
     @Test
     void findByAuthor() {
         //when
-        PostBaseResponse response = postService.search("author", "멘보샤");
+        PostBaseResponse response = postService.search("작성자", "멘보샤");
 
         //then
         assertThat(response.toPostSearchResponse().getResults()).hasSize(2);
@@ -203,7 +203,7 @@ class PostServiceTest extends ApplicationTest {
     @Test
     void findByAll() {
         //when
-        PostBaseResponse response = postService.search("all", "게장");
+        PostBaseResponse response = postService.search("제목 + 내용 + 작성자", "게장");
 
         //then
         assertThat(response.toPostSearchResponse().getResults()).hasSize(3);
