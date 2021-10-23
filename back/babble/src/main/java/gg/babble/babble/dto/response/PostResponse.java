@@ -19,10 +19,10 @@ public class PostResponse {
     private String nickname;
     private String createdAt;
     private String updatedAt;
-    private boolean notice;
+    private Boolean notice;
 
-    private long view;
-    private long like;
+    private Long view;
+    private Long like;
 
     public static PostResponse from(final Post post) {
         return new PostResponse(post.getId(), post.getTitle(), post.getContent(), post.category(), post.nickname(), post.createdAt(), post.updatedAt(),

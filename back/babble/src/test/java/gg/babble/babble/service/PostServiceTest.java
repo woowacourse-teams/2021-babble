@@ -103,8 +103,8 @@ class PostServiceTest extends ApplicationTest {
             post1.createdAt(),
             post1.updatedAt(),
             post1.isNotice(),
-            0,
-            0);
+            0L,
+            0L);
         PostUpdateRequest request = new PostUpdateRequest(post1.getId(), "이것은 수정된 글",
             "수정된 글이지롱~",
             "건의",
@@ -128,8 +128,8 @@ class PostServiceTest extends ApplicationTest {
             post1.createdAt(),
             post1.updatedAt(),
             post1.isNotice(),
-            0,
-            0);
+            0L,
+            0L);
         PostUpdateRequest request = new PostUpdateRequest(post1.getId(), "이것은 수정된 글",
             "수정된 글이지롱~",
             "건의",

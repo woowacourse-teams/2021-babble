@@ -17,7 +17,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PostUpdateRequest {
 
-    @NotEmpty(message = "게시글 id 가 비어있습니다.")
+    @NotNull
     private Long id;
 
     @NotEmpty(message = "게시글 제목은 공백일 수 없습니다.")

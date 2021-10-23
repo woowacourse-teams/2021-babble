@@ -11,9 +11,9 @@ import lombok.Getter;
 @Getter
 public enum PostSearchType {
     TITLE("title", "제목", PostRepository::findByTitleLikeAndDeletedFalseOrderByCreatedAtDesc),
-    TITLE_AND_CONTENT("titleAndContent", "제목 + 내용", PostRepository::findByTitleLikeOrContentLikeAndDeletedFalseOrderByCreatedAtDesc),
+    TITLE_AND_CONTENT("titleAndContent", "제목, 내용", PostRepository::findByTitleLikeOrContentLikeAndDeletedFalseOrderByCreatedAtDesc),
     AUTHOR("author", "작성자", PostRepository::findByAccount_NicknameLikeAndDeletedFalseOrderByCreatedAtDesc),
-    ALL("all", "제목 + 내용 + 작성자", PostRepository::findByTitleLikeOrContentLikeAndDeletedFalseOrderByCreatedAt);
+    ALL("all", "제목, 내용, 작성자", PostRepository::findByTitleLikeOrContentLikeAndDeletedFalseOrderByCreatedAt);
 
     private static final Map<String, PostSearchType> POST_SEARCH_TYPE_MAP = new HashMap<>();
 

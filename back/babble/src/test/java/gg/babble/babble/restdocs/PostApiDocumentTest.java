@@ -8,6 +8,7 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
 
 import gg.babble.babble.dto.response.PostBaseResponse;
 import gg.babble.babble.dto.response.PostResponse;
+import gg.babble.babble.dto.response.PostSearchResponse;
 import io.restassured.response.Response;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -159,14 +160,8 @@ public class PostApiDocumentTest extends AcceptanceTest {
     @DisplayName("게시글을 검색한다.")
     @Test
     void searchPost() {
-        Map<String, Object> body = new HashMap<>();
-        body.put("keyword", "게장");
-        body.put("type", "제목 + 내용");
-
-        PostBaseResponse response = given().body(body)
+        PostSearchResponse response = given()
             .filter(document("search-posts",
-                requestFields(fieldWithPath("keyword").description("검색어"),
-                    fieldWithPath("type").description("검색 타입")),
                 responseFields(fieldWithPath("results.[].id").description("게시글 Id"),
                     fieldWithPath("results.[].title").description("제목"),
                     fieldWithPath("results.[].content").description("내용"),
@@ -179,22 +174,18 @@ public class PostApiDocumentTest extends AcceptanceTest {
                     fieldWithPath("results.[].like").description("좋아요"),
                     fieldWithPath("keyword").description("검색어"),
                     fieldWithPath("type").description("검색 타입"))))
-            .when().get("/api/post/search")
+            .when().get("/api/post/search?type={type}&keyword={keyword}", "제목, 내용", "게장")
             .then().statusCode(HttpStatus.OK.value())
-            .extract().body().as(PostBaseResponse.class);
+            .extract().body().as(PostSearchResponse.class);
 
-        assertThat(response.toPostSearchResponse().getResults()).hasSize(2);
+        assertThat(response.getResults()).hasSize(2);
     }
 
     @DisplayName("게시글을 카테고리로 검색한다.")
     @Test
     void searchPostByCategory() {
-        Map<String, Object> body = new HashMap<>();
-        body.put("category", "자유");
-
-        List<PostResponse> responses = given().body(body)
+        List<PostResponse> responses = given()
             .filter(document("category-posts",
-                requestFields(fieldWithPath("category").description("카테고리")),
                 responseFields(fieldWithPath("[].id").description("게시글 Id"),
                     fieldWithPath("[].title").description("제목"),
                     fieldWithPath("[].content").description("내용"),
@@ -205,7 +196,7 @@ public class PostApiDocumentTest extends AcceptanceTest {
                     fieldWithPath("[].notice").description("공지사항"),
                     fieldWithPath("[].view").description("조회수"),
                     fieldWithPath("[].like").description("좋아요"))))
-            .when().get("/api/post/category")
+            .when().get("/api/post/category?value={category}", "자유")
             .then().statusCode(HttpStatus.OK.value())
             .extract().body().jsonPath().getList(".", PostResponse.class);
 

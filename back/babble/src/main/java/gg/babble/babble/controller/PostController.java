@@ -3,10 +3,13 @@ package gg.babble.babble.controller;
 import gg.babble.babble.dto.request.post.PostCreateRequest;
 import gg.babble.babble.dto.request.post.PostDeleteRequest;
 import gg.babble.babble.dto.request.post.PostUpdateRequest;
-import gg.babble.babble.dto.response.PostResponse;
 import gg.babble.babble.dto.response.PostBaseResponse;
+import gg.babble.babble.dto.response.PostResponse;
+import gg.babble.babble.dto.response.PostSearchResponse;
 import gg.babble.babble.service.PostService;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLDecoder;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -45,15 +48,16 @@ public class PostController {
         return ResponseEntity.ok(response.toPostResponse());
     }
 
-    @GetMapping("/search/args")
-    public ResponseEntity<PostBaseResponse> search(@RequestParam(value = "type") final String type, @RequestParam(value = "keyword") final String keyword) {
-        PostBaseResponse response = postService.search(type, keyword);
-        return ResponseEntity.ok(response);
+    @GetMapping(path = "/search")
+    public ResponseEntity<PostSearchResponse> search(@RequestParam(value = "type") final String type, @RequestParam(value = "keyword") final String keyword)
+        throws UnsupportedEncodingException {
+        PostBaseResponse response = postService.search(URLDecoder.decode(type, "UTF-8"), URLDecoder.decode(keyword, "UTF-8"));
+        return ResponseEntity.ok(response.toPostSearchResponse());
     }
 
-    @GetMapping("/category/args")
-    public ResponseEntity<List<PostResponse>> searchByCategory(@RequestParam final String category) {
-        PostBaseResponse response = postService.findByCategory(category);
+    @GetMapping(path = "/category")
+    public ResponseEntity<List<PostResponse>> searchByCategory(@RequestParam(value = "value") final String category) throws UnsupportedEncodingException {
+        PostBaseResponse response = postService.findByCategory(URLDecoder.decode(category, "UTF-8"));
         return ResponseEntity.ok(response.toPostResponses());
     }
 
