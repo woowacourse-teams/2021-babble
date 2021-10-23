@@ -109,43 +109,6 @@ public class PostApiDocumentTest extends AcceptanceTest {
         assertThat(response).usingRecursiveComparison().ignoringFields("id", "createdAt", "updatedAt").isEqualTo(post);
     }
 
-    @DisplayName("게시글을 조회수를 증가시킨다.")
-    @Test
-    void addViewCount() {
-        PostResponse post = postResponses.get(0);
-
-        Map<String, Object> body = new HashMap<>();
-        body.put("title", post.getTitle());
-        body.put("content", post.getContent());
-        body.put("category", post.getCategory());
-        body.put("nickname", post.getNickname());
-        body.put("password", "123456");
-
-        PostResponse response = given().body(body)
-            .filter(document("create-post",
-                requestFields(fieldWithPath("title").description("제목"),
-                    fieldWithPath("content").description("내용"),
-                    fieldWithPath("category").description("카테고리"),
-                    fieldWithPath("nickname").description("닉네임"),
-                    fieldWithPath("password").description("비밀번호")),
-                responseFields(fieldWithPath("id").description("게시글 Id"),
-                    fieldWithPath("id").description("게시글 Id"),
-                    fieldWithPath("title").description("제목"),
-                    fieldWithPath("content").description("내용"),
-                    fieldWithPath("category").description("카테고리"),
-                    fieldWithPath("nickname").description("닉네임"),
-                    fieldWithPath("createdAt").description("생성 일자"),
-                    fieldWithPath("updatedAt").description("최근 수정 일자"),
-                    fieldWithPath("notice").description("공지사항"),
-                    fieldWithPath("view").description("조회수"),
-                    fieldWithPath("like").description("좋아요"))))
-            .when().post("/api/post")
-            .then().statusCode(HttpStatus.CREATED.value())
-            .extract().body().as(PostResponse.class);
-
-        assertThat(response).usingRecursiveComparison().ignoringFields("id", "createdAt", "updatedAt").isEqualTo(post);
-    }
-
     @DisplayName("게시글을 단일 조회한다.")
     @Test
     void findPost() {
@@ -309,7 +272,7 @@ public class PostApiDocumentTest extends AcceptanceTest {
                     fieldWithPath("view").description("조회수"),
                     fieldWithPath("like").description("좋아요"))))
             .when().patch("/api/post/{id}/like", post.getId())
-            .then().statusCode(HttpStatus.CREATED.value())
+            .then().statusCode(HttpStatus.OK.value())
             .extract().body().as(PostResponse.class);
 
         assertThat(response.getId()).isEqualTo(post.getId());

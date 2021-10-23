@@ -74,8 +74,7 @@ public class PostController {
         PostBaseResponse response = postService.increaseLike(postId);
         PostResponse postResponse = response.toPostResponse();
 
-        return ResponseEntity.created(URI.create(String.format("api/post/%s", postResponse.getId())))
-            .body(response.toPostResponse());
+        return ResponseEntity.ok(postResponse);
     }
 
     @DeleteMapping

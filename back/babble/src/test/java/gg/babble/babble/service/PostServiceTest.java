@@ -260,6 +260,6 @@ class PostServiceTest extends ApplicationTest {
         PostDeleteRequest request = new PostDeleteRequest(post2.getId(), "1234567");
 
         //then
-        assertThatThrownBy(() -> postService.delete(request)).isInstanceOf(BabbleIllegalArgumentException.class);
+        assertThatThrownBy(() -> postService.delete(request)).isExactlyInstanceOf(BabbleIllegalArgumentException.class);
     }
 }
