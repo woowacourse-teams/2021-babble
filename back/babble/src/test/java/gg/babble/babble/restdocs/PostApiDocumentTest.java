@@ -6,8 +6,8 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.requestF
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
+import gg.babble.babble.dto.response.PostBaseResponse;
 import gg.babble.babble.dto.response.PostResponse;
-import gg.babble.babble.dto.response.PostSearchResponse;
 import io.restassured.response.Response;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -200,7 +200,7 @@ public class PostApiDocumentTest extends AcceptanceTest {
         body.put("keyword", "게장");
         body.put("type", "titleAndContent");
 
-        PostSearchResponse response = given().body(body)
+        PostBaseResponse response = given().body(body)
             .filter(document("search-posts",
                 requestFields(fieldWithPath("keyword").description("검색어"),
                     fieldWithPath("type").description("검색 타입")),
@@ -218,9 +218,9 @@ public class PostApiDocumentTest extends AcceptanceTest {
                     fieldWithPath("type").description("검색 타입"))))
             .when().get("/api/post/search")
             .then().statusCode(HttpStatus.OK.value())
-            .extract().body().as(PostSearchResponse.class);
+            .extract().body().as(PostBaseResponse.class);
 
-        assertThat(response.getResults()).hasSize(2);
+        assertThat(response.toPostSearchResponse().getResults()).hasSize(2);
     }
 
     @DisplayName("게시글을 카테고리로 검색한다.")

@@ -4,7 +4,7 @@ import gg.babble.babble.dto.request.post.PostCreateRequest;
 import gg.babble.babble.dto.request.post.PostDeleteRequest;
 import gg.babble.babble.dto.request.post.PostUpdateRequest;
 import gg.babble.babble.dto.response.PostResponse;
-import gg.babble.babble.dto.response.PostSearchResponse;
+import gg.babble.babble.dto.response.PostBaseResponse;
 import gg.babble.babble.service.PostService;
 import java.net.URI;
 import java.util.List;
@@ -32,46 +32,50 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<PostResponse> post(@RequestBody final PostCreateRequest request) {
-        PostResponse response = postService.create(request);
-        return ResponseEntity.created(URI.create(String.format("api/post/%s", response.getId())))
-            .body(response);
+        PostBaseResponse response = postService.create(request);
+        PostResponse postResponse = response.toPostResponse();
+
+        return ResponseEntity.created(URI.create(String.format("api/post/%s", postResponse.getId())))
+            .body(postResponse);
     }
 
     @GetMapping("/{postId}")
     public ResponseEntity<PostResponse> read(@PathVariable final Long postId) {
-        PostResponse response = postService.findById(postId);
-        return ResponseEntity.ok(response);
+        PostBaseResponse response = postService.findById(postId);
+        return ResponseEntity.ok(response.toPostResponse());
     }
 
     @GetMapping("/search/args")
-    public ResponseEntity<PostSearchResponse> search(@RequestParam(value = "type") final String type, @RequestParam(value = "keyword") final String keyword) {
-        PostSearchResponse response = postService.search(type, keyword);
+    public ResponseEntity<PostBaseResponse> search(@RequestParam(value = "type") final String type, @RequestParam(value = "keyword") final String keyword) {
+        PostBaseResponse response = postService.search(type, keyword);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/category/args")
     public ResponseEntity<List<PostResponse>> searchByCategory(@RequestParam final String category) {
-        List<PostResponse> response = postService.findByCategory(category);
-        return ResponseEntity.ok(response);
+        PostBaseResponse response = postService.findByCategory(category);
+        return ResponseEntity.ok(response.toPostResponses());
     }
 
     @GetMapping
     public ResponseEntity<List<PostResponse>> readAll() {
-        List<PostResponse> responses = postService.findAll();
-        return ResponseEntity.ok(responses);
+        PostBaseResponse response = postService.findAll();
+        return ResponseEntity.ok(response.toPostResponses());
     }
 
     @PutMapping
     public ResponseEntity<PostResponse> update(@RequestBody final PostUpdateRequest request) {
-        PostResponse response = postService.update(request);
-        return ResponseEntity.ok(response);
+        PostBaseResponse response = postService.update(request);
+        return ResponseEntity.ok(response.toPostResponse());
     }
 
     @PatchMapping("/{postId}/like")
     public ResponseEntity<PostResponse> like(@PathVariable final Long postId) {
-        PostResponse response = postService.like(postId);
-        return ResponseEntity.created(URI.create(String.format("api/post/%s", response.getId())))
-            .body(response);
+        PostBaseResponse response = postService.like(postId);
+        PostResponse postResponse = response.toPostResponse();
+
+        return ResponseEntity.created(URI.create(String.format("api/post/%s", postResponse.getId())))
+            .body(response.toPostResponse());
     }
 
     @DeleteMapping

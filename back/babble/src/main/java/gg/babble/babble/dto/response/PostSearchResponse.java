@@ -16,7 +16,7 @@ public class PostSearchResponse {
     private String keyword;
     private String type;
 
-    public static PostSearchResponse from(final List<PostResponse> responses, final String keyword, final String type) {
-        return new PostSearchResponse(responses, keyword, type);
+    public static PostSearchResponse from(final List<PostResponse> postResponses, final String keyword, final String type) {
+        return new PostSearchResponse(postResponses, keyword, type);
     }
 }

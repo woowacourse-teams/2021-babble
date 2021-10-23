@@ -8,8 +8,8 @@ import gg.babble.babble.domain.post.Post;
 import gg.babble.babble.dto.request.post.PostCreateRequest;
 import gg.babble.babble.dto.request.post.PostDeleteRequest;
 import gg.babble.babble.dto.request.post.PostUpdateRequest;
+import gg.babble.babble.dto.response.PostBaseResponse;
 import gg.babble.babble.dto.response.PostResponse;
-import gg.babble.babble.dto.response.PostSearchResponse;
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -75,7 +75,7 @@ class PostServiceTest extends ApplicationTest {
             "123456");
 
         //when
-        PostResponse response = postService.create(request);
+        PostResponse response = postService.create(request).toPostResponse();
         PostResponse expected = new PostResponse(1L,
             "테스트를 위해 작성된 게시글",
             "테스트가 과연 성공할 수 있을까요?\n이 테스트가 성공한다면 엄청난 일이 일어날지도...?",
@@ -111,7 +111,7 @@ class PostServiceTest extends ApplicationTest {
             "123456");
 
         //when
-        PostResponse response = postService.update(request);
+        PostResponse response = postService.update(request).toPostResponse();
 
         //then
         assertThat(response).usingRecursiveComparison().ignoringFields("updatedAt").isEqualTo(expected);
@@ -147,7 +147,7 @@ class PostServiceTest extends ApplicationTest {
         postService.findById(post1.getId());
         postService.findById(post1.getId());
         postService.findById(post1.getId());
-        PostResponse response = postService.findById(post1.getId());
+        PostResponse response = postService.findById(post1.getId()).toPostResponse();
 
         //then
         assertThat(response.getView()).isEqualTo(5L);
@@ -159,7 +159,7 @@ class PostServiceTest extends ApplicationTest {
         //when
         postService.like(post1.getId());
         postService.like(post1.getId());
-        PostResponse response = postService.like(post1.getId());
+        PostResponse response = postService.like(post1.getId()).toPostResponse();
 
         //then
         assertThat(response.getLike()).isEqualTo(3L);
@@ -169,10 +169,10 @@ class PostServiceTest extends ApplicationTest {
     @Test
     void findByTitle() {
         //when
-        PostSearchResponse postSearchResponse = postService.search("title", "간장게장");
+        PostBaseResponse postBaseResponse = postService.search("title", "간장게장");
 
         //then
-        List<PostResponse> results = postSearchResponse.getResults();
+        List<PostResponse> results = postBaseResponse.toPostSearchResponse().getResults();
         assertThat(results).hasSize(1);
         PostResponse response = results.get(0);
 
@@ -183,37 +183,37 @@ class PostServiceTest extends ApplicationTest {
     @Test
     void findByContent() {
         //when
-        PostSearchResponse response = postService.search("titleAndContent", "간장게장");
+        PostBaseResponse response = postService.search("titleAndContent", "간장게장");
 
         //then
-        assertThat(response.getResults()).hasSize(2);
+        assertThat(response.toPostSearchResponse().getResults()).hasSize(2);
     }
 
     @DisplayName("원하는 작성자로 검색을 한다.")
     @Test
     void findByAuthor() {
         //when
-        PostSearchResponse response = postService.search("author", "멘보샤");
+        PostBaseResponse response = postService.search("author", "멘보샤");
 
         //then
-        assertThat(response.getResults()).hasSize(2);
+        assertThat(response.toPostSearchResponse().getResults()).hasSize(2);
     }
 
     @DisplayName("제목 + 내용 + 작성자를 모두 포함한 단어로 검색을 한다.")
     @Test
     void findByAll() {
         //when
-        PostSearchResponse response = postService.search("all", "게장");
+        PostBaseResponse response = postService.search("all", "게장");
 
         //then
-        assertThat(response.getResults()).hasSize(3);
+        assertThat(response.toPostSearchResponse().getResults()).hasSize(3);
     }
 
     @DisplayName("카테고리로 검색을 한다.")
     @Test
     void findByCategory() {
         //when
-        List<PostResponse> responses = postService.findByCategory("자유");
+        List<PostResponse> responses = postService.findByCategory("자유").toPostResponses();
 
         //then
         assertThat(responses).hasSize(3);
@@ -223,7 +223,7 @@ class PostServiceTest extends ApplicationTest {
     @Test
     void findById() {
         //when
-        PostResponse response = postService.findById(post4.getId());
+        PostResponse response = postService.findById(post4.getId()).toPostResponse();
 
         //then
         assertThat(response).usingRecursiveComparison().isEqualTo(PostResponse.from(post4));
@@ -233,7 +233,7 @@ class PostServiceTest extends ApplicationTest {
     @Test
     void findAll() {
         //when
-        List<PostResponse> responses = postService.findAll();
+        List<PostResponse> responses = postService.findAll().toPostResponses();
 
         //then
         assertThat(responses).hasSize(6);
@@ -249,7 +249,7 @@ class PostServiceTest extends ApplicationTest {
         postService.delete(request);
 
         //then
-        List<PostResponse> responses = postService.findAll();
+        List<PostResponse> responses = postService.findAll().toPostResponses();
         assertThat(responses).hasSize(5);
     }
 

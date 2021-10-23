@@ -8,10 +8,9 @@ import gg.babble.babble.dto.request.post.PostCreateRequest;
 import gg.babble.babble.dto.request.post.PostDeleteRequest;
 import gg.babble.babble.dto.request.post.PostUpdateRequest;
 import gg.babble.babble.dto.response.PostResponse;
-import gg.babble.babble.dto.response.PostSearchResponse;
+import gg.babble.babble.dto.response.PostBaseResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,19 +25,19 @@ public class PostService {
     }
 
     @Transactional
-    public PostResponse create(final PostCreateRequest request) {
+    public PostBaseResponse create(final PostCreateRequest request) {
         Post post = request.toEntity();
         postRepository.save(post);
 
-        return PostResponse.from(post);
+        return PostBaseResponse.from(post);
     }
 
     @Transactional
-    public PostResponse like(final Long id) {
+    public PostBaseResponse like(final Long id) {
         Post post = find(id);
         post.addLike();
 
-        return PostResponse.from(post);
+        return PostBaseResponse.from(post);
     }
 
     private Post find(final Long id) {
@@ -46,49 +45,41 @@ public class PostService {
             .orElseThrow(() -> new BabbleNotFoundException(String.format("[%s]번 게시글은 존재하지 않습니다.", id)));
     }
 
-    public PostSearchResponse search(final String type, final String keyword) {
+    public PostBaseResponse search(final String type, final String keyword) {
         PostSearchType postSearchType = PostSearchType.from(type);
 
         List<Post> posts = postSearchType.compose(postRepository, keyword);
 
-        List<PostResponse> result = posts.stream()
-            .map(PostResponse::from)
-            .collect(Collectors.toList());
-
-        return new PostSearchResponse(result, keyword, type);
+        return PostBaseResponse.of(posts, keyword, type);
     }
 
     @Transactional
-    public PostResponse findById(final Long id) {
+    public PostBaseResponse findById(final Long id) {
         Post post = find(id);
         post.addView();
 
-        return PostResponse.from(post);
+        return PostBaseResponse.from(post);
     }
 
-    public List<PostResponse> findByCategory(final String name) {
+    public PostBaseResponse findByCategory(final String name) {
         Category category = Category.from(name);
         List<Post> posts = postRepository.findByCategory(category);
 
-        return posts.stream()
-            .map(PostResponse::from)
-            .collect(Collectors.toList());
+        return PostBaseResponse.from(posts);
     }
 
-    public List<PostResponse> findAll() {
+    public PostBaseResponse findAll() {
         List<Post> posts = postRepository.findAll();
 
-        return posts.stream()
-            .map(PostResponse::from)
-            .collect(Collectors.toList());
+        return PostBaseResponse.from(posts);
     }
 
     @Transactional
-    public PostResponse update(final PostUpdateRequest request) {
+    public PostBaseResponse update(final PostUpdateRequest request) {
         Post post = find(request.getId());
         post.update(request.getTitle(), request.getContent(), request.getCategory(), request.getPassword());
 
-        return PostResponse.from(post);
+        return PostBaseResponse.from(post);
     }
 
     @Transactional
