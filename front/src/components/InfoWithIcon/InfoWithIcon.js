@@ -16,6 +16,6 @@ const InfoWithIcon = ({ icon, content = '', color = 'grey' }) => {
 InfoWithIcon.propTypes = {
   icon: PropTypes.node,
   color: PropTypes.string,
-  content: PropTypes.string,
+  content: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 export default InfoWithIcon;

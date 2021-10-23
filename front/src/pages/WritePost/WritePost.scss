@@ -1,0 +1,9 @@
+@use '../../../style/functions' as f;
+
+.board-container {
+  .board-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+  }
+}
