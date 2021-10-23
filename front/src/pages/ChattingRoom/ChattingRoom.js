@@ -83,7 +83,10 @@ const ChattingRoom = ({ tags, game, roomId }) => {
   };
 
   useInterval(() => {
-    if (stompClient.current.ws && stompClient.current.ws.readyState === 3) {
+    if (
+      stompClient.current.ws &&
+      stompClient.current.ws.readyState === WebSocket.CLOSED
+    ) {
       chattingConnect();
     }
   }, 1000);
