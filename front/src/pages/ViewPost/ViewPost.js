@@ -89,7 +89,7 @@ const ViewPost = ({ match }) => {
           </div>
         </div>
         <Darass
-          projectKey='ydF498CNZ2A6oxk193'
+          projectKey={process.env.REACT_APP_DARASS_KEY}
           darkMode={false}
           primaryColor='#FF005C'
           isShowSortOption={true}
