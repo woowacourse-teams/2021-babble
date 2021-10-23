@@ -7,7 +7,7 @@ import React from 'react';
 import TagList from '../../chunks/TagList/TagList';
 import { useUser } from '../../contexts/UserProvider';
 
-const Room = ({ room, onClickRoom }) => {
+const Room = ({ room, onClickRoom, scrollRef }) => {
   const { roomId, host, headCount, tags } = room;
   const { current, max } = headCount;
   const {
@@ -17,7 +17,7 @@ const Room = ({ room, onClickRoom }) => {
   const isDisabled = currentRoomNumber === roomId || max === current;
 
   return (
-    <div className='room-wrapper'>
+    <div className='room-wrapper' ref={scrollRef}>
       <div className={`room-shade ${isDisabled ? 'disabled' : ''}`}></div>
       <section
         className={`room-container ${isDisabled ? 'disabled' : ''}`}
@@ -67,6 +67,7 @@ Room.propTypes = {
     ),
   }),
   onClickRoom: PropTypes.func,
+  scrollRef: PropTypes.object,
 };
 
 export default Room;
