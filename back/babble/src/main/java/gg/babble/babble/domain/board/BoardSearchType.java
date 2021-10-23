@@ -9,10 +9,10 @@ import lombok.Getter;
 
 @Getter
 public enum BoardSearchType {
-    TITLE("title", "제목", BoardRepository::findAllAndTitleContainsKeywordAndDeletedFalse),
-    TITLE_AND_CONTENT("titleAndContent", "제목 + 내용", BoardRepository::findAllAndTitleAndContentContainsKeywordAndDeletedFalse),
-    AUTHOR("author", "작성자", BoardRepository::findAllAndAuthorContainsKeywordAndDeletedFalse),
-    ALL("all", "제목 + 내용 + 작성자", BoardRepository::findAllAndContainsKeywordAndDeletedFalse);
+    TITLE("title", "제목", BoardRepository::findByPost_TitleLikeAndDeletedFalseOrderByCreatedAtDesc),
+    TITLE_AND_CONTENT("titleAndContent", "제목 + 내용", BoardRepository::findByPost_TitleLikeOrPost_ContentLikeAndDeletedFalseOrderByCreatedAtDesc),
+    AUTHOR("author", "작성자", BoardRepository::findByAccount_NicknameLikeAndDeletedFalseOrderByCreatedAtDesc),
+    ALL("all", "제목 + 내용 + 작성자", BoardRepository::findByPost_TitleLikeOrPost_ContentLikeAndDeletedFalseOrderByCreatedAt);
 
     private final String type;
     private final String name;
@@ -32,6 +32,6 @@ public enum BoardSearchType {
     }
 
     public List<Board> compose(final BoardRepository boardRepository, final String keyword) {
-        return biFunction.apply(boardRepository, keyword.toLowerCase());
+        return biFunction.apply(boardRepository, String.format("%s%s%s", "%", keyword.toLowerCase(), "%"));
     }
 }

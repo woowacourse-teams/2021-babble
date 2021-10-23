@@ -13,27 +13,19 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     List<Board> findByCategory(Category category);
 
-    @Query("select b "
-        + "from Board b "
-        + "where b.deleted = false and b.post.title like %?1% "
-        + "order by b.createdAt desc ")
-    List<Board> findAllAndTitleContainsKeywordAndDeletedFalse(final String keyword);
+    List<Board> findByPost_TitleLikeAndDeletedFalseOrderByCreatedAtDesc(final String keyword);
 
     @Query("select b "
         + "from Board b "
         + "where b.deleted = false and (b.post.title like %?1% or b.post.content like %?1%) "
         + "order by b.createdAt desc ")
-    List<Board> findAllAndTitleAndContentContainsKeywordAndDeletedFalse(final String keyword);
+    List<Board> findByPost_TitleLikeOrPost_ContentLikeAndDeletedFalseOrderByCreatedAtDesc(final String keyword);
 
-    @Query("select b "
-        + "from Board b "
-        + "where b.deleted = false and b.account.nickname like %?1% "
-        + "order by b.createdAt desc ")
-    List<Board> findAllAndAuthorContainsKeywordAndDeletedFalse(final String keyword);
+    List<Board> findByAccount_NicknameLikeAndDeletedFalseOrderByCreatedAtDesc(final String keyword);
 
     @Query("select b "
         + "from Board b "
         + "where b.deleted = false and (b.post.title like %?1% or b.post.content like %?1% or b.account.nickname like %?1%) "
         + "order by b.createdAt desc ")
-    List<Board> findAllAndContainsKeywordAndDeletedFalse(final String keyword);
+    List<Board> findByPost_TitleLikeOrPost_ContentLikeAndDeletedFalseOrderByCreatedAt(final String keyword);
 }
