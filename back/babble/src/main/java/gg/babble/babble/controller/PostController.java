@@ -71,7 +71,7 @@ public class PostController {
 
     @PatchMapping("/{postId}/like")
     public ResponseEntity<PostResponse> like(@PathVariable final Long postId) {
-        PostBaseResponse response = postService.like(postId);
+        PostBaseResponse response = postService.increaseLike(postId);
         PostResponse postResponse = response.toPostResponse();
 
         return ResponseEntity.created(URI.create(String.format("api/post/%s", postResponse.getId())))

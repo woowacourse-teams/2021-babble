@@ -32,7 +32,7 @@ public class PostService {
     }
 
     @Transactional
-    public PostBaseResponse like(final Long id) {
+    public PostBaseResponse increaseLike(final Long id) {
         Post post = find(id);
         post.addLike();
 

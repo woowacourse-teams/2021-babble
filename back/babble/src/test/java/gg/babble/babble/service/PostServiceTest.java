@@ -157,9 +157,9 @@ class PostServiceTest extends ApplicationTest {
     @Test
     void likeCount() {
         //when
-        postService.like(post1.getId());
-        postService.like(post1.getId());
-        PostResponse response = postService.like(post1.getId()).toPostResponse();
+        postService.increaseLike(post1.getId());
+        postService.increaseLike(post1.getId());
+        PostResponse response = postService.increaseLike(post1.getId()).toPostResponse();
 
         //then
         assertThat(response.getLike()).isEqualTo(3L);
