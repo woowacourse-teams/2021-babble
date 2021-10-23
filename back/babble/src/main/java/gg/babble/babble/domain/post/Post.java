@@ -93,11 +93,7 @@ public class Post {
         this.category = Category.from(category);
     }
 
-    public void delete(final String password) {
-        validatePassword(password);
-    }
-
-    private void validatePassword(final String password) {
+    public void validatePassword(final String password) {
         if (account.isWrongPassword(password)) {
             throw new BabbleIllegalArgumentException("올바르지 않은 비밀번호가 입력 되었습니다.");
         }

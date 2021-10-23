@@ -143,11 +143,11 @@ class PostServiceTest extends ApplicationTest {
     @Test
     void viewCount() {
         //when
-        postService.findById(post1.getId());
-        postService.findById(post1.getId());
-        postService.findById(post1.getId());
-        postService.findById(post1.getId());
-        PostResponse response = postService.findById(post1.getId()).toPostResponse();
+        postService.findByIdAndIncreaseView(post1.getId());
+        postService.findByIdAndIncreaseView(post1.getId());
+        postService.findByIdAndIncreaseView(post1.getId());
+        postService.findByIdAndIncreaseView(post1.getId());
+        PostResponse response = postService.findByIdAndIncreaseView(post1.getId()).toPostResponse();
 
         //then
         assertThat(response.getView()).isEqualTo(5L);
@@ -223,7 +223,7 @@ class PostServiceTest extends ApplicationTest {
     @Test
     void findById() {
         //when
-        PostResponse response = postService.findById(post4.getId()).toPostResponse();
+        PostResponse response = postService.findByIdAndIncreaseView(post4.getId()).toPostResponse();
 
         //then
         assertThat(response).usingRecursiveComparison().isEqualTo(PostResponse.from(post4));

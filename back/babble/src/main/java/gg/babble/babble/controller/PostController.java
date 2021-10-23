@@ -41,7 +41,7 @@ public class PostController {
 
     @GetMapping("/{postId}")
     public ResponseEntity<PostResponse> read(@PathVariable final Long postId) {
-        PostBaseResponse response = postService.findById(postId);
+        PostBaseResponse response = postService.findByIdAndIncreaseView(postId);
         return ResponseEntity.ok(response.toPostResponse());
     }
 

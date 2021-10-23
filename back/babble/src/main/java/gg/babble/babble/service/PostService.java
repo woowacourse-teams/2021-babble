@@ -1,13 +1,12 @@
 package gg.babble.babble.service;
 
+import gg.babble.babble.domain.post.Category;
 import gg.babble.babble.domain.post.Post;
 import gg.babble.babble.domain.post.PostSearchType;
-import gg.babble.babble.domain.post.Category;
 import gg.babble.babble.domain.repository.PostRepository;
 import gg.babble.babble.dto.request.post.PostCreateRequest;
 import gg.babble.babble.dto.request.post.PostDeleteRequest;
 import gg.babble.babble.dto.request.post.PostUpdateRequest;
-import gg.babble.babble.dto.response.PostResponse;
 import gg.babble.babble.dto.response.PostBaseResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.List;
@@ -54,7 +53,7 @@ public class PostService {
     }
 
     @Transactional
-    public PostBaseResponse findById(final Long id) {
+    public PostBaseResponse findByIdAndIncreaseView(final Long id) {
         Post post = find(id);
         post.addView();
 
@@ -85,7 +84,7 @@ public class PostService {
     @Transactional
     public void delete(final PostDeleteRequest request) {
         Post post = find(request.getId());
-        post.delete(request.getPassword());
+        post.validatePassword(request.getPassword());
         postRepository.delete(post);
     }
 }
