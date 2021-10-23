@@ -38,6 +38,15 @@ dependencies {
     // log
     implementation 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.7.1'
 
+    // redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation('it.ozimov:embedded-redis:0.7.3') {
+        exclude group: 'org.slf4j', module: 'slf4j-simple'
+    }
+
+    // apache-commons-validator
+    implementation 'commons-validator:commons-validator:1.7'
+
     // web-socket
     implementation 'org.webjars:webjars-locator-core'
     implementation 'org.webjars:sockjs-client:1.0.2'

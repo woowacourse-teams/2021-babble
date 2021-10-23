@@ -5,8 +5,28 @@
   padding: 2rem 0;
   border-bottom: 1px solid f.grey-scale(4);
 
-  .page-layout a {
-    width: fit-content;
+  .page-layout {
+    display: flex;
+    justify-content: space-between;
+
+    a {
+      display: flex;
+      align-items: flex-end;
+      width: fit-content;
+
+      :hover {
+        color: f.grey-scale(9);
+      }
+
+      &:not(a:last-child) {
+        margin-right: 3rem;
+      }
+    }
+
+    .nav-menu {
+      display: flex;
+      color: f.grey-scale(11);
+    }
   }
 }
 

@@ -438,4 +438,3 @@ include::{snippets}/../../src/docs/custom-snippets/chat-send/web-socket-request.
 ==== WebSocket Subscribe
 
 include::{snippets}/../../src/docs/custom-snippets/chat-send/web-socket-response.adoc[]
-

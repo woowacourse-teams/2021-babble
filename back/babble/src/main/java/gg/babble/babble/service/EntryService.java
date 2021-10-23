@@ -5,50 +5,61 @@ import gg.babble.babble.domain.repository.SessionRepository;
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.user.User;
 import gg.babble.babble.dto.request.SessionRequest;
-import gg.babble.babble.dto.response.ExitResponse;
+import gg.babble.babble.dto.response.EntryResponse;
 import gg.babble.babble.dto.response.SessionsResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(readOnly = true)
-public class EnterExitService {
+public class EntryService {
+
+    private static final String CHANNEL_NAME = "users";
 
     private final SessionRepository sessionRepository;
+    private final RedisTemplate<String, Object> redisTemplate;
     private final RoomService roomService;
     private final UserService userService;
 
-    public EnterExitService(final SessionRepository sessionRepository, final RoomService roomService, final UserService userService) {
+    public EntryService(final SessionRepository sessionRepository,
+                        final RedisTemplate<String, Object> redisTemplate,
+                        final RoomService roomService,
+                        final UserService userService) {
         this.sessionRepository = sessionRepository;
+        this.redisTemplate = redisTemplate;
         this.roomService = roomService;
         this.userService = userService;
     }
 
     @Transactional
-    public SessionsResponse enter(final Long roomId, final SessionRequest request) {
+    public void enter(final Long roomId, final SessionRequest request) {
         Room room = roomService.findById(roomId);
         User user = userService.findById(request.getUserId());
         Session session = new Session(request.getSessionId(), user, room);
 
         sessionRepository.save(session);
 
-        return SessionsResponse.of(room.getHost(), room.getGuests());
+        EntryResponse response = new EntryResponse(roomId, SessionsResponse.of(room));
+        redisTemplate.convertAndSend(CHANNEL_NAME, response);
     }
 
     @Transactional
-    public ExitResponse exit(final String sessionId) {
+    public void exit(final String sessionId) {
         Session session = findBySessionId(sessionId);
 
         sessionRepository.deleteById(session.getId());
 
         Room room = session.getRoom();
         room.deleteSession(session);
+
         if (room.isEmpty()) {
             roomService.deleteRoom(room);
-            return new ExitResponse(room.getId(), SessionsResponse.empty());
         }
-        return new ExitResponse(session.getRoom().getId(), SessionsResponse.of(session.getRoom().getHost(), session.getRoom().getGuests()));
+
+        EntryResponse response = new EntryResponse(room.getId(), SessionsResponse.of(room));
+        redisTemplate.convertAndSend(CHANNEL_NAME, response);
     }
 
     private Session findBySessionId(final String id) {

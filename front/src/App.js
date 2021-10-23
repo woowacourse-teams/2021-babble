@@ -7,6 +7,8 @@ import { Route, Switch } from 'react-router-dom';
 import Board from './pages/Board/Board';
 import PATH from './constants/path';
 import React from 'react';
+import ViewPost from './pages/ViewPost/ViewPost';
+import WritePost from './pages/WritePost/WritePost';
 import loadable from '@loadable/component';
 
 const GameList = loadable(() => import('./pages/GameList/GameList'));
@@ -39,7 +41,17 @@ const App = () => {
             exact
           />
           <Route path={PATH.ADMIN} component={BabbleManagement} exact />
-          <Route path={PATH.BOARD} component={Board} />
+          <Route path={PATH.BOARD} component={Board} exact />
+          <Route
+            path={`${PATH.BOARD}${PATH.WRITE_POST}`}
+            component={WritePost}
+            exact
+          />
+          <Route
+            path={`${PATH.BOARD}${PATH.VIEW_POST}/:postId`}
+            component={ViewPost}
+            exact
+          />
           <Route component={NotFound} />
         </Switch>
       </Main>
