@@ -26,6 +26,7 @@ import { Subtitle3 } from '../../core/Typography';
 import TagList from '../../chunks/TagList/TagList';
 import { useChattingModal } from '../../contexts/ChattingModalProvider';
 import { useDefaultModal } from '../../contexts/DefaultModalProvider';
+import useInterval from '../../hooks/useInterval';
 import { usePushNotification } from '../../contexts/PushNotificationProvider';
 import useTabNotification from '../../hooks/useTabNotification';
 import { useUser } from '../../contexts/UserProvider';
@@ -70,13 +71,22 @@ const ChattingRoom = ({ tags, game, roomId }) => {
 
   const waitForConnectionReady = (callback) => {
     setTimeout(() => {
-      if (stompClient.current.ws.readyState === WebSocket.OPEN) {
+      if (
+        stompClient.current.ws &&
+        stompClient.current.ws.readyState === WebSocket.OPEN
+      ) {
         callback();
       } else {
         waitForConnectionReady(callback);
       }
     }, 1);
   };
+
+  useInterval(() => {
+    if (stompClient.current.ws && stompClient.current.ws.readyState === 3) {
+      chattingConnect();
+    }
+  }, 1000);
 
   const sendMessage = (content, type) => {
     waitForConnectionReady(() => {
@@ -99,7 +109,69 @@ const ChattingRoom = ({ tags, game, roomId }) => {
     e.currentTarget.chat.focus();
   };
 
-  useEffect(() => {
+  const stompClientOnConnect = (socket) => {
+    isConnected.current = true;
+
+    const socketURL = socket._transport.url;
+    const sessionId = socketURL.substring(
+      socketURL.lastIndexOf(SOCKET_URL_DIVIDER) - SESSION_ID_LENGTH,
+      socketURL.lastIndexOf(SOCKET_URL_DIVIDER)
+    );
+
+    user_subscription.current = stompClient.current.subscribe(
+      SUBSCRIBE_URL.USERS(roomId),
+      (message) => {
+        const users = JSON.parse(message.body);
+        setParticipants(users);
+      }
+    );
+
+    chat_subscription.current = stompClient.current.subscribe(
+      SUBSCRIBE_URL.CHAT(roomId),
+      (message) => {
+        const receivedTime = new Date().toLocaleTimeString([], {
+          timeStyle: 'short',
+        });
+
+        const user = JSON.parse(message.body).user;
+        const content = JSON.parse(message.body).content;
+        const type = JSON.parse(message.body).type;
+
+        if (
+          user.nickname !== nickname &&
+          (document.hidden || !document.hasFocus()) &&
+          type === 'chat'
+        ) {
+          if (isNotificationOnRef.current) {
+            fireNotificationWithTimeout('Babble 채팅 메시지', 3500, {
+              body: `${user.nickname}: ${content}`,
+            });
+          }
+
+          showNotificationCount({ blinkMessage: 'New Message!' });
+        }
+
+        setChattings((prevChattings) => [
+          ...prevChattings,
+          { user, content, type, receivedTime },
+        ]);
+      }
+    );
+
+    waitForConnectionReady(() => {
+      stompClient.current.send(
+        SEND_URL.USERS(roomId),
+        {},
+        JSON.stringify({ userId, sessionId })
+      );
+    });
+
+    sendMessage(`${nickname}님이 입장했습니다!`, 'notice');
+
+    changeCurrentRoomNumber(roomId);
+  };
+
+  const chattingConnect = () => {
     const socket = new SockJS(CONNECTION_URL);
     stompClient.current = Stomp.over(socket);
 
@@ -110,66 +182,7 @@ const ChattingRoom = ({ tags, game, roomId }) => {
 
     stompClient.current.connect(
       {},
-      () => {
-        isConnected.current = true;
-        const socketURL = socket._transport.url;
-        const sessionId = socketURL.substring(
-          socketURL.lastIndexOf(SOCKET_URL_DIVIDER) - SESSION_ID_LENGTH,
-          socketURL.lastIndexOf(SOCKET_URL_DIVIDER)
-        );
-
-        user_subscription.current = stompClient.current.subscribe(
-          SUBSCRIBE_URL.USERS(roomId),
-          (message) => {
-            const users = JSON.parse(message.body);
-            setParticipants(users);
-          }
-        );
-
-        chat_subscription.current = stompClient.current.subscribe(
-          SUBSCRIBE_URL.CHAT(roomId),
-          (message) => {
-            const receivedTime = new Date().toLocaleTimeString([], {
-              timeStyle: 'short',
-            });
-
-            const user = JSON.parse(message.body).user;
-            const content = JSON.parse(message.body).content;
-            const type = JSON.parse(message.body).type;
-
-            if (
-              user.nickname !== nickname &&
-              (document.hidden || !document.hasFocus()) &&
-              type === 'chat'
-            ) {
-              if (isNotificationOnRef.current) {
-                fireNotificationWithTimeout('Babble 채팅 메시지', 3500, {
-                  body: `${user.nickname}: ${content}`,
-                });
-              }
-
-              showNotificationCount({ blinkMessage: 'New Message!' });
-            }
-
-            setChattings((prevChattings) => [
-              ...prevChattings,
-              { user, content, type, receivedTime },
-            ]);
-          }
-        );
-
-        waitForConnectionReady(() => {
-          stompClient.current.send(
-            SEND_URL.USERS(roomId),
-            {},
-            JSON.stringify({ userId, sessionId })
-          );
-        });
-
-        sendMessage(`${nickname}님이 입장했습니다!`, 'notice');
-
-        changeCurrentRoomNumber(roomId);
-      },
+      () => stompClientOnConnect(socket),
       (error) => {
         const errorStrings = error.headers.message.split(':');
         const errorMessage = errorStrings[errorStrings.length - 1].trim();
@@ -179,15 +192,23 @@ const ChattingRoom = ({ tags, game, roomId }) => {
       }
     );
 
+    stompClient.current.reconnect_delay = 100;
+  };
+
+  useEffect(() => {
+    chattingConnect();
+
     return () => {
       if (isConnected.current) {
         stompClient.current.disconnect(() => {
           if (user_subscription.current) {
             user_subscription.current.unsubscribe();
           }
+
           if (chat_subscription.current) {
             chat_subscription.current.unsubscribe();
           }
+
           isConnected.current = false;
 
           changeCurrentRoomNumber(-1);
