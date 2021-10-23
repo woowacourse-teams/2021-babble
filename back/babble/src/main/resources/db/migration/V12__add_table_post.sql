@@ -1,4 +1,4 @@
-create table board
+create table post
 (
     id         bigint auto_increment,
     title      varchar(255) not null,

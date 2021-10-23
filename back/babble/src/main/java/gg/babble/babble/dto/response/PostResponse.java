@@ -1,6 +1,6 @@
 package gg.babble.babble.dto.response;
 
-import gg.babble.babble.domain.board.Board;
+import gg.babble.babble.domain.post.Post;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BoardResponse {
+public class PostResponse {
 
     private Long id;
     private String title;
@@ -24,8 +24,8 @@ public class BoardResponse {
     private long view;
     private long like;
 
-    public static BoardResponse from(final Board board) {
-        return new BoardResponse(board.getId(), board.title(), board.content(), board.category(), board.nickname(), board.createdAt(), board.updatedAt(),
-            board.isNotice(), board.view(), board.like());
+    public static PostResponse from(final Post post) {
+        return new PostResponse(post.getId(), post.getTitle(), post.getContent(), post.category(), post.nickname(), post.createdAt(), post.updatedAt(),
+            post.isNotice(), post.getView(), post.getLike());
     }
 }

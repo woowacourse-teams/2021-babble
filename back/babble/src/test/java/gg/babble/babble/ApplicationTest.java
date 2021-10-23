@@ -3,8 +3,8 @@ package gg.babble.babble;
 import gg.babble.babble.domain.repository.AdministratorRepository;
 import gg.babble.babble.domain.repository.AlternativeGameNameRepository;
 import gg.babble.babble.domain.repository.AlternativeTagNameRepository;
-import gg.babble.babble.domain.repository.BoardRepository;
 import gg.babble.babble.domain.repository.GameRepository;
+import gg.babble.babble.domain.repository.PostRepository;
 import gg.babble.babble.domain.repository.RoomRepository;
 import gg.babble.babble.domain.repository.S3Repository;
 import gg.babble.babble.domain.repository.SessionRepository;
@@ -57,7 +57,7 @@ public class ApplicationTest {
     protected SliderRepository sliderRepository;
 
     @Autowired
-    protected BoardRepository boardRepository;
+    protected PostRepository postRepository;
 
     @BeforeEach
     protected void setUp() {

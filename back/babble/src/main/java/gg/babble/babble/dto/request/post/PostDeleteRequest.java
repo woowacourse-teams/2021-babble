@@ -1,7 +1,7 @@
-package gg.babble.babble.dto.request.board;
+package gg.babble.babble.dto.request.post;
 
-import static gg.babble.babble.domain.board.Account.MAX_PASSWORD_LENGTH;
-import static gg.babble.babble.domain.board.Account.MIN_PASSWORD_LENGTH;
+import static gg.babble.babble.domain.post.Account.MAX_PASSWORD_LENGTH;
+import static gg.babble.babble.domain.post.Account.MIN_PASSWORD_LENGTH;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -14,7 +14,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BoardDeleteRequest {
+public class PostDeleteRequest {
 
     @NotNull(message = "게시글 id 가 비어있습니다.")
     private Long id;

@@ -1,4 +1,4 @@
-package gg.babble.babble.domain.board;
+package gg.babble.babble.domain.post;
 
 import javax.persistence.Embeddable;
 import lombok.Getter;

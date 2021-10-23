@@ -1,4 +1,4 @@
-package gg.babble.babble.domain.board;
+package gg.babble.babble.domain.post;
 
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
 import java.time.LocalDateTime;
@@ -23,21 +23,24 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @EntityListeners(AuditingEntityListener.class)
 @Getter
-@SQLDelete(sql = "UPDATE board SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE post SET deleted = true WHERE id = ?")
 @Where(clause = "deleted=false")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Board {
+public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Embedded
-    private Post post;
+    private String title;
+    private String content;
 
-    @Embedded
-    private Account account;
+    @Column(name = "view_count")
+    private Long view = 0L;
+
+    @Column(name = "like_count")
+    private Long like = 0L;
 
     @Enumerated(value = EnumType.STRING)
     private Category category;
@@ -50,25 +53,21 @@ public class Board {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
+    @Embedded
+    private Account account;
+
     @Column(nullable = false)
     private final boolean deleted = false;
 
-    public Board(final String title, final String content, final String category, final String nickname, final String password) {
-        this(new Post(title, content), new Account(nickname, password), Category.from(category));
+    public Post(final String title, final String content, final String category, final String nickname, final String password) {
+        this(title, content, Category.from(category), new Account(nickname, password));
     }
 
-    public Board(final Post post, final Account account, final Category category) {
-        this.post = post;
+    public Post(final String title, final String content, final Category category, final Account account) {
+        this.title = title;
+        this.content = content;
         this.account = account;
         this.category = category;
-    }
-
-    public String title() {
-        return post.getTitle();
-    }
-
-    public String content() {
-        return post.getContent();
     }
 
     public String createdAt() {
@@ -77,14 +76,6 @@ public class Board {
 
     public String updatedAt() {
         return updatedAt.toString();
-    }
-
-    public Long view() {
-        return post.getViewCount();
-    }
-
-    public Long like() {
-        return post.getLikeCount();
     }
 
     public String category() {
@@ -97,7 +88,8 @@ public class Board {
 
     public void update(final String title, final String content, final String category, final String password) {
         validatePassword(password);
-        post.update(title, content);
+        this.title = title;
+        this.content = content;
         this.category = Category.from(category);
     }
 
@@ -116,11 +108,11 @@ public class Board {
     }
 
     public void addView() {
-        post.addView();
+        view += 1;
     }
 
     public void addLike() {
-        post.addLike();
+        like += 1;
     }
 
     @Override
@@ -131,8 +123,8 @@ public class Board {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Board board = (Board) o;
-        return Objects.equals(id, board.id);
+        Post post = (Post) o;
+        return Objects.equals(id, post.id);
     }
 
     @Override

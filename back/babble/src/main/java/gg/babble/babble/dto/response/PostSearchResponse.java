@@ -10,13 +10,13 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BoardSearchResponse {
+public class PostSearchResponse {
 
-    private List<BoardResponse> results;
+    private List<PostResponse> results;
     private String keyword;
     private String type;
 
-    public static BoardSearchResponse from(final List<BoardResponse> responses, final String keyword, final String type) {
-        return new BoardSearchResponse(responses, keyword, type);
+    public static PostSearchResponse from(final List<PostResponse> responses, final String keyword, final String type) {
+        return new PostSearchResponse(responses, keyword, type);
     }
 }
