@@ -445,6 +445,19 @@ include::{snippets}/read-posts/http-response.adoc[]
 [cols="^,^,^",options="headers"]
 include::{snippets}/read-posts/response-fields.adoc[]
 
+=== 게시판 페이지 조회 API
+
+==== HTTP Request
+
+include::{snippets}/read-posts-page/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/read-posts-page/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/read-posts-page/response-fields.adoc[]
+
 === 게시판 검색 API
 
 ==== HTTP Request

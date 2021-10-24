@@ -6,6 +6,7 @@ import gg.babble.babble.dto.request.post.PostUpdateRequest;
 import gg.babble.babble.dto.response.PostBaseResponse;
 import gg.babble.babble.dto.response.PostResponse;
 import gg.babble.babble.dto.response.PostSearchResponse;
+import gg.babble.babble.dto.response.PostWithoutContentResponse;
 import gg.babble.babble.service.PostService;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -57,15 +58,16 @@ public class PostController {
     }
 
     @GetMapping(path = "/category")
-    public ResponseEntity<List<PostResponse>> searchByCategory(@RequestParam(value = "value") final String category) throws UnsupportedEncodingException {
+    public ResponseEntity<List<PostWithoutContentResponse>> searchByCategory(@RequestParam(value = "value") final String category)
+        throws UnsupportedEncodingException {
         PostBaseResponse response = postService.findByCategory(URLDecoder.decode(category, "UTF-8"));
-        return ResponseEntity.ok(response.toPostResponses());
+        return ResponseEntity.ok(response.toPostWithoutContentResponse());
     }
 
     @GetMapping
-    public ResponseEntity<List<PostResponse>> readAll(final Pageable pageable) {
+    public ResponseEntity<List<PostWithoutContentResponse>> readAll(final Pageable pageable) {
         PostBaseResponse response = postService.findAllWithPagination(pageable);
-        return ResponseEntity.ok(response.toPostResponses());
+        return ResponseEntity.ok(response.toPostWithoutContentResponse());
     }
 
     @PutMapping

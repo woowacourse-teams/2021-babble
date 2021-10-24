@@ -10,6 +10,7 @@ import gg.babble.babble.dto.request.post.PostDeleteRequest;
 import gg.babble.babble.dto.request.post.PostUpdateRequest;
 import gg.babble.babble.dto.response.PostBaseResponse;
 import gg.babble.babble.dto.response.PostResponse;
+import gg.babble.babble.dto.response.PostWithoutContentResponse;
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -176,9 +177,9 @@ class PostServiceTest extends ApplicationTest {
         PostBaseResponse postBaseResponse = postService.search("제목", "간장게장");
 
         //then
-        List<PostResponse> results = postBaseResponse.toPostSearchResponse().getResults();
+        List<PostWithoutContentResponse> results = postBaseResponse.toPostSearchResponse().getResults();
         assertThat(results).hasSize(1);
-        PostResponse response = results.get(0);
+        PostWithoutContentResponse response = results.get(0);
 
         assertThat(response).usingRecursiveComparison().isEqualTo(PostResponse.from(post5));
     }
@@ -217,7 +218,7 @@ class PostServiceTest extends ApplicationTest {
     @Test
     void findByCategory() {
         //when
-        List<PostResponse> responses = postService.findByCategory("자유").toPostResponses();
+        List<PostWithoutContentResponse> responses = postService.findByCategory("자유").toPostWithoutContentResponse();
 
         //then
         assertThat(responses).hasSize(3);
@@ -237,7 +238,7 @@ class PostServiceTest extends ApplicationTest {
     @Test
     void findAll() {
         //when
-        List<PostResponse> responses = postService.findAllWithPagination(PAGEABLE).toPostResponses();
+        List<PostWithoutContentResponse> responses = postService.findAllWithPagination(PAGEABLE).toPostWithoutContentResponse();
 
         //then
         assertThat(responses).hasSize(6);
@@ -247,7 +248,7 @@ class PostServiceTest extends ApplicationTest {
     @Test
     void findWithPagination() {
         //when
-        List<PostResponse> responses = postService.findAllWithPagination(PageRequest.of(0, 5)).toPostResponses();
+        List<PostWithoutContentResponse> responses = postService.findAllWithPagination(PageRequest.of(0, 5)).toPostWithoutContentResponse();
 
         //then
         assertThat(responses).hasSize(5);
@@ -257,7 +258,7 @@ class PostServiceTest extends ApplicationTest {
     @Test
     void findWithPaginationSecondPage() {
         //when
-        List<PostResponse> responses = postService.findAllWithPagination(PageRequest.of(1, 5)).toPostResponses();
+        List<PostWithoutContentResponse> responses = postService.findAllWithPagination(PageRequest.of(1, 5)).toPostWithoutContentResponse();
 
         //then
         assertThat(responses).hasSize(1);
@@ -269,7 +270,7 @@ class PostServiceTest extends ApplicationTest {
         //when
         postService.delete(new PostDeleteRequest(post1.getId(), "123456"));
         postService.delete(new PostDeleteRequest(post2.getId(), "234567"));
-        List<PostResponse> responses = postService.findAllWithPagination(PageRequest.of(0, 5)).toPostResponses();
+        List<PostWithoutContentResponse> responses = postService.findAllWithPagination(PageRequest.of(0, 5)).toPostWithoutContentResponse();
 
         //then
         assertThat(responses).hasSize(4);
@@ -285,7 +286,7 @@ class PostServiceTest extends ApplicationTest {
         postService.delete(request);
 
         //then
-        List<PostResponse> responses = postService.findAllWithPagination(PAGEABLE).toPostResponses();
+        List<PostWithoutContentResponse> responses = postService.findAllWithPagination(PAGEABLE).toPostWithoutContentResponse();
         assertThat(responses).hasSize(5);
     }
 

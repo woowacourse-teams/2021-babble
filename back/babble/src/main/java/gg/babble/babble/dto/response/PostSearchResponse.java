@@ -12,11 +12,11 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PostSearchResponse {
 
-    private List<PostResponse> results;
+    private List<PostWithoutContentResponse> results;
     private String keyword;
     private String type;
 
-    public static PostSearchResponse from(final List<PostResponse> postResponses, final String keyword, final String type) {
+    public static PostSearchResponse from(final List<PostWithoutContentResponse> postResponses, final String keyword, final String type) {
         return new PostSearchResponse(postResponses, keyword, type);
     }
 }

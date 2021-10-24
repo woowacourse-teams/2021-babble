@@ -32,16 +32,16 @@ public class PostBaseResponse {
     }
 
     public PostSearchResponse toPostSearchResponse() {
-        return PostSearchResponse.from(toPostResponses(), keyword, type);
+        return PostSearchResponse.from(toPostWithoutContentResponse(), keyword, type);
     }
 
     public PostResponse toPostResponse() {
         return PostResponse.from(post);
     }
 
-    public List<PostResponse> toPostResponses() {
+    public List<PostWithoutContentResponse> toPostWithoutContentResponse() {
         return posts.stream()
-            .map(PostResponse::from)
+            .map(PostWithoutContentResponse::from)
             .collect(Collectors.toList());
     }
 }
