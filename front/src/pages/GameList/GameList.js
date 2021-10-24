@@ -25,17 +25,17 @@ const GameList = () => {
     {
       id: 0,
       info: 'Kartrider Rush Plus',
-      src: `${BABBLE_URL}/img/banners/kartrider.png`,
+      src: `${BABBLE_URL}/img/banners/kartrider.jpg`,
     },
     {
       id: 1,
       info: 'APEX LEGENDS',
-      src: `${BABBLE_URL}/img/banners/apexlegends.png`,
+      src: `${BABBLE_URL}/img/banners/apexlegends.jpg`,
     },
     {
       id: 2,
       info: 'Fortnite',
-      src: `${BABBLE_URL}/img/banners/fortnite.png`,
+      src: `${BABBLE_URL}/img/banners/fortnite.jpg`,
     },
   ];
 
