@@ -8,7 +8,6 @@ import gg.babble.babble.dto.response.PostResponse;
 import gg.babble.babble.dto.response.PostSearchResponse;
 import gg.babble.babble.dto.response.PostWithoutContentResponse;
 import gg.babble.babble.service.PostService;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
