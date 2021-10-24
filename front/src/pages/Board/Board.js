@@ -63,7 +63,9 @@ const Board = () => {
 
   return (
     <main className='board-container'>
-      <MainImage imageSrc={'https://babble.gg/img/background/board-main.jpg'} />
+      <MainImage
+        imageSrc={'https://babble.gg/img/background/board-main-reduced.jpg'}
+      />
       <PageLayout>
         <div className='board-header'>
           <Link to={PATH.BOARD}>
