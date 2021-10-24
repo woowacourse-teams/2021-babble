@@ -17,8 +17,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 class PostServiceTest extends ApplicationTest {
+
+    private static final Pageable PAGEABLE = PageRequest.of(0, 100);
 
     @Autowired
     private PostService postService;
@@ -183,7 +187,7 @@ class PostServiceTest extends ApplicationTest {
     @Test
     void findByContent() {
         //when
-        PostBaseResponse response = postService.search("제목 + 내용", "간장게장");
+        PostBaseResponse response = postService.search("제목, 내용", "간장게장");
 
         //then
         assertThat(response.toPostSearchResponse().getResults()).hasSize(2);
@@ -203,7 +207,7 @@ class PostServiceTest extends ApplicationTest {
     @Test
     void findByAll() {
         //when
-        PostBaseResponse response = postService.search("제목 + 내용 + 작성자", "게장");
+        PostBaseResponse response = postService.search("제목, 내용, 작성자", "게장");
 
         //then
         assertThat(response.toPostSearchResponse().getResults()).hasSize(3);
@@ -233,10 +237,42 @@ class PostServiceTest extends ApplicationTest {
     @Test
     void findAll() {
         //when
-        List<PostResponse> responses = postService.findAll().toPostResponses();
+        List<PostResponse> responses = postService.findAllWithPagination(PAGEABLE).toPostResponses();
 
         //then
         assertThat(responses).hasSize(6);
+    }
+
+    @DisplayName("페이지네이션된 첫 번째 페이지 게시글을 조회한다.")
+    @Test
+    void findWithPagination() {
+        //when
+        List<PostResponse> responses = postService.findAllWithPagination(PageRequest.of(0, 5)).toPostResponses();
+
+        //then
+        assertThat(responses).hasSize(5);
+    }
+
+    @DisplayName("페이지네이션된 두 번째 페이지 게시글을 조회한다.")
+    @Test
+    void findWithPaginationSecondPage() {
+        //when
+        List<PostResponse> responses = postService.findAllWithPagination(PageRequest.of(1, 5)).toPostResponses();
+
+        //then
+        assertThat(responses).hasSize(1);
+    }
+
+    @DisplayName("게시글 삭제 후 페이지네이션된 게시글을 조회한다.")
+    @Test
+    void findWithPaginationAfterDeletedPost() {
+        //when
+        postService.delete(new PostDeleteRequest(post1.getId(), "123456"));
+        postService.delete(new PostDeleteRequest(post2.getId(), "234567"));
+        List<PostResponse> responses = postService.findAllWithPagination(PageRequest.of(0, 5)).toPostResponses();
+
+        //then
+        assertThat(responses).hasSize(4);
     }
 
     @DisplayName("게시글을 삭제한다.")
@@ -249,7 +285,7 @@ class PostServiceTest extends ApplicationTest {
         postService.delete(request);
 
         //then
-        List<PostResponse> responses = postService.findAll().toPostResponses();
+        List<PostResponse> responses = postService.findAllWithPagination(PAGEABLE).toPostResponses();
         assertThat(responses).hasSize(5);
     }
 

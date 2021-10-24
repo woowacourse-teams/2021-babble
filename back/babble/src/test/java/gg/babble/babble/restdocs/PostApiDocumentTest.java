@@ -6,7 +6,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.requestF
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
-import gg.babble.babble.dto.response.PostBaseResponse;
 import gg.babble.babble.dto.response.PostResponse;
 import gg.babble.babble.dto.response.PostSearchResponse;
 import io.restassured.response.Response;
@@ -155,6 +154,28 @@ public class PostApiDocumentTest extends AcceptanceTest {
             .extract().body().jsonPath().getList(".", PostResponse.class);
 
         assertThat(responses).hasSize(6);
+    }
+
+    @DisplayName("게시글을 페이지 단위로 조회한다.")
+    @Test
+    void findAllPostWithPagination() {
+        List<PostResponse> responses = given()
+            .filter(document("read-posts-page",
+                responseFields(fieldWithPath("[].id").description("게시글 Id"),
+                    fieldWithPath("[].title").description("제목"),
+                    fieldWithPath("[].content").description("내용"),
+                    fieldWithPath("[].category").description("카테고리"),
+                    fieldWithPath("[].nickname").description("닉네임"),
+                    fieldWithPath("[].createdAt").description("생성 일자"),
+                    fieldWithPath("[].updatedAt").description("최근 수정 일자"),
+                    fieldWithPath("[].notice").description("공지사항"),
+                    fieldWithPath("[].view").description("조회수"),
+                    fieldWithPath("[].like").description("좋아요"))))
+            .when().get("/api/post?page=1&size=5")
+            .then().statusCode(HttpStatus.OK.value())
+            .extract().body().jsonPath().getList(".", PostResponse.class);
+
+        assertThat(responses).hasSize(5);
     }
 
     @DisplayName("게시글을 검색한다.")

@@ -10,6 +10,7 @@ import gg.babble.babble.dto.request.post.PostUpdateRequest;
 import gg.babble.babble.dto.response.PostBaseResponse;
 import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.List;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,8 +68,8 @@ public class PostService {
         return PostBaseResponse.from(posts);
     }
 
-    public PostBaseResponse findAll() {
-        List<Post> posts = postRepository.findAll();
+    public PostBaseResponse findAllWithPagination(final Pageable pageable) {
+        List<Post> posts = postRepository.findWithPagination(pageable);
 
         return PostBaseResponse.from(posts);
     }

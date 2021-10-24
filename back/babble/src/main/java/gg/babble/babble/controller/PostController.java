@@ -11,6 +11,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.util.List;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,8 +63,8 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PostResponse>> readAll() {
-        PostBaseResponse response = postService.findAll();
+    public ResponseEntity<List<PostResponse>> readAll(final Pageable pageable) {
+        PostBaseResponse response = postService.findAllWithPagination(pageable);
         return ResponseEntity.ok(response.toPostResponses());
     }
 
