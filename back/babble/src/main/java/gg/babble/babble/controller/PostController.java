@@ -11,7 +11,6 @@ import gg.babble.babble.service.PostService;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class PostController {
 
-    private final String ENCODING = "UTF-8";
+    private static final String ENCODING = "UTF-8";
 
     private final PostService postService;
 
