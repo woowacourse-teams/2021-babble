@@ -11,6 +11,7 @@ import gg.babble.babble.service.PostService;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -51,16 +52,14 @@ public class PostController {
     }
 
     @GetMapping(path = "/search")
-    public ResponseEntity<PostSearchResponse> search(@RequestParam(value = "type") final String type, @RequestParam(value = "keyword") final String keyword)
-        throws UnsupportedEncodingException {
-        PostBaseResponse response = postService.search(URLDecoder.decode(type, "UTF-8"), URLDecoder.decode(keyword, "UTF-8"));
+    public ResponseEntity<PostSearchResponse> search(@RequestParam(value = "type") final String type, @RequestParam(value = "keyword") final String keyword) {
+        PostBaseResponse response = postService.search(URLDecoder.decode(type, StandardCharsets.UTF_8), URLDecoder.decode(keyword, StandardCharsets.UTF_8));
         return ResponseEntity.ok(response.toPostSearchResponse());
     }
 
     @GetMapping(path = "/category")
-    public ResponseEntity<List<PostWithoutContentResponse>> searchByCategory(@RequestParam(value = "value") final String category)
-        throws UnsupportedEncodingException {
-        PostBaseResponse response = postService.findByCategory(URLDecoder.decode(category, "UTF-8"));
+    public ResponseEntity<List<PostWithoutContentResponse>> searchByCategory(@RequestParam(value = "value") final String category) {
+        PostBaseResponse response = postService.findByCategory(URLDecoder.decode(category, StandardCharsets.UTF_8));
         return ResponseEntity.ok(response.toPostWithoutContentResponse());
     }
 

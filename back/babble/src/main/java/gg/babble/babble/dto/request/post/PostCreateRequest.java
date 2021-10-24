@@ -5,7 +5,6 @@ import static gg.babble.babble.domain.post.Account.MIN_PASSWORD_LENGTH;
 
 import gg.babble.babble.domain.post.Post;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
