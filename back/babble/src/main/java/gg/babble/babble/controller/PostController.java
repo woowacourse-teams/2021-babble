@@ -53,7 +53,7 @@ public class PostController {
     }
 
     @GetMapping(path = "/search")
-    public ResponseEntity<PostSearchResponse> search(@RequestParam(value = "type") final String type, @RequestParam(value = "keyword") final String keyword)
+    public ResponseEntity<PostSearchResponse> search(@RequestParam final String type, @RequestParam final String keyword)
         throws UnsupportedEncodingException {
         PostBaseResponse response = postService.search(URLDecoder.decode(type, ENCODING), URLDecoder.decode(keyword, ENCODING));
         return ResponseEntity.ok(response.toPostSearchResponse());
