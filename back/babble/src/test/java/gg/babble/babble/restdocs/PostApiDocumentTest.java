@@ -148,7 +148,7 @@ public class PostApiDocumentTest extends AcceptanceTest {
                     fieldWithPath("[].notice").description("공지사항"),
                     fieldWithPath("[].view").description("조회수"),
                     fieldWithPath("[].like").description("좋아요"))))
-            .when().get("/api/post")
+            .when().get("/api/post?page=1")
             .then().statusCode(HttpStatus.OK.value())
             .extract().body().jsonPath().getList(".", PostResponse.class);
 
