@@ -5,6 +5,10 @@
   align-items: center;
   user-select: none;
 
+  *:nth-child(2) {
+    margin-right: 0.8rem;
+  }
+
   &.grey {
     color: f.grey-scale(10);
   }
