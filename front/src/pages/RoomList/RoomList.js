@@ -36,22 +36,13 @@ const RoomList = ({ match }) => {
   const [selectedTagList, setSelectedTagList] = useState([]);
   const [roomList, setRoomList] = useState([]);
   const [currentGame, setCurrentGame] = useState({});
-  const [page, setPage] = useState(0);
 
   // TODO: 임시 방편. onChangeInput을 SearchInput 내부로 집어넣으면서 사라질 운명
   const [autoCompleteTagList, setAutoCompleteTagList] = useState([]);
+  const pageRef = useRef(0);
   const searchRef = useRef(null);
   const lastRoomRef = useRef(null);
-  const infiniteObserverRef = useRef(
-    new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setPage((prevPage) => prevPage + 1);
-        }
-      },
-      { threshold: 1 }
-    )
-  );
+  const infiniteObserverRef = useRef(null);
 
   const { user, changeUser } = useUser();
   const { openChatting, closeChatting, isChattingModalOpen } =
@@ -120,13 +111,17 @@ const RoomList = ({ match }) => {
   };
 
   const getRooms = async (tagIds) => {
-    if (!page) return;
-
+    if (!pageRef.current) return;
     try {
       const response = await axios.get(`${BASE_URL}/api/rooms`, {
-        params: { gameId, tagIds, page },
+        params: { gameId, tagIds, page: pageRef.current },
       });
       const rooms = response.data;
+
+      if (!rooms.length) {
+        infiniteObserverRef.current && infiniteObserverRef.current.disconnect();
+        return;
+      }
 
       setRoomList((prevRooms) => [...prevRooms, ...rooms]);
     } catch (error) {
@@ -284,8 +279,8 @@ const RoomList = ({ match }) => {
   };
 
   const refresh = () => {
-    setPage(1);
     setRoomList([]);
+    pageRef.current = 1;
     getRoomsWithTag();
   };
 
@@ -301,7 +296,7 @@ const RoomList = ({ match }) => {
     );
     stickyObserver.observe(searchRef.current);
 
-    setPage(1);
+    pageRef.current = 1;
     getRooms('');
     getTags();
     getGame();
@@ -319,13 +314,22 @@ const RoomList = ({ match }) => {
     infiniteObserverRef.current && infiniteObserverRef.current.disconnect();
 
     if (lastRoomRef.current) {
+      infiniteObserverRef.current = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            pageRef.current += 1;
+            getRoomsWithTag();
+          }
+        },
+        { threshold: 1 }
+      );
       infiniteObserverRef.current.observe(lastRoomRef.current);
     }
   }, [roomList.length]);
 
   useUpdateEffect(() => {
-    getRoomsWithTag();
-  }, [selectedTagList, page]);
+    refresh();
+  }, [selectedTagList]);
 
   return (
     <div className='room-list-container'>
@@ -346,15 +350,17 @@ const RoomList = ({ match }) => {
         </section>
         <div className='search-container' ref={searchRef}>
           <section className='search-section'>
-            <SearchInput
-              autoCompleteKeywords={autoCompleteTagList}
-              onClickKeyword={selectTag}
-              onChangeInput={onChangeTagInput}
-            />
+            <div className='search-refresh'>
+              <SearchInput
+                autoCompleteKeywords={autoCompleteTagList}
+                onClickKeyword={selectTag}
+                onChangeInput={onChangeTagInput}
+              />
+              <SquareButton onClickButton={refresh}>
+                <IoMdRefresh size='24px' color='#fff' />
+              </SquareButton>
+            </div>
             <TagList tags={selectedTagList} onDeleteTag={eraseTag} erasable />
-            <SquareButton onClickButton={refresh}>
-              <IoMdRefresh size='24px' color='#fff' />
-            </SquareButton>
           </section>
         </div>
         <section className='room-list-section'>

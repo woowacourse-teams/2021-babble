@@ -70,6 +70,10 @@
 
     .search-section {
       @include m.search-section;
+      .search-refresh {
+        display: flex;
+        justify-content: space-between;
+      }
 
       .input-container {
         min-width: 40rem;
@@ -84,6 +88,7 @@
       .square-button {
         height: 4.8rem;
         padding: 1.2rem;
+        margin-right: 1.2rem;
         box-shadow: v.$light-box-shadow;
       }
     }
@@ -146,7 +151,11 @@
         padding: 1rem 0 0 0;
 
         .input-container {
-          min-width: 100%;
+          min-width: 80%;
+        }
+
+        .square-button {
+          margin-right: 0;
         }
 
         .tag-list-container {
@@ -200,13 +209,23 @@
 
       .search-section {
         display: block;
-        max-width: 100%;
         min-width: 100%;
         margin-bottom: 0;
         padding: 1rem 0;
 
         .input-container {
-          min-width: 100%;
+          min-width: 80%;
+          margin-right: 0.4rem;
+
+          .input-inner {
+            font-size: 1.8rem;
+          }
+        }
+
+        .square-button {
+          width: fit-content;
+          min-width: unset;
+          margin-right: 0;
         }
 
         .tag-list-container {
