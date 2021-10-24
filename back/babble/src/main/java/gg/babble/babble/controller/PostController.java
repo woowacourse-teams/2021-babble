@@ -8,9 +8,9 @@ import gg.babble.babble.dto.response.PostResponse;
 import gg.babble.babble.dto.response.PostSearchResponse;
 import gg.babble.babble.dto.response.PostWithoutContentResponse;
 import gg.babble.babble.service.PostService;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/post")
 @RestController
 public class PostController {
+
+    private static final String ENCODING = "UTF-8";
 
     private final PostService postService;
 
@@ -51,14 +53,16 @@ public class PostController {
     }
 
     @GetMapping(path = "/search")
-    public ResponseEntity<PostSearchResponse> search(@RequestParam(value = "type") final String type, @RequestParam(value = "keyword") final String keyword) {
-        PostBaseResponse response = postService.search(URLDecoder.decode(type, StandardCharsets.UTF_8), URLDecoder.decode(keyword, StandardCharsets.UTF_8));
+    public ResponseEntity<PostSearchResponse> search(@RequestParam final String type, @RequestParam final String keyword)
+        throws UnsupportedEncodingException {
+        PostBaseResponse response = postService.search(URLDecoder.decode(type, ENCODING), URLDecoder.decode(keyword, ENCODING));
         return ResponseEntity.ok(response.toPostSearchResponse());
     }
 
     @GetMapping(path = "/category")
-    public ResponseEntity<List<PostWithoutContentResponse>> searchByCategory(@RequestParam(value = "value") final String category) {
-        PostBaseResponse response = postService.findByCategory(URLDecoder.decode(category, StandardCharsets.UTF_8));
+    public ResponseEntity<List<PostWithoutContentResponse>> searchByCategory(@RequestParam(value = "value") final String category)
+        throws UnsupportedEncodingException {
+        PostBaseResponse response = postService.findByCategory(URLDecoder.decode(category, ENCODING));
         return ResponseEntity.ok(response.toPostWithoutContentResponse());
     }
 
