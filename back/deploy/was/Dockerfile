@@ -1,0 +1,3 @@
+FROM openjdk:8
+COPY babble-0.0.1-SNAPSHOT.jar app.jar
+ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=${PROFILES_ACTIVE}", "-Dspring.datasource.password=${DATASOURCE_PASSWORD}", "-Dspring.redis.password=${REDIS_PASSWORD}", "-Duser.timezone=Asia/Seoul", "app.jar"]
