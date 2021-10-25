@@ -45,16 +45,16 @@ jobs:
 
     - name: 도커 이미지 빌드
       working-directory: ./back/deploy/was
-      run: docker build -t babble-was:latest .
+      run: sudo docker build -t babble-was:latest .
 
     - name: 도커 이미지 태그 추가
       working-directory: ./back/deploy/was
-      run: docker tag babble-was:latest 2021babble/babble-was:latest
+      run: sudo docker tag babble-was:latest 2021babble/babble-was:latest
 
     - name: 도커 이미지 배포
       working-directory: ./back/deploy/was
-      run: docker push 2021babble/babble-was:latest
+      run: sudo docker push 2021babble/babble-was:latest
     
     - name: 도커 서비스 롤링 업데이트
-      run: ssh test-was-manager "docker pull 2021babble/babble-was:latest; docker service update --image 2021babble/babble-was:latest babble-was;"
+      run: ssh test-was-manager "sudo docker pull 2021babble/babble-was:latest; sudo docker service update --image 2021babble/babble-was:latest babble-was;"
       
