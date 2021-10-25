@@ -8,7 +8,7 @@ spring:
   test:
     database:
       replace: NONE
-
+      
   servlet:
     multipart:
       enabled: true

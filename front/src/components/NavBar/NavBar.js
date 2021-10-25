@@ -1,11 +1,11 @@
 import './NavBar.scss';
 
+import { Body1 } from '../../core/Typography';
 import { Link } from 'react-router-dom';
 import Logo from '../../core/Logo/Logo';
 import PATH from '../../constants/path';
 import PageLayout from '../../core/Layout/PageLayout';
 import React from 'react';
-import { Subtitle3 } from '../../core/Typography';
 
 const NavBar = () => {
   return (
@@ -16,10 +16,10 @@ const NavBar = () => {
         </Link>
         <div className='nav-menu'>
           <Link to={PATH.HOME}>
-            <Subtitle3>게임 매칭</Subtitle3>
+            <Body1>게임 매칭</Body1>
           </Link>
           <Link to={PATH.BOARD}>
-            <Subtitle3>익명 게시판</Subtitle3>
+            <Body1>익명 게시판</Body1>
           </Link>
         </div>
       </PageLayout>

@@ -69,7 +69,9 @@ include::{snippets}/create-user/response-fields.adoc[]
 
 == 게임
 
-=== 게임 리스트 조회 API
+=== 게임 리스트 조회 API (Deprecated)
+
+> Deprecated: 게임 리스트 조회 API(Pagination)를 사용하는 것을 권장합니다.
 
 ==== HTTP Request
 
@@ -81,6 +83,32 @@ include::{snippets}/read-games/http-response.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
 include::{snippets}/read-games/response-fields.adoc[]
+
+=== 게임 리스트 조회 API (Pagination)
+
+==== HTTP Request
+
+include::{snippets}/read-games-beta/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/read-games-beta/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/read-games-beta/response-fields.adoc[]
+
+=== 게임 키워드 검색 API
+
+==== HTTP Request
+
+include::{snippets}/read-games-names/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/read-games-names/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/read-games-names/response-fields.adoc[]
 
 === 게임 단일 조회 API
 
@@ -214,7 +242,9 @@ include::{snippets}/create-room/response-fields.adoc[]
 
 == 태그
 
-=== 태그 전체 수신 API
+=== 태그 전체 조회 API (Deprecated)
+
+> Deprecated: 태그 키워드 검색 API를 사용하는 것을 권장합니다.
 
 ==== HTTP Request
 
@@ -226,6 +256,32 @@ include::{snippets}/read-tags/http-response.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
 include::{snippets}/read-tags/response-fields.adoc[]
+
+=== 태그 키워드 검색 API
+
+==== HTTP Request
+
+include::{snippets}/read-tags-beta/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/read-tags-beta/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/read-tags-beta/response-fields.adoc[]
+
+=== 태그 단일 조회 API
+
+==== HTTP Request
+
+include::{snippets}/read-tag/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/read-tag/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/read-tag/response-fields.adoc[]
 
 === 태그 등록 API
 
@@ -406,6 +462,124 @@ include::{snippets}/update-slider/http-request.adoc[]
 
 include::{snippets}/update-slider/http-response.adoc[]
 
+== 게시판
+
+=== 게시글 등록 API
+
+==== HTTP Request
+
+include::{snippets}/create-post/http-request.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/create-post/request-fields.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/create-post/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/create-post/response-fields.adoc[]
+
+=== 게시글 단일 조회 API
+
+==== HTTP Request
+
+include::{snippets}/read-post/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/read-post/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/read-post/response-fields.adoc[]
+
+=== 게시판 전체 조회 API
+
+==== HTTP Request
+
+include::{snippets}/read-posts/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/read-posts/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/read-posts/response-fields.adoc[]
+
+=== 게시판 페이지 조회 API
+
+==== HTTP Request
+
+include::{snippets}/read-posts-page/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/read-posts-page/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/read-posts-page/response-fields.adoc[]
+
+=== 게시판 검색 API
+
+==== HTTP Request
+
+include::{snippets}/search-posts/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/search-posts/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/search-posts/response-fields.adoc[]
+
+=== 게시판 카테고리 검색 API
+
+==== HTTP Request
+
+include::{snippets}/category-posts/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/category-posts/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/category-posts/response-fields.adoc[]
+
+=== 게시글 수정 API
+
+==== HTTP Request
+
+include::{snippets}/update-post/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/update-post/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/update-post/response-fields.adoc[]
+
+=== 게시글 좋아요 API
+
+==== HTTP Request
+
+include::{snippets}/like-post/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/like-post/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/like-post/response-fields.adoc[]
+
+=== 게시글 삭제 API
+
+==== HTTP Request
+
+include::{snippets}/delete-post/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/delete-post/http-response.adoc[]
 
 == WebSocket
 
