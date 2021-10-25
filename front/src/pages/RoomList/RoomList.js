@@ -14,6 +14,7 @@ import { getSessionStorage, setSessionStorage } from '../../utils/storage';
 
 import { BASE_URL } from '../../constants/api';
 import ChattingRoom from '../ChattingRoom/ChattingRoom';
+import { IoMdRefresh } from '@react-icons/all-files/io/IoMdRefresh';
 import ModalConfirm from '../../components/Modal/ModalConfirm';
 import PATH from '../../constants/path';
 import { PATTERNS } from '../../constants/regex';
@@ -26,8 +27,8 @@ import { getRandomNickname } from '@woowa-babble/random-nickname';
 import { useChattingModal } from '../../contexts/ChattingModalProvider';
 import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 import { useHistory } from 'react-router-dom';
-import useInterval from '../../hooks/useInterval';
 import useScript from '../../hooks/useScript';
+import useUpdateEffect from '../../hooks/useUpdateEffect';
 import { useUser } from '../../contexts/UserProvider';
 
 const RoomList = ({ match }) => {
@@ -38,7 +39,10 @@ const RoomList = ({ match }) => {
 
   // TODO: 임시 방편. onChangeInput을 SearchInput 내부로 집어넣으면서 사라질 운명
   const [autoCompleteTagList, setAutoCompleteTagList] = useState([]);
+  const pageRef = useRef(0);
   const searchRef = useRef(null);
+  const lastRoomRef = useRef(null);
+  const infiniteObserverRef = useRef(null);
 
   const { user, changeUser } = useUser();
   const { openChatting, closeChatting, isChattingModalOpen } =
@@ -107,13 +111,19 @@ const RoomList = ({ match }) => {
   };
 
   const getRooms = async (tagIds) => {
+    if (!pageRef.current) return;
     try {
       const response = await axios.get(`${BASE_URL}/api/rooms`, {
-        params: { gameId, tagIds, page: 1 },
+        params: { gameId, tagIds, page: pageRef.current },
       });
       const rooms = response.data;
 
-      setRoomList(rooms);
+      if (!rooms.length) {
+        infiniteObserverRef.current && infiniteObserverRef.current.disconnect();
+        return;
+      }
+
+      setRoomList((prevRooms) => [...prevRooms, ...rooms]);
     } catch (error) {
       openModal(<ModalError>{error.message}</ModalError>);
     }
@@ -156,7 +166,8 @@ const RoomList = ({ match }) => {
 
       openChatting(<ChattingRoom game={game} tags={tags} roomId={roomId} />);
     } catch (error) {
-      openModal(<ModalError>{error.message}</ModalError>);
+      openModal(<ModalError>방에 입장할 수 없습니다.</ModalError>);
+      console.error(error);
     }
   };
 
@@ -252,12 +263,25 @@ const RoomList = ({ match }) => {
       const response = await axios.post(`${BASE_URL}/api/users`, {
         nickname: newUser.nickname,
       });
+
       newUser.id = response.data.id;
       newUser.nickname = response.data.nickname;
+
       changeUser(newUser);
     } catch (error) {
       openModal(<ModalError>{error.message}</ModalError>);
     }
+  };
+
+  const getRoomsWithTag = () => {
+    const selectedTagIdParam = selectedTagList.map(({ id }) => id).join(',');
+    getRooms(selectedTagIdParam);
+  };
+
+  const refresh = () => {
+    setRoomList([]);
+    pageRef.current = 1;
+    getRoomsWithTag();
   };
 
   useEffect(() => {
@@ -272,6 +296,7 @@ const RoomList = ({ match }) => {
     );
     stickyObserver.observe(searchRef.current);
 
+    pageRef.current = 1;
     getRooms('');
     getTags();
     getGame();
@@ -285,15 +310,25 @@ const RoomList = ({ match }) => {
     };
   }, []);
 
-  // TODO: 데모데이 이후 삭제될 운명
-  useInterval(() => {
-    const selectedTagIdParam = selectedTagList.map(({ id }) => id).join(',');
-    getRooms(selectedTagIdParam);
-  }, 5000);
+  useUpdateEffect(() => {
+    infiniteObserverRef.current && infiniteObserverRef.current.disconnect();
 
-  useEffect(() => {
-    const selectedTagIdParam = selectedTagList.map(({ id }) => id).join(',');
-    getRooms(selectedTagIdParam);
+    if (lastRoomRef.current) {
+      infiniteObserverRef.current = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            pageRef.current += 1;
+            getRoomsWithTag();
+          }
+        },
+        { threshold: 1 }
+      );
+      infiniteObserverRef.current.observe(lastRoomRef.current);
+    }
+  }, [roomList.length]);
+
+  useUpdateEffect(() => {
+    refresh();
   }, [selectedTagList]);
 
   return (
@@ -309,28 +344,37 @@ const RoomList = ({ match }) => {
               onClickButton={() => onConfirm(() => enterMakeRoomPage())}
               colored
             >
-              <Body2>방 생성하기</Body2>
+              <Body2>방 만들기</Body2>
             </SquareButton>
           </div>
         </section>
         <div className='search-container' ref={searchRef}>
           <section className='search-section'>
-            <SearchInput
-              autoCompleteKeywords={autoCompleteTagList}
-              onClickKeyword={selectTag}
-              onChangeInput={onChangeTagInput}
-            />
+            <div className='search-refresh'>
+              <SearchInput
+                autoCompleteKeywords={autoCompleteTagList}
+                onClickKeyword={selectTag}
+                onChangeInput={onChangeTagInput}
+              />
+              <SquareButton onClickButton={refresh}>
+                <IoMdRefresh size='24px' color='#fff' />
+              </SquareButton>
+            </div>
             <TagList tags={selectedTagList} onDeleteTag={eraseTag} erasable />
           </section>
         </div>
         <section className='room-list-section'>
-          {roomList?.map((room, index) => (
-            <Room
-              key={index}
-              room={room}
-              onClickRoom={(e) => onConfirm(() => joinChatting(e))}
-            />
-          ))}
+          {roomList?.map((room, index) => {
+            const isLastIndex = index === roomList.length - 1;
+            return (
+              <Room
+                key={index}
+                room={room}
+                onClickRoom={(e) => onConfirm(() => joinChatting(e))}
+                scrollRef={isLastIndex ? lastRoomRef : null}
+              />
+            );
+          })}
         </section>
       </PageLayout>
     </div>
