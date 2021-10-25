@@ -6,7 +6,9 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.requestF
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
+import gg.babble.babble.domain.tag.TagName;
 import gg.babble.babble.dto.response.AlternativeTagNameResponse;
+import gg.babble.babble.dto.response.TagNameResponse;
 import gg.babble.babble.dto.response.TagResponse;
 import gg.babble.babble.restdocs.client.ResponseRepository;
 import java.util.Arrays;
@@ -27,8 +29,10 @@ public class TagApiDocumentTest extends AcceptanceTest {
     private static final String ALTERNATIVE_NAME1 = "silver";
     private static final String ALTERNATIVE_NAME2 = "실딱이";
     private static final String ALTERNATIVE_NAME3 = "2hours";
+    private static final String ALTERNATIVE_NAME4 = "3hours";
     private static final String 실버 = "실버";
     private static final String _2시간 = "2시간";
+    private static final String _3시간 = "3시간";
     private static final String 솔로랭크 = "솔로랭크";
 
     private ResponseRepository<TagResponse, Long> tagResponseRepository;
@@ -41,6 +45,7 @@ public class TagApiDocumentTest extends AcceptanceTest {
         localhost_관리자가_추가_됨();
         tagResponseRepository.add(태그가_저장_됨(실버, Arrays.asList(ALTERNATIVE_NAME1, ALTERNATIVE_NAME2)));
         tagResponseRepository.add(태그가_저장_됨(_2시간, Collections.singletonList(ALTERNATIVE_NAME3)));
+        tagResponseRepository.add(태그가_저장_됨(_3시간, Collections.singletonList(ALTERNATIVE_NAME4)));
         tagResponseRepository.add(태그가_저장_됨(솔로랭크, Collections.emptyList()));
         localhost_관리자가_제거_됨();
     }
@@ -78,6 +83,50 @@ public class TagApiDocumentTest extends AcceptanceTest {
             assertThat(response.getAlternativeNames()).hasSameSizeAs(expectedTag.getAlternativeNames());
             assertThatSameAlternativeTagNames(response.getAlternativeNames(), expectedTag.getAlternativeNames());
         }
+    }
+
+    @DisplayName("태그 단일 조회")
+    @Test
+    void getTag() {
+        Long idToFind = tagResponseRepository.getAnyId();
+
+        TagResponse response = given().filter(document("read-tag",
+                responseFields(
+                    fieldWithPath("id").description("태그 Id"),
+                    fieldWithPath("name").description("태그 이름"),
+                    fieldWithPath("alternativeNames[]").description("대체 이름 객체"),
+                    fieldWithPath("alternativeNames[].id").description("대체 이름 ID"),
+                    fieldWithPath("alternativeNames[].name").description("대체 이름"))))
+            .when().get("/api/tags/{id}", idToFind)
+            .then().statusCode(HttpStatus.OK.value())
+            .extract().body().as(TagResponse.class);
+
+        TagResponse expectedTag = tagResponseRepository.get(idToFind);
+        assertThat(response.getName()).isEqualTo(expectedTag.getName());
+        assertThat(response.getAlternativeNames()).hasSameSizeAs(expectedTag.getAlternativeNames());
+        assertThatSameAlternativeTagNames(response.getAlternativeNames(), expectedTag.getAlternativeNames());
+    }
+
+    @DisplayName("태그 이름 검색")
+    @Test
+    void getTagNames() {
+        String keyword = "시간";
+
+        List<TagNameResponse> responses = given().filter(document("read-tags-beta",
+                responseFields(
+                    fieldWithPath("[].id").description("태그 Id"),
+                    fieldWithPath("[].name").description("태그 이름")
+                )))
+            .when().get("/api/beta/tags/names?keyword={keyword}", keyword)
+            .then().statusCode(HttpStatus.OK.value())
+            .extract().body().jsonPath().getList(".", TagNameResponse.class);
+
+        List<String> foundNames = responses.stream()
+            .map(TagNameResponse::getName)
+            .collect(Collectors.toList());
+
+        assertThat(foundNames).hasSize(2)
+            .contains(_2시간, _3시간);
     }
 
     public static void assertThatSameAlternativeTagNames(final List<AlternativeTagNameResponse> actual, final List<AlternativeTagNameResponse> expected) {

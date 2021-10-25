@@ -5,9 +5,39 @@ spring:
     url: jdbc:mariadb://192.168.1.7:3306/babble
     username: babble
 
+    slaves:
+      slave1:
+        name: slave1
+        driver-class-name: org.mariadb.jdbc.Driver
+        url: jdbc:mariadb://192.168.2.76:3306/babble
+        username: babble
+
+      slave2:
+        name: slave2
+        driver-class-name: org.mariadb.jdbc.Driver
+        url: jdbc:mariadb://192.168.2.10:3306/babble
+        username: babble
+
   jpa:
     hibernate:
       ddl-auto: validate
+    generate-ddl: true
+    properties:
+      hibernate:
+        ddl-auto: validate
+        show_sql: false
+        generate-ddl: false
+        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+        physical_naming_strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+        dialect: org.hibernate.dialect.MySQL5Dialect
+        use_sql_comment: false
+
+  redis:
+    host: 192.168.2.114
+    port: 6379
 
   redis:
     host: 192.168.2.114

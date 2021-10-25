@@ -1,6 +1,7 @@
 package gg.babble.babble.restdocs;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -8,9 +9,11 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
 
 import gg.babble.babble.dto.response.AlternativeGameNameResponse;
 import gg.babble.babble.dto.response.GameImageResponse;
+import gg.babble.babble.dto.response.GameNameResponse;
 import gg.babble.babble.dto.response.GameWithImageResponse;
 import gg.babble.babble.dto.response.IndexPageGameResponse;
 import gg.babble.babble.restdocs.client.ResponseRepository;
+import gg.babble.babble.restdocs.preprocessor.BigListPreprocessor;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -26,28 +29,16 @@ import org.springframework.restdocs.RestDocumentationContextProvider;
 
 public class GameApiDocumentTest extends AcceptanceTest {
 
-    private static final String ALTERNATIVE_NAME1 = "롤1";
-    private static final String ALTERNATIVE_NAME2 = "리오레1";
-    private static final String ALTERNATIVE_NAME3 = "롤2";
+    private static final String ALTERNATIVE_NAME1 = "롤";
+    private static final String ALTERNATIVE_NAME2 = "리오레";
+    private static final String ALTERNATIVE_NAME3 = "오버워치";
 
     private static final String IMAGE_1 = "img1";
     private static final String IMAGE_2 = "img2";
     private static final String IMAGE_3 = "img3";
+    private static final int PAGE_SIZE = 16;
     private final List<String> images = Arrays.asList(IMAGE_1, IMAGE_2, IMAGE_3);
     private ResponseRepository<GameWithImageResponse, Long> gameWithImageResponseRepository;
-
-    @BeforeEach
-    protected void setUp(final RestDocumentationContextProvider restDocumentation) throws Exception {
-        super.setUp(restDocumentation);
-        gameWithImageResponseRepository = new ResponseRepository<>(GameWithImageResponse::getId);
-
-        localhost_관리자가_추가_됨();
-        gameWithImageResponseRepository.add(
-            게임이_저장_됨("League Of Legends1", Collections.singletonList(IMAGE_1), Arrays.asList(ALTERNATIVE_NAME1, ALTERNATIVE_NAME2)));
-        gameWithImageResponseRepository.add(게임이_저장_됨("League Of Legends2", Arrays.asList(IMAGE_1, IMAGE_2), Collections.singletonList(ALTERNATIVE_NAME3)));
-        gameWithImageResponseRepository.add(게임이_저장_됨("League Of Legends3", images, Collections.emptyList()));
-        localhost_관리자가_제거_됨();
-    }
 
     public static GameWithImageResponse 게임이_저장_됨(final String gameName, final List<String> images, final List<String> alternativeNames) {
         Map<String, Object> body = new HashMap<>();
@@ -62,11 +53,30 @@ public class GameApiDocumentTest extends AcceptanceTest {
             .extract().body().as(GameWithImageResponse.class);
     }
 
+    @BeforeEach
+    protected void setUp(final RestDocumentationContextProvider restDocumentation) throws Exception {
+        super.setUp(restDocumentation);
+        gameWithImageResponseRepository = new ResponseRepository<>(GameWithImageResponse::getId);
+
+        localhost_관리자가_추가_됨();
+
+        for (int i = 0; i < 15; i++) {
+            gameWithImageResponseRepository.add(
+                게임이_저장_됨("League Of Legends" + i, Collections.singletonList(IMAGE_1), Arrays.asList(ALTERNATIVE_NAME1 + i, ALTERNATIVE_NAME2 + i))
+            );
+            gameWithImageResponseRepository.add(
+                게임이_저장_됨("Overwatch" + i, Collections.singletonList(IMAGE_2), Collections.singletonList(ALTERNATIVE_NAME3 + i))
+            );
+        }
+        localhost_관리자가_제거_됨();
+    }
+
     @DisplayName("게임 리스트 조회")
     @Test
     void findAllGames() {
         List<IndexPageGameResponse> responses = given()
             .filter(document("read-games",
+                preprocessResponse(new BigListPreprocessor()),
                 responseFields(
                     fieldWithPath("[].id").description("게임 Id"),
                     fieldWithPath("[].name").description("게임 이름"),
@@ -90,6 +100,49 @@ public class GameApiDocumentTest extends AcceptanceTest {
         }
     }
 
+    @DisplayName("게임 리스트 조회(페이지네이션)")
+    @Test
+    void findGameImagesWithPagination() {
+        List<IndexPageGameResponse> responses = given()
+            .when().get("/api/beta/games?page=1")
+            .then().statusCode(HttpStatus.OK.value())
+            .extract().body().jsonPath().getList(".", IndexPageGameResponse.class);
+
+        assertThat(responses).hasSize(PAGE_SIZE);
+    }
+
+    @DisplayName("게임 이름으로 게임 리스트 조회")
+    @Test
+    void findGameImageWithNameAndPagination() {
+        String nameToSearch = "롤";
+        List<IndexPageGameResponse> responses = given()
+            .filter(document("read-games-beta",
+                preprocessResponse(new BigListPreprocessor()),
+                responseFields(
+                    fieldWithPath("[].id").description("게임 Id"),
+                    fieldWithPath("[].name").description("게임 이름"),
+                    fieldWithPath("[].headCount").description("게임의 참가자 수"),
+                    fieldWithPath("[].images").description("이미지 목록"),
+                    fieldWithPath("[].alternativeNames[]").description("대체 이름 객체"),
+                    fieldWithPath("[].alternativeNames[].id").description("대체 이름 ID"),
+                    fieldWithPath("[].alternativeNames[].name").description("대체 이름"))))
+            .when().get("/api/beta/games?keyword=" + nameToSearch + "&page=1")
+            .then().statusCode(HttpStatus.OK.value())
+            .extract().body().jsonPath().getList(".", IndexPageGameResponse.class);
+
+        assertThat(responses).hasSize(15);
+        for (IndexPageGameResponse response : responses) {
+            boolean containsInAlternativeNames = response.getAlternativeNames()
+                .stream()
+                .map(AlternativeGameNameResponse::getName)
+                .anyMatch(alternativeName -> alternativeName.contains(nameToSearch));
+
+            boolean containsInName = response.getName().contains(nameToSearch);
+
+            assertThat(containsInName || containsInAlternativeNames).isTrue();
+        }
+    }
+
     @DisplayName("단일 게임 이미지 조회")
     @Test
     void findGameImageById() {
@@ -107,6 +160,24 @@ public class GameApiDocumentTest extends AcceptanceTest {
         assertThat(response.getGameId()).isEqualTo(idToFind);
         assertThat(response.getImages()).hasSize(1);
         assertThat(response.getImages().get(0)).isEqualTo(IMAGE_1);
+    }
+
+    @DisplayName("게임 이름 검색")
+    @Test
+    void findGameNames() {
+        String findToKeyword = "롤";
+
+        List<GameNameResponse> responses = given().filter(document("read-games-names",
+                preprocessResponse(new BigListPreprocessor()),
+                responseFields(
+                    fieldWithPath("[].id").description("게임 Id"),
+                    fieldWithPath("[].name").description("게임 이름")
+                )))
+            .when().get("/api/beta/games/names?keyword={keyword}", findToKeyword)
+            .then().statusCode(HttpStatus.OK.value())
+            .extract().body().jsonPath().getList(".", GameNameResponse.class);
+
+        assertThat(responses).hasSize(15);
     }
 
     @DisplayName("전체 게임 이미지 목록 조회")
