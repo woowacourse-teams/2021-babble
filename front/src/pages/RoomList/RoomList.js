@@ -123,7 +123,18 @@ const RoomList = ({ match }) => {
         return;
       }
 
-      setRoomList((prevRooms) => [...prevRooms, ...rooms]);
+      setRoomList((prevRooms) => {
+        // prevRooms 안에 rooms의 내용이 없으면 넣어라.
+        const newRoom = prevRooms.filter((prevRoom) => {
+          return !rooms.find((room) => {
+            if (JSON.stringify(prevRoom) === JSON.stringify(room)) {
+              return prevRoom;
+            }
+          });
+        });
+
+        return [...newRoom, ...rooms];
+      });
     } catch (error) {
       openModal(<ModalError>{error.message}</ModalError>);
     }
@@ -278,10 +289,86 @@ const RoomList = ({ match }) => {
     getRooms(selectedTagIdParam);
   };
 
-  const refresh = () => {
-    setRoomList([]);
+  const refresh = async () => {
     pageRef.current = 1;
-    getRoomsWithTag();
+    try {
+      const selectedTagIdParam = selectedTagList.map(({ id }) => id).join(',');
+
+      const newResponse = await axios.get(`${BASE_URL}/api/rooms`, {
+        params: { gameId, tagIds: selectedTagIdParam, page: pageRef.current },
+      });
+
+      const newRooms = newResponse.data;
+
+      const stringNewRooms = newRooms.map((newRoom) => JSON.stringify(newRoom));
+
+      const stringRoomList = roomList
+        .slice(0, newRooms.length)
+        .map((room) => JSON.stringify(room));
+
+      if (selectedTagList.length) {
+        const roomWithTags = newRooms.filter((room) => room.tags);
+
+        const answer = new Set();
+        roomWithTags.forEach((room) => {
+          room.tags.forEach((tag) => {
+            selectedTagList.forEach((selectedTag) => {
+              if (selectedTag.id === tag.id) {
+                answer.add(room);
+              }
+            });
+          });
+        });
+
+        setRoomList([...answer]);
+      } else if (stringNewRooms !== stringRoomList) {
+        setRoomList((prevRooms) => {
+          const copiedPrevRooms = [...prevRooms];
+
+          const stringNewRooms = newRooms.map((newRoom) =>
+            JSON.stringify(newRoom)
+          );
+          const roomListSliced = roomList.slice(0, newRooms.length);
+          const stringRoomList = roomListSliced.map((room) =>
+            JSON.stringify(room)
+          );
+
+          if (stringNewRooms !== stringRoomList) {
+            const updatedRooms = newRooms.filter((prevRoom) => {
+              return !roomList.find((room) => {
+                if (prevRoom.roomId === room.roomId) {
+                  return prevRoom;
+                }
+              });
+            });
+
+            const deletedRooms = roomList.filter((prevRoom) => {
+              return !newRooms.find((room) => {
+                if (prevRoom.roomId === room.roomId) {
+                  return prevRoom;
+                }
+              });
+            });
+
+            const deletedElementIndex = deletedRooms.map((element) =>
+              roomList.indexOf(element)
+            );
+
+            deletedElementIndex.forEach((index) => {
+              copiedPrevRooms.splice(index, 1);
+            });
+
+            copiedPrevRooms.unshift(...updatedRooms);
+
+            return [...copiedPrevRooms.sort((a, b) => b.roomId - a.roomId)];
+          }
+        });
+      } else {
+        setRoomList(newRooms);
+      }
+    } catch (error) {
+      <ModalError>{error.message}</ModalError>;
+    }
   };
 
   useEffect(() => {
@@ -325,7 +412,7 @@ const RoomList = ({ match }) => {
       );
       infiniteObserverRef.current.observe(lastRoomRef.current);
     }
-  }, [roomList.length]);
+  }, [JSON.stringify(roomList)]);
 
   useUpdateEffect(() => {
     refresh();
