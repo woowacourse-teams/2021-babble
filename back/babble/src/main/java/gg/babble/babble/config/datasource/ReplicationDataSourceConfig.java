@@ -28,8 +28,8 @@ public class ReplicationDataSourceConfig {
     private final ReplicationDataSourceProperties dataSourceProperties;
     private final JpaProperties jpaProperties;
 
-    public ReplicationDataSourceConfig(ReplicationDataSourceProperties dataSourceProperties,
-                                       JpaProperties jpaProperties) {
+    public ReplicationDataSourceConfig(final ReplicationDataSourceProperties dataSourceProperties,
+                                       final JpaProperties jpaProperties) {
         this.dataSourceProperties = dataSourceProperties;
         this.jpaProperties = jpaProperties;
     }
@@ -46,7 +46,7 @@ public class ReplicationDataSourceConfig {
         Map<Object, Object> dataSources = new LinkedHashMap<>();
         dataSources.put("master", masterDataSource);
 
-        for (Slave slave : dataSourceProperties.getSlaves().values()) {
+        for (Slave slave : dataSourceProperties.getSlaves()) {
             DataSource slaveDatSource = createDataSource(
                 slave.getDriverClassName(),
                 slave.getUrl(),
@@ -64,7 +64,8 @@ public class ReplicationDataSourceConfig {
         return replicationRoutingDataSource;
     }
 
-    public DataSource createDataSource(String driverClassName, String url, String username, String password) {
+    private DataSource createDataSource(final String driverClassName, final String url,
+                                       final String username, final String password) {
         return DataSourceBuilder.create()
             .type(HikariDataSource.class)
             .url(url)
@@ -82,7 +83,7 @@ public class ReplicationDataSourceConfig {
             .build();
     }
 
-    private EntityManagerFactoryBuilder createEntityManagerFactoryBuilder(JpaProperties jpaProperties) {
+    private EntityManagerFactoryBuilder createEntityManagerFactoryBuilder(final JpaProperties jpaProperties) {
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         return new EntityManagerFactoryBuilder(vendorAdapter, jpaProperties.getProperties(), null);
     }
@@ -93,7 +94,7 @@ public class ReplicationDataSourceConfig {
     }
 
     @Bean
-    public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+    public PlatformTransactionManager transactionManager(final EntityManagerFactory entityManagerFactory) {
         JpaTransactionManager tm = new JpaTransactionManager();
         tm.setEntityManagerFactory(entityManagerFactory);
         return tm;

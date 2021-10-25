@@ -15,7 +15,7 @@ public class ReplicationRoutingDataSource extends AbstractRoutingDataSource {
     private DataSourceNames<String> slaveNames;
 
     @Override
-    public void setTargetDataSources(Map<Object, Object> targetDataSources) {
+    public void setTargetDataSources(final Map<Object, Object> targetDataSources) {
         super.setTargetDataSources(targetDataSources);
 
         List<String> replicas = targetDataSources.keySet()
@@ -46,7 +46,7 @@ public class ReplicationRoutingDataSource extends AbstractRoutingDataSource {
         private final List<T> values;
         private int index = 0;
 
-        public DataSourceNames(List<T> values) {
+        public DataSourceNames(final List<T> values) {
             this.values = values;
         }
 
