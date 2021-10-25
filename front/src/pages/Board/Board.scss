@@ -23,12 +23,14 @@
     border: 1px solid f.grey-scale(4);
     padding: 1rem 2rem;
 
-    .content-wrapper {
-      width: 100%;
-      padding: 1.5rem 1rem;
-
-      &:not(:last-child) {
+    a {
+      .content-wrapper {
+        padding: 1.5rem 1rem;
         border-bottom: 1px solid f.grey-scale(4);
+      }
+
+      &:last-child .content-wrapper {
+        border-bottom: 0;
       }
     }
 
