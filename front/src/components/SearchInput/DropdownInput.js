@@ -39,7 +39,7 @@ const DropdownInput = ({
 
   useEffect(() => {
     setDropdownList(dropdownKeywords);
-  }, []);
+  }, [dropdownKeywords]);
 
   return (
     <div className='input-container' ref={containerRef}>
