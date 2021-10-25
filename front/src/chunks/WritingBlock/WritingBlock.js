@@ -3,7 +3,7 @@ import '../../../node_modules/quill/dist/quill.snow.css';
 
 import { Body2, Subtitle1 } from '../../core/Typography';
 import { DropdownInput, SquareButton, TextInput } from '../../components';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import Quill from 'quill';
 

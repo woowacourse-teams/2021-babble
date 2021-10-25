@@ -3,6 +3,8 @@ const PATH = {
   MAKE_ROOM: '/make-room',
   ROOM_LIST: '/games',
   BOARD: '/board',
+  VIEW_POST: '/post',
+  WRITE_POST: '/write',
   ADMIN: '/GosutalkspaceAdministratorSexyAirManageBackdoor',
 };
 

@@ -27,7 +27,7 @@ jobs:
 
     - name: Web Application Server 빌드 진행
       working-directory: ./back/babble
-      run: SPRING_DATASOURCE_PASSWORD=${{ secrets.JUNIT_DB_PASSWORD }} SPRING_REDIS_PASSWORD=gosutalkspace=${{ secrets.SPRING_REDIS_PASSWORD }} ./gradlew build
+      run: SPRING_DATASOURCE_PASSWORD=${{ secrets.JUNIT_DB_PASSWORD }} SPRING_REDIS_PASSWORD=${{ secrets.SPRING_REDIS_PASSWORD }} ./gradlew build
 
     - name: JDK 11 버전으로 변경
       uses: actions/setup-java@v2
