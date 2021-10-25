@@ -1,20 +1,19 @@
 package gg.babble.babble.domain.admin;
 
 import gg.babble.babble.exception.BabbleIllegalArgumentException;
-import java.util.regex.Pattern;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.commons.validator.routines.InetAddressValidator;
 
 @Getter
 @NoArgsConstructor
 @Embeddable
 public class Ip {
 
-    public static final String IP_REGEXP = "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
-    private static final Pattern IP_PATTERN = Pattern.compile(IP_REGEXP);
+    private static final InetAddressValidator IP_VALIDATOR = InetAddressValidator.getInstance();
 
     @Column(name = "ip", unique = true)
     @NotNull
@@ -26,7 +25,7 @@ public class Ip {
     }
 
     private void validateToConstruct(final String value) {
-        if (!IP_PATTERN.matcher(value).matches()) {
+        if (!IP_VALIDATOR.isValid(value)) {
             throw new BabbleIllegalArgumentException(String.format("%s는 IP 형식에 맞지 않습니다.", value));
         }
     }

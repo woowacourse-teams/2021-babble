@@ -27,5 +27,5 @@ jobs:
 
     - name: 테스트 진행
       working-directory: ./back/babble
-      run: ./gradlew test
+      run: SPRING_DATASOURCE_PASSWORD=${{ secrets.JUNIT_DB_PASSWORD }} SPRING_REDIS_PASSWORD=${{ secrets.SPRING_REDIS_PASSWORD }} ./gradlew test
       

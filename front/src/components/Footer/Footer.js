@@ -11,6 +11,8 @@ const Footer = () => {
         <img
           src={`${BABBLE_URL}/img/logos/footer_logo.png`}
           alt='footer logo'
+          width='30px'
+          height='30px'
         />
       </span>
       <div className='goal'>

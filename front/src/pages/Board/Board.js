@@ -4,6 +4,8 @@ import { Body2, Headline2 } from '../../core/Typography';
 import { DropdownInput, MainImage, SquareButton } from '../../components';
 import React, { useEffect, useState } from 'react';
 
+import { Link } from 'react-router-dom';
+import PATH from '../../constants/path';
 import PageLayout from '../../core/Layout/PageLayout';
 import TableContent from '../../chunks/TableContent/TableContent';
 import TextSearchInput from '../../components/SearchInput/TextSearchInput';
@@ -26,8 +28,8 @@ const Board = () => {
         id: 1,
         title: '롤드컵 존잼 ;; ㄷㄷ',
         category: '자유',
-        viewCount: '12',
-        likeCount: '12',
+        viewCount: 12,
+        likeCount: 12,
         author: '그룸밍',
         createdAt: '10/23 09:34',
         notice: true,
@@ -36,8 +38,8 @@ const Board = () => {
         id: 2,
         title: '롤드컵 존잼 ;; ㄷㄷ',
         category: '자유',
-        viewCount: '12',
-        likeCount: '12',
+        viewCount: 12,
+        likeCount: 12,
         author: '그룸밍',
         createdAt: '10/23 09:34',
         notice: false,
@@ -46,8 +48,8 @@ const Board = () => {
         id: 3,
         title: '롤드컵 존잼 ;; ㄷㄷ',
         category: 'Monster Hunter Iceborne',
-        viewCount: '12',
-        likeCount: '12',
+        viewCount: 12,
+        likeCount: 12,
         author: '그룸밍',
         createdAt: '10/23 09:34',
         notice: true,
@@ -61,13 +63,19 @@ const Board = () => {
 
   return (
     <main className='board-container'>
-      <MainImage imageSrc={'https://babble.gg/img/background/board-main.jpg'} />
+      <MainImage
+        imageSrc={'https://babble.gg/img/background/board-main-reduced.jpg'}
+      />
       <PageLayout>
         <div className='board-header'>
-          <Headline2>익명 게시판</Headline2>
-          <SquareButton>
-            <Body2>글 쓰기</Body2>
-          </SquareButton>
+          <Link to={PATH.BOARD}>
+            <Headline2>익명 게시판</Headline2>
+          </Link>
+          <Link to={`${PATH.BOARD}${PATH.WRITE_POST}`}>
+            <SquareButton>
+              <Body2>글 쓰기</Body2>
+            </SquareButton>
+          </Link>
         </div>
         <div className='board-search'>
           <TextSearchInput />
@@ -82,13 +90,18 @@ const Board = () => {
         </div>
         <div className='board-wrapper'>
           {posts.map((post) => (
-            <div className='content-wrapper' key={post.id}>
-              <TableContent
-                boardDetails={post}
-                onTitleClick={() => {}}
-                onCategoryClick={() => {}}
-              />
-            </div>
+            <Link
+              to={`${PATH.BOARD}${PATH.VIEW_POST}/${post.id}`}
+              key={post.id}
+            >
+              <div className='content-wrapper'>
+                <TableContent
+                  boardDetails={post}
+                  onTitleClick={() => {}}
+                  onCategoryClick={() => {}}
+                />
+              </div>
+            </Link>
           ))}
         </div>
       </PageLayout>
