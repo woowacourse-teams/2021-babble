@@ -1,60 +1,54 @@
 import './Board.scss';
 
 import { Body2, Headline2 } from '../../core/Typography';
-import { DropdownInput, MainImage, SquareButton } from '../../components';
+import {
+  DropdownInput,
+  MainImage,
+  ModalError,
+  SquareButton,
+} from '../../components';
+import { Link, useHistory } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 
-import { Link } from 'react-router-dom';
+import { BASE_URL } from '../../constants/api';
 import PATH from '../../constants/path';
 import PageLayout from '../../core/Layout/PageLayout';
 import TableContent from '../../chunks/TableContent/TableContent';
 import TextSearchInput from '../../components/SearchInput/TextSearchInput';
-
-// import { BASE_URL } from '../../constants/api';
-
-// import axios from 'axios';
+import axios from 'axios';
+import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 
 const Board = () => {
-  const [category, setCategory] = useState('');
+  const history = useHistory();
+  const { openModal } = useDefaultModal();
 
-  //TODO: Dummy Data -> 나중에 고칠 예정
+  const [category, setCategory] = useState('');
   const [posts, setPosts] = useState([]);
 
   const getPosts = async () => {
-    // TODO: API 확정되면 Dummy Data와 함께 맞추어 고칠 예정
-    // const response = await axios.get(`${BASE_URL}/board`);
-    setPosts([
-      {
-        id: 1,
-        title: '롤드컵 존잼 ;; ㄷㄷ',
-        category: '자유',
-        viewCount: 12,
-        likeCount: 12,
-        author: '그룸밍',
-        createdAt: '10/23 09:34',
-        notice: true,
-      },
-      {
-        id: 2,
-        title: '롤드컵 존잼 ;; ㄷㄷ',
-        category: '자유',
-        viewCount: 12,
-        likeCount: 12,
-        author: '그룸밍',
-        createdAt: '10/23 09:34',
-        notice: false,
-      },
-      {
-        id: 3,
-        title: '롤드컵 존잼 ;; ㄷㄷ',
-        category: 'Monster Hunter Iceborne',
-        viewCount: 12,
-        likeCount: 12,
-        author: '그룸밍',
-        createdAt: '10/23 09:34',
-        notice: true,
-      },
-    ]);
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/api${PATH.VIEW_POST}?page=1`
+      );
+      const postList = response.data;
+      const parsedPostList = postList.map((post) => {
+        const [createdDate, createdTime] = post.createdAt.split('T');
+        const [parsedCreatedTime] = createdTime.split('.');
+        return {
+          ...post,
+          createdDate,
+          createdTime: parsedCreatedTime,
+        };
+      });
+
+      setPosts(parsedPostList);
+    } catch (error) {
+      openModal(<ModalError>글 목록 조회를 실패했습니다.</ModalError>);
+    }
+  };
+
+  const clickPost = (postId) => () => {
+    history.push(`${PATH.BOARD}${PATH.VIEW_POST}/${postId}`);
   };
 
   useEffect(() => {
@@ -90,18 +84,13 @@ const Board = () => {
         </div>
         <div className='board-wrapper'>
           {posts.map((post) => (
-            <Link
-              to={`${PATH.BOARD}${PATH.VIEW_POST}/${post.id}`}
-              key={post.id}
-            >
-              <div className='content-wrapper'>
-                <TableContent
-                  boardDetails={post}
-                  onTitleClick={() => {}}
-                  onCategoryClick={() => {}}
-                />
-              </div>
-            </Link>
+            <div className='content-wrapper' key={post.id}>
+              <TableContent
+                boardDetails={post}
+                onContentClick={clickPost(post.id)}
+                onCategoryClick={() => {}}
+              />
+            </div>
           ))}
         </div>
       </PageLayout>
