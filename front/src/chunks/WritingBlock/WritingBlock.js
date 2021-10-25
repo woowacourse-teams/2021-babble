@@ -5,30 +5,22 @@ import { Body2, Subtitle1 } from '../../core/Typography';
 import { DropdownInput, SquareButton, TextInput } from '../../components';
 import React, { useEffect, useRef, useState } from 'react';
 
+import PropTypes from 'prop-types';
 import Quill from 'quill';
 
-const WritingBlock = () => {
+const WritingBlock = ({ submitPost }) => {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const editorRef = useRef(null);
 
   useEffect(() => {
-    // TODO: api 완성되면 더미데이터 제거
-    setCategories([
-      '자유',
-      'League of Legends',
-      'Apex Legends',
-      'Kart Rider Plus',
-      'Overwatch',
-      'Hearthstone',
-    ]);
+    setCategories(['자유', '건의', '게임', '공지']);
 
     editorRef.current = new Quill('.editor', {
       modules: {
         toolbar: [
           [{ font: [] }],
-          // [{ header: [1, 2, 3, false] }], // header는 줄바꿈하면 풀린다.
-          [{ size: ['small', false, 'large', 'huge'] }], // size는 풀리지는 않는 대신, 줄바꿈 시 약간 불안정함.
+          [{ size: ['small', false, 'large', 'huge'] }],
           ['bold', 'italic', 'underline', 'strike'],
           [{ align: [] }],
           [{ color: [] }, { background: [] }],
@@ -39,13 +31,26 @@ const WritingBlock = () => {
       placeholder: '내용을 입력하세요.',
       theme: 'snow',
     });
-    // 이미지 저장하는 다른 방법
-    // https://velog.io/@holim0/React-Quill-%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0
-    // https://velog.io/@sklsh917/React-Quill%EC%9D%84-%ED%99%9C%EC%9A%A9%ED%95%98%EC%97%AC-%EA%B2%8C%EC%8B%9C%ED%8C%90-%EB%A7%8C%EB%93%A4%EA%B8%B0with-TypeScript
-
-    // form 제출 로직
-    // https://quilljs.com/playground/#form-submit
   }, []);
+
+  const handleSubmitButtonClick = (e) => {
+    e.preventDefault();
+    const form = e.currentTarget.form;
+    const title = form.title.value;
+    const content = form.querySelector('.ql-editor').innerHTML;
+    const nickname = form.nickname.value;
+    const password = form.password.value;
+
+    const post = {
+      title,
+      content,
+      nickname,
+      password,
+      category: selectedCategory || '자유',
+    };
+
+    submitPost(post);
+  };
 
   return (
     <section className='writing-section'>
@@ -94,13 +99,17 @@ const WritingBlock = () => {
           type='submit'
           size='block'
           name='write'
-          onClickButton={() => {}}
+          onClickButton={handleSubmitButtonClick}
         >
           <Body2>작성하기</Body2>
         </SquareButton>
       </form>
     </section>
   );
+};
+
+WritingBlock.propTypes = {
+  submitPost: PropTypes.func,
 };
 
 export default WritingBlock;
