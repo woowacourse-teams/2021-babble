@@ -15,7 +15,6 @@ import { getSessionStorage, setSessionStorage } from '../../utils/storage';
 import { BASE_URL } from '../../constants/api';
 import ChattingRoom from '../ChattingRoom/ChattingRoom';
 import { IoMdRefresh } from '@react-icons/all-files/io/IoMdRefresh';
-import ModalConfirm from '../../components/Modal/ModalConfirm';
 import PATH from '../../constants/path';
 import { PATTERNS } from '../../constants/regex';
 import PageLayout from '../../core/Layout/PageLayout';
@@ -47,7 +46,7 @@ const RoomList = ({ match }) => {
   const { user, changeUser } = useUser();
   const { openChatting, closeChatting, isChattingModalOpen } =
     useChattingModal();
-  const { openModal } = useDefaultModal();
+  const { openModal, onConfirm } = useDefaultModal();
 
   useScript('https://developers.kakao.com/sdk/js/kakao.js');
   const history = useHistory();
@@ -184,21 +183,6 @@ const RoomList = ({ match }) => {
     });
   };
 
-  // TODO: Custom Confirm 로직을 개선할 방법에 대해 고려(우선순위 꽤 높음).
-  const onConfirm = (callback) => {
-    if (isChattingModalOpen) {
-      openModal(
-        <ModalConfirm confirmCallback={callback}>
-          입장중인 방에서 퇴장하시겠습니까?
-        </ModalConfirm>
-      );
-
-      return;
-    }
-
-    callback();
-  };
-
   const onChangeTagInput = (e) => {
     const inputValue = e.target.value.replace(PATTERNS.SPECIAL_CHARACTERS, '');
 
@@ -278,6 +262,9 @@ const RoomList = ({ match }) => {
     getRooms(selectedTagIdParam);
   };
 
+  const onConfirmExit = (callback, condition) =>
+    onConfirm(callback, condition, '입장중인 방에서 퇴장하시겠습니까?');
+
   const refresh = () => {
     setRoomList([]);
     pageRef.current = 1;
@@ -341,7 +328,9 @@ const RoomList = ({ match }) => {
             <NicknameSection />
             <SquareButton
               size='medium'
-              onClickButton={() => onConfirm(() => enterMakeRoomPage())}
+              onClickButton={() =>
+                onConfirmExit(() => enterMakeRoomPage(), isChattingModalOpen)
+              }
               colored
             >
               <Body2>방 만들기</Body2>
@@ -370,7 +359,9 @@ const RoomList = ({ match }) => {
               <Room
                 key={index}
                 room={room}
-                onClickRoom={(e) => onConfirm(() => joinChatting(e))}
+                onClickRoom={(e) =>
+                  onConfirmExit(() => joinChatting(e), isChattingModalOpen)
+                }
                 scrollRef={isLastIndex ? lastRoomRef : null}
               />
             );
