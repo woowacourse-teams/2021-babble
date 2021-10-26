@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 const DropdownInput = ({
   placeholder = '방 인원을 선택해주세요.',
   type = 'number',
+  name = 'dropdown',
   dropdownKeywords,
   inputValue,
   defaultInputValue = '',
@@ -45,6 +46,7 @@ const DropdownInput = ({
     <div className='input-container' ref={containerRef}>
       <input
         type={type}
+        name={name}
         className='input-inner'
         value={inputValue ? inputValue : defaultInputValue}
         placeholder={placeholder}
@@ -80,6 +82,7 @@ const DropdownInput = ({
 DropdownInput.propTypes = {
   placeholder: PropTypes.string,
   type: PropTypes.oneOf(['text', 'number']),
+  name: PropTypes.string,
   inputValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   defaultInputValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   setInputValue: PropTypes.func,

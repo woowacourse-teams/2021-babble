@@ -10,10 +10,11 @@ const TextSearchInput = ({
     <div className='input-container'>
       <input
         type='search'
+        name='search'
         className='input-inner text-search'
         placeholder={placeholder}
       />
-      <button onClick={onSearchButtonClick}>
+      <button type='submit' onClick={onSearchButtonClick}>
         <FiSearch size='20px' />
       </button>
     </div>

@@ -51,6 +51,34 @@ const Board = () => {
     history.push(`${PATH.BOARD}${PATH.VIEW_POST}/${postId}`);
   };
 
+  const searchPost = async (e) => {
+    e.preventDefault();
+
+    const keyword = e.currentTarget.search.value;
+    const type = e.currentTarget.searchType.value;
+
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/api/post/search?type=${type}&keyword=${keyword}`
+      );
+      const searchResult = response.data.results;
+      const parsedPostList = searchResult.map((post) => {
+        const [createdDate, createdTime] = post.createdAt.split('T');
+        const [parsedCreatedTime] = createdTime.split('.');
+        return {
+          ...post,
+          createdDate,
+          createdTime: parsedCreatedTime,
+        };
+      });
+
+      setPosts(parsedPostList);
+    } catch (error) {
+      console.log(error.response);
+      openModal(<ModalError>{error.response.data.message}</ModalError>);
+    }
+  };
+
   useEffect(() => {
     getPosts();
   }, []);
@@ -71,17 +99,23 @@ const Board = () => {
             </SquareButton>
           </Link>
         </div>
-        <div className='board-search'>
+        <form className='board-search' onSubmit={searchPost}>
           <TextSearchInput />
           <DropdownInput
             type='text'
+            name='searchType'
             placeholder=''
-            defaultInputValue='전체'
+            defaultInputValue='제목, 내용, 작성자'
             inputValue={category}
             setInputValue={setCategory}
-            dropdownKeywords={['전체', '글 + 제목', '글쓴이']}
+            dropdownKeywords={[
+              '제목, 내용, 작성자',
+              '제목, 내용',
+              '제목',
+              '작성자',
+            ]}
           />
-        </div>
+        </form>
         <div className='board-wrapper'>
           {posts.length ? (
             posts.map((post) => (
