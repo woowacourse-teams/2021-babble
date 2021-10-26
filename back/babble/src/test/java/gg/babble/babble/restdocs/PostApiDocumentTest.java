@@ -261,14 +261,14 @@ public class PostApiDocumentTest extends AcceptanceTest {
         assertThat(response.getCreatedAt()).isEqualTo(post.getCreatedAt());
     }
 
-    @DisplayName("매우 긴 내용으로 게시글을 수정한다.")
+    @DisplayName("8000bytes까지 게시글에 포함할 수 있다.")
     @Test
     void updatePostHeavyContent() {
         PostResponse post = postResponses.get(2);
-        String sentence = "이것은 매우 긴 내용의 글입니다. 긴장해주세요.\n";
+        String sentence = "a";
         StringBuilder content = new StringBuilder();
 
-        for (int i = 0; i < 10000; i++) {
+        while(content.toString().getBytes().length + sentence.getBytes().length < 8000) {
             content.append(sentence);
         }
 

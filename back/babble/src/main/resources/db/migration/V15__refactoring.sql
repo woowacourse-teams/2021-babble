@@ -1,1 +1,1 @@
-alter table post modify content varchar;
+alter table post change content content varchar(8000);
