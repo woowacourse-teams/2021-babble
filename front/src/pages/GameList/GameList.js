@@ -93,21 +93,22 @@ const GameList = () => {
           });
 
           return game.alternativeNames.some((alternativeName) =>
-            alternativeName.match(searchRegex)
+            alternativeName.name.match(searchRegex)
           );
         })
       : gameList.filter((game) => {
           const searchRegex = new RegExp(inputValue, 'gi');
           const alternativeNamesWithoutSpace = game.alternativeNames.map(
-            (alternativeName) => alternativeName.replace(PATTERNS.SPACE, '')
+            (alternativeName) =>
+              alternativeName.name.replace(PATTERNS.SPACE, '')
           );
 
           return (
             alternativeNamesWithoutSpace.some((alternativeName) =>
-              alternativeName.match(searchRegex)
+              alternativeName.name.match(searchRegex)
             ) ||
             game.alternativeNames.some((alternativeName) =>
-              alternativeName.match(searchRegex)
+              alternativeName.name.match(searchRegex)
             )
           );
         });

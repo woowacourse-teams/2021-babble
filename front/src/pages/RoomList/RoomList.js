@@ -240,21 +240,22 @@ const RoomList = ({ match }) => {
           });
 
           return tag.alternativeNames.some((alternativeName) =>
-            alternativeName.match(searchRegex)
+            alternativeName.name.match(searchRegex)
           );
         })
       : tagList.filter((tag) => {
           const searchRegex = new RegExp(inputValue, 'gi');
           const alternativeNamesWithoutSpace = tag.alternativeNames.map(
-            (alternativeName) => alternativeName.replace(PATTERNS.SPACE, '')
+            (alternativeName) =>
+              alternativeName.name.replace(PATTERNS.SPACE, '')
           );
 
           return (
             alternativeNamesWithoutSpace.some((alternativeName) =>
-              alternativeName.match(searchRegex)
+              alternativeName.name.match(searchRegex)
             ) ||
             tag.alternativeNames.some((alternativeName) =>
-              alternativeName.match(searchRegex)
+              alternativeName.name.match(searchRegex)
             )
           );
         });
