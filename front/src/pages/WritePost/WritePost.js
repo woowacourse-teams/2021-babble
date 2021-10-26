@@ -79,7 +79,7 @@ const WritePost = () => {
       openModal(<ModalAlert>수정이 완료되었습니다.</ModalAlert>);
       history.push(`${PATH.BOARD}${PATH.VIEW_POST}/${postData.id}`);
     } catch (error) {
-      openModal(<ModalError>{error.response.data.message}</ModalError>);
+      openModal(<ModalError>{error.response?.data?.message}</ModalError>);
     }
   };
 

@@ -75,7 +75,7 @@ const Board = () => {
       setPosts(parsedPostList);
     } catch (error) {
       console.log(error.response);
-      openModal(<ModalError>{error.response.data.message}</ModalError>);
+      openModal(<ModalError>{error.response?.data?.message}</ModalError>);
     }
   };
 

@@ -87,7 +87,7 @@ const ViewPost = ({ match }) => {
         history.push(`${PATH.BOARD}`);
       } catch (error) {
         closeModal();
-        openModal(<ModalError>{error.response.data.message}</ModalError>);
+        openModal(<ModalError>{error.response?.data?.message}</ModalError>);
       }
     };
 
