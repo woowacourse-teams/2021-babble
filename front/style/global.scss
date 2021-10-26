@@ -25,6 +25,16 @@ body,
   }
 }
 
+*:not(img)::selection {
+  color: white;
+  background: #ff005c;
+}
+
+input,
+img {
+  user-select: none;
+}
+
 a {
   color: inherit;
   text-decoration: none;
