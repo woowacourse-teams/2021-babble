@@ -385,7 +385,7 @@ const RoomList = ({ match }) => {
       ([entry]) => {
         entry.target.classList.toggle(
           'stuck',
-          entry.intersectionRatio < 1 && !entry.isIntersecting
+          entry.boundingClientRect.top <= 0 && !entry.isIntersecting
         );
       },
       { threshold: 1 }
