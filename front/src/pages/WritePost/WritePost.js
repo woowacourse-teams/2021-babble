@@ -12,6 +12,7 @@ import { useHistory, useLocation } from 'react-router';
 
 import { BASE_URL } from '../../constants/api';
 import { Link } from 'react-router-dom';
+import ModalAlert from '../../components/Modal/ModalAlert';
 import PATH from '../../constants/path';
 import PageLayout from '../../core/Layout/PageLayout';
 import { WritingBlock } from '../../chunks';
@@ -75,14 +76,19 @@ const WritePost = () => {
       const response = await axios.put(`${BASE_URL}/api/post`, post);
       const postData = response.data;
 
+      openModal(<ModalAlert>수정이 완료되었습니다.</ModalAlert>);
       history.push(`${PATH.BOARD}${PATH.VIEW_POST}/${postData.id}`);
     } catch (error) {
-      openModal(<ModalError>글 수정에 실패했습니다.</ModalError>);
+      openModal(<ModalError>{error.response.data.message}</ModalError>);
     }
   };
 
   useEffect(() => {
     setCategories(['자유', '건의', '게임', '공지']);
+
+    if (postToEdit) {
+      setSelectedCategory(postToEdit.category);
+    }
   }, []);
 
   return (
