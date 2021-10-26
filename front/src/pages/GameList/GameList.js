@@ -59,7 +59,7 @@ const GameList = () => {
       setGameList(games);
       setSelectedGames(games);
     } catch (error) {
-      openModal(<ModalError>{error.message}</ModalError>);
+      openModal(<ModalError>{error.response?.data?.message}</ModalError>);
     }
   };
 
