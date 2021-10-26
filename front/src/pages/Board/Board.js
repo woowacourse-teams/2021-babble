@@ -83,15 +83,21 @@ const Board = () => {
           />
         </div>
         <div className='board-wrapper'>
-          {posts.map((post) => (
-            <div className='content-wrapper' key={post.id}>
-              <TableContent
-                boardDetails={post}
-                onContentClick={clickPost(post.id)}
-                onCategoryClick={() => {}}
-              />
+          {posts.length ? (
+            posts.map((post) => (
+              <div className='content-wrapper' key={post.id}>
+                <TableContent
+                  boardDetails={post}
+                  onContentClick={clickPost(post.id)}
+                  onCategoryClick={() => {}}
+                />
+              </div>
+            ))
+          ) : (
+            <div className='no-posts'>
+              <Body2>게시글이 존재하지 않습니다.</Body2>
             </div>
-          ))}
+          )}
         </div>
       </PageLayout>
     </main>

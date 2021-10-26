@@ -15,6 +15,7 @@ const TextInput = ({
   placeholder = '닉네임을 입력해주세요.',
   inputRef = null,
   required = false,
+  disabled = false,
   onKeyDownInput = () => {},
 }) => {
   const containerRef = useRef(null);
@@ -40,6 +41,7 @@ const TextInput = ({
         onChange={onChangeInput}
         defaultValue={defaultValue}
         ref={inputRef}
+        disabled={disabled}
         onKeyDown={onKeyDownInput}
         required={required}
       />
@@ -58,6 +60,7 @@ TextInput.propTypes = {
   isContentSelected: PropTypes.bool,
   inputRef: PropTypes.object,
   onKeyDownInput: PropTypes.func,
+  disabled: PropTypes.bool,
   required: PropTypes.bool,
 };
 

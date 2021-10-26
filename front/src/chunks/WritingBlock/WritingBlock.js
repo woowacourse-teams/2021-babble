@@ -6,8 +6,11 @@ import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Quill from 'quill';
 import { TextInput } from '../../components';
+import useUpdateEffect from '../../hooks/useUpdateEffect';
 
-const WritingBlock = () => {
+// import ReactHtmlParser from 'react-html-parser';
+
+const WritingBlock = ({ title, content, nickname }) => {
   const editorRef = useRef(null);
 
   useEffect(() => {
@@ -28,11 +31,25 @@ const WritingBlock = () => {
     });
   }, []);
 
+  useUpdateEffect(() => {
+    const blank = editorRef.current.root.querySelector('p');
+    editorRef.current.root.removeChild(blank);
+
+    const parser = new DOMParser();
+    const contentString = parser.parseFromString(content, 'text/html');
+    const paragraphs = contentString.querySelectorAll('p');
+
+    paragraphs.forEach((p) => {
+      editorRef.current.root.appendChild(p);
+    });
+  }, [editorRef.current]);
+
   return (
     <div className='writing-block'>
       <div className='title'>
         <TextInput
           name='title'
+          defaultValue={title ?? ''}
           border={false}
           placeholder='제목을 입력하세요.'
           required
@@ -44,8 +61,10 @@ const WritingBlock = () => {
       <div className='writing-info'>
         <TextInput
           name='nickname'
+          defaultValue={nickname ?? ''}
           border={false}
           placeholder='닉네임'
+          disabled={nickname ? true : false}
           required
         />
         <TextInput
@@ -58,6 +77,12 @@ const WritingBlock = () => {
       </div>
     </div>
   );
+};
+
+WritingBlock.propTypes = {
+  title: PropTypes.string,
+  content: PropTypes.string,
+  nickname: PropTypes.string,
 };
 
 export default WritingBlock;
