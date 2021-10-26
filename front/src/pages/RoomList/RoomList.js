@@ -27,6 +27,7 @@ import { getRandomNickname } from '@woowa-babble/random-nickname';
 import { useChattingModal } from '../../contexts/ChattingModalProvider';
 import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 import { useHistory } from 'react-router-dom';
+import useInterval from '../../hooks/useInterval';
 import useScript from '../../hooks/useScript';
 import useUpdateEffect from '../../hooks/useUpdateEffect';
 import { useUser } from '../../contexts/UserProvider';
@@ -69,7 +70,7 @@ const RoomList = ({ match }) => {
 
       changeUser({ id: generatedUser.id, nickname: generatedUser.nickname });
     } catch (error) {
-      openModal(<ModalError>{error.message}</ModalError>);
+      openModal(<ModalError>{error.response?.data?.message}</ModalError>);
     }
 
     if (roomId) {
@@ -94,7 +95,7 @@ const RoomList = ({ match }) => {
 
       setCurrentGame(response.data);
     } catch (error) {
-      openModal(<ModalError>{error.message}</ModalError>);
+      openModal(<ModalError>{error.response?.data?.message}</ModalError>);
     }
   };
 
@@ -106,7 +107,7 @@ const RoomList = ({ match }) => {
       setTagList(tags);
       setAutoCompleteTagList(tags);
     } catch (error) {
-      openModal(<ModalError>{error.message}</ModalError>);
+      openModal(<ModalError>{error.response?.data?.message}</ModalError>);
     }
   };
 
@@ -136,7 +137,7 @@ const RoomList = ({ match }) => {
         return [...newRoom, ...rooms];
       });
     } catch (error) {
-      openModal(<ModalError>{error.message}</ModalError>);
+      openModal(<ModalError>{error.response?.data?.message}</ModalError>);
     }
   };
 
@@ -280,7 +281,7 @@ const RoomList = ({ match }) => {
 
       changeUser(newUser);
     } catch (error) {
-      openModal(<ModalError>{error.message}</ModalError>);
+      openModal(<ModalError>{error.response?.data?.message}</ModalError>);
     }
   };
 
@@ -291,6 +292,7 @@ const RoomList = ({ match }) => {
 
   const refresh = async () => {
     pageRef.current = 1;
+
     try {
       const selectedTagIdParam = selectedTagList.map(({ id }) => id).join(',');
 
@@ -299,12 +301,17 @@ const RoomList = ({ match }) => {
       });
 
       const newRooms = newResponse.data;
+      const newRoomsCopy = [...newRooms];
+      const roomListCopy = [...roomList];
 
-      const stringNewRooms = newRooms.map((newRoom) => JSON.stringify(newRoom));
-
-      const stringRoomList = roomList
+      const sortedNewRooms = newRoomsCopy.sort((a, b) => b.roomId - a.roomId);
+      const sortedRoomList = roomListCopy
         .slice(0, newRooms.length)
-        .map((room) => JSON.stringify(room));
+        .sort((a, b) => b.roomId - a.roomId);
+
+      const isSame = sortedNewRooms.every((room, index) => {
+        return sortedRoomList[index]?.roomId === room.roomId;
+      });
 
       if (selectedTagList.length) {
         const roomWithTags = newRooms.filter((room) => room.tags);
@@ -321,7 +328,7 @@ const RoomList = ({ match }) => {
         });
 
         setRoomList([...answer]);
-      } else if (stringNewRooms !== stringRoomList) {
+      } else if (!isSame) {
         setRoomList((prevRooms) => {
           const copiedPrevRooms = [...prevRooms];
 
@@ -360,14 +367,16 @@ const RoomList = ({ match }) => {
 
             copiedPrevRooms.unshift(...updatedRooms);
 
-            return [...copiedPrevRooms.sort((a, b) => b.roomId - a.roomId)];
+            return [
+              ...copiedPrevRooms.sort((a, b) => b.roomId - a.roomId),
+            ].slice(0, 16);
           }
         });
       } else {
         setRoomList(newRooms);
       }
     } catch (error) {
-      <ModalError>{error.message}</ModalError>;
+      <ModalError>{error.response?.data?.message}</ModalError>;
     }
   };
 
@@ -417,6 +426,10 @@ const RoomList = ({ match }) => {
   useUpdateEffect(() => {
     refresh();
   }, [selectedTagList]);
+
+  useInterval(() => {
+    refresh();
+  }, [5000]);
 
   return (
     <div className='room-list-container'>
