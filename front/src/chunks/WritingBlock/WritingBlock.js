@@ -68,6 +68,7 @@ const WritingBlock = ({ title, content, nickname }) => {
           required
         />
         <TextInput
+          type='password'
           name='password'
           minLength={4}
           border={false}

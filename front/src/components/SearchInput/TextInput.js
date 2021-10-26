@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 
 const TextInput = ({
   name,
+  type = 'text',
   border = true,
   maxLength = 50,
   minLength = 1,
@@ -32,7 +33,7 @@ const TextInput = ({
       ref={containerRef}
     >
       <input
-        type='text'
+        type={type}
         className='input-inner'
         name={name}
         maxLength={maxLength}
@@ -50,6 +51,7 @@ const TextInput = ({
 };
 
 TextInput.propTypes = {
+  type: PropTypes.string,
   defaultValue: PropTypes.string,
   border: PropTypes.bool,
   name: PropTypes.string.isRequired,

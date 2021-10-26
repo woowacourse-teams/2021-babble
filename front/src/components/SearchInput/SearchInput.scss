@@ -44,6 +44,12 @@
     }
   }
 
+  &:not(.borderless) {
+    input[type='password'] {
+      text-align: center;
+    }
+  }
+
   &:focus-within {
     border: 2px solid f.primary(babble-pink);
   }

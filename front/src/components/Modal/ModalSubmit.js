@@ -8,7 +8,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 
-const ModalSubmit = ({ title, inputPlaceholder, onSubmit }) => {
+const ModalSubmit = ({
+  title,
+  inputPlaceholder,
+  onSubmit,
+  isSecret = false,
+}) => {
   const { closeModal } = useDefaultModal();
 
   return (
@@ -19,6 +24,7 @@ const ModalSubmit = ({ title, inputPlaceholder, onSubmit }) => {
       <div className='control-inputs'>
         <Subtitle3>{title}</Subtitle3>
         <TextInput
+          type={isSecret ? 'password' : 'text'}
           name='password'
           placeholder={inputPlaceholder}
           isContentSelected
@@ -41,6 +47,7 @@ ModalSubmit.propTypes = {
   title: PropTypes.string,
   inputPlaceholder: PropTypes.string,
   onSubmit: PropTypes.func,
+  isSecret: PropTypes.bool,
 };
 
 export default ModalSubmit;

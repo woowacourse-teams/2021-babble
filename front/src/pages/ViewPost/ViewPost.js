@@ -96,6 +96,7 @@ const ViewPost = ({ match }) => {
         title='게시글 삭제하기'
         inputPlaceholder='비밀번호를 입력해주세요.'
         onSubmit={submitPassword}
+        isSecret={true}
       />
     );
   };
