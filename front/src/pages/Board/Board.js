@@ -11,6 +11,7 @@ import { Link, useHistory } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 
 import { BASE_URL } from '../../constants/api';
+import { LEAST_LIKE_TO_HOT_POST } from '../../constants/board';
 import PATH from '../../constants/path';
 import PageLayout from '../../core/Layout/PageLayout';
 import TableContent from '../../chunks/TableContent/TableContent';
@@ -25,23 +26,41 @@ const Board = () => {
   const [category, setCategory] = useState('');
   const [posts, setPosts] = useState([]);
 
+  const processPostList = (postList) => {
+    const parsedPostList = postList.map((post) => {
+      const [createdDate, createdTime] = post.createdAt.split('T');
+      const [parsedCreatedTime] = createdTime.split('.');
+      return {
+        ...post,
+        createdDate,
+        createdTime: parsedCreatedTime,
+      };
+    });
+
+    return parsedPostList.sort((postA, postB) => {
+      const isPostAHot = postA.like >= LEAST_LIKE_TO_HOT_POST;
+      const isPostBHot = postB.like >= LEAST_LIKE_TO_HOT_POST;
+
+      if (postA.notice === postB.notice) {
+        if (isPostAHot && isPostBHot) {
+          return postB.createdAt - postA.createdAt;
+        } else {
+          return isPostBHot - isPostAHot;
+        }
+      } else {
+        return postB.notice - postA.notice;
+      }
+    });
+  };
+
   const getPosts = async () => {
     try {
       const response = await axios.get(
         `${BASE_URL}/api${PATH.VIEW_POST}?page=1`
       );
-      const postList = response.data;
-      const parsedPostList = postList.map((post) => {
-        const [createdDate, createdTime] = post.createdAt.split('T');
-        const [parsedCreatedTime] = createdTime.split('.');
-        return {
-          ...post,
-          createdDate,
-          createdTime: parsedCreatedTime,
-        };
-      });
+      const processedPostList = processPostList(response.data);
 
-      setPosts(parsedPostList);
+      setPosts(processedPostList);
     } catch (error) {
       openModal(<ModalError>글 목록 조회를 실패했습니다.</ModalError>);
     }
@@ -61,18 +80,9 @@ const Board = () => {
       const response = await axios.get(
         `${BASE_URL}/api/post/search?type=${type}&keyword=${keyword}`
       );
-      const searchResult = response.data.results;
-      const parsedPostList = searchResult.map((post) => {
-        const [createdDate, createdTime] = post.createdAt.split('T');
-        const [parsedCreatedTime] = createdTime.split('.');
-        return {
-          ...post,
-          createdDate,
-          createdTime: parsedCreatedTime,
-        };
-      });
+      const processedPostList = processPostList(response.data.results);
 
-      setPosts(parsedPostList);
+      setPosts(processedPostList);
     } catch (error) {
       console.log(error.response);
       openModal(<ModalError>{error.response?.data?.message}</ModalError>);

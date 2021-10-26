@@ -7,6 +7,7 @@ import { BiTimeFive } from '@react-icons/all-files/bi/BiTimeFive';
 import { BsPersonFill } from '@react-icons/all-files/bs/BsPersonFill';
 import { FaHotjar } from '@react-icons/all-files/fa/FaHotjar';
 import InfoWithIcon from '../../components/InfoWithIcon/InfoWithIcon';
+import { LEAST_LIKE_TO_HOT_POST } from '../../constants/board';
 import LikeAndView from '../../chunks/LikeAndView/LikeAndView';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -42,7 +43,7 @@ const TableContent = ({
             color='babble-pink'
           />
         )}
-        {like > 10 && !notice && (
+        {like > LEAST_LIKE_TO_HOT_POST && !notice && (
           <InfoWithIcon icon={<FaHotjar size='18px' />} color='red' />
         )}
 
