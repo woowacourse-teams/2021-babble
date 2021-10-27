@@ -7,6 +7,7 @@ import { BiTimeFive } from '@react-icons/all-files/bi/BiTimeFive';
 import { BsPersonFill } from '@react-icons/all-files/bs/BsPersonFill';
 import { FaHotjar } from '@react-icons/all-files/fa/FaHotjar';
 import InfoWithIcon from '../../components/InfoWithIcon/InfoWithIcon';
+import { LEAST_LIKE_TO_HOT_POST } from '../../constants/board';
 import LikeAndView from '../../chunks/LikeAndView/LikeAndView';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -16,8 +17,16 @@ const TableContent = ({
   onContentClick = () => {},
   onCategoryClick = () => {},
 }) => {
-  const { title, category, viewCount, likeCount, author, createdAt, notice } =
-    boardDetails;
+  const {
+    title,
+    category,
+    view,
+    like,
+    nickname,
+    createdDate,
+    createdTime,
+    notice,
+  } = boardDetails;
 
   const handleCategoryClick = (e) => {
     e.stopPropagation();
@@ -34,7 +43,7 @@ const TableContent = ({
             color='babble-pink'
           />
         )}
-        {likeCount > 10 && !notice && (
+        {like > LEAST_LIKE_TO_HOT_POST && !notice && (
           <InfoWithIcon icon={<FaHotjar size='18px' />} color='red' />
         )}
 
@@ -45,15 +54,22 @@ const TableContent = ({
             <button onClick={handleCategoryClick} className='category-search'>
               <Caption2>{category}</Caption2>
             </button>
-            <LikeAndView view={viewCount} like={likeCount} />
+            <LikeAndView view={view} like={like} />
             <InfoWithIcon
               icon={<BsPersonFill size='15px' />}
-              content={author}
+              content={nickname}
             />
           </span>
         </div>
       </div>
-      <InfoWithIcon icon={<BiTimeFive size='15px' />} content={createdAt} />
+      <InfoWithIcon
+        icon={<BiTimeFive size='15px' />}
+        content={
+          new Date(createdDate).getDate() >= new Date().getDate()
+            ? createdTime
+            : createdDate
+        }
+      />
     </main>
   );
 };
@@ -62,10 +78,12 @@ TableContent.propTypes = {
   boardDetails: PropTypes.shape({
     title: PropTypes.string,
     category: PropTypes.string,
-    author: PropTypes.string,
+    nickname: PropTypes.string,
     createdAt: PropTypes.string,
-    viewCount: PropTypes.number,
-    likeCount: PropTypes.number,
+    createdDate: PropTypes.string,
+    createdTime: PropTypes.string,
+    view: PropTypes.number,
+    like: PropTypes.number,
     notice: PropTypes.bool,
   }),
   onContentClick: PropTypes.func,

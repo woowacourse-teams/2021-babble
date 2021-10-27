@@ -35,7 +35,7 @@ const TagManagement = () => {
       const tags = response.data;
       setTagList(tags);
     } catch (error) {
-      openModal(<ModalError>{error.message}</ModalError>);
+      openModal(<ModalError>{error.response?.data?.message}</ModalError>);
     }
   };
 
@@ -55,7 +55,7 @@ const TagManagement = () => {
         resetForm();
         getTags();
       } catch (error) {
-        openModal(<ModalError>{error.message}</ModalError>);
+        openModal(<ModalError>{error.response?.data?.message}</ModalError>);
       }
     }
   };
@@ -76,7 +76,7 @@ const TagManagement = () => {
       resetForm();
       getTags();
     } catch (error) {
-      openModal(<ModalError>{error.message}</ModalError>);
+      openModal(<ModalError>{error.response?.data?.message}</ModalError>);
     }
   };
 
