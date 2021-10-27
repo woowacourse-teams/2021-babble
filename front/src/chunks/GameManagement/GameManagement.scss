@@ -2,9 +2,10 @@
 @use '../../../style/functions' as f;
 
 .game-management-container {
-  @include m.top-left-indents;
+  .subtitle1 {
+    margin-top: 4rem;
+  }
 
-  .subtitle1,
   .subtitle3 {
     margin-top: 2rem;
   }
@@ -30,15 +31,17 @@
       }
 
       button {
-        margin-top: 2rem;
-        margin-left: 2rem;
+        position: absolute;
         flex-basis: 15%;
         max-width: 9rem;
         height: inherit;
+        right: 0;
+        top: -5rem;
       }
     }
 
     .register-edit-game {
+      position: relative;
       @include m.top-left-indents;
 
       .game-submit {

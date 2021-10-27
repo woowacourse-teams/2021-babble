@@ -9,9 +9,15 @@
 
   & > section {
     margin-top: 3rem;
-    border: 1px solid f.grey-scale(4);
+    box-shadow: v.$management-box-shadow;
     border-radius: f.border-radius(large-container);
-    padding: 3rem;
+    padding: 4rem 3rem 7rem 3rem;
+  }
+
+  h2.headline2 {
+    border-bottom: 1px solid f.grey-scale(6);
+    margin-bottom: 3rem;
+    padding-bottom: 1rem;
   }
 }
 
@@ -30,20 +36,23 @@
       }
     }
 
-    .headline1 {
+    h1.headline1 {
       text-align: center;
       margin-top: 1rem;
       font-size: 2.5rem;
     }
 
-    .headline2 {
-      font-size: 2.2rem;
-      background: #ff00001f;
+    h2.headline2 {
+      font-size: 2.4rem;
+      background: f.grey-scale(2);
       padding: 0.4rem 0.2rem;
+      border-bottom: 1px solid f.grey-scale(6);
+      margin-bottom: 0;
     }
 
-    .subtitle1 {
+    h3.subtitle1 {
       font-size: 2rem;
+      margin-top: 2rem;
     }
 
     .subtitle3 {
@@ -53,6 +62,7 @@
     .admin-management-container,
     .game-management-container,
     .tag-management-container {
+      box-shadow: none;
       border: none;
       padding: 0;
     }
@@ -69,7 +79,7 @@
 
     .game-management-container .name-list-container {
       width: 100%;
-      margin: 0.5rem 0.4rem;
+      margin: 0.8rem 0;
     }
   }
 }

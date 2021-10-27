@@ -141,16 +141,18 @@ const TagManagement = () => {
     <section className='tag-management-container'>
       <Headline2>태그 관리</Headline2>
       <div className='tag-management-wrapper'>
-        <Subtitle1>태그 조회</Subtitle1>
-        <NameList
-          list={tagList}
-          onClickName={selectTag}
-          onDeleteName={deleteTag}
-          erasable
-        />
+        <div className='tag-view'>
+          <Subtitle1>태그 조회</Subtitle1>
+          <NameList
+            list={tagList}
+            onClickName={selectTag}
+            onDeleteName={deleteTag}
+            erasable
+          />
 
-        <Subtitle1>대체 이름 조회</Subtitle1>
-        <NameList list={selectedTag.alternativeNames} erasable />
+          <Subtitle1>대체 이름 조회</Subtitle1>
+          <NameList list={selectedTag.alternativeNames} erasable />
+        </div>
 
         <Subtitle1>태그 등록</Subtitle1>
         <form
