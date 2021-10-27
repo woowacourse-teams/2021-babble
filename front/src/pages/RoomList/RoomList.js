@@ -128,13 +128,10 @@ const RoomList = ({ match }) => {
 
       setRoomList((prevRooms) => {
         // prevRooms 안에 rooms의 내용이 없으면 넣어라.
-        const newRoom = prevRooms.filter((prevRoom) => {
-          return !rooms.find((room) => {
-            if (JSON.stringify(prevRoom) === JSON.stringify(room)) {
-              return prevRoom;
-            }
-          });
-        });
+        const newRoom = prevRooms.filter(
+          (prevRoom) =>
+            !rooms.includes((room) => prevRoom.roomId === room.roomId)
+        );
 
         return [...newRoom, ...rooms];
       });
