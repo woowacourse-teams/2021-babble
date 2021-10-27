@@ -114,18 +114,16 @@ const WritePost = () => {
               />
             </div>
           </div>
-          <form className='writing-form'>
+          <form
+            className='writing-form'
+            onSubmit={postToEdit ? editPost : submitPost}
+          >
             <WritingBlock
               title={postToEdit?.title}
               content={postToEdit?.content}
               nickname={postToEdit?.nickname}
             />
-            <SquareButton
-              type='submit'
-              size='block'
-              name='write'
-              onClickButton={postToEdit ? editPost : submitPost}
-            >
+            <SquareButton type='submit' size='block' name='write'>
               <Body2>{postToEdit ? '수정하기' : '작성하기'}</Body2>
             </SquareButton>
           </form>
