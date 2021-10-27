@@ -1,15 +1,21 @@
 import '../style/global.scss';
 import '../style/fonts.scss';
 
-import { Footer, Main, NavBar } from './components';
+import { Footer, Main, ModalError, NavBar } from './components';
+import React, { useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { getSessionStorage, setSessionStorage } from './utils/storage';
 
+import { BASE_URL } from './constants/api';
 import Board from './pages/Board/Board';
 import PATH from './constants/path';
-import React from 'react';
 import ViewPost from './pages/ViewPost/ViewPost';
 import WritePost from './pages/WritePost/WritePost';
+import axios from 'axios';
+import { getRandomNickname } from '@woowa-babble/random-nickname';
 import loadable from '@loadable/component';
+import { useDefaultModal } from './contexts/DefaultModalProvider';
+import { useUser } from './contexts/UserProvider';
 
 const GameList = loadable(() => import('./pages/GameList/GameList'));
 const NotFound = loadable(() => import('./components/NotFound/NotFound'));
@@ -20,6 +26,36 @@ const BabbleManagement = loadable(() =>
 );
 
 const App = () => {
+  const { changeUser } = useUser();
+  const { openModal } = useDefaultModal();
+
+  const getUserId = async () => {
+    const newUser = { id: -1, nickname: '' };
+    newUser.nickname = getSessionStorage('nickname');
+
+    if (!newUser.nickname) {
+      newUser.nickname = `${getRandomNickname('characters')}`;
+      setSessionStorage('nickname', newUser.nickname);
+    }
+
+    try {
+      const response = await axios.post(`${BASE_URL}/api/users`, {
+        nickname: newUser.nickname,
+      });
+
+      newUser.id = response.data.id;
+      newUser.nickname = response.data.nickname;
+
+      changeUser(newUser);
+    } catch (error) {
+      openModal(<ModalError>{error.response?.data?.message}</ModalError>);
+    }
+  };
+
+  useEffect(() => {
+    getUserId();
+  }, []);
+
   return (
     <>
       <NavBar />

@@ -1,22 +1,24 @@
 import './WritingBlock.scss';
 import '../../../node_modules/quill/dist/quill.snow.css';
 
+import { BABBLE_URL, BASE_URL } from '../../constants/api';
+import { ModalError, TextInput } from '../../components';
 import React, { useEffect, useRef } from 'react';
 
 import PropTypes from 'prop-types';
 import Quill from 'quill';
-import { ModalError, TextInput } from '../../components';
-import useUpdateEffect from '../../hooks/useUpdateEffect';
-import { useDefaultModal } from '../../contexts/DefaultModalProvider';
-import { getShortNumberId } from '../../utils/id';
-import { BABBLE_URL, BASE_URL } from '../../constants/api';
 import axios from 'axios';
+import { getShortNumberId } from '../../utils/id';
+import { useDefaultModal } from '../../contexts/DefaultModalProvider';
+import useUpdateEffect from '../../hooks/useUpdateEffect';
+import { useUser } from '../../contexts/UserProvider';
 
-const WritingBlock = ({ title, content, nickname }) => {
+const WritingBlock = ({ title, content, nickname, textLimit }) => {
   const editorRef = useRef(null);
   const fileInputRef = useRef(null);
 
   const { openModal } = useDefaultModal();
+  const { user } = useUser();
 
   const imageHandler = () => {
     const imageFile = fileInputRef.current.files[0];
@@ -63,15 +65,21 @@ const WritingBlock = ({ title, content, nickname }) => {
           [{ align: [] }],
           [{ color: [] }, { background: [] }],
           [{ indent: '-1' }, { indent: '+1' }],
-          ['link', 'image', 'video'],
+          ['link', 'image'],
         ],
       },
-      placeholder: '내용을 입력하세요.',
+      placeholder: '내용을 입력하세요(8000자 이하).',
       theme: 'snow',
     });
 
     const toolbar = editorRef.current.getModule('toolbar');
     toolbar.addHandler('image', clickImageButton);
+
+    editorRef.current.on('text-change', () => {
+      if (editorRef.current.getLength() > textLimit) {
+        editorRef.current.deleteText(textLimit, editorRef.current.getLength());
+      }
+    });
   }, []);
 
   useUpdateEffect(() => {
@@ -104,7 +112,7 @@ const WritingBlock = ({ title, content, nickname }) => {
       <div className='writing-info'>
         <TextInput
           name='nickname'
-          defaultValue={nickname ?? ''}
+          defaultValue={user.nickname ?? nickname}
           border={false}
           placeholder='닉네임'
           disabled={nickname ? true : false}
@@ -125,6 +133,7 @@ const WritingBlock = ({ title, content, nickname }) => {
 };
 
 WritingBlock.propTypes = {
+  textLimit: PropTypes.number,
   title: PropTypes.string,
   content: PropTypes.string,
   nickname: PropTypes.string,
