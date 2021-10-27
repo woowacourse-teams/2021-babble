@@ -1,5 +1,6 @@
 @use '../../../style/functions' as f;
 @use '../../../style/variables' as v;
+@use '../../../style/mixins' as m;
 
 .view-post-container {
   .board-header {
@@ -24,10 +25,17 @@
         .subtitle2 {
           display: flex;
           padding: 1rem 0;
+          word-break: break-all;
           width: 90%;
         }
 
         .like-and-view-container {
+          .info-with-icon-container {
+            display: flex;
+            height: 100%;
+            justify-content: flex-start;
+          }
+
           span:first-child {
             margin-right: 0.8rem;
           }
@@ -42,6 +50,11 @@
     .post-body {
       padding: 2rem 1rem;
       font-size: f.font-size(medium);
+
+      p {
+        width: 100%;
+        word-break: break-all;
+      }
 
       .like-button {
         display: flex;
@@ -137,5 +150,92 @@
 
   .ql-align-justify {
     text-align: justify;
+  }
+}
+
+@include m.media(mobile) {
+  .view-post-container {
+    .board-header {
+      margin-top: 12rem;
+    }
+
+    .post-wrapper {
+      .post-header {
+        .header-upper {
+          flex-direction: column;
+          margin-bottom: 0.4rem;
+        }
+      }
+
+      .post-body {
+        .like-button {
+          padding: 6rem 9rem 0 9rem;
+
+          .square-button {
+            display: flex;
+            width: 10rem;
+          }
+        }
+      }
+    }
+
+    .buttons {
+      display: flex;
+
+      .square-button {
+        display: flex;
+        justify-content: center;
+        padding: 1rem 0;
+        min-width: 8rem;
+        max-width: 8rem;
+        width: 8rem;
+      }
+    }
+  }
+}
+
+@include m.media(mobile-down) {
+  .view-post-container {
+    .board-header {
+      margin-top: 12rem;
+      flex-direction: column;
+
+      .headline2 {
+        margin-bottom: 2rem;
+      }
+    }
+
+    .post-wrapper {
+      .post-header {
+        .header-upper {
+          flex-direction: column;
+          margin-bottom: 0.4rem;
+        }
+      }
+
+      .post-body {
+        .like-button {
+          padding: 6rem 4.6rem 0 4.6rem;
+
+          .square-button {
+            display: flex;
+            width: 10rem;
+          }
+        }
+      }
+    }
+
+    .buttons {
+      display: flex;
+
+      .square-button {
+        display: flex;
+        justify-content: center;
+        padding: 1rem 0;
+        min-width: 8rem;
+        max-width: 8rem;
+        width: 8rem;
+      }
+    }
   }
 }

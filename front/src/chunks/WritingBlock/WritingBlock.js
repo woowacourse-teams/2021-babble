@@ -112,7 +112,7 @@ const WritingBlock = ({ title, content, nickname, textLimit }) => {
       <div className='writing-info'>
         <TextInput
           name='nickname'
-          defaultValue={user.nickname ?? nickname}
+          defaultValue={nickname ?? user.nickname}
           border={false}
           placeholder='닉네임'
           disabled={nickname ? true : false}

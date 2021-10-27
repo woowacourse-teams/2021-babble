@@ -1,5 +1,6 @@
 @use '../../../style/functions' as f;
 @use '../../../style/variables' as v;
+@use '../../../style/mixins' as m;
 
 .board-container {
   .board-header {
@@ -38,6 +39,53 @@
       .square-button {
         height: 5rem;
         margin-top: 2rem;
+      }
+    }
+  }
+}
+
+@include m.media(mobile) {
+  .board-container {
+    .board-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1.6rem;
+    }
+
+    .writing-section {
+      .writing-header {
+        flex-direction: column;
+
+        .category {
+          width: 100%;
+
+          .input-container {
+            margin-top: 1rem;
+            margin-right: 0;
+            max-width: 26rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+@include m.media(mobile-down) {
+  .board-container {
+    .board-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1.6rem;
+    }
+
+    .writing-section {
+      .writing-header {
+        flex-direction: column;
+
+        .input-container {
+          margin-top: 1rem;
+          max-width: 26rem;
+        }
       }
     }
   }

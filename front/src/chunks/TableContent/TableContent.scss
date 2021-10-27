@@ -1,7 +1,9 @@
 @use '../../../style/functions' as f;
+@use '../../../style/mixins' as m;
 
 .table-content-container {
   display: flex;
+  width: 100%;
   justify-content: space-between;
   cursor: pointer;
 
@@ -13,9 +15,20 @@
 
   .table-content-details {
     display: flex;
+    max-width: 80%;
 
-    & > span:first-child {
-      margin-right: 1rem;
+    .table-content-wrapper {
+      width: 100%;
+      .body2 {
+        width: 100%;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      & > span:first-child {
+        margin-right: 1rem;
+      }
     }
   }
 
@@ -41,6 +54,85 @@
       border-right: 1px solid black;
       padding-right: 1rem;
       margin-right: 1rem;
+    }
+  }
+}
+
+@include m.media(tablet) {
+  .table-content-container {
+    .table-content-details {
+      max-width: 70%;
+    }
+  }
+}
+
+@include m.media(mobile) {
+  .table-content-container {
+    flex-direction: column;
+
+    & > .info-with-icon-container {
+      display: none;
+    }
+
+    .table-content-details {
+      max-width: 100%;
+
+      .table-content-wrapper {
+        width: 100%;
+
+        .body2 {
+          width: 90%;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+      }
+    }
+
+    .table-infos {
+      & > .info-with-icon-container {
+        .caption2 {
+          width: 12rem;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+      }
+    }
+  }
+}
+
+@include m.media(mobile-down) {
+  .table-content-container {
+    flex-direction: column;
+
+    & > .info-with-icon-container {
+      margin-top: 0.6rem;
+    }
+
+    .table-content-details {
+      max-width: 100%;
+
+      .table-content-wrapper {
+        width: 100%;
+        .body2 {
+          width: 90%;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+      }
+    }
+
+    .table-infos {
+      & > .info-with-icon-container {
+        .caption2 {
+          width: 5rem;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+      }
     }
   }
 }

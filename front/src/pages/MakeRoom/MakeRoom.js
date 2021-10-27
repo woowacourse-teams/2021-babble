@@ -138,7 +138,7 @@ const MakeRoom = ({ match }) => {
         state: { gameName },
       });
     } catch (error) {
-      openModal(<ModalError>{error.response?.data?.[0]?.message}</ModalError>);
+      openModal(<ModalError>{error.response?.data?.message}</ModalError>);
     }
   };
 
