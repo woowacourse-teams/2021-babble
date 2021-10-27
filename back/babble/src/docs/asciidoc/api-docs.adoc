@@ -349,8 +349,6 @@ include::{snippets}/read-Images/response-fields.adoc[]
 
 === 이미지 저장 API
 
-> Accessible only from allowed ip.
-
 ==== HTTP Request
 
 include::{snippets}/create-image/http-request.adoc[]

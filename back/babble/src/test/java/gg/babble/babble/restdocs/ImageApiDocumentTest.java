@@ -29,13 +29,11 @@ public class ImageApiDocumentTest extends AcceptanceTest {
     protected void setUp(final RestDocumentationContextProvider restDocumentation) throws Exception {
         super.setUp(restDocumentation);
 
-        localhost_관리자가_추가_됨();
         deleteAllImageFile();
 
         ClassLoader classLoader = getClass().getClassLoader();
         file = new File(Objects.requireNonNull(classLoader.getResource("test-image.jpg")).getFile());
         fileNames = 파일이_저장됨(IMAGE_FILE_NAME, file);
-        localhost_관리자가_제거_됨();
     }
 
     private void deleteAllImageFile() {
@@ -87,7 +85,6 @@ public class ImageApiDocumentTest extends AcceptanceTest {
     @DisplayName("이미지 파일 저장 테스트")
     @Test
     void saveFile() {
-        localhost_관리자가_추가_됨();
         String filePath = "img/new-file.jpg";
 
         List<String> responses = RestAssured.given(specification)
@@ -103,18 +100,5 @@ public class ImageApiDocumentTest extends AcceptanceTest {
             .extract().body().jsonPath().getList(".", String.class);
 
         assertThat(responses).hasSize(3).containsAll(Arrays.asList("img/new-file-x640.jpg", "img/new-file-x1280.jpg", "img/new-file-x1920.jpg"));
-    }
-
-    @DisplayName("관리자 IP가 아닌 경우 이미지 저장 불가")
-    @Test
-    void saveFileUnauthorized() throws Exception {
-        String filePath = "img/new-file.jpg";
-
-        RestAssured.given(specification)
-            .header("content-type", "multipart/form-data")
-            .multiPart("fileName", filePath)
-            .multiPart("file", file)
-            .when().post("/api/images")
-            .then().statusCode(HttpStatus.UNAUTHORIZED.value());
     }
 }
