@@ -71,7 +71,6 @@ const WritingBlock = ({ title, content, nickname }) => {
     });
 
     const toolbar = editorRef.current.getModule('toolbar');
-    console.log(editorRef.current.getModule('toolbar'));
     toolbar.addHandler('image', clickImageButton);
   }, []);
 
