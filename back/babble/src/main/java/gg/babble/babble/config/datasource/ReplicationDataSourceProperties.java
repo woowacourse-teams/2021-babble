@@ -1,8 +1,6 @@
 package gg.babble.babble.config.datasource;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,10 +16,6 @@ public class ReplicationDataSourceProperties {
     private String username;
     private String password;
     private final Map<String, Slave> slaves = new HashMap<>();
-
-    public List<Slave> getSlaves() {
-        return new ArrayList<>(slaves.values());
-    }
 
     @Setter
     @Getter
