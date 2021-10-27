@@ -4,7 +4,7 @@ import { BABBLE_URL, BASE_URL } from '../../constants/api';
 import { GameCard, ModalError, SearchInput, Slider } from '../../components';
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Headline2, Body2 } from '../../core/Typography';
+import { Headline2 } from '../../core/Typography';
 import { Link } from 'react-router-dom';
 import PATH from '../../constants/path';
 import { PATTERNS } from '../../constants/regex';
@@ -93,13 +93,14 @@ const GameList = () => {
           });
 
           return game.alternativeNames.some((alternativeName) =>
-            alternativeName.match(searchRegex)
+            alternativeName.name.match(searchRegex)
           );
         })
       : gameList.filter((game) => {
           const searchRegex = new RegExp(inputValue, 'gi');
           const alternativeNamesWithoutSpace = game.alternativeNames.map(
-            (alternativeName) => alternativeName.replace(PATTERNS.SPACE, '')
+            (alternativeName) =>
+              alternativeName.name.replace(PATTERNS.SPACE, '')
           );
 
           return (
@@ -107,12 +108,13 @@ const GameList = () => {
               alternativeName.match(searchRegex)
             ) ||
             game.alternativeNames.some((alternativeName) =>
-              alternativeName.match(searchRegex)
+              alternativeName.name.match(searchRegex)
             )
           );
         });
 
-    setSelectedGames([...searchResults, ...alternativeResults]);
+    const result = new Set([...searchResults, ...alternativeResults]);
+    setSelectedGames([...result]);
   };
 
   useEffect(() => {
@@ -163,11 +165,6 @@ const GameList = () => {
             </Link>
           ))}
         </div>
-        {!selectedGames.length && (
-          <div className='no-game'>
-            <Body2>게임이 존재하지 않습니다.</Body2>
-          </div>
-        )}
       </PageLayout>
     </div>
   );
