@@ -341,15 +341,13 @@ include::{snippets}/read-images/http-request.adoc[]
 
 ==== Http Response
 
-include::{snippets}/read-Images/http-response.adoc[]
+include::{snippets}/read-images/http-response.adoc[]
 
 [width="40%"]
 [cols="^,^,^",options="headers"]
-include::{snippets}/read-Images/response-fields.adoc[]
+include::{snippets}/read-images/response-fields.adoc[]
 
 === 이미지 저장 API
-
-> Accessible only from allowed ip.
 
 ==== HTTP Request
 
