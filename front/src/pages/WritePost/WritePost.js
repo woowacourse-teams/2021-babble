@@ -52,7 +52,7 @@ const WritePost = () => {
 
       history.push(`${PATH.BOARD}${PATH.VIEW_POST}/${postData.id}`);
     } catch (error) {
-      openModal(<ModalError>글 작성에 실패했습니다.</ModalError>);
+      openModal(<ModalError>{error.response?.data?.message}</ModalError>);
     }
   };
 
@@ -114,18 +114,17 @@ const WritePost = () => {
               />
             </div>
           </div>
-          <form className='writing-form'>
+          <form
+            className='writing-form'
+            onSubmit={postToEdit ? editPost : submitPost}
+          >
             <WritingBlock
               title={postToEdit?.title}
               content={postToEdit?.content}
               nickname={postToEdit?.nickname}
+              textLimit={8000}
             />
-            <SquareButton
-              type='submit'
-              size='block'
-              name='write'
-              onClickButton={postToEdit ? editPost : submitPost}
-            >
+            <SquareButton type='submit' size='block' name='write'>
               <Body2>{postToEdit ? '수정하기' : '작성하기'}</Body2>
             </SquareButton>
           </form>

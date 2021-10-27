@@ -153,3 +153,19 @@
     bottom: 0;
   }
 }
+
+@keyframes mini-vibe {
+  20%,
+  80% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(-1px, 0, 0);
+  }
+}
