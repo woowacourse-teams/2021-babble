@@ -2,7 +2,7 @@ package gg.babble.babble.config.datasource;
 
 import com.zaxxer.hikari.HikariDataSource;
 import gg.babble.babble.config.datasource.ReplicationDataSourceProperties.Slave;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -43,10 +43,10 @@ public class ReplicationDataSourceConfig {
             dataSourceProperties.getPassword()
         );
 
-        Map<Object, Object> dataSources = new LinkedHashMap<>();
+        Map<Object, Object> dataSources = new HashMap<>();
         dataSources.put("master", masterDataSource);
 
-        for (Slave slave : dataSourceProperties.getSlaves()) {
+        for (Slave slave : dataSourceProperties.getSlaves().values()) {
             DataSource slaveDatSource = createDataSource(
                 slave.getDriverClassName(),
                 slave.getUrl(),
