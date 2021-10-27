@@ -290,17 +290,15 @@ const RoomList = ({ match }) => {
       });
 
       const newRooms = newResponse.data;
-      const newRoomsCopy = [...newRooms];
       const roomListCopy = [...roomList];
 
-      const sortedNewRooms = newRoomsCopy.sort((a, b) => b.roomId - a.roomId);
-      const sortedRoomList = roomListCopy
-        .slice(0, newRooms.length)
-        .sort((a, b) => b.roomId - a.roomId);
+      const slicedRoomList = roomListCopy.slice(0, newRooms.length);
 
-      const isSame = sortedNewRooms.every((room, index) => {
-        return sortedRoomList[index]?.roomId === room.roomId;
+      const isSame = newRooms.every((room, index) => {
+        return slicedRoomList[index]?.roomId === room.roomId;
       });
+
+      if (isSame) return;
 
       if (selectedTagList.length) {
         const roomWithTags = newRooms.filter((room) => room.tags);
