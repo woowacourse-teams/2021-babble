@@ -54,15 +54,16 @@ public class BabbleAdvice {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<List<ExceptionDto>> methodArgumentValidException(final MethodArgumentNotValidException exception) {
+    public ResponseEntity<ExceptionDto> methodArgumentValidException(final MethodArgumentNotValidException exception) {
         logger.info(String.format(ERROR_LOG, exception.getClass().getSimpleName(), exception.getMessage()));
-        return ResponseEntity.badRequest().body(extractErrorMessages(exception));
+        return ResponseEntity.badRequest().body(extractErrorMessages(exception).get(0));
     }
 
+
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<List<ExceptionDto>> constraintViolationException(final ConstraintViolationException exception) {
+    public ResponseEntity<ExceptionDto> constraintViolationException(final ConstraintViolationException exception) {
         logger.info(String.format(ERROR_LOG, exception.getClass().getSimpleName(), exception.getMessage()));
-        return ResponseEntity.badRequest().body(extractErrorMessages(exception));
+        return ResponseEntity.badRequest().body(extractErrorMessages(exception).get(0));
     }
 
     private List<ExceptionDto> extractErrorMessages(final MethodArgumentNotValidException exception) {
