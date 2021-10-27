@@ -22,7 +22,9 @@
         justify-content: space-between;
 
         .subtitle2 {
+          display: flex;
           padding: 1rem 0;
+          width: 90%;
         }
 
         .like-and-view-container {
@@ -49,6 +51,7 @@
         .square-button {
           display: flex;
           justify-content: center;
+          padding: 1.2rem 2.2rem;
           align-items: center;
           font-size: f.font-size(medium);
           box-shadow: v.$light-box-shadow;
