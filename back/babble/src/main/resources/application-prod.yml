@@ -28,6 +28,7 @@ spring:
         show_sql: false
         generate-ddl: false
         format_sql: true
+        enable_lazy_load_no_trans: true
         jdbc:
           lob:
             non_contextual_creation: true
