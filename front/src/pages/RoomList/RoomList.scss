@@ -101,6 +101,11 @@
     .room-wrapper:not(:last-child) {
       margin-bottom: 1.2rem;
     }
+
+    .no-room {
+      text-align: center;
+      padding: 4rem 0;
+    }
   }
 }
 

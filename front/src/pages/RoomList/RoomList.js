@@ -353,19 +353,25 @@ const RoomList = ({ match }) => {
           </section>
         </div>
         <section className='room-list-section'>
-          {roomList?.map((room, index) => {
-            const isLastIndex = index === roomList.length - 1;
-            return (
-              <Room
-                key={index}
-                room={room}
-                onClickRoom={(e) =>
-                  onConfirmExit(() => joinChatting(e), isChattingModalOpen)
-                }
-                scrollRef={isLastIndex ? lastRoomRef : null}
-              />
-            );
-          })}
+          {roomList.length ? (
+            roomList?.map((room, index) => {
+              const isLastIndex = index === roomList.length - 1;
+              return (
+                <Room
+                  key={index}
+                  room={room}
+                  onClickRoom={(e) =>
+                    onConfirmExit(() => joinChatting(e), isChattingModalOpen)
+                  }
+                  scrollRef={isLastIndex ? lastRoomRef : null}
+                />
+              );
+            })
+          ) : (
+            <div className='no-room'>
+              <Body2>방이 존재하지 않습니다.</Body2>
+            </div>
+          )}
         </section>
       </PageLayout>
     </div>
