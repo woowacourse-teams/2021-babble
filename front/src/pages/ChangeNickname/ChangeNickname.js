@@ -25,6 +25,13 @@ const ChangeNickname = () => {
       PATTERNS.SPECIAL_CHARACTERS_WITHOUT_SPACE
     );
 
+    if (e.target.value.trim() === '') {
+      setIsValidNickname(false);
+      setErrorMessage('닉네임은 공백일 수 없습니다.');
+
+      return;
+    }
+
     if (includeSpecialCharacter.test(e.target.value)) {
       setIsValidNickname(false);
       setErrorMessage('한글, 영어, 숫자, 공백만 포함 가능합니다.');
