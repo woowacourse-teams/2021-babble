@@ -52,7 +52,7 @@ const WritePost = () => {
 
       history.push(`${PATH.BOARD}${PATH.VIEW_POST}/${postData.id}`);
     } catch (error) {
-      openModal(<ModalError>글 작성에 실패했습니다.</ModalError>);
+      openModal(<ModalError>{error.response?.data?.message}</ModalError>);
     }
   };
 

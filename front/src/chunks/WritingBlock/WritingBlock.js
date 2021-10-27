@@ -95,10 +95,6 @@ const WritingBlock = ({ title, content, nickname, textLimit }) => {
     });
   }, [editorRef.current]);
 
-  useEffect(() => {
-    console.log(editorRef.current?.getLength());
-  }, [editorRef.current?.getLength()]);
-
   return (
     <div className='writing-block'>
       <div className='title'>
