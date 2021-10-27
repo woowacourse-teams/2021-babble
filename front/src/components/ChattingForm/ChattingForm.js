@@ -1,11 +1,24 @@
 import './ChattingForm.scss';
 
-import { Caption1 } from '../../core/Typography';
+import { Caption1, Caption2 } from '../../core/Typography';
+import React, { useState } from 'react';
+
 import PropTypes from 'prop-types';
-import React from 'react';
 import SquareButton from '../Button/SquareButton';
 
 const ChattingForm = ({ onSubmit }) => {
+  const [overMaxLength, setOverMaxLength] = useState(false);
+  const [textLength, setTextLength] = useState(0);
+
+  const onBlockSubmit = (e) => {
+    e.preventDefault();
+    if (e.currentTarget['chat-textarea'].value.length > 300) {
+      return;
+    }
+
+    onSubmit(e);
+  };
+
   const onEnterSubmit = (e) => {
     if (e.isComposing || e.keyCode === 229) return;
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -17,10 +30,22 @@ const ChattingForm = ({ onSubmit }) => {
     }
   };
 
+  const blockWhenMaxLength = (e) => {
+    if (e.currentTarget.value.length > 300) {
+      e.currentTarget.classList.add('alert');
+      setTextLength(e.currentTarget.value.length);
+      setOverMaxLength(true);
+      return;
+    }
+
+    e.currentTarget.classList.remove('alert');
+    setOverMaxLength(false);
+  };
+
   return (
     <form
       className='chatting-form'
-      onSubmit={onSubmit}
+      onSubmit={onBlockSubmit}
       onKeyDown={onEnterSubmit}
     >
       <label htmlFor='chat-textarea'></label>
@@ -30,8 +55,19 @@ const ChattingForm = ({ onSubmit }) => {
         name='chat'
         rows='2'
         aria-label='chatting-text-area'
+        onChange={blockWhenMaxLength}
         autoFocus
       ></textarea>
+
+      {overMaxLength && (
+        <span className='alert-container'>
+          <img src='https://babble.gg/img/icons/warning.png' alt='warning' />
+          <span className='alert-text'>
+            <Caption2>{textLength} / 300 자</Caption2>
+          </span>
+        </span>
+      )}
+
       <SquareButton size='block' type='submit' name='send'>
         <Caption1>전송하기</Caption1>
       </SquareButton>
