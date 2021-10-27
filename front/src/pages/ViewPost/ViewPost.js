@@ -153,6 +153,7 @@ const ViewPost = ({ match }) => {
             <div className='like-button'>
               <SquareButton
                 type='button'
+                size='small'
                 onClickButton={thumbsUp}
                 colored={false}
                 name='like'

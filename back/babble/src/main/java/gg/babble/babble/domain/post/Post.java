@@ -96,6 +96,8 @@ public class Post {
     }
 
     public void update(final String title, final String content, final String category, final String password) {
+        validateTitleSize(title);
+        validateContentSize(content);
         validatePassword(password);
         this.title = title;
         this.content = content;
