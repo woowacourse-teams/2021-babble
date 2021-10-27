@@ -61,4 +61,78 @@
       }
     }
   }
+
+  .buttons {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem 0;
+
+    .square-button:first-child {
+      margin-right: 1rem;
+    }
+  }
+
+  .ql-indent-1 {
+    text-indent: 1rem;
+  }
+
+  .ql-indent-2 {
+    text-indent: 2rem;
+  }
+
+  .ql-indent-3 {
+    text-indent: 3rem;
+  }
+
+  .ql-indent-4 {
+    text-indent: 4rem;
+  }
+
+  .ql-indent-5 {
+    text-indent: 5rem;
+  }
+
+  .ql-indent-6 {
+    text-indent: 6rem;
+  }
+
+  .ql-indent-7 {
+    text-indent: 7rem;
+  }
+
+  .ql-indent-8 {
+    text-indent: 8rem;
+  }
+
+  .ql-font-serif {
+    font-family: serif;
+  }
+
+  .ql-font-monospace {
+    font-family: monospace;
+  }
+
+  .ql-size-small {
+    font-size: 1rem;
+  }
+
+  .ql-size-large {
+    font-size: 1.95rem;
+  }
+
+  .ql-size-huge {
+    font-size: 3.25rem;
+  }
+
+  .ql-align-center {
+    text-align: center;
+  }
+
+  .ql-align-right {
+    text-align: right;
+  }
+
+  .ql-align-justify {
+    text-align: justify;
+  }
 }
