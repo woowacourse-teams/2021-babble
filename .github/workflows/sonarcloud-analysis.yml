@@ -1,6 +1,7 @@
 name: SonarCloud Automatical Analysis Build
 on:
   pull_request:
+    branches: [ develop ]
     types: [opened, synchronize, reopened]
     paths:
       - 'back/**'
