@@ -50,11 +50,21 @@
       display: flex;
       justify-content: space-between;
       margin-bottom: 1.6rem;
+
+      .headline2 {
+        font-size: 3rem;
+        margin-bottom: 2rem;
+      }
     }
 
     .writing-section {
       .writing-header {
         flex-direction: column;
+
+        .subtitle1 {
+          margin-top: -2rem;
+          font-size: 2.4rem;
+        }
 
         .category {
           width: 100%;

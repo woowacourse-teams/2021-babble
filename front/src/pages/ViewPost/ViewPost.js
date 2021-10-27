@@ -150,7 +150,7 @@ const ViewPost = ({ match }) => {
           </div>
           <div className='post-body'>
             <div className='content'>{ReactHtmlParser(post.content)}</div>
-            <div className='like-button'>
+            <div className='like-button-container'>
               <SquareButton
                 type='button'
                 size='small'
