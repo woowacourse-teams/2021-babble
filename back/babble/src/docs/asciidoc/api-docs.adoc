@@ -69,7 +69,9 @@ include::{snippets}/create-user/response-fields.adoc[]
 
 == 게임
 
-=== 게임 리스트 조회 API
+=== 게임 리스트 조회 API (Deprecated)
+
+> Deprecated: 게임 리스트 조회 API(Pagination)를 사용하는 것을 권장합니다.
 
 ==== HTTP Request
 
@@ -81,6 +83,32 @@ include::{snippets}/read-games/http-response.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
 include::{snippets}/read-games/response-fields.adoc[]
+
+=== 게임 리스트 조회 API (Pagination)
+
+==== HTTP Request
+
+include::{snippets}/read-games-beta/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/read-games-beta/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/read-games-beta/response-fields.adoc[]
+
+=== 게임 키워드 검색 API
+
+==== HTTP Request
+
+include::{snippets}/read-games-names/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/read-games-names/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/read-games-names/response-fields.adoc[]
 
 === 게임 단일 조회 API
 
@@ -214,7 +242,9 @@ include::{snippets}/create-room/response-fields.adoc[]
 
 == 태그
 
-=== 태그 전체 수신 API
+=== 태그 전체 조회 API (Deprecated)
+
+> Deprecated: 태그 키워드 검색 API를 사용하는 것을 권장합니다.
 
 ==== HTTP Request
 
@@ -226,6 +256,32 @@ include::{snippets}/read-tags/http-response.adoc[]
 [width="40%"]
 [cols="^,^,^",options="headers"]
 include::{snippets}/read-tags/response-fields.adoc[]
+
+=== 태그 키워드 검색 API
+
+==== HTTP Request
+
+include::{snippets}/read-tags-beta/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/read-tags-beta/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/read-tags-beta/response-fields.adoc[]
+
+=== 태그 단일 조회 API
+
+==== HTTP Request
+
+include::{snippets}/read-tag/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/read-tag/http-response.adoc[]
+[width="40%"]
+[cols="^,^,^",options="headers"]
+include::{snippets}/read-tag/response-fields.adoc[]
 
 === 태그 등록 API
 
@@ -285,15 +341,13 @@ include::{snippets}/read-images/http-request.adoc[]
 
 ==== Http Response
 
-include::{snippets}/read-Images/http-response.adoc[]
+include::{snippets}/read-images/http-response.adoc[]
 
 [width="40%"]
 [cols="^,^,^",options="headers"]
-include::{snippets}/read-Images/response-fields.adoc[]
+include::{snippets}/read-images/response-fields.adoc[]
 
 === 이미지 저장 API
-
-> Accessible only from allowed ip.
 
 ==== HTTP Request
 
