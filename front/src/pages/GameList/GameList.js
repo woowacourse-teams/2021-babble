@@ -59,7 +59,7 @@ const GameList = () => {
       setGameList(games);
       setSelectedGames(games);
     } catch (error) {
-      openModal(<ModalError>{error.response?.data?.message}</ModalError>);
+      openModal(<ModalError>{error.message}</ModalError>);
     }
   };
 
@@ -105,7 +105,7 @@ const GameList = () => {
 
           return (
             alternativeNamesWithoutSpace.some((alternativeName) =>
-              alternativeName.name.match(searchRegex)
+              alternativeName.match(searchRegex)
             ) ||
             game.alternativeNames.some((alternativeName) =>
               alternativeName.name.match(searchRegex)
@@ -113,7 +113,8 @@ const GameList = () => {
           );
         });
 
-    setSelectedGames([...searchResults, ...alternativeResults]);
+    const result = new Set([...searchResults, ...alternativeResults]);
+    setSelectedGames([...result]);
   };
 
   useEffect(() => {
