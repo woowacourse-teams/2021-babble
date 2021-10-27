@@ -261,6 +261,36 @@ public class PostApiDocumentTest extends AcceptanceTest {
         assertThat(response.getCreatedAt()).isEqualTo(post.getCreatedAt());
     }
 
+    @DisplayName("8000bytes까지 게시글에 포함할 수 있다.")
+    @Test
+    void updatePostHeavyContent() {
+        PostResponse post = postResponses.get(2);
+        String sentence = "a";
+        StringBuilder content = new StringBuilder();
+
+        while(content.toString().getBytes().length + sentence.getBytes().length < 8000) {
+            content.append(sentence);
+        }
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("id", post.getId());
+        body.put("title", "니들은 게맛을 몰라~");
+        body.put("content", content.toString());
+        body.put("category", "건의");
+        body.put("password", "345678");
+
+        PostResponse response = given().body(body)
+            .when().put("/api/post")
+            .then().statusCode(HttpStatus.OK.value())
+            .extract().body().as(PostResponse.class);
+
+        assertThat(response.getId()).isEqualTo(post.getId());
+        assertThat(response.getTitle()).isEqualTo("니들은 게맛을 몰라~");
+        assertThat(response.getContent()).isEqualTo(content.toString());
+        assertThat(response.getCategory()).isEqualTo("건의");
+        assertThat(response.getCreatedAt()).isEqualTo(post.getCreatedAt());
+    }
+
     @DisplayName("게시글에 좋아요를 요청한다.")
     @Test
     void likePost() {
