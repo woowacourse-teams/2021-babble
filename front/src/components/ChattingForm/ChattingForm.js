@@ -10,6 +10,15 @@ const ChattingForm = ({ onSubmit }) => {
   const [overMaxLength, setOverMaxLength] = useState(false);
   const [textLength, setTextLength] = useState(0);
 
+  const onBlockSubmit = (e) => {
+    e.preventDefault();
+    if (e.currentTarget['chat-textarea'].value.length > 300) {
+      return;
+    }
+
+    onSubmit();
+  };
+
   const onEnterSubmit = (e) => {
     if (e.isComposing || e.keyCode === 229) return;
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -36,7 +45,7 @@ const ChattingForm = ({ onSubmit }) => {
   return (
     <form
       className='chatting-form'
-      onSubmit={onSubmit}
+      onSubmit={onBlockSubmit}
       onKeyDown={onEnterSubmit}
     >
       <label htmlFor='chat-textarea'></label>
@@ -49,6 +58,7 @@ const ChattingForm = ({ onSubmit }) => {
         onChange={blockWhenMaxLength}
         autoFocus
       ></textarea>
+
       {overMaxLength && (
         <span className='alert-container'>
           <img src='https://babble.gg/img/icons/warning.png' alt='warning' />
