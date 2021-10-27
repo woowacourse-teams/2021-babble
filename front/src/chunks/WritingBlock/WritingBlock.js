@@ -5,13 +5,55 @@ import React, { useEffect, useRef } from 'react';
 
 import PropTypes from 'prop-types';
 import Quill from 'quill';
-import { TextInput } from '../../components';
+import { ModalError, TextInput } from '../../components';
 import useUpdateEffect from '../../hooks/useUpdateEffect';
+import { useDefaultModal } from '../../contexts/DefaultModalProvider';
+import { getShortNumberId } from '../../utils/id';
+import { BABBLE_URL, BASE_URL } from '../../constants/api';
+import axios from 'axios';
 
 // import ReactHtmlParser from 'react-html-parser';
 
 const WritingBlock = ({ title, content, nickname }) => {
   const editorRef = useRef(null);
+  const fileInputRef = useRef(null);
+
+  const { openModal } = useDefaultModal();
+
+  const imageHandler = () => {
+    const imageFile = fileInputRef.current.files[0];
+    const imageReader = new FileReader();
+
+    imageReader.onload = async () => {
+      const data = new FormData();
+      data.append('fileName', `img/board/${getShortNumberId()}.jpg`);
+      data.append('file', imageFile);
+
+      try {
+        const imageResponse = await axios.post(`${BASE_URL}/api/images`, data);
+        const imageURL = `${BABBLE_URL}/${imageResponse.data[1]}`;
+
+        const image = document.createElement('img');
+        image.setAttribute('src', imageURL);
+        image.setAttribute('style', 'width: 50rem;');
+
+        editorRef.current.root.appendChild(image);
+        fileInputRef.current.value = null;
+      } catch (error) {
+        openModal(<ModalError>{error.response?.data?.message}</ModalError>);
+      }
+    };
+
+    imageReader.onerror = () => {
+      openModal(<ModalError>{imageReader.error}</ModalError>);
+    };
+
+    imageReader.readAsDataURL(imageFile);
+  };
+
+  const clickImageButton = () => {
+    fileInputRef.current.click();
+  };
 
   useEffect(() => {
     editorRef.current = new Quill('.editor', {
@@ -29,6 +71,10 @@ const WritingBlock = ({ title, content, nickname }) => {
       placeholder: '내용을 입력하세요.',
       theme: 'snow',
     });
+
+    const toolbar = editorRef.current.getModule('toolbar');
+    console.log(editorRef.current.getModule('toolbar'));
+    toolbar.addHandler('image', clickImageButton);
   }, []);
 
   useUpdateEffect(() => {
@@ -76,6 +122,7 @@ const WritingBlock = ({ title, content, nickname }) => {
           required
         />
       </div>
+      <input type='file' hidden onChange={imageHandler} ref={fileInputRef} />
     </div>
   );
 };
