@@ -70,6 +70,7 @@
 
     .search-section {
       @include m.search-section;
+
       .search-refresh {
         display: flex;
         justify-content: space-between;
@@ -100,6 +101,11 @@
 
     .room-wrapper:not(:last-child) {
       margin-bottom: 1.2rem;
+    }
+
+    .no-room {
+      text-align: center;
+      padding: 4rem 0;
     }
   }
 }
@@ -208,10 +214,8 @@
       top: -1px;
 
       .search-section {
-        display: block;
         min-width: 100%;
-        margin-bottom: 0;
-        padding: 1rem 0;
+        padding: 1rem;
 
         .input-container {
           min-width: 80%;

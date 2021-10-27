@@ -20,9 +20,11 @@ jobs:
         shell: bash
         env:
           ENV_API_KEY: ${{ secrets.KAKAO_KEY }}
+          ENV_DARASS_KEY: ${{ secrets.DARASS_KEY }}
         run: |
           touch .env
           echo REACT_APP_KAKAO_KEY="$ENV_API_KEY" >> .env
+          echo REACT_APP_DARASS_KEY="$ENV_DARASS_KEY" >> .env
           cat .env
 
       - name: 패키지 설치

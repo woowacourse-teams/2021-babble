@@ -1,9 +1,44 @@
 @use '../../../style/functions' as f;
+@use '../../../style/variables' as v;
 
 .board-container {
   .board-header {
     display: flex;
     justify-content: space-between;
     margin-bottom: 3rem;
+  }
+
+  .writing-section {
+    .input-container.borderless {
+      padding-left: 0;
+    }
+
+    .writing-header {
+      display: flex;
+      justify-content: space-between;
+
+      .subtitle1 {
+        display: inline-block;
+      }
+
+      .category {
+        max-width: 30rem;
+        width: 30rem;
+
+        .input-container {
+          width: 100%;
+          box-shadow: v.$light-box-shadow;
+        }
+      }
+    }
+
+    .writing-form {
+      margin-top: 2rem;
+
+      .square-button {
+        height: 5rem;
+        margin-top: 2rem;
+      }
+    }
   }
 }

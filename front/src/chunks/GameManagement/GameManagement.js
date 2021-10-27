@@ -50,7 +50,7 @@ const GameManagement = () => {
 
       setGameList(games);
     } catch (error) {
-      openModal(<ModalError>{error.message}</ModalError>);
+      openModal(<ModalError>{error.response?.data?.message}</ModalError>);
     }
   };
 
@@ -79,7 +79,7 @@ const GameManagement = () => {
         onResetForm();
         getGameList();
       } catch (error) {
-        openModal(<ModalError>{error.message}</ModalError>);
+        openModal(<ModalError>{error.response?.data?.message}</ModalError>);
       }
     }
   };
@@ -125,7 +125,7 @@ const GameManagement = () => {
           alert('정상적으로 수정되었습니다!');
         } catch (error) {
           console.error(error);
-          openModal(<ModalError>{error.message}</ModalError>);
+          openModal(<ModalError>{error.response?.data?.message}</ModalError>);
         }
 
         getGameList();
@@ -150,7 +150,7 @@ const GameManagement = () => {
 
         alert('정상적으로 수정되었습니다!');
       } catch (error) {
-        openModal(<ModalError>{error.message}</ModalError>);
+        openModal(<ModalError>{error.response?.data?.message}</ModalError>);
       }
 
       getGameList();
@@ -189,7 +189,7 @@ const GameManagement = () => {
 
       alert('정상적으로 등록되었습니다!');
     } catch (error) {
-      openModal(<ModalError>{error.message}</ModalError>);
+      openModal(<ModalError>{error.response?.data?.message}</ModalError>);
     }
 
     getGameList();

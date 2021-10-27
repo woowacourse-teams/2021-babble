@@ -28,16 +28,13 @@ spring:
         show_sql: false
         generate-ddl: false
         format_sql: true
+        enable_lazy_load_no_trans: true
         jdbc:
           lob:
             non_contextual_creation: true
         physical_naming_strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
         dialect: org.hibernate.dialect.MySQL5Dialect
         use_sql_comment: false
-
-  redis:
-    host: 192.168.2.114
-    port: 6379
 
   redis:
     host: 192.168.2.114

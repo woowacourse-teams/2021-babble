@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState } from 'react';
 
 import { MODAL_TYPE_DEFAULT } from '../constants/chat';
 import { Modal } from '../components';
+import ModalConfirm from '../components/Modal/ModalConfirm';
 import PropTypes from 'prop-types';
 
 const DefaultModalContext = createContext();
@@ -37,7 +38,20 @@ DefaultModalProvider.propTypes = {
 };
 
 export const useDefaultModal = () => {
-  return useContext(DefaultModalContext);
+  const { openModal, closeModal } = useContext(DefaultModalContext);
+
+  const onConfirm = (callback, condition, statement) => {
+    if (condition) {
+      openModal(
+        <ModalConfirm confirmCallback={callback}>{statement}</ModalConfirm>
+      );
+      return;
+    }
+
+    callback();
+  };
+
+  return { openModal, closeModal, onConfirm };
 };
 
 export default DefaultModalProvider;
