@@ -11,12 +11,14 @@ import axios from 'axios';
 import { getShortNumberId } from '../../utils/id';
 import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 import useUpdateEffect from '../../hooks/useUpdateEffect';
+import { useUser } from '../../contexts/UserProvider';
 
 const WritingBlock = ({ title, content, nickname }) => {
   const editorRef = useRef(null);
   const fileInputRef = useRef(null);
 
   const { openModal } = useDefaultModal();
+  const { user } = useUser();
 
   const imageHandler = () => {
     const imageFile = fileInputRef.current.files[0];
@@ -104,7 +106,7 @@ const WritingBlock = ({ title, content, nickname }) => {
       <div className='writing-info'>
         <TextInput
           name='nickname'
-          defaultValue={nickname ?? ''}
+          defaultValue={user.nickname ?? nickname}
           border={false}
           placeholder='닉네임'
           disabled={nickname ? true : false}
