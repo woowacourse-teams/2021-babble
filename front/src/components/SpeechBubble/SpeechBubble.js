@@ -11,6 +11,7 @@ const SpeechBubble = ({ time, type = 'mine', children }) => {
   const chat = { children: children };
 
   if (linkArray) {
+    chat.children = '';
     const innerElement = linkArray.map((link) =>
       children.replace(
         link,
@@ -19,6 +20,10 @@ const SpeechBubble = ({ time, type = 'mine', children }) => {
     );
 
     chat.children = innerElement.join('');
+
+    if (innerElement) {
+      chat.children = ReactHtmlParser(chat.children);
+    }
   }
 
   return (
@@ -28,7 +33,7 @@ const SpeechBubble = ({ time, type = 'mine', children }) => {
       }`}
     >
       <div className={`speech-bubble ${type}`}>
-        <pre className='text'>{ReactHtmlParser(chat.children)}</pre>
+        <pre className='text'>{chat.children}</pre>
         <time className='time'>{time}</time>
       </div>
     </div>
