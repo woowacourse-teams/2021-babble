@@ -14,3 +14,62 @@
     padding: 3rem;
   }
 }
+
+@include m.media(mobile, mobile-down) {
+  .management-container {
+    padding: 0.5rem;
+
+    section,
+    div,
+    form {
+      margin-left: 0;
+      width: 100%;
+
+      &.no-data {
+        padding: 1.2rem 0;
+      }
+    }
+
+    .headline1 {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 2.5rem;
+    }
+
+    .headline2 {
+      font-size: 2.2rem;
+      background: #ff00001f;
+      padding: 0.4rem 0.2rem;
+    }
+
+    .subtitle1 {
+      font-size: 2rem;
+    }
+
+    .subtitle3 {
+      font-size: 1.7rem;
+    }
+
+    .admin-management-container,
+    .game-management-container,
+    .tag-management-container {
+      border: none;
+      padding: 0;
+    }
+
+    .admin-management-container .name-list-container,
+    .game-management-container .game-management-wrapper,
+    .game-management-container .game-management-wrapper > .name-list-container,
+    .game-management-container .game-management-wrapper .register-edit-game,
+    .tag-management-container .tag-management-wrapper,
+    .tag-management-container .tag-management-wrapper .register-tag {
+      margin-left: 0;
+      width: 100%;
+    }
+
+    .game-management-container .name-list-container {
+      width: 100%;
+      margin: 0.5rem 0.4rem;
+    }
+  }
+}
