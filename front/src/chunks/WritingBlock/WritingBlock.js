@@ -12,8 +12,6 @@ import { getShortNumberId } from '../../utils/id';
 import { BABBLE_URL, BASE_URL } from '../../constants/api';
 import axios from 'axios';
 
-// import ReactHtmlParser from 'react-html-parser';
-
 const WritingBlock = ({ title, content, nickname }) => {
   const editorRef = useRef(null);
   const fileInputRef = useRef(null);
