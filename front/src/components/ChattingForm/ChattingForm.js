@@ -63,7 +63,9 @@ const ChattingForm = ({ onSubmit }) => {
         <span className='alert-container'>
           <img src='https://babble.gg/img/icons/warning.png' alt='warning' />
           <span className='alert-text'>
-            <Caption2>{textLength} / 300 자</Caption2>
+            <Caption2>
+              <b>{textLength}</b> / 300 자
+            </Caption2>
           </span>
         </span>
       )}
