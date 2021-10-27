@@ -27,7 +27,9 @@ import { getRandomNickname } from '@woowa-babble/random-nickname';
 import { useChattingModal } from '../../contexts/ChattingModalProvider';
 import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 import { useHistory } from 'react-router-dom';
+import useInterval from '../../hooks/useInterval';
 import useScript from '../../hooks/useScript';
+import useThrottle from '../../hooks/useThrottle';
 import useUpdateEffect from '../../hooks/useUpdateEffect';
 import { useUser } from '../../contexts/UserProvider';
 
@@ -48,6 +50,7 @@ const RoomList = ({ match }) => {
   const { openChatting, closeChatting, isChattingModalOpen } =
     useChattingModal();
   const { openModal } = useDefaultModal();
+  const { throttle } = useThrottle();
 
   useScript('https://developers.kakao.com/sdk/js/kakao.js');
   const history = useHistory();
@@ -69,7 +72,7 @@ const RoomList = ({ match }) => {
 
       changeUser({ id: generatedUser.id, nickname: generatedUser.nickname });
     } catch (error) {
-      openModal(<ModalError>{error.message}</ModalError>);
+      openModal(<ModalError>{error.response?.data?.message}</ModalError>);
     }
 
     if (roomId) {
@@ -94,7 +97,7 @@ const RoomList = ({ match }) => {
 
       setCurrentGame(response.data);
     } catch (error) {
-      openModal(<ModalError>{error.message}</ModalError>);
+      openModal(<ModalError>{error.response?.data?.message}</ModalError>);
     }
   };
 
@@ -106,7 +109,7 @@ const RoomList = ({ match }) => {
       setTagList(tags);
       setAutoCompleteTagList(tags);
     } catch (error) {
-      openModal(<ModalError>{error.message}</ModalError>);
+      openModal(<ModalError>{error.response?.data?.message}</ModalError>);
     }
   };
 
@@ -123,9 +126,17 @@ const RoomList = ({ match }) => {
         return;
       }
 
-      setRoomList((prevRooms) => [...prevRooms, ...rooms]);
+      setRoomList((prevRooms) => {
+        // prevRooms 안에 rooms의 내용이 없으면 넣어라.
+        const newRoom = prevRooms.filter(
+          (prevRoom) =>
+            !rooms.includes((room) => prevRoom.roomId === room.roomId)
+        );
+
+        return [...newRoom, ...rooms];
+      });
     } catch (error) {
-      openModal(<ModalError>{error.message}</ModalError>);
+      openModal(<ModalError>{error.response?.data?.message}</ModalError>);
     }
   };
 
@@ -228,21 +239,22 @@ const RoomList = ({ match }) => {
           });
 
           return tag.alternativeNames.some((alternativeName) =>
-            alternativeName.match(searchRegex)
+            alternativeName.name.match(searchRegex)
           );
         })
       : tagList.filter((tag) => {
           const searchRegex = new RegExp(inputValue, 'gi');
           const alternativeNamesWithoutSpace = tag.alternativeNames.map(
-            (alternativeName) => alternativeName.replace(PATTERNS.SPACE, '')
+            (alternativeName) =>
+              alternativeName.name.replace(PATTERNS.SPACE, '')
           );
 
           return (
             alternativeNamesWithoutSpace.some((alternativeName) =>
-              alternativeName.match(searchRegex)
+              alternativeName.name.match(searchRegex)
             ) ||
             tag.alternativeNames.some((alternativeName) =>
-              alternativeName.match(searchRegex)
+              alternativeName.name.match(searchRegex)
             )
           );
         });
@@ -269,7 +281,7 @@ const RoomList = ({ match }) => {
 
       changeUser(newUser);
     } catch (error) {
-      openModal(<ModalError>{error.message}</ModalError>);
+      openModal(<ModalError>{error.response?.data?.message}</ModalError>);
     }
   };
 
@@ -278,10 +290,86 @@ const RoomList = ({ match }) => {
     getRooms(selectedTagIdParam);
   };
 
-  const refresh = () => {
-    setRoomList([]);
+  const refresh = async () => {
     pageRef.current = 1;
-    getRoomsWithTag();
+
+    try {
+      // 태그가 있을 때 리프레시를 하면 태그가 적용된 채로 방을 가져와야함
+      const selectedTagIdParam = selectedTagList.map(({ id }) => id).join(',');
+
+      const newResponse = await axios.get(`${BASE_URL}/api/rooms`, {
+        params: { gameId, tagIds: selectedTagIdParam, page: pageRef.current },
+      });
+
+      const newRooms = newResponse.data;
+      const newRoomsCopy = [...newRooms];
+      const roomListCopy = [...roomList];
+
+      const sortedNewRooms = newRoomsCopy.sort((a, b) => b.roomId - a.roomId);
+      const sortedRoomList = roomListCopy
+        .slice(0, newRooms.length)
+        .sort((a, b) => b.roomId - a.roomId);
+
+      const isSame = sortedNewRooms.every((room, index) => {
+        return sortedRoomList[index]?.roomId === room.roomId;
+      });
+
+      if (selectedTagList.length) {
+        const roomWithTags = newRooms.filter((room) => room.tags);
+
+        const answer = new Set();
+        roomWithTags.forEach((room) => {
+          room.tags.forEach((tag) => {
+            selectedTagList.forEach((selectedTag) => {
+              if (selectedTag.id === tag.id) {
+                answer.add(room);
+              }
+            });
+          });
+        });
+
+        setRoomList([...answer]);
+      } else if (!isSame) {
+        setRoomList((prevRooms) => {
+          const copiedPrevRooms = [...prevRooms];
+
+          const updatedRooms = newRooms.filter((prevRoom) => {
+            return !roomList.find((room) => {
+              if (prevRoom.roomId === room.roomId) {
+                return prevRoom;
+              }
+            });
+          });
+
+          const deletedRooms = roomList.filter((prevRoom) => {
+            return !newRooms.find((room) => {
+              if (prevRoom.roomId === room.roomId) {
+                return prevRoom;
+              }
+            });
+          });
+
+          const deletedElementIndex = deletedRooms.map((element) =>
+            roomList.indexOf(element)
+          );
+
+          deletedElementIndex.forEach((index) => {
+            copiedPrevRooms.splice(index, 1);
+          });
+
+          copiedPrevRooms.unshift(...updatedRooms);
+
+          return [...copiedPrevRooms.sort((a, b) => b.roomId - a.roomId)].slice(
+            0,
+            16
+          );
+        });
+      } else {
+        setRoomList(newRooms);
+      }
+    } catch (error) {
+      <ModalError>{error.response?.data?.message}</ModalError>;
+    }
   };
 
   useEffect(() => {
@@ -289,7 +377,7 @@ const RoomList = ({ match }) => {
       ([entry]) => {
         entry.target.classList.toggle(
           'stuck',
-          entry.intersectionRatio < 1 && !entry.isIntersecting
+          entry.boundingClientRect.top <= 0 && !entry.isIntersecting
         );
       },
       { threshold: 1 }
@@ -325,11 +413,15 @@ const RoomList = ({ match }) => {
       );
       infiniteObserverRef.current.observe(lastRoomRef.current);
     }
-  }, [roomList.length]);
+  }, [JSON.stringify(roomList)]);
 
   useUpdateEffect(() => {
     refresh();
   }, [selectedTagList]);
+
+  useInterval(() => {
+    refresh();
+  }, [3000]);
 
   return (
     <div className='room-list-container'>
@@ -356,7 +448,7 @@ const RoomList = ({ match }) => {
                 onClickKeyword={selectTag}
                 onChangeInput={onChangeTagInput}
               />
-              <SquareButton onClickButton={refresh}>
+              <SquareButton onClickButton={() => throttle(refresh, 1000)}>
                 <IoMdRefresh size='24px' color='#fff' />
               </SquareButton>
             </div>
