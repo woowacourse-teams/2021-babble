@@ -13,7 +13,7 @@ import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 import useUpdateEffect from '../../hooks/useUpdateEffect';
 import { useUser } from '../../contexts/UserProvider';
 
-const WritingBlock = ({ title, content, nickname }) => {
+const WritingBlock = ({ title, content, nickname, textLimit }) => {
   const editorRef = useRef(null);
   const fileInputRef = useRef(null);
 
@@ -68,12 +68,18 @@ const WritingBlock = ({ title, content, nickname }) => {
           ['link', 'image'],
         ],
       },
-      placeholder: '내용을 입력하세요.',
+      placeholder: '내용을 입력하세요(8000자 이하).',
       theme: 'snow',
     });
 
     const toolbar = editorRef.current.getModule('toolbar');
     toolbar.addHandler('image', clickImageButton);
+
+    editorRef.current.on('text-change', () => {
+      if (editorRef.current.getLength() > textLimit) {
+        editorRef.current.deleteText(textLimit, editorRef.current.getLength());
+      }
+    });
   }, []);
 
   useUpdateEffect(() => {
@@ -88,6 +94,10 @@ const WritingBlock = ({ title, content, nickname }) => {
       editorRef.current.root.appendChild(p);
     });
   }, [editorRef.current]);
+
+  useEffect(() => {
+    console.log(editorRef.current?.getLength());
+  }, [editorRef.current?.getLength()]);
 
   return (
     <div className='writing-block'>
@@ -127,6 +137,7 @@ const WritingBlock = ({ title, content, nickname }) => {
 };
 
 WritingBlock.propTypes = {
+  textLimit: PropTypes.number,
   title: PropTypes.string,
   content: PropTypes.string,
   nickname: PropTypes.string,
