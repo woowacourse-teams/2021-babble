@@ -103,6 +103,8 @@ const TagManagement = () => {
       ...alternativeNamesToRegister,
       { id, name },
     ]);
+    alternativeNameInputRef.current.value = '';
+    alternativeNameInputRef.current.focus();
   };
 
   const deleteAlternativeName = (altId) => {
