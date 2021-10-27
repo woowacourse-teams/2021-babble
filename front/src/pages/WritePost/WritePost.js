@@ -32,7 +32,7 @@ const WritePost = () => {
   const submitPost = async (e) => {
     e.preventDefault();
 
-    const form = e.currentTarget.form;
+    const form = e.currentTarget;
     const title = form.title.value;
     const content = form.querySelector('.ql-editor').innerHTML;
     const nickname = form.nickname.value;
@@ -59,7 +59,7 @@ const WritePost = () => {
   const editPost = async (e) => {
     e.preventDefault();
 
-    const form = e.currentTarget.form;
+    const form = e.currentTarget;
     const title = form.title.value;
     const content = form.querySelector('.ql-editor').innerHTML;
     const password = form.password.value;
