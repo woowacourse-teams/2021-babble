@@ -1,16 +1,16 @@
 import './WritingBlock.scss';
 import '../../../node_modules/quill/dist/quill.snow.css';
 
+import { BABBLE_URL, BASE_URL } from '../../constants/api';
+import { ModalError, TextInput } from '../../components';
 import React, { useEffect, useRef } from 'react';
 
 import PropTypes from 'prop-types';
 import Quill from 'quill';
-import { ModalError, TextInput } from '../../components';
-import useUpdateEffect from '../../hooks/useUpdateEffect';
-import { useDefaultModal } from '../../contexts/DefaultModalProvider';
-import { getShortNumberId } from '../../utils/id';
-import { BABBLE_URL, BASE_URL } from '../../constants/api';
 import axios from 'axios';
+import { getShortNumberId } from '../../utils/id';
+import { useDefaultModal } from '../../contexts/DefaultModalProvider';
+import useUpdateEffect from '../../hooks/useUpdateEffect';
 
 const WritingBlock = ({ title, content, nickname }) => {
   const editorRef = useRef(null);
@@ -63,7 +63,7 @@ const WritingBlock = ({ title, content, nickname }) => {
           [{ align: [] }],
           [{ color: [] }, { background: [] }],
           [{ indent: '-1' }, { indent: '+1' }],
-          ['link', 'image', 'video'],
+          ['link', 'image'],
         ],
       },
       placeholder: '내용을 입력하세요.',
