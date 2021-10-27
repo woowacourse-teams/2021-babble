@@ -58,6 +58,7 @@ const ChattingForm = ({ onSubmit }) => {
         onChange={blockWhenMaxLength}
         autoFocus
       ></textarea>
+
       {overMaxLength && (
         <span className='alert-container'>
           <img src='https://babble.gg/img/icons/warning.png' alt='warning' />
