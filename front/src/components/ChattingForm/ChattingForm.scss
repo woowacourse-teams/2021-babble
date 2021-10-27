@@ -17,6 +17,7 @@
     flex-basis: 85%;
     border-radius: 1rem;
     font-size: f.font-size(chat);
+    cursor: text;
 
     &.alert {
       border: 1px solid f.alert(fail);
@@ -36,6 +37,8 @@
     align-items: flex-start;
     flex-direction: initial;
     color: f.alert(fail);
+    height: fit-content;
+    z-index: f.z-index(layer-back-1);
 
     img {
       width: 25px;
@@ -46,6 +49,12 @@
     .alert-text {
       display: inline-block;
       line-height: 2.5;
+
+      span {
+        user-select: none;
+        font-size: 1.1rem;
+        margin-left: 0.2rem;
+      }
     }
   }
 
