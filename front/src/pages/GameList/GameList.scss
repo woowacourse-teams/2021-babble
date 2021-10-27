@@ -35,6 +35,11 @@
     grid-template-columns: repeat(4, minmax(0, 1fr));
     grid-gap: 2rem;
   }
+
+  .no-game {
+    text-align: center;
+    padding: 4rem 0;
+  }
 }
 
 @include m.media(tablet) {

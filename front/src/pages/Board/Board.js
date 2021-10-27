@@ -1,60 +1,91 @@
 import './Board.scss';
 
 import { Body2, Headline2 } from '../../core/Typography';
-import { DropdownInput, MainImage, SquareButton } from '../../components';
+import {
+  DropdownInput,
+  MainImage,
+  ModalError,
+  SquareButton,
+} from '../../components';
+import { Link, useHistory } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 
-import { Link } from 'react-router-dom';
+import { BASE_URL } from '../../constants/api';
+import { LEAST_LIKE_TO_HOT_POST } from '../../constants/board';
 import PATH from '../../constants/path';
 import PageLayout from '../../core/Layout/PageLayout';
 import TableContent from '../../chunks/TableContent/TableContent';
 import TextSearchInput from '../../components/SearchInput/TextSearchInput';
-
-// import { BASE_URL } from '../../constants/api';
-
-// import axios from 'axios';
+import axios from 'axios';
+import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 
 const Board = () => {
-  const [category, setCategory] = useState('');
+  const history = useHistory();
+  const { openModal } = useDefaultModal();
 
-  //TODO: Dummy Data -> 나중에 고칠 예정
+  const [category, setCategory] = useState('');
   const [posts, setPosts] = useState([]);
 
+  const processPostList = (postList) => {
+    const parsedPostList = postList.map((post) => {
+      const [createdDate, createdTime] = post.createdAt.split('T');
+      const [parsedCreatedTime] = createdTime.split('.');
+      return {
+        ...post,
+        createdDate,
+        createdTime: parsedCreatedTime,
+      };
+    });
+
+    return parsedPostList.sort((postA, postB) => {
+      const isPostAHot = postA.like >= LEAST_LIKE_TO_HOT_POST;
+      const isPostBHot = postB.like >= LEAST_LIKE_TO_HOT_POST;
+
+      if (postA.notice === postB.notice) {
+        if (isPostAHot && isPostBHot) {
+          return postB.createdAt - postA.createdAt;
+        } else {
+          return isPostBHot - isPostAHot;
+        }
+      } else {
+        return postB.notice - postA.notice;
+      }
+    });
+  };
+
   const getPosts = async () => {
-    // TODO: API 확정되면 Dummy Data와 함께 맞추어 고칠 예정
-    // const response = await axios.get(`${BASE_URL}/board`);
-    setPosts([
-      {
-        id: 1,
-        title: '롤드컵 존잼 ;; ㄷㄷ',
-        category: '자유',
-        viewCount: 12,
-        likeCount: 12,
-        author: '그룸밍',
-        createdAt: '10/23 09:34',
-        notice: true,
-      },
-      {
-        id: 2,
-        title: '롤드컵 존잼 ;; ㄷㄷ',
-        category: '자유',
-        viewCount: 12,
-        likeCount: 12,
-        author: '그룸밍',
-        createdAt: '10/23 09:34',
-        notice: false,
-      },
-      {
-        id: 3,
-        title: '롤드컵 존잼 ;; ㄷㄷ',
-        category: 'Monster Hunter Iceborne',
-        viewCount: 12,
-        likeCount: 12,
-        author: '그룸밍',
-        createdAt: '10/23 09:34',
-        notice: true,
-      },
-    ]);
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/api${PATH.VIEW_POST}?page=1`
+      );
+      const processedPostList = processPostList(response.data);
+
+      setPosts(processedPostList);
+    } catch (error) {
+      openModal(<ModalError>글 목록 조회를 실패했습니다.</ModalError>);
+    }
+  };
+
+  const clickPost = (postId) => () => {
+    history.push(`${PATH.BOARD}${PATH.VIEW_POST}/${postId}`);
+  };
+
+  const searchPost = async (e) => {
+    e.preventDefault();
+
+    const keyword = e.currentTarget.search.value;
+    const type = e.currentTarget.searchType.value;
+
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/api/post/search?type=${type}&keyword=${keyword}`
+      );
+      const processedPostList = processPostList(response.data.results);
+
+      setPosts(processedPostList);
+    } catch (error) {
+      openModal(<ModalError>{error.response?.data?.message}</ModalError>);
+    }
   };
 
   useEffect(() => {
@@ -77,32 +108,39 @@ const Board = () => {
             </SquareButton>
           </Link>
         </div>
-        <div className='board-search'>
+        <form className='board-search' onSubmit={searchPost}>
           <TextSearchInput />
           <DropdownInput
             type='text'
+            name='searchType'
             placeholder=''
-            defaultInputValue='전체'
+            defaultInputValue='제목, 내용, 작성자'
             inputValue={category}
             setInputValue={setCategory}
-            dropdownKeywords={['전체', '글 + 제목', '글쓴이']}
+            dropdownKeywords={[
+              '제목, 내용, 작성자',
+              '제목, 내용',
+              '제목',
+              '작성자',
+            ]}
           />
-        </div>
+        </form>
         <div className='board-wrapper'>
-          {posts.map((post) => (
-            <Link
-              to={`${PATH.BOARD}${PATH.VIEW_POST}/${post.id}`}
-              key={post.id}
-            >
-              <div className='content-wrapper'>
+          {posts.length ? (
+            posts.map((post) => (
+              <div className='content-wrapper' key={post.id}>
                 <TableContent
                   boardDetails={post}
-                  onTitleClick={() => {}}
+                  onContentClick={clickPost(post.id)}
                   onCategoryClick={() => {}}
                 />
               </div>
-            </Link>
-          ))}
+            ))
+          ) : (
+            <div className='no-posts'>
+              <Body2>게시글이 존재하지 않습니다.</Body2>
+            </div>
+          )}
         </div>
       </PageLayout>
     </main>

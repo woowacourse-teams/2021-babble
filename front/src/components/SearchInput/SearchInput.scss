@@ -20,6 +20,7 @@
 
   input[type='text']:read-only {
     text-align: left;
+    height: 2.32rem;
     cursor: pointer;
   }
 
@@ -41,6 +42,12 @@
 
     &:focus-within {
       border: none;
+    }
+  }
+
+  &:not(.borderless) {
+    input[type='password'] {
+      text-align: center;
     }
   }
 

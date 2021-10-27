@@ -15,7 +15,6 @@ import { getSessionStorage, setSessionStorage } from '../../utils/storage';
 import { BASE_URL } from '../../constants/api';
 import ChattingRoom from '../ChattingRoom/ChattingRoom';
 import { IoMdRefresh } from '@react-icons/all-files/io/IoMdRefresh';
-import ModalConfirm from '../../components/Modal/ModalConfirm';
 import PATH from '../../constants/path';
 import { PATTERNS } from '../../constants/regex';
 import PageLayout from '../../core/Layout/PageLayout';
@@ -27,7 +26,9 @@ import { getRandomNickname } from '@woowa-babble/random-nickname';
 import { useChattingModal } from '../../contexts/ChattingModalProvider';
 import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 import { useHistory } from 'react-router-dom';
+import useInterval from '../../hooks/useInterval';
 import useScript from '../../hooks/useScript';
+import useThrottle from '../../hooks/useThrottle';
 import useUpdateEffect from '../../hooks/useUpdateEffect';
 import { useUser } from '../../contexts/UserProvider';
 
@@ -47,7 +48,8 @@ const RoomList = ({ match }) => {
   const { user, changeUser } = useUser();
   const { openChatting, closeChatting, isChattingModalOpen } =
     useChattingModal();
-  const { openModal } = useDefaultModal();
+  const { openModal, onConfirm } = useDefaultModal();
+  const { throttle } = useThrottle();
 
   useScript('https://developers.kakao.com/sdk/js/kakao.js');
   const history = useHistory();
@@ -69,7 +71,7 @@ const RoomList = ({ match }) => {
 
       changeUser({ id: generatedUser.id, nickname: generatedUser.nickname });
     } catch (error) {
-      openModal(<ModalError>{error.message}</ModalError>);
+      openModal(<ModalError>{error.response?.data?.message}</ModalError>);
     }
 
     if (roomId) {
@@ -94,7 +96,7 @@ const RoomList = ({ match }) => {
 
       setCurrentGame(response.data);
     } catch (error) {
-      openModal(<ModalError>{error.message}</ModalError>);
+      openModal(<ModalError>{error.response?.data?.message}</ModalError>);
     }
   };
 
@@ -106,7 +108,7 @@ const RoomList = ({ match }) => {
       setTagList(tags);
       setAutoCompleteTagList(tags);
     } catch (error) {
-      openModal(<ModalError>{error.message}</ModalError>);
+      openModal(<ModalError>{error.response?.data?.message}</ModalError>);
     }
   };
 
@@ -123,9 +125,17 @@ const RoomList = ({ match }) => {
         return;
       }
 
-      setRoomList((prevRooms) => [...prevRooms, ...rooms]);
+      setRoomList((prevRooms) => {
+        // prevRooms 안에 rooms의 내용이 없으면 넣어라.
+        const newRoom = prevRooms.filter(
+          (prevRoom) =>
+            !rooms.includes((room) => prevRoom.roomId === room.roomId)
+        );
+
+        return [...newRoom, ...rooms];
+      });
     } catch (error) {
-      openModal(<ModalError>{error.message}</ModalError>);
+      openModal(<ModalError>{error.response?.data?.message}</ModalError>);
     }
   };
 
@@ -184,21 +194,6 @@ const RoomList = ({ match }) => {
     });
   };
 
-  // TODO: Custom Confirm 로직을 개선할 방법에 대해 고려(우선순위 꽤 높음).
-  const onConfirm = (callback) => {
-    if (isChattingModalOpen) {
-      openModal(
-        <ModalConfirm confirmCallback={callback}>
-          입장중인 방에서 퇴장하시겠습니까?
-        </ModalConfirm>
-      );
-
-      return;
-    }
-
-    callback();
-  };
-
   const onChangeTagInput = (e) => {
     const inputValue = e.target.value.replace(PATTERNS.SPECIAL_CHARACTERS, '');
 
@@ -228,21 +223,22 @@ const RoomList = ({ match }) => {
           });
 
           return tag.alternativeNames.some((alternativeName) =>
-            alternativeName.match(searchRegex)
+            alternativeName.name.match(searchRegex)
           );
         })
       : tagList.filter((tag) => {
           const searchRegex = new RegExp(inputValue, 'gi');
           const alternativeNamesWithoutSpace = tag.alternativeNames.map(
-            (alternativeName) => alternativeName.replace(PATTERNS.SPACE, '')
+            (alternativeName) =>
+              alternativeName.name.replace(PATTERNS.SPACE, '')
           );
 
           return (
             alternativeNamesWithoutSpace.some((alternativeName) =>
-              alternativeName.match(searchRegex)
+              alternativeName.name.match(searchRegex)
             ) ||
             tag.alternativeNames.some((alternativeName) =>
-              alternativeName.match(searchRegex)
+              alternativeName.name.match(searchRegex)
             )
           );
         });
@@ -269,7 +265,7 @@ const RoomList = ({ match }) => {
 
       changeUser(newUser);
     } catch (error) {
-      openModal(<ModalError>{error.message}</ModalError>);
+      openModal(<ModalError>{error.response?.data?.message}</ModalError>);
     }
   };
 
@@ -278,10 +274,89 @@ const RoomList = ({ match }) => {
     getRooms(selectedTagIdParam);
   };
 
-  const refresh = () => {
-    setRoomList([]);
+  const onConfirmExit = (callback, condition) =>
+    onConfirm(callback, condition, '입장중인 방에서 퇴장하시겠습니까?');
+
+  const refresh = async () => {
     pageRef.current = 1;
-    getRoomsWithTag();
+
+    try {
+      // 태그가 있을 때 리프레시를 하면 태그가 적용된 채로 방을 가져와야함
+      const selectedTagIdParam = selectedTagList.map(({ id }) => id).join(',');
+
+      const newResponse = await axios.get(`${BASE_URL}/api/rooms`, {
+        params: { gameId, tagIds: selectedTagIdParam, page: pageRef.current },
+      });
+
+      const newRooms = newResponse.data;
+      const newRoomsCopy = [...newRooms];
+      const roomListCopy = [...roomList];
+
+      const sortedNewRooms = newRoomsCopy.sort((a, b) => b.roomId - a.roomId);
+      const sortedRoomList = roomListCopy
+        .slice(0, newRooms.length)
+        .sort((a, b) => b.roomId - a.roomId);
+
+      const isSame = sortedNewRooms.every((room, index) => {
+        return sortedRoomList[index]?.roomId === room.roomId;
+      });
+
+      if (selectedTagList.length) {
+        const roomWithTags = newRooms.filter((room) => room.tags);
+
+        const answer = new Set();
+        roomWithTags.forEach((room) => {
+          room.tags.forEach((tag) => {
+            selectedTagList.forEach((selectedTag) => {
+              if (selectedTag.id === tag.id) {
+                answer.add(room);
+              }
+            });
+          });
+        });
+
+        setRoomList([...answer]);
+      } else if (!isSame) {
+        setRoomList((prevRooms) => {
+          const copiedPrevRooms = [...prevRooms];
+
+          const updatedRooms = newRooms.filter((prevRoom) => {
+            return !roomList.find((room) => {
+              if (prevRoom.roomId === room.roomId) {
+                return prevRoom;
+              }
+            });
+          });
+
+          const deletedRooms = roomList.filter((prevRoom) => {
+            return !newRooms.find((room) => {
+              if (prevRoom.roomId === room.roomId) {
+                return prevRoom;
+              }
+            });
+          });
+
+          const deletedElementIndex = deletedRooms.map((element) =>
+            roomList.indexOf(element)
+          );
+
+          deletedElementIndex.forEach((index) => {
+            copiedPrevRooms.splice(index, 1);
+          });
+
+          copiedPrevRooms.unshift(...updatedRooms);
+
+          return [...copiedPrevRooms.sort((a, b) => b.roomId - a.roomId)].slice(
+            0,
+            16
+          );
+        });
+      } else {
+        setRoomList(newRooms);
+      }
+    } catch (error) {
+      <ModalError>{error.response?.data?.message}</ModalError>;
+    }
   };
 
   useEffect(() => {
@@ -289,7 +364,7 @@ const RoomList = ({ match }) => {
       ([entry]) => {
         entry.target.classList.toggle(
           'stuck',
-          entry.intersectionRatio < 1 && !entry.isIntersecting
+          entry.boundingClientRect.top <= 0 && !entry.isIntersecting
         );
       },
       { threshold: 1 }
@@ -325,11 +400,15 @@ const RoomList = ({ match }) => {
       );
       infiniteObserverRef.current.observe(lastRoomRef.current);
     }
-  }, [roomList.length]);
+  }, [JSON.stringify(roomList)]);
 
   useUpdateEffect(() => {
     refresh();
   }, [selectedTagList]);
+
+  useInterval(() => {
+    refresh();
+  }, [3000]);
 
   return (
     <div className='room-list-container'>
@@ -341,7 +420,9 @@ const RoomList = ({ match }) => {
             <NicknameSection />
             <SquareButton
               size='medium'
-              onClickButton={() => onConfirm(() => enterMakeRoomPage())}
+              onClickButton={() =>
+                onConfirmExit(() => enterMakeRoomPage(), isChattingModalOpen)
+              }
               colored
             >
               <Body2>방 만들기</Body2>
@@ -356,7 +437,7 @@ const RoomList = ({ match }) => {
                 onClickKeyword={selectTag}
                 onChangeInput={onChangeTagInput}
               />
-              <SquareButton onClickButton={refresh}>
+              <SquareButton onClickButton={() => throttle(refresh, 1000)}>
                 <IoMdRefresh size='24px' color='#fff' />
               </SquareButton>
             </div>
@@ -364,17 +445,25 @@ const RoomList = ({ match }) => {
           </section>
         </div>
         <section className='room-list-section'>
-          {roomList?.map((room, index) => {
-            const isLastIndex = index === roomList.length - 1;
-            return (
-              <Room
-                key={index}
-                room={room}
-                onClickRoom={(e) => onConfirm(() => joinChatting(e))}
-                scrollRef={isLastIndex ? lastRoomRef : null}
-              />
-            );
-          })}
+          {roomList.length ? (
+            roomList?.map((room, index) => {
+              const isLastIndex = index === roomList.length - 1;
+              return (
+                <Room
+                  key={index}
+                  room={room}
+                  onClickRoom={(e) =>
+                    onConfirmExit(() => joinChatting(e), isChattingModalOpen)
+                  }
+                  scrollRef={isLastIndex ? lastRoomRef : null}
+                />
+              );
+            })
+          ) : (
+            <div className='no-room'>
+              <Body2>방이 존재하지 않습니다.</Body2>
+            </div>
+          )}
         </section>
       </PageLayout>
     </div>
