@@ -235,7 +235,7 @@ const RoomList = ({ match }) => {
 
           return (
             alternativeNamesWithoutSpace.some((alternativeName) =>
-              alternativeName.name.match(searchRegex)
+              alternativeName.match(searchRegex)
             ) ||
             tag.alternativeNames.some((alternativeName) =>
               alternativeName.name.match(searchRegex)
@@ -243,7 +243,8 @@ const RoomList = ({ match }) => {
           );
         });
 
-    setAutoCompleteTagList([...searchResults, ...alternativeResults]);
+    const result = new Set([...searchResults, ...alternativeResults]);
+    setAutoCompleteTagList([...result]);
   };
 
   const getUserId = async () => {
