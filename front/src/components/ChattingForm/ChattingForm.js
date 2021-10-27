@@ -16,7 +16,7 @@ const ChattingForm = ({ onSubmit }) => {
       return;
     }
 
-    onSubmit();
+    onSubmit(e);
   };
 
   const onEnterSubmit = (e) => {
