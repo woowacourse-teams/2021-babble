@@ -68,7 +68,7 @@ const WritingBlock = ({ title, content, nickname, textLimit }) => {
           ['link', 'image'],
         ],
       },
-      placeholder: '내용을 입력하세요(8000자 이하).',
+      placeholder: '내용을 입력하세요(2600자 이하).',
       theme: 'snow',
     });
 
