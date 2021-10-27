@@ -29,6 +29,7 @@ import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 import { useHistory } from 'react-router-dom';
 import useInterval from '../../hooks/useInterval';
 import useScript from '../../hooks/useScript';
+import useThrottle from '../../hooks/useThrottle';
 import useUpdateEffect from '../../hooks/useUpdateEffect';
 import { useUser } from '../../contexts/UserProvider';
 
@@ -49,6 +50,7 @@ const RoomList = ({ match }) => {
   const { openChatting, closeChatting, isChattingModalOpen } =
     useChattingModal();
   const { openModal } = useDefaultModal();
+  const { throttle } = useThrottle();
 
   useScript('https://developers.kakao.com/sdk/js/kakao.js');
   const history = useHistory();
@@ -295,6 +297,7 @@ const RoomList = ({ match }) => {
     pageRef.current = 1;
 
     try {
+      // 태그가 있을 때 리프레시를 하면 태그가 적용된 채로 방을 가져와야함
       const selectedTagIdParam = selectedTagList.map(({ id }) => id).join(',');
 
       const newResponse = await axios.get(`${BASE_URL}/api/rooms`, {
@@ -333,45 +336,36 @@ const RoomList = ({ match }) => {
         setRoomList((prevRooms) => {
           const copiedPrevRooms = [...prevRooms];
 
-          const stringNewRooms = newRooms.map((newRoom) =>
-            JSON.stringify(newRoom)
+          const updatedRooms = newRooms.filter((prevRoom) => {
+            return !roomList.find((room) => {
+              if (prevRoom.roomId === room.roomId) {
+                return prevRoom;
+              }
+            });
+          });
+
+          const deletedRooms = roomList.filter((prevRoom) => {
+            return !newRooms.find((room) => {
+              if (prevRoom.roomId === room.roomId) {
+                return prevRoom;
+              }
+            });
+          });
+
+          const deletedElementIndex = deletedRooms.map((element) =>
+            roomList.indexOf(element)
           );
-          const roomListSliced = roomList.slice(0, newRooms.length);
-          const stringRoomList = roomListSliced.map((room) =>
-            JSON.stringify(room)
+
+          deletedElementIndex.forEach((index) => {
+            copiedPrevRooms.splice(index, 1);
+          });
+
+          copiedPrevRooms.unshift(...updatedRooms);
+
+          return [...copiedPrevRooms.sort((a, b) => b.roomId - a.roomId)].slice(
+            0,
+            16
           );
-
-          if (stringNewRooms !== stringRoomList) {
-            const updatedRooms = newRooms.filter((prevRoom) => {
-              return !roomList.find((room) => {
-                if (prevRoom.roomId === room.roomId) {
-                  return prevRoom;
-                }
-              });
-            });
-
-            const deletedRooms = roomList.filter((prevRoom) => {
-              return !newRooms.find((room) => {
-                if (prevRoom.roomId === room.roomId) {
-                  return prevRoom;
-                }
-              });
-            });
-
-            const deletedElementIndex = deletedRooms.map((element) =>
-              roomList.indexOf(element)
-            );
-
-            deletedElementIndex.forEach((index) => {
-              copiedPrevRooms.splice(index, 1);
-            });
-
-            copiedPrevRooms.unshift(...updatedRooms);
-
-            return [
-              ...copiedPrevRooms.sort((a, b) => b.roomId - a.roomId),
-            ].slice(0, 16);
-          }
         });
       } else {
         setRoomList(newRooms);
@@ -430,7 +424,7 @@ const RoomList = ({ match }) => {
 
   useInterval(() => {
     refresh();
-  }, [5000]);
+  }, [3000]);
 
   return (
     <div className='room-list-container'>
@@ -457,7 +451,7 @@ const RoomList = ({ match }) => {
                 onClickKeyword={selectTag}
                 onChangeInput={onChangeTagInput}
               />
-              <SquareButton onClickButton={refresh}>
+              <SquareButton onClickButton={() => throttle(refresh, 1000)}>
                 <IoMdRefresh size='24px' color='#fff' />
               </SquareButton>
             </div>
