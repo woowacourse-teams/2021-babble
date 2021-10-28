@@ -6,6 +6,7 @@ import Logo from '../../core/Logo/Logo';
 import PATH from '../../constants/path';
 import PageLayout from '../../core/Layout/PageLayout';
 import React from 'react';
+import ThemeMode from '../ThemeMode/ThemeMode';
 
 const NavBar = () => {
   return (
@@ -21,6 +22,7 @@ const NavBar = () => {
           <Link to={PATH.BOARD}>
             <Body1>익명 게시판</Body1>
           </Link>
+          <ThemeMode />
         </div>
       </PageLayout>
     </div>

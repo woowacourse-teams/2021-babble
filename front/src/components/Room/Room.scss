@@ -30,6 +30,10 @@
       );
       background-size: 10px 10px;
       user-select: none;
+
+      .information {
+        filter: opacity(0.5);
+      }
     }
 
     .information {
