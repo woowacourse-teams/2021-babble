@@ -29,8 +29,6 @@ const ViewPost = ({ match }) => {
   const history = useHistory();
 
   const { openModal, closeModal } = useDefaultModal();
-
-  const [darkMode, setDarkMode] = useState(false);
   const [post, setPost] = useState({
     id: 0,
     title: '',
@@ -42,16 +40,6 @@ const ViewPost = ({ match }) => {
     createdDate: '',
     createdTime: '',
   });
-
-  useEffect(() => {
-    console.log(localStorage.getItem('theme'));
-    console.log(darkMode);
-    if (localStorage.getItem('theme') === 'dark-mode') {
-      setDarkMode(true);
-    } else {
-      setDarkMode(false);
-    }
-  }, [darkMode]);
 
   const getPost = async () => {
     try {
@@ -199,7 +187,7 @@ const ViewPost = ({ match }) => {
         </div>
         <Darass
           projectKey={process.env.REACT_APP_DARASS_KEY}
-          darkMode={darkMode}
+          darkMode={darkTheme}
           primaryColor='#FF005C'
           isShowSortOption={true}
           isAllowSocialLogin={false}
