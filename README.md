@@ -1,5 +1,7 @@
 # 🌎 Babble
-![github_readme](./front/public/readme/github_readme.png)
+[![github_readme](./front/public/readme/github_readme.png)](https://babble.gg)
+
+### [babble 기술 블로그](https://babble-dev.tistory.com/)에서도 더 많은 이야기를 만나보세요!
 
 <br>
 
@@ -35,3 +37,4 @@
 | [루트(김준근)](https://github.com/Junroot) <br> [👨‍💻](https://github.com/woowacourse-teams/2021-babble/commits?author=Junroot) | [와일더(강규한)](https://github.com/lns13301) <br> [👨‍💻](https://github.com/woowacourse-teams/2021-babble/commits?author=lns13301) | [포츈(정윤성)](https://github.com/unluckyjung) <br> [👨‍💻](https://github.com/woowacourse-teams/2021-babble/commits?author=unluckyjung) | [현구막(최현구)](https://github.com/Hyeon9mak) <br> [👨‍💻](https://github.com/woowacourse-teams/2021-babble/commits?author=Hyeon9mak) | [그루밍(강민경)](https://github.com/ddongule) <br> [👩‍💻](https://github.com/woowacourse-teams/2021-babble/commits?author=ddongule) | [피터(안현철)](https://github.com/iborymagic) <br> [👨‍💻](https://github.com/woowacourse-teams/2021-babble/commits?author=iborymagic) |
 | [루트 블로그](https://junroot.github.io) | [와일더 블로그](https://lns13301.github.io/github-blog) | [포츈 블로그](https://unluckyjung.github.io) | [현구막 블로그](https://hyeon9mak.github.io) | [그루밍 블로그](https://mingule.tistory.com) | [피터 블로그](https://iborymagic.tistory.com) |
 
+### babble 팀에 대해 더 알고 싶다면? [Babble WIKI](https://github.com/woowacourse-teams/2021-babble/wiki)
