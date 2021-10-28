@@ -9,6 +9,7 @@ import { getSessionStorage, setSessionStorage } from './utils/storage';
 import { BASE_URL } from './constants/api';
 import Board from './pages/Board/Board';
 import PATH from './constants/path';
+import { ThemeChangeContextProvider } from './contexts/ThemeChangeProvider';
 import ViewPost from './pages/ViewPost/ViewPost';
 import WritePost from './pages/WritePost/WritePost';
 import axios from 'axios';
@@ -61,40 +62,42 @@ const App = () => {
 
   return (
     <>
-      <NavBar />
-      <Main>
-        <Switch>
-          <Route path={PATH.HOME} component={GameList} exact />
-          <Route
-            path={`${PATH.ROOM_LIST}/:gameId${PATH.MAKE_ROOM}`}
-            component={MakeRoom}
-          />
-          <Route
-            path={`${PATH.ROOM_LIST}/:gameId`}
-            component={RoomList}
-            exact
-          />
-          <Route
-            path={`${PATH.ROOM_LIST}/:gameId/chat/:roomId`}
-            component={RoomList}
-            exact
-          />
-          <Route path={PATH.ADMIN} component={BabbleManagement} exact />
-          <Route path={PATH.BOARD} component={Board} exact />
-          <Route
-            path={`${PATH.BOARD}${PATH.WRITE_POST}`}
-            component={WritePost}
-            exact
-          />
-          <Route
-            path={`${PATH.BOARD}${PATH.VIEW_POST}/:postId`}
-            component={ViewPost}
-            exact
-          />
-          <Route component={NotFound} />
-        </Switch>
-      </Main>
-      <Footer />
+      <ThemeChangeContextProvider>
+        <NavBar />
+        <Main>
+          <Switch>
+            <Route path={PATH.HOME} component={GameList} exact />
+            <Route
+              path={`${PATH.ROOM_LIST}/:gameId${PATH.MAKE_ROOM}`}
+              component={MakeRoom}
+            />
+            <Route
+              path={`${PATH.ROOM_LIST}/:gameId`}
+              component={RoomList}
+              exact
+            />
+            <Route
+              path={`${PATH.ROOM_LIST}/:gameId/chat/:roomId`}
+              component={RoomList}
+              exact
+            />
+            <Route path={PATH.ADMIN} component={BabbleManagement} exact />
+            <Route path={PATH.BOARD} component={Board} exact />
+            <Route
+              path={`${PATH.BOARD}${PATH.WRITE_POST}`}
+              component={WritePost}
+              exact
+            />
+            <Route
+              path={`${PATH.BOARD}${PATH.VIEW_POST}/:postId`}
+              component={ViewPost}
+              exact
+            />
+            <Route component={NotFound} />
+          </Switch>
+        </Main>
+        <Footer />
+      </ThemeChangeContextProvider>
     </>
   );
 };
