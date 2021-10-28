@@ -1,224 +1,37 @@
 # 🌎 Babble
+![github_readme](./front/public/readme/github_readme.png)
 
-<div align="center">
-  <img src="./front/public/readme/github_readme.png" />
-</div>
+<br>
 
-## 🚀 1. Introduction
-
+## 🚀 Introduction
 키워드를 기반으로 한 빠른 게임 팀 매칭 서비스입니다.
 
 > 함께 게임할 사람이 필요한 사용자들이 키워드를 통해 빠르게 팀을 찾고, 게임을 할 수 있습니다.
 
-## 💚 2. About Us
+| **게임 검색** | **채팅방 검색** | **채팅방 생성** |
+| :-: | :-: | :-: | 
+| ![게임검색](./images/게임검색.gif) | ![방검색](./images/방검색.gif) | ![방생성](./images/방생성.gif) | 
+| **닉네임 변경** | **채팅 진행** | **게시글 검색** |
+| ![닉네임변경](./images/닉네임변경.gif) | ![채팅방](./images/채팅방.gif) | ![게시글검색](./images/게시글검색.gif) |
+| **게시글 작성** | **게시물 조회** | **댓글 작성** |
+| ![게시글작성](./images/게시글작성.gif) | ![게시글조회](./images/게시글조회.gif) | ![댓글작성](./images/댓글작성.gif) |
+| **게시글 수정** | **게시물 삭제** | |
+| ![게시글수정](./images/게시글수정.gif) | ![게시글삭제](./images/게시글삭제.gif) | |
 
-<table>
-  <tr>
-    <td align="center">
-      <a href="https://github.com/Junroot">
-        <img src="https://avatars.githubusercontent.com/u/4648244?v=4" width="100px;" alt=""/>
-        <br />
-        <sub>
-          <b>[Back-End]</b> <br />
-          <b>루트(김준근)</b>
-        </sub>
-      </a><br />
-      <a href="https://github.com/woowacourse-teams/2021-babble/commits?author=Junroot" title="Code">👨‍💻</a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/lns13301">
-        <img src="https://avatars.githubusercontent.com/u/49058669?v=4" width="100px;" alt=""/><br />
-        <sub>
-          <b>[Back-End]</b> <br />
-          <b>와일더(강규한)</b>
-        </sub>
-      </a><br />
-      <a href="https://github.com/woowacourse-teams/2021-babble/commits?author=lns13301" title="Code">👨‍💻</a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/unluckyjung">
-        <img src="https://avatars.githubusercontent.com/u/43930419?v=4" width="100px;" alt=""/><br />
-        <sub>
-          <b>[Back-End]</b> <br />
-          <b>포츈(정윤성)</b>
-        </sub>
-      </a><br />
-      <a href="https://github.com/woowacourse-teams/2021-babble/commits?author=unluckyjung" title="Code">👨‍💻</a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/Hyeon9mak">
-        <img src="https://avatars.githubusercontent.com/u/37354145?v=4" width="100px;" alt=""/><br />
-        <sub>
-          <b>[Back-End]</b> <br />
-          <b>현구막(최현구)</b>
-        </sub>
-      </a><br />
-      <a href="https://github.com/woowacourse-teams/2021-babble/commits?author=Hyeon9mak" title="Code">👨‍💻</a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/ddongule">
-        <img src="https://avatars.githubusercontent.com/u/26598561?v=4" width="100px;" alt=""/><br />
-        <sub>
-          <b>[Front-End]</b> <br />
-          <b>그루밍(강민경)</b>
-        </sub>
-      </a><br />
-      <a href="https://github.com/woowacourse-teams/2021-babble/commits?author=ddongule" title="Code">👩‍💻</a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/iborymagic">
-        <img src="https://avatars.githubusercontent.com/u/42052110?v=4" width="100px;" alt=""/><br />
-        <sub>
-          <b>[Front-End]</b> <br />
-          <b>피터(안현철)</b>
-        </sub>
-      </a><br />
-      <a href="https://github.com/woowacourse-teams/2021-babble/commits?author=iborymagic" title="Code">👨‍💻</a>
-    </td>
-  </tr>
-</table>
+<br>
 
-## 🔫 3. Team Culture
+## 💻 Infra Structure & Tech Stacks
+![production-infra](./images/babble_production_infra.png)
+![be-cicd](./images/babble_be_cicd.png)
+![fe-cicd](./images/babble_fe_cicd.png)
+![tech-stack](./images/babble_tech_stack.png)
 
-<details>
-<summary><b>🍚 Work Life Balance</b></summary>
-<div markdown="1">
+<br>
 
-#### Babble에서 일하는 시간
+## 💚 About Us
+| <img src="https://avatars.githubusercontent.com/u/4648244?v=4" width=200px alt="_"/> | <img src="https://avatars.githubusercontent.com/u/49058669?s=400&v=4" width=200px alt="_"/> | <img src="https://avatars.githubusercontent.com/u/43930419?s=400&v=4" width=200px alt="_"/> | <img src="https://avatars.githubusercontent.com/u/37354145?s=400&v=4" width=200px alt="_"> | <img src="https://avatars.githubusercontent.com/u/26598561?s=400&v=4" width=200px alt="_"> | <img src="https://avatars.githubusercontent.com/u/42052110?s=400&v=4" width=200px alt="_"> |
+| :----------: | :----------: | :----------: | :----------: | :----------: | :----------: |
+| Back-End | Back-End | Back-End | Back-End | Front-End | Front-End |
+| [루트(김준근)](https://github.com/Junroot) <br> [👨‍💻](https://github.com/woowacourse-teams/2021-babble/commits?author=Junroot) | [와일더(강규한)](https://github.com/lns13301) <br> [👨‍💻](https://github.com/woowacourse-teams/2021-babble/commits?author=lns13301) | [포츈(정윤성)](https://github.com/unluckyjung) <br> [👨‍💻](https://github.com/woowacourse-teams/2021-babble/commits?author=unluckyjung) | [현구막(최현구)](https://github.com/Hyeon9mak) <br> [👨‍💻](https://github.com/woowacourse-teams/2021-babble/commits?author=Hyeon9mak) | [그루밍(강민경)](https://github.com/ddongule) <br> [👩‍💻](https://github.com/woowacourse-teams/2021-babble/commits?author=ddongule) | [피터(안현철)](https://github.com/iborymagic) <br> [👨‍💻](https://github.com/woowacourse-teams/2021-babble/commits?author=iborymagic) |
+| [루트 블로그](https://junroot.github.io) | [와일더 블로그](https://lns13301.github.io/github-blog) | [포츈 블로그](https://unluckyjung.github.io) | [현구막 블로그](https://hyeon9mak.github.io) | [그루밍 블로그](https://mingule.tistory.com) | [피터 블로그](https://iborymagic.tistory.com) |
 
-- 월: 13:00 - 18:00
-- 화~금: 10:00 - 18:00
-- 토~일: 자유(필요하면)
-- 점심시간: 12:00 - 13:30
-- 일간 감정회고 : 17:30 - 18:00
-- 필요하면 팀에 요청해서 야근 가능(주말 포함)
-
-</div>
-</details>
-
-<details>
-<summary><b>🤔 Daily Scrum</b></summary>
-<div markdown="1">
-
-- 월요일 1시, 그외 오전 10시 부터 **최대** 30분간 데일리 스크럼 진행
-- 스크럼 내용은 전날 무엇을 했는지에 대한 공유
-- 전날 발생했던 이슈 및 일정의 수정이 필요할 경우 요청
-  (만약 긴 논의(10분이상)가 필요한 경우는 별도의 회의를 만들어 진행)
-- **스크럼 마스터**는 매일 돌아가면서 함
-  - 현구막 (07.02 금 기준 시작)
-  - 포츈
-  - 와일더
-  - 그루밍
-  - 피터
-  - 루트
-
-</div>
-</details>
-
-<details>
-<summary><b>❤️ Emotional Retrospective</b></summary>
-<div markdown="1">
-
-- 매일 오후 5시 30분에 감정 회고
-- 각자 오늘 하루동안 있었던 일에 대한 회고
-
-</div>
-</details>
-
-<details>
-<summary><b>📋 About Discussion</b></summary>
-<div markdown="1">
-
-- 회의 시작전에는 **회의 목표**를 명확하게 작성
-- **회의 진행자**는 회의를 개최한 사람이 됨 (정기 회의는 **스크럼 마스터**가 맡음)
-- 회의 중에 **다른 회의 주제**가 발생하면 별도의 회의를 계획하고 현재는 이야기 하지 않음
-- 최소한의 **강제성**을 두고, 그 속에서 **유연성**을 가지기
-- 각자 맡은 파트에 대해 기획 → 회의 때 발표 → 이의 제기 / 수용 → 적용
-- 회의는 **시간 제한** 무조건 필요(마라톤 회의 X, 최대 30분)
-- 최대한 미리미리 회의 내용에 대해 준비해오기
-- 아니면 아니라고 확실하게 말하기
-  - 대신 끝까지 다 듣고! 말 끊지 말기
-- 일정 시간동안 토론 하다가 (토론 하기 전에 정하기) 결론이 안나면 투표로 하기
-
-</div>
-</details>
-
-<details>
-<summary><b>⏱️ Don't be Late!</b></summary>
-<div markdown="1">
-
-- 10시 1분은 10시가 아니다!
-- 기본 지각비(10시 1분 - 10시 10분): 10,000원
-- 추가 10분 당: 1,000원
-
-</div>
-</details>
-<br />
-
-## 💊 4. Conventions
-
-### Commit Message Format
-
-#### [Angular JS Git Commit Message Conventions](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit)
-
-<details>
-<summary><b>🪜 Items</b></summary>
-<div markdown="1">
-
-- `feat`: 새로운 기능
-- `fix`: 버그를 수정
-- `refactor`: 이미 있는 코드에 대한 리팩토링
-- `css`: CSS 관련 수정
-- `style`: 코드 포매팅에 관한 스타일 변경
-- `docs`: Document 변경 사항
-- `test`: Test Code에 대한 commit
-- `build`: 빌드 관련 파일 수정 (예시 scope: gulp, broccoli, npm)
-- `perf`: 성능 개선사항
-- `ci`: CI 설정 파일 수정 (예시 scope: Circle, BrowserStack, SauceLabs)
-- `chore`: 그 외의 작은 수정들
-
-</div>
-</details>
-<br />
-
-- Commit Message는 한국어를 사용
-- Angular JS Git Commit Message Conventions를 따르되, Scope는 명시하지 않음
-
-### Issue
-
-- 해야 할 Task를 미리 Issue에 등록 후 개발
-
-### Pull Request
-
-- Issue에 올라온 Task를 끝내면, Pull Request를 통해 팀원들의 Review를 받은 후, develop 브랜치에 merge 함
-
-### Branch Strategy
-
-#### `main`
-
-- 제품을 최종적으로 배포하는 브랜치 (develop 브랜치로부터 merge만 받는 브랜치)
-- 배포에 사용됨
-
-#### `develop`
-
-- 아직 배포되지 않은 공용 브랜치
-- feature 브랜치로부터 merge를 받는다. 개발 중에 버그를 발견하면 이 브랜치에 직접 commit함
-
-#### `feature`
-
-- 새로운 기능 개발을 하는 브랜치
-  - 반드시 develop 로부터 시작되고, develop 브랜치에 머지함
-  - **feature/기능이름**
-    ex) `feature/new-feature`
-
-#### `hotfix`
-
-- 다음 배포 전까지 급하게 고쳐야되는 버그를 처리하는 브랜치
-  - 배포 버전 심각한 버그 수정이 필요한경우, 버그 수정을 진행한뒤 main, develop 브랜치에 merge함
-  - **hotfix/버그이름**
-    ex) `hotfix/bugs`
-
-## 💻 5. Tech Stacks
-
-![tech-stack](./images/babble-tech-stack-1.png)
-![tech-stack](./images/babble-tech-stack-2.png)
