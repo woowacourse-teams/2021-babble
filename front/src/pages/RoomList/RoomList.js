@@ -285,9 +285,9 @@ const RoomList = ({ match }) => {
         return slicedRoomList[index]?.roomId === room.roomId;
       });
 
-      if (isSame) return;
+      if (isSame && selectedTagList.length === 0) return;
 
-      if (selectedTagList.length) {
+      if (!isSame && selectedTagList.length) {
         const roomWithTags = newRooms.filter((room) => room.tags);
 
         const answer = new Set();
