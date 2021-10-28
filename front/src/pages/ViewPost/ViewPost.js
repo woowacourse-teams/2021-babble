@@ -21,14 +21,14 @@ import PropTypes from 'prop-types';
 import ReactHtmlParser from 'react-html-parser';
 import axios from 'axios';
 import { useDefaultModal } from '../../contexts/DefaultModalProvider';
+import useTheme from '../../hooks/useTheme';
 
 const ViewPost = ({ match }) => {
+  const { darkTheme } = useTheme();
   const { postId } = match.params;
   const history = useHistory();
 
   const { openModal, closeModal } = useDefaultModal();
-
-  const [darkMode, setDarkMode] = useState(false);
   const [post, setPost] = useState({
     id: 0,
     title: '',
@@ -40,16 +40,6 @@ const ViewPost = ({ match }) => {
     createdDate: '',
     createdTime: '',
   });
-
-  useEffect(() => {
-    console.log(localStorage.getItem('theme'));
-    console.log(darkMode);
-    if (localStorage.getItem('theme') === 'dark-mode') {
-      setDarkMode(true);
-    } else {
-      setDarkMode(false);
-    }
-  }, [darkMode]);
 
   const getPost = async () => {
     try {
@@ -197,7 +187,7 @@ const ViewPost = ({ match }) => {
         </div>
         <Darass
           projectKey={process.env.REACT_APP_DARASS_KEY}
-          darkMode={darkMode}
+          darkMode={darkTheme}
           primaryColor='#FF005C'
           isShowSortOption={true}
           isAllowSocialLogin={false}

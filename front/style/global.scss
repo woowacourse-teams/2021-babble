@@ -142,13 +142,19 @@ p {
     background-color: transparent;
   }
 
-  .main-image-container .gradient {
-    background: linear-gradient(
-      to bottom,
-      #18181b 0%,
-      #18181b 70%,
-      #18181b 100%
-    );
+  .main-image-container {
+    z-index: 1;
+
+    .gradient {
+      background: linear-gradient(
+        to bottom,
+        rgba(24, 24, 27, 0) 0%,
+        rgba(24, 24, 27, 0.7) 70%,
+        rgba(24, 24, 27, 1) 100%
+      );
+
+      // z-index: 0;
+    }
   }
 
   .room-wrapper {
@@ -240,6 +246,10 @@ p {
     background: var(--foundation);
   }
 
+  .information .tag-list-container .tag-container {
+    border: 1px solid white;
+  }
+
   .speech-bubble-container {
     .speech-bubble {
       .text {
@@ -307,6 +317,9 @@ p {
     border-top: 1px solid rgb(63, 66, 71);
   }
 
+  .room-wrapper .room-container .information strong {
+    color: white;
+  }
   // .main-image-container {
   //   z-index: 1;
   // }
