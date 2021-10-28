@@ -47,7 +47,7 @@ const TableContent = ({
           <InfoWithIcon icon={<FaHotjar size='18px' />} color='red' />
         )}
 
-        <div>
+        <div className='table-content-wrapper'>
           <Body2>{title}</Body2>
 
           <span className='table-infos'>

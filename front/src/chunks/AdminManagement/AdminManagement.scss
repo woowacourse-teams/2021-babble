@@ -2,11 +2,32 @@
 @use '../../../style/mixins' as m;
 
 .admin-management-container {
-  @include m.top-left-indents;
-
   .name-list-container {
-    @include m.top-left-indents;
+    border: 0;
+    padding: 0;
 
-    width: calc(100% - #{f.indent(one-left-depth)});
+    .tag-container {
+      padding: 1.5rem;
+
+      .tag-content {
+        font-size: 1.5rem;
+      }
+    }
+  }
+}
+
+@include m.media(mobile, mobile-down) {
+  .admin-management-container {
+    .name-list-container {
+      margin-top: 1rem;
+
+      .tag-container {
+        padding: 1rem;
+
+        .tag-content {
+          font-size: 1.2rem;
+        }
+      }
+    }
   }
 }

@@ -68,7 +68,7 @@ const WritingBlock = ({ title, content, nickname, textLimit }) => {
           ['link', 'image'],
         ],
       },
-      placeholder: '내용을 입력하세요(8000자 이하).',
+      placeholder: '내용을 입력하세요(2600자 이하).',
       theme: 'snow',
     });
 
@@ -112,7 +112,7 @@ const WritingBlock = ({ title, content, nickname, textLimit }) => {
       <div className='writing-info'>
         <TextInput
           name='nickname'
-          defaultValue={user.nickname ?? nickname}
+          defaultValue={nickname ?? user.nickname}
           border={false}
           placeholder='닉네임'
           disabled={nickname ? true : false}

@@ -4,6 +4,7 @@ import { Body2, Headline2, Subtitle2 } from '../../core/Typography';
 import { Link, useHistory } from 'react-router-dom';
 import { MainImage, ModalError, SquareButton } from '../../components';
 import React, { useEffect, useState } from 'react';
+import { getSessionStorage, setSessionStorage } from '../../utils/storage';
 
 import { AiOutlineLike } from '@react-icons/all-files/ai/AiOutlineLike';
 import { BASE_URL } from '../../constants/api';
@@ -103,10 +104,16 @@ const ViewPost = ({ match }) => {
 
   // TODO: 만료 기한 1일 쿠키로 1일 1회 제한하기
   const thumbsUp = async () => {
-    const response = await axios.patch(
-      `${BASE_URL}/api${PATH.VIEW_POST}/${post.id}/like`
-    );
-    setPost(response.data);
+    const hasThumbsUp = getSessionStorage('hasThumbsUp');
+
+    if (!hasThumbsUp) {
+      const response = await axios.patch(
+        `${BASE_URL}/api${PATH.VIEW_POST}/${post.id}/like`
+      );
+
+      setSessionStorage('hasThumbsUp', true);
+      setPost(response.data);
+    }
   };
 
   useEffect(() => {
@@ -150,7 +157,7 @@ const ViewPost = ({ match }) => {
           </div>
           <div className='post-body'>
             <div className='content'>{ReactHtmlParser(post.content)}</div>
-            <div className='like-button'>
+            <div className='like-button-container'>
               <SquareButton
                 type='button'
                 size='small'

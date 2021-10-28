@@ -122,7 +122,7 @@ const WritePost = () => {
               title={postToEdit?.title}
               content={postToEdit?.content}
               nickname={postToEdit?.nickname}
-              textLimit={8000}
+              textLimit={2600}
             />
             <SquareButton type='submit' size='block' name='write'>
               <Body2>{postToEdit ? '수정하기' : '작성하기'}</Body2>
