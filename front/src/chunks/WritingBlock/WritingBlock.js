@@ -95,9 +95,11 @@ const WritingBlock = ({ title, content, nickname, textLimit }) => {
       }
 
       if (delta.ops?.[1]) {
+        if (delta.ops[1].insert?.image) return;
+
         if (delta.ops[1].insert) {
-          delta.ops[1].insert
-            .replace('&', '&amp;')
+          delta.ops?.[1]?.insert
+            ?.replace('&', '&amp;')
             .replace('<', '&lt;')
             .replace('>', '&gt;')
             .replace('"', '&quot;')
