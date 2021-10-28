@@ -1,5 +1,6 @@
 @use '../../../style/variables' as v;
 @use '../../../style/functions' as f;
+@use '../../../style/mixins' as m;
 
 .writing-block {
   width: 100%;
@@ -52,6 +53,50 @@
       .input-inner {
         font-size: f.font-size(sub-info);
         text-align: left;
+      }
+    }
+  }
+}
+
+@include m.media(tablet) {
+  .writing-block {
+    .editor-container {
+      .ql-toolbar {
+        height: 6.4rem;
+      }
+    }
+  }
+}
+
+@include m.media(mobile) {
+  .writing-block {
+    .editor-container {
+      height: 44rem;
+
+      .ql-toolbar {
+        height: 8.8rem;
+      }
+
+      .editor {
+        height: calc(100% - 8.8rem);
+        width: 100%;
+      }
+    }
+  }
+}
+
+@include m.media(mobile-down) {
+  .writing-block {
+    .editor-container {
+      height: 44rem;
+
+      .ql-toolbar {
+        height: 14rem;
+      }
+
+      .editor {
+        height: calc(100% - 14rem);
+        width: 100%;
       }
     }
   }

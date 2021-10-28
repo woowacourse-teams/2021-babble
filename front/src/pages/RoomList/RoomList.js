@@ -61,19 +61,6 @@ const RoomList = ({ match }) => {
     const response = await axios.get(`${BASE_URL}/api/rooms/${roomId}`);
     const { game, tags } = response.data;
 
-    try {
-      const response = await axios.post(`${BASE_URL}/api/users`, {
-        nickname: getRandomNickname(),
-      });
-      const generatedUser = response.data;
-
-      setSessionStorage('nickname', generatedUser.nickname);
-
-      changeUser({ id: generatedUser.id, nickname: generatedUser.nickname });
-    } catch (error) {
-      openModal(<ModalError>{error.response?.data?.message}</ModalError>);
-    }
-
     if (roomId) {
       if (match.url.includes(`/chat/${roomId}`)) {
         history.push(`/games/${gameId}`);

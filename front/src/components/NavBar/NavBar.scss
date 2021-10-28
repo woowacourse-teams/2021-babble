@@ -31,7 +31,7 @@
   }
 }
 
-@include m.media(mobile-down, mobile) {
+@include m.media(mobile) {
   .navigation-container {
     padding: 1rem 0;
 
@@ -41,6 +41,34 @@
       a {
         svg {
           width: 8rem;
+        }
+      }
+    }
+  }
+}
+
+@include m.media(mobile-down) {
+  .navigation-container {
+    padding: 0.6rem 0;
+
+    .page-layout {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      a:not(a:last-child) {
+        margin-right: 2rem;
+      }
+
+      .nav-menu {
+        a {
+          display: block;
+
+          .body1 {
+            width: 100%;
+            font-size: 1.4rem;
+            text-align: center;
+          }
         }
       }
     }
