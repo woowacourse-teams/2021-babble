@@ -1,3 +1,4 @@
+@use '../../../style/variables' as v;
 @use '../../../style/functions' as f;
 @use '../../../style/mixins' as m;
 
@@ -5,8 +6,8 @@
   width: 100%;
   padding: 1.8rem 1.2rem;
   max-height: 16rem;
-  border: 1px solid f.grey-scale(6);
   border-radius: f.border-radius(large-container);
+  border: 1px solid f.grey-scale(3);
   font-size: f.font-size(chat);
   display: flex;
   flex-wrap: wrap;
@@ -22,8 +23,10 @@
   }
 
   .tag-container {
-    border: 1px solid f.grey-scale(8);
-    border-radius: f.border-radius(speech-bubble);
+    border: 0;
+    background-color: #eff1f3;
+    border-radius: 8px;
+    text-shadow: 0px 1px 2px rgb(0 0 0 / 20%);
     height: 2.8rem;
     margin: 0.5rem 1rem;
 

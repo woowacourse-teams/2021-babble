@@ -33,7 +33,8 @@
 
 @include m.media(mobile-down, mobile) {
   .main-image-container {
-    height: 32rem;
+    position: absolute;
+    height: 20rem;
 
     .gradient {
       height: calc(100% + 2px);

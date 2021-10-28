@@ -32,7 +32,7 @@ const WritePost = () => {
   const submitPost = async (e) => {
     e.preventDefault();
 
-    const form = e.currentTarget.form;
+    const form = e.currentTarget;
     const title = form.title.value;
     const content = form.querySelector('.ql-editor').innerHTML;
     const nickname = form.nickname.value;
@@ -52,14 +52,14 @@ const WritePost = () => {
 
       history.push(`${PATH.BOARD}${PATH.VIEW_POST}/${postData.id}`);
     } catch (error) {
-      openModal(<ModalError>글 작성에 실패했습니다.</ModalError>);
+      openModal(<ModalError>{error.response?.data?.message}</ModalError>);
     }
   };
 
   const editPost = async (e) => {
     e.preventDefault();
 
-    const form = e.currentTarget.form;
+    const form = e.currentTarget;
     const title = form.title.value;
     const content = form.querySelector('.ql-editor').innerHTML;
     const password = form.password.value;
@@ -114,18 +114,17 @@ const WritePost = () => {
               />
             </div>
           </div>
-          <form className='writing-form'>
+          <form
+            className='writing-form'
+            onSubmit={postToEdit ? editPost : submitPost}
+          >
             <WritingBlock
               title={postToEdit?.title}
               content={postToEdit?.content}
               nickname={postToEdit?.nickname}
+              textLimit={2600}
             />
-            <SquareButton
-              type='submit'
-              size='block'
-              name='write'
-              onClickButton={postToEdit ? editPost : submitPost}
-            >
+            <SquareButton type='submit' size='block' name='write'>
               <Body2>{postToEdit ? '수정하기' : '작성하기'}</Body2>
             </SquareButton>
           </form>

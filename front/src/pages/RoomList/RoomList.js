@@ -61,19 +61,6 @@ const RoomList = ({ match }) => {
     const response = await axios.get(`${BASE_URL}/api/rooms/${roomId}`);
     const { game, tags } = response.data;
 
-    try {
-      const response = await axios.post(`${BASE_URL}/api/users`, {
-        nickname: getRandomNickname(),
-      });
-      const generatedUser = response.data;
-
-      setSessionStorage('nickname', generatedUser.nickname);
-
-      changeUser({ id: generatedUser.id, nickname: generatedUser.nickname });
-    } catch (error) {
-      openModal(<ModalError>{error.response?.data?.message}</ModalError>);
-    }
-
     if (roomId) {
       if (match.url.includes(`/chat/${roomId}`)) {
         history.push(`/games/${gameId}`);
@@ -235,7 +222,7 @@ const RoomList = ({ match }) => {
 
           return (
             alternativeNamesWithoutSpace.some((alternativeName) =>
-              alternativeName.name.match(searchRegex)
+              alternativeName.match(searchRegex)
             ) ||
             tag.alternativeNames.some((alternativeName) =>
               alternativeName.name.match(searchRegex)
@@ -243,7 +230,8 @@ const RoomList = ({ match }) => {
           );
         });
 
-    setAutoCompleteTagList([...searchResults, ...alternativeResults]);
+    const result = new Set([...searchResults, ...alternativeResults]);
+    setAutoCompleteTagList([...result]);
   };
 
   const getUserId = async () => {
@@ -289,17 +277,15 @@ const RoomList = ({ match }) => {
       });
 
       const newRooms = newResponse.data;
-      const newRoomsCopy = [...newRooms];
       const roomListCopy = [...roomList];
 
-      const sortedNewRooms = newRoomsCopy.sort((a, b) => b.roomId - a.roomId);
-      const sortedRoomList = roomListCopy
-        .slice(0, newRooms.length)
-        .sort((a, b) => b.roomId - a.roomId);
+      const slicedRoomList = roomListCopy.slice(0, newRooms.length);
 
-      const isSame = sortedNewRooms.every((room, index) => {
-        return sortedRoomList[index]?.roomId === room.roomId;
+      const isSame = newRooms.every((room, index) => {
+        return slicedRoomList[index]?.roomId === room.roomId;
       });
+
+      if (isSame) return;
 
       if (selectedTagList.length) {
         const roomWithTags = newRooms.filter((room) => room.tags);
