@@ -27,7 +27,6 @@ import { useChattingModal } from '../../contexts/ChattingModalProvider';
 import { useDefaultModal } from '../../contexts/DefaultModalProvider';
 import { useHistory } from 'react-router-dom';
 import useInterval from '../../hooks/useInterval';
-import useScript from '../../hooks/useScript';
 import useThrottle from '../../hooks/useThrottle';
 import useUpdateEffect from '../../hooks/useUpdateEffect';
 import { useUser } from '../../contexts/UserProvider';
@@ -51,13 +50,12 @@ const RoomList = ({ match }) => {
   const { openModal, onConfirm } = useDefaultModal();
   const { throttle } = useThrottle();
 
-  useScript('https://developers.kakao.com/sdk/js/kakao.js');
   const history = useHistory();
 
   const { gameId } = match.params;
+  const roomId = match.params?.roomId;
 
   const getRoomDataWhenEnterWithLink = async () => {
-    const { roomId } = match.params;
     const response = await axios.get(`${BASE_URL}/api/rooms/${roomId}`);
     const { game, tags } = response.data;
 
@@ -72,10 +70,10 @@ const RoomList = ({ match }) => {
   };
 
   useEffect(() => {
-    if (match.params.roomId) {
+    if (roomId) {
       getRoomDataWhenEnterWithLink();
     }
-  }, []);
+  }, [window?.Kakao]);
 
   const getGame = async () => {
     try {
