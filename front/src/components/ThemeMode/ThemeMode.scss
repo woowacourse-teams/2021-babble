@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+
+  .theme-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+
+    button {
+      width: 2rem;
+      height: 2rem;
+      background-repeat: no-repeat;
+      background-size: 100%;
+      position: absolute;
+      bottom: 0.3rem;
+      right: -1rem;
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+}

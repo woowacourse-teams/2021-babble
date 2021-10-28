@@ -12,7 +12,6 @@
 html,
 body,
 #root {
-  height: 100%;
   cursor: default;
   font-size: 62.5%;
   margin: 0;
@@ -33,6 +32,11 @@ body,
 input,
 img {
   user-select: none;
+}
+
+body,
+#root {
+  height: 100%;
 }
 
 a {
@@ -65,4 +69,245 @@ p {
   font-size: 100%;
   font: inherit;
   vertical-align: middle;
+  background: inherit;
+}
+
+:root {
+  // --foundation: #121212;
+  --foundation: #18181b;
+  --distinct: #fff;
+  --soft-black: #222;
+  --dawn-black: #333;
+  --light-grey: #c6c6c6;
+  --main: #ff005c;
+}
+
+[data-theme='dark-mode'] {
+  html,
+  body,
+  #root,
+  footer,
+  article,
+  button,
+  input {
+    background: var(--foundation);
+    color: var(--distinct);
+  }
+
+  span,
+  .game-card-container figcaption .body2 {
+    color: var(--distinct);
+  }
+
+  .logo-container svg path {
+    fill: var(--distinct);
+
+    &.speech-bubble {
+      fill: var(--main);
+    }
+  }
+
+  button.line {
+    background: var(--foundation);
+
+    p.body2 {
+      background: none;
+    }
+
+    &:hover {
+      background: rgba(255, 56, 82, 0.35);
+
+      span.caption1,
+      p.body2 {
+        background: none;
+      }
+    }
+  }
+
+  .game-list-container .search-container.stuck .search-section {
+    box-shadow: none;
+    border: 1px solid rgb(63, 66, 71);
+  }
+
+  .navigation-container {
+    border-bottom: 1px solid var(--foundation);
+  }
+
+  .game-list-container .search-container .search-section,
+  .room-list-container .search-container .search-section {
+    background: var(--foundation);
+  }
+
+  .view-post-container .post-wrapper .post-body .like-button .square-button {
+    background-color: transparent;
+  }
+
+  .main-image-container .gradient {
+    background: linear-gradient(
+      to bottom,
+      #18181b 0%,
+      #18181b 70%,
+      #18181b 100%
+    );
+  }
+
+  .room-wrapper {
+    .room-container {
+      background: var(--dawn-black);
+      border: 1px solid #5b5f66;
+
+      &.disabled {
+        background: #222;
+
+        .information {
+          filter: brightness(0.5);
+        }
+      }
+    }
+  }
+
+  .chatting-form .chat-area {
+    background-color: #2b2b2b;
+    color: var(--distinct);
+  }
+
+  .modal-container.default .linear-layout .default-container {
+    background: var(--foundation);
+    border: 1px solid rgb(63, 66, 71);
+  }
+
+  .nickname-section-container {
+    .edit svg {
+      color: rgb(204, 213, 221);
+
+      &:disabled {
+        color: rgb(63, 66, 71);
+      }
+    }
+
+    .caption1 {
+      color: #fff;
+    }
+  }
+
+  h1.headline1,
+  h2.headline2,
+  h3.subtitle1,
+  h4.subtitle2,
+  h5.subtitle3,
+  .body1,
+  .body2,
+  .caption1,
+  .caption2 {
+    color: white;
+    background: inherit;
+  }
+
+  .input-container .keyword-list-container .keyword-button {
+    &:hover {
+      color: var(--foundation);
+    }
+  }
+
+  .show {
+    &::-webkit-scrollbar-track {
+      background-color: rgb(63, 66, 71);
+      border: 0.3rem solid transparent;
+
+      border-radius: 0 0.4rem 0.4rem 0;
+      background-clip: border-box;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgb(156, 160, 165);
+      border: 0.3rem solid transparent;
+    }
+
+    &::-webkit-scrollbar-thumb:active {
+      background-color: rgb(245, 245, 246);
+    }
+
+    & {
+      border: 1px solid rgb(63, 66, 71);
+    }
+  }
+
+  .modal-chatting-room .tags.show {
+    border: 0;
+  }
+
+  .modal-chatting-room .tags .tag-list-container {
+    background: var(--foundation);
+  }
+
+  .speech-bubble-container {
+    .speech-bubble {
+      .text {
+        background: rgb(63, 66, 71);
+      }
+
+      .time {
+        color: rgb(204, 213, 221);
+      }
+
+      &.mine {
+        .text {
+          background: #ff005c;
+        }
+
+        .time {
+          color: rgb(204, 213, 221);
+        }
+      }
+
+      &.notice {
+        .text {
+          background: transparent;
+        }
+      }
+    }
+
+    &.notice-container {
+      background-color: #2b2b2b;
+
+      .text {
+        color: rgb(238, 238, 238);
+      }
+    }
+  }
+
+  .modal-container.chatting {
+    border: 1px solid rgb(63, 66, 71);
+  }
+
+  .modal-chatting-room .modal-header-container {
+    background: var(--foundation);
+    color: #fff;
+    border-bottom: 1px solid rgb(63, 66, 71);
+
+    .show-tags {
+      background: var(--foundation);
+      color: #fff;
+
+      border-left: 0.1rem solid rgb(63, 66, 71);
+      border-bottom: 0.1rem solid rgb(63, 66, 71);
+      border-right: 0.1rem solid rgb(63, 66, 71);
+    }
+  }
+
+  .modal-chatting-room .modal-body-container .modal-aside-container {
+    border-right: 1px solid rgb(63, 66, 71);
+  }
+
+  .participants-container .notice {
+    background: var(--foundation);
+  }
+
+  footer {
+    border-top: 1px solid rgb(63, 66, 71);
+  }
+
+  // .main-image-container {
+  //   z-index: 1;
+  // }
 }

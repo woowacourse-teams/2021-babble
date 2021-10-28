@@ -52,7 +52,7 @@
     border-radius: f.border-radius(modal);
     box-shadow: v.$box-shadow;
     z-index: f.z-index(layer-modal-chatting);
-
+    overflow: hidden;
     animation: scaleUp 200ms cubic-bezier(0.74, 0.12, 0.86, 0.21),
       blurUp 110ms ease-in;
 
@@ -110,12 +110,11 @@
       height: 93%;
       bottom: 0px;
       right: 0px;
-      background-color: #fff;
+      background: #fff;
       border: 0;
       border-radius: 0.8rem 0.8rem 0 0;
       box-shadow: 0 0.08rem 0.5rem rgb(0 0 0 / 53%);
       z-index: f.z-index(layer-modal-chatting);
-
       animation: downToUp 100ms cubic-bezier(0, 0.94, 0.45, 0.99);
     }
 
@@ -165,5 +164,20 @@
     .maximize {
       display: none;
     }
+  }
+}
+
+[data-theme='dark-mode'] {
+  .modal-container section,
+  .modal-container article {
+    background: var(--foundation);
+  }
+
+  .modal-container span {
+    background: inherit;
+  }
+
+  .modal-container.default .linear-layout {
+    background: transparent;
   }
 }
