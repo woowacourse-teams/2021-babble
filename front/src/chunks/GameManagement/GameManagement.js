@@ -301,13 +301,13 @@ const GameManagement = () => {
           erasable
         />
 
+        <Subtitle1>게임 {isEditing ? `수정` : '등록'}</Subtitle1>
         <form
           className='register-edit-game'
           onSubmit={onSubmitForm}
           onKeyDown={preventEnterSubmit}
         >
           <div className='register-edit-game-header'>
-            <Subtitle1>게임 {isEditing ? `수정` : '등록'}</Subtitle1>
             <SquareButton
               type='reset'
               size='small'
