@@ -104,14 +104,14 @@ const ViewPost = ({ match }) => {
 
   // TODO: 만료 기한 1일 쿠키로 1일 1회 제한하기
   const thumbsUp = async () => {
-    const hasThumbsUp = getSessionStorage('hasThumbsUp');
+    const hasThumbsUp = getSessionStorage(`has${post.id}ThumbsUp`);
 
     if (!hasThumbsUp) {
       const response = await axios.patch(
         `${BASE_URL}/api${PATH.VIEW_POST}/${post.id}/like`
       );
 
-      setSessionStorage('hasThumbsUp', true);
+      setSessionStorage(`has${post.id}ThumbsUp`, true);
       setPost(response.data);
     }
   };
