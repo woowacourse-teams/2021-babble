@@ -68,6 +68,20 @@ const WritingBlock = ({ title, content, nickname, textLimit }) => {
           ['link', 'image'],
         ],
       },
+      formats: [
+        'background',
+        'bold',
+        'color',
+        'font',
+        'italic',
+        'link',
+        'size',
+        'strike',
+        'underline',
+        'indent',
+        'align',
+        'image',
+      ],
       placeholder: '내용을 입력하세요(2600자 이하).',
       theme: 'snow',
     });
@@ -75,9 +89,27 @@ const WritingBlock = ({ title, content, nickname, textLimit }) => {
     const toolbar = editorRef.current.getModule('toolbar');
     toolbar.addHandler('image', clickImageButton);
 
-    editorRef.current.on('text-change', () => {
+    editorRef.current.on('text-change', (delta) => {
       if (editorRef.current.getLength() > textLimit) {
         editorRef.current.deleteText(textLimit, editorRef.current.getLength());
+      }
+
+      if (delta.ops?.[1]) {
+        if (delta.ops[1].insert) {
+          delta.ops[1].insert
+            .replace('&', '&amp;')
+            .replace('<', '&lt;')
+            .replace('>', '&gt;')
+            .replace('"', '&quot;')
+            .replace("'", '&#039;');
+        }
+      } else {
+        delta?.ops?.[0]?.insert
+          ?.replace('&', '&amp;')
+          .replace('<', '&lt;')
+          .replace('>', '&gt;')
+          .replace('"', '&quot;')
+          .replace("'", '&#039;');
       }
     });
   }, []);
