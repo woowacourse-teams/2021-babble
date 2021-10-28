@@ -15,6 +15,7 @@ import axios from 'axios';
 import { getRandomNickname } from '@woowa-babble/random-nickname';
 import loadable from '@loadable/component';
 import { useDefaultModal } from './contexts/DefaultModalProvider';
+import useScript from './hooks/useScript';
 import { useUser } from './contexts/UserProvider';
 
 const GameList = loadable(() => import('./pages/GameList/GameList'));
@@ -28,6 +29,8 @@ const BabbleManagement = loadable(() =>
 const App = () => {
   const { changeUser } = useUser();
   const { openModal } = useDefaultModal();
+
+  useScript('https://developers.kakao.com/sdk/js/kakao.js');
 
   const getUserId = async () => {
     const newUser = { id: -1, nickname: '' };

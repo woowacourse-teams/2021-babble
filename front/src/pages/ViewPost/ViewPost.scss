@@ -51,9 +51,15 @@
       padding: 2rem 1rem;
       font-size: f.font-size(medium);
 
-      p {
-        width: 100%;
-        word-break: break-all;
+      .content {
+        img {
+          width: 50rem;
+        }
+
+        p {
+          width: 100%;
+          word-break: break-all;
+        }
       }
 
       .like-button-container {
