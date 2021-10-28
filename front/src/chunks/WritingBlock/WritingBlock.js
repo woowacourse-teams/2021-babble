@@ -35,7 +35,7 @@ const WritingBlock = ({ title, content, nickname, textLimit }) => {
 
         const image = document.createElement('img');
         image.setAttribute('src', imageURL);
-        image.setAttribute('style', 'width: 50rem;');
+        // image.setAttribute('style', 'width: 50rem;');
 
         editorRef.current.root.appendChild(image);
         fileInputRef.current.value = null;
@@ -113,6 +113,13 @@ const WritingBlock = ({ title, content, nickname, textLimit }) => {
           .replace('"', '&quot;')
           .replace("'", '&#039;');
       }
+    });
+
+    editorRef.current.clipboard.addMatcher('img', (node, delta) => {
+      delta = {
+        ops: [{ insert: '에디터를 사용하여 이미지를 업로드해주세요.' }],
+      };
+      return delta;
     });
   }, []);
 
