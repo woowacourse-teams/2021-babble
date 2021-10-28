@@ -341,4 +341,41 @@ public class PostApiDocumentTest extends AcceptanceTest {
         return given()
             .when().get("/api/post/{id}", id);
     }
+
+
+    @DisplayName("게시글을 이모지를 포함해 추가하면 400 응답을 받는다.")
+    @Test
+    void createPostWithEmoji() {
+        PostResponse post = postResponses.get(0);
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("title", "\uD83D\uDE00");
+        body.put("content", "\uD83D\uDE00");
+        body.put("category", post.getCategory());
+        body.put("nickname", post.getNickname());
+        body.put("password", "123456");
+
+        PostResponse response = given().body(body)
+            .when().post("/api/post")
+            .then().statusCode(HttpStatus.BAD_REQUEST.value())
+            .extract().body().as(PostResponse.class);
+    }
+
+    @DisplayName("게시글을 이모지를 포함해 수정하면 400 응답을 받는다.")
+    @Test
+    void updatePostWithEmoji() {
+        PostResponse post = postResponses.get(2);
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("id", post.getId());
+        body.put("title", "\uD83D\uDE00");
+        body.put("content", "\uD83D\uDE00");
+        body.put("category", "건의");
+        body.put("password", "345678");
+
+        PostResponse response = given().body(body)
+            .when().put("/api/post")
+            .then().statusCode(HttpStatus.BAD_REQUEST.value())
+            .extract().body().as(PostResponse.class);
+    }
 }
