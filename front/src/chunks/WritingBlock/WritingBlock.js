@@ -35,7 +35,7 @@ const WritingBlock = ({ title, content, nickname, textLimit }) => {
 
         const image = document.createElement('img');
         image.setAttribute('src', imageURL);
-        image.setAttribute('style', 'width: 50rem;');
+        // image.setAttribute('style', 'width: 50rem;');
 
         editorRef.current.root.appendChild(image);
         fileInputRef.current.value = null;
@@ -68,6 +68,20 @@ const WritingBlock = ({ title, content, nickname, textLimit }) => {
           ['link', 'image'],
         ],
       },
+      formats: [
+        'background',
+        'bold',
+        'color',
+        'font',
+        'italic',
+        'link',
+        'size',
+        'strike',
+        'underline',
+        'indent',
+        'align',
+        'image',
+      ],
       placeholder: '내용을 입력하세요(2600자 이하).',
       theme: 'snow',
     });
@@ -75,10 +89,37 @@ const WritingBlock = ({ title, content, nickname, textLimit }) => {
     const toolbar = editorRef.current.getModule('toolbar');
     toolbar.addHandler('image', clickImageButton);
 
-    editorRef.current.on('text-change', () => {
+    editorRef.current.on('text-change', (delta) => {
       if (editorRef.current.getLength() > textLimit) {
         editorRef.current.deleteText(textLimit, editorRef.current.getLength());
       }
+
+      if (delta.ops?.[1]) {
+        if (delta.ops[1].insert?.image) return;
+
+        if (delta.ops[1].insert) {
+          delta.ops?.[1]?.insert
+            ?.replace('&', '&amp;')
+            .replace('<', '&lt;')
+            .replace('>', '&gt;')
+            .replace('"', '&quot;')
+            .replace("'", '&#039;');
+        }
+      } else {
+        delta?.ops?.[0]?.insert
+          ?.replace('&', '&amp;')
+          .replace('<', '&lt;')
+          .replace('>', '&gt;')
+          .replace('"', '&quot;')
+          .replace("'", '&#039;');
+      }
+    });
+
+    editorRef.current.clipboard.addMatcher('img', (node, delta) => {
+      delta = {
+        ops: [{ insert: '에디터를 사용하여 이미지를 업로드해주세요.' }],
+      };
+      return delta;
     });
   }, []);
 

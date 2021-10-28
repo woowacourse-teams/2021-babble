@@ -17,7 +17,7 @@ const ModalSubmit = ({
   const { closeModal } = useDefaultModal();
 
   return (
-    <form className='delete-container' onSubmit={onSubmit}>
+    <form className='submit-container' onSubmit={onSubmit}>
       <div onClick={closeModal} className='control-bar'>
         <IoCloseOutline size='24px' />
       </div>
