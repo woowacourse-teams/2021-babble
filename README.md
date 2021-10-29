@@ -1,8 +1,6 @@
 # 🌎 Babble
 
-<div align="center">
-  <img src="./front/public/readme/github_readme.png" />
-</div>
+[![github_readme](./front/public/readme/github_readme.png)](https://babble.gg)
 
 ## 🚀 1. Introduction
 
@@ -22,93 +20,18 @@
 
 ## 💚 2. About Us
 
-<table>
-  <tr>
-    <td align="center">
-      <a href="https://github.com/Junroot">
-        <img src="https://avatars.githubusercontent.com/u/4648244?v=4" width="100px;" alt=""/>
-        <br />
-        <sub>
-          <b>[Back-End]</b> <br />
-          <b>루트(김준근)</b>
-        </sub>
-      </a><br />
-      <a href="https://github.com/woowacourse-teams/2021-babble/commits?author=Junroot" title="Code">👨‍💻</a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/lns13301">
-        <img src="https://avatars.githubusercontent.com/u/49058669?v=4" width="100px;" alt=""/><br />
-        <sub>
-          <b>[Back-End]</b> <br />
-          <b>와일더(강규한)</b>
-        </sub>
-      </a><br />
-      <a href="https://github.com/woowacourse-teams/2021-babble/commits?author=lns13301" title="Code">👨‍💻</a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/unluckyjung">
-        <img src="https://avatars.githubusercontent.com/u/43930419?v=4" width="100px;" alt=""/><br />
-        <sub>
-          <b>[Back-End]</b> <br />
-          <b>포츈(정윤성)</b>
-        </sub>
-      </a><br />
-      <a href="https://github.com/woowacourse-teams/2021-babble/commits?author=unluckyjung" title="Code">👨‍💻</a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/Hyeon9mak">
-        <img src="https://avatars.githubusercontent.com/u/37354145?v=4" width="100px;" alt=""/><br />
-        <sub>
-          <b>[Back-End]</b> <br />
-          <b>현구막(최현구)</b>
-        </sub>
-      </a><br />
-      <a href="https://github.com/woowacourse-teams/2021-babble/commits?author=Hyeon9mak" title="Code">👨‍💻</a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/ddongule">
-        <img src="https://avatars.githubusercontent.com/u/26598561?v=4" width="100px;" alt=""/><br />
-        <sub>
-          <b>[Front-End]</b> <br />
-          <b>그루밍(강민경)</b>
-        </sub>
-      </a><br />
-      <a href="https://github.com/woowacourse-teams/2021-babble/commits?author=ddongule" title="Code">👩‍💻</a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/iborymagic">
-        <img src="https://avatars.githubusercontent.com/u/42052110?v=4" width="100px;" alt=""/><br />
-        <sub>
-          <b>[Front-End]</b> <br />
-          <b>피터(안현철)</b>
-        </sub>
-      </a><br />
-      <a href="https://github.com/woowacourse-teams/2021-babble/commits?author=iborymagic" title="Code">👨‍💻</a>
-    </td>
-  </tr>
-   <tr>
-    <td align="center">
-      <a href="https://junroot.github.io" title="Code">블로그</a>
-    </td>
-    <td align="center">
-      <a href="https://lns13301.github.io/github-blog" title="Code">블로그</a>
-    </td>
-    <td align="center">
-      <a href="https://unluckyjung.github.io" title="Code">블로그</a>
-    </td>
-    <td align="center">
-      <a href="https://hyeon9mak.github.io" title="Code">블로그</a>
-    </td>
-    <td align="center">
-      <a href="https://mingule.tistory.com" title="Code">블로그</a>
-    </td>
-    <td align="center">
-      <a href="https://iborymagic.tistory.com" title="Code">블로그</a>
-    </td>
-  </tr>
-</table>
+## 💚 About Us
+
+|                     <img src="https://avatars.githubusercontent.com/u/4648244?v=4" width=200px alt="_"/>                      |                    <img src="https://avatars.githubusercontent.com/u/49058669?s=400&v=4" width=200px alt="_"/>                    |                      <img src="https://avatars.githubusercontent.com/u/43930419?s=400&v=4" width=200px alt="_"/>                      |                     <img src="https://avatars.githubusercontent.com/u/37354145?s=400&v=4" width=200px alt="_">                      |                    <img src="https://avatars.githubusercontent.com/u/26598561?s=400&v=4" width=200px alt="_">                     |                     <img src="https://avatars.githubusercontent.com/u/42052110?s=400&v=4" width=200px alt="_">                      |
+| :---------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------: |
+|                                                           Back-End                                                            |                                                             Back-End                                                              |                                                               Back-End                                                                |                                                              Back-End                                                               |                                                             Front-End                                                             |                                                              Front-End                                                              |
+| [루트(김준근)](https://github.com/Junroot) <br> [👨‍💻](https://github.com/woowacourse-teams/2021-babble/commits?author=Junroot) | [와일더(강규한)](https://github.com/lns13301) <br> [👨‍💻](https://github.com/woowacourse-teams/2021-babble/commits?author=lns13301) | [포츈(정윤성)](https://github.com/unluckyjung) <br> [👨‍💻](https://github.com/woowacourse-teams/2021-babble/commits?author=unluckyjung) | [현구막(최현구)](https://github.com/Hyeon9mak) <br> [👨‍💻](https://github.com/woowacourse-teams/2021-babble/commits?author=Hyeon9mak) | [그루밍(강민경)](https://github.com/ddongule) <br> [👩‍💻](https://github.com/woowacourse-teams/2021-babble/commits?author=ddongule) | [피터(안현철)](https://github.com/iborymagic) <br> [👨‍💻](https://github.com/woowacourse-teams/2021-babble/commits?author=iborymagic) |
+|                                           [루트 블로그](https://junroot.github.io)                                            |                                      [와일더 블로그](https://lns13301.github.io/github-blog)                                      |                                             [포츈 블로그](https://unluckyjung.github.io)                                              |                                            [현구막 블로그](https://hyeon9mak.github.io)                                             |                                           [그루밍 블로그](https://mingule.tistory.com)                                            |                                            [피터 블로그](https://iborymagic.tistory.com)                                            |
 
 <div align="center">
+<h4>babble의 기술에 대해 더 알고싶다면?
+<a href='https://babble-dev.tistory.com/'>Babble 기술 블로그</a></h4>
+
 <h4>babble 팀에 대해 더 알고 싶다면?
 <a href='https://github.com/woowacourse-teams/2021-babble/wiki'>Babble WIKI</a></h4>
 </div>
