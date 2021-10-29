@@ -330,4 +330,8 @@ p {
     background: var(--foundation);
     border-left: 1px solid #3f4247;
   }
+
+  .ql-editor::placeholder {
+    color: white;
+  }
 }
