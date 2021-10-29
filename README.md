@@ -10,6 +10,16 @@
 
 > 함께 게임할 사람이 필요한 사용자들이 키워드를 통해 빠르게 팀을 찾고, 게임을 할 수 있습니다.
 
+<img src='./images/Desktop.gif' />
+<br />
+<br />
+
+<div align="center">
+<h4>세부 기능을 보고싶다면?
+<a href='./PREVIEW.md'>여기로!</a></h4>
+</div>
+<br />
+
 ## 💚 2. About Us
 
 <table>
@@ -76,86 +86,50 @@
       <a href="https://github.com/woowacourse-teams/2021-babble/commits?author=iborymagic" title="Code">👨‍💻</a>
     </td>
   </tr>
+   <tr>
+    <td align="center">
+      <a href="https://junroot.github.io" title="Code">블로그</a>
+    </td>
+    <td align="center">
+      <a href="https://lns13301.github.io/github-blog" title="Code">블로그</a>
+    </td>
+    <td align="center">
+      <a href="https://unluckyjung.github.io" title="Code">블로그</a>
+    </td>
+    <td align="center">
+      <a href="https://hyeon9mak.github.io" title="Code">블로그</a>
+    </td>
+    <td align="center">
+      <a href="https://mingule.tistory.com" title="Code">블로그</a>
+    </td>
+    <td align="center">
+      <a href="https://iborymagic.tistory.com" title="Code">블로그</a>
+    </td>
+  </tr>
 </table>
 
-## 🔫 3. Team Culture
-
-<details>
-<summary><b>🍚 Work Life Balance</b></summary>
-<div markdown="1">
-
-#### Babble에서 일하는 시간
-
-- 월: 13:00 - 18:00
-- 화~금: 10:00 - 18:00
-- 토~일: 자유(필요하면)
-- 점심시간: 12:00 - 13:30
-- 일간 감정회고 : 17:30 - 18:00
-- 필요하면 팀에 요청해서 야근 가능(주말 포함)
-
+<div align="center">
+<h4>babble 팀에 대해 더 알고 싶다면?
+<a href='https://github.com/woowacourse-teams/2021-babble/wiki'>Babble WIKI</a></h4>
 </div>
-</details>
 
-<details>
-<summary><b>🤔 Daily Scrum</b></summary>
-<div markdown="1">
-
-- 월요일 1시, 그외 오전 10시 부터 **최대** 30분간 데일리 스크럼 진행
-- 스크럼 내용은 전날 무엇을 했는지에 대한 공유
-- 전날 발생했던 이슈 및 일정의 수정이 필요할 경우 요청
-  (만약 긴 논의(10분이상)가 필요한 경우는 별도의 회의를 만들어 진행)
-- **스크럼 마스터**는 매일 돌아가면서 함
-  - 현구막 (07.02 금 기준 시작)
-  - 포츈
-  - 와일더
-  - 그루밍
-  - 피터
-  - 루트
-
-</div>
-</details>
-
-<details>
-<summary><b>❤️ Emotional Retrospective</b></summary>
-<div markdown="1">
-
-- 매일 오후 5시 30분에 감정 회고
-- 각자 오늘 하루동안 있었던 일에 대한 회고
-
-</div>
-</details>
-
-<details>
-<summary><b>📋 About Discussion</b></summary>
-<div markdown="1">
-
-- 회의 시작전에는 **회의 목표**를 명확하게 작성
-- **회의 진행자**는 회의를 개최한 사람이 됨 (정기 회의는 **스크럼 마스터**가 맡음)
-- 회의 중에 **다른 회의 주제**가 발생하면 별도의 회의를 계획하고 현재는 이야기 하지 않음
-- 최소한의 **강제성**을 두고, 그 속에서 **유연성**을 가지기
-- 각자 맡은 파트에 대해 기획 → 회의 때 발표 → 이의 제기 / 수용 → 적용
-- 회의는 **시간 제한** 무조건 필요(마라톤 회의 X, 최대 30분)
-- 최대한 미리미리 회의 내용에 대해 준비해오기
-- 아니면 아니라고 확실하게 말하기
-  - 대신 끝까지 다 듣고! 말 끊지 말기
-- 일정 시간동안 토론 하다가 (토론 하기 전에 정하기) 결론이 안나면 투표로 하기
-
-</div>
-</details>
-
-<details>
-<summary><b>⏱️ Don't be Late!</b></summary>
-<div markdown="1">
-
-- 10시 1분은 10시가 아니다!
-- 기본 지각비(10시 1분 - 10시 10분): 10,000원
-- 추가 10분 당: 1,000원
-
-</div>
-</details>
 <br />
 
-## 💊 4. Conventions
+## 💻 3. Infra Structure
+
+![production-infra](./images/babble_production_infra.png)
+![be-cicd](./images/babble_be_cicd.png)
+![fe-cicd](./images/babble_fe_cicd.png)
+
+<br />
+
+## 🍎 4. Tech Stacks
+
+![tech-stack](./images/babble_tech_stack.png)
+
+<br />
+
+## 💊 5. Conventions
 
 ### Commit Message Format
 
@@ -218,7 +192,4 @@
   - **hotfix/버그이름**
     ex) `hotfix/bugs`
 
-## 💻 5. Tech Stacks
-
-![tech-stack](./images/babble-tech-stack-1.png)
-![tech-stack](./images/babble-tech-stack-2.png)
+<br />

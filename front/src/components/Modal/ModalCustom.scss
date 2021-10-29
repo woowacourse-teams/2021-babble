@@ -25,7 +25,7 @@
   }
 }
 
-.delete-container {
+.submit-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -88,6 +88,25 @@
           display: flex;
 
           @include m.mobile-cancel-confirm;
+        }
+      }
+
+      .submit-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        .control-buttons {
+          display: flex;
+          width: 100%;
+          justify-content: center;
+
+          .round-button {
+            display: flex;
+            width: fit-content;
+            max-width: fit-content;
+            min-width: fit-content;
+          }
         }
       }
     }

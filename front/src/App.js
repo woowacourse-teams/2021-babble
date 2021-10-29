@@ -9,12 +9,14 @@ import { getSessionStorage, setSessionStorage } from './utils/storage';
 import { BASE_URL } from './constants/api';
 import Board from './pages/Board/Board';
 import PATH from './constants/path';
+import { ThemeChangeContextProvider } from './contexts/ThemeChangeProvider';
 import ViewPost from './pages/ViewPost/ViewPost';
 import WritePost from './pages/WritePost/WritePost';
 import axios from 'axios';
 import { getRandomNickname } from '@woowa-babble/random-nickname';
 import loadable from '@loadable/component';
 import { useDefaultModal } from './contexts/DefaultModalProvider';
+import useScript from './hooks/useScript';
 import { useUser } from './contexts/UserProvider';
 
 const GameList = loadable(() => import('./pages/GameList/GameList'));
@@ -28,6 +30,8 @@ const BabbleManagement = loadable(() =>
 const App = () => {
   const { changeUser } = useUser();
   const { openModal } = useDefaultModal();
+
+  useScript('https://developers.kakao.com/sdk/js/kakao.js');
 
   const getUserId = async () => {
     const newUser = { id: -1, nickname: '' };
@@ -58,40 +62,42 @@ const App = () => {
 
   return (
     <>
-      <NavBar />
-      <Main>
-        <Switch>
-          <Route path={PATH.HOME} component={GameList} exact />
-          <Route
-            path={`${PATH.ROOM_LIST}/:gameId${PATH.MAKE_ROOM}`}
-            component={MakeRoom}
-          />
-          <Route
-            path={`${PATH.ROOM_LIST}/:gameId`}
-            component={RoomList}
-            exact
-          />
-          <Route
-            path={`${PATH.ROOM_LIST}/:gameId/chat/:roomId`}
-            component={RoomList}
-            exact
-          />
-          <Route path={PATH.ADMIN} component={BabbleManagement} exact />
-          <Route path={PATH.BOARD} component={Board} exact />
-          <Route
-            path={`${PATH.BOARD}${PATH.WRITE_POST}`}
-            component={WritePost}
-            exact
-          />
-          <Route
-            path={`${PATH.BOARD}${PATH.VIEW_POST}/:postId`}
-            component={ViewPost}
-            exact
-          />
-          <Route component={NotFound} />
-        </Switch>
-      </Main>
-      <Footer />
+      <ThemeChangeContextProvider>
+        <NavBar />
+        <Main>
+          <Switch>
+            <Route path={PATH.HOME} component={GameList} exact />
+            <Route
+              path={`${PATH.ROOM_LIST}/:gameId${PATH.MAKE_ROOM}`}
+              component={MakeRoom}
+            />
+            <Route
+              path={`${PATH.ROOM_LIST}/:gameId`}
+              component={RoomList}
+              exact
+            />
+            <Route
+              path={`${PATH.ROOM_LIST}/:gameId/chat/:roomId`}
+              component={RoomList}
+              exact
+            />
+            <Route path={PATH.ADMIN} component={BabbleManagement} exact />
+            <Route path={PATH.BOARD} component={Board} exact />
+            <Route
+              path={`${PATH.BOARD}${PATH.WRITE_POST}`}
+              component={WritePost}
+              exact
+            />
+            <Route
+              path={`${PATH.BOARD}${PATH.VIEW_POST}/:postId`}
+              component={ViewPost}
+              exact
+            />
+            <Route component={NotFound} />
+          </Switch>
+        </Main>
+        <Footer />
+      </ThemeChangeContextProvider>
     </>
   );
 };

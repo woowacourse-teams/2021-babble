@@ -7,11 +7,13 @@ import gg.babble.babble.dto.response.PostBaseResponse;
 import gg.babble.babble.dto.response.PostResponse;
 import gg.babble.babble.dto.response.PostSearchResponse;
 import gg.babble.babble.dto.response.PostWithoutContentResponse;
+import gg.babble.babble.exception.BabbleIllegalArgumentException;
 import gg.babble.babble.service.PostService;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.util.List;
+import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,11 +41,15 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<PostResponse> post(@RequestBody final PostCreateRequest request) {
-        PostBaseResponse response = postService.create(request);
-        PostResponse postResponse = response.toPostResponse();
+        try {
+            PostBaseResponse response = postService.create(request);
+            PostResponse postResponse = response.toPostResponse();
 
-        return ResponseEntity.created(URI.create(String.format("api/post/%s", postResponse.getId())))
-            .body(postResponse);
+            return ResponseEntity.created(URI.create(String.format("api/post/%s", postResponse.getId())))
+                .body(postResponse);
+        } catch (InvalidDataAccessResourceUsageException e) {
+            throw new BabbleIllegalArgumentException("이모지는 넣을 수 없습니다.");
+        }
     }
 
     @GetMapping("/{postId}")
@@ -74,8 +80,12 @@ public class PostController {
 
     @PutMapping
     public ResponseEntity<PostResponse> update(@RequestBody final PostUpdateRequest request) {
-        PostBaseResponse response = postService.update(request);
-        return ResponseEntity.ok(response.toPostResponse());
+        try {
+            PostBaseResponse response = postService.update(request);
+            return ResponseEntity.ok(response.toPostResponse());
+        } catch (InvalidDataAccessResourceUsageException e) {
+            throw new BabbleIllegalArgumentException("이모지는 넣을 수 없습니다.");
+        }
     }
 
     @PatchMapping("/{postId}/like")
