@@ -7,25 +7,33 @@ import { Route, Switch } from 'react-router-dom';
 import { getSessionStorage, setSessionStorage } from './utils/storage';
 
 import { BASE_URL } from './constants/api';
+import BabbleManagement from './pages/BabbleManagement/BabbleManagement';
 import Board from './pages/Board/Board';
+import GameList from './pages/GameList/GameList';
+import MakeRoom from './pages/MakeRoom/MakeRoom';
+import NotFound from './components/NotFound/NotFound';
 import PATH from './constants/path';
-import { ThemeChangeContextProvider } from './contexts/ThemeChangeProvider';
+import RoomList from './pages/RoomList/RoomList';
 import ViewPost from './pages/ViewPost/ViewPost';
 import WritePost from './pages/WritePost/WritePost';
 import axios from 'axios';
 import { getRandomNickname } from '@woowa-babble/random-nickname';
-import loadable from '@loadable/component';
 import { useDefaultModal } from './contexts/DefaultModalProvider';
 import useScript from './hooks/useScript';
 import { useUser } from './contexts/UserProvider';
 
-const GameList = loadable(() => import('./pages/GameList/GameList'));
-const NotFound = loadable(() => import('./components/NotFound/NotFound'));
-const MakeRoom = loadable(() => import('./pages/MakeRoom/MakeRoom'));
-const RoomList = loadable(() => import('./pages/RoomList/RoomList'));
-const BabbleManagement = loadable(() =>
-  import('./pages/BabbleManagement/BabbleManagement')
-);
+// import loadable from '@loadable/component';
+
+// const GameList = loadable(() => import('./pages/GameList/GameList'));
+// const NotFound = loadable(() => import('./components/NotFound/NotFound'));
+// const MakeRoom = loadable(() => import('./pages/MakeRoom/MakeRoom'));
+// const RoomList = loadable(() => import('./pages/RoomList/RoomList'));
+// const Board = loadable(() => import('./pages/Board/Board'));
+// const ViewPost = loadable(() => import('./pages/ViewPost/ViewPost'));
+// const WritePost = loadable(() => import('./pages/WritePost/WritePost'));
+// const BabbleManagement = loadable(() =>
+//   import('./pages/BabbleManagement/BabbleManagement')
+// );
 
 const App = () => {
   const { changeUser } = useUser();
@@ -62,42 +70,40 @@ const App = () => {
 
   return (
     <>
-      <ThemeChangeContextProvider>
-        <NavBar />
-        <Main>
-          <Switch>
-            <Route path={PATH.HOME} component={GameList} exact />
-            <Route
-              path={`${PATH.ROOM_LIST}/:gameId${PATH.MAKE_ROOM}`}
-              component={MakeRoom}
-            />
-            <Route
-              path={`${PATH.ROOM_LIST}/:gameId`}
-              component={RoomList}
-              exact
-            />
-            <Route
-              path={`${PATH.ROOM_LIST}/:gameId/chat/:roomId`}
-              component={RoomList}
-              exact
-            />
-            <Route path={PATH.ADMIN} component={BabbleManagement} exact />
-            <Route path={PATH.BOARD} component={Board} exact />
-            <Route
-              path={`${PATH.BOARD}${PATH.WRITE_POST}`}
-              component={WritePost}
-              exact
-            />
-            <Route
-              path={`${PATH.BOARD}${PATH.VIEW_POST}/:postId`}
-              component={ViewPost}
-              exact
-            />
-            <Route component={NotFound} />
-          </Switch>
-        </Main>
-        <Footer />
-      </ThemeChangeContextProvider>
+      <NavBar />
+      <Main>
+        <Switch>
+          <Route path={PATH.HOME} component={GameList} exact />
+          <Route
+            path={`${PATH.ROOM_LIST}/:gameId${PATH.MAKE_ROOM}`}
+            component={MakeRoom}
+          />
+          <Route
+            path={`${PATH.ROOM_LIST}/:gameId`}
+            component={RoomList}
+            exact
+          />
+          <Route
+            path={`${PATH.ROOM_LIST}/:gameId/chat/:roomId`}
+            component={RoomList}
+            exact
+          />
+          <Route path={PATH.ADMIN} component={BabbleManagement} exact />
+          <Route path={PATH.BOARD} component={Board} exact />
+          <Route
+            path={`${PATH.BOARD}${PATH.WRITE_POST}`}
+            component={WritePost}
+            exact
+          />
+          <Route
+            path={`${PATH.BOARD}${PATH.VIEW_POST}/:postId`}
+            component={ViewPost}
+            exact
+          />
+          <Route component={NotFound} />
+        </Switch>
+      </Main>
+      <Footer />
     </>
   );
 };

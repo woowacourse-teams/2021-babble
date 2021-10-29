@@ -320,7 +320,18 @@ p {
   .room-wrapper .room-container .information strong {
     color: white;
   }
-  // .main-image-container {
-  //   z-index: 1;
-  // }
+
+  .modal-chatting-room .modal-body-container .show-participants {
+    background: var(--foundation);
+    border: 1px solid rgb(63, 66, 71);
+  }
+
+  .modal-chatting-room .modal-body-container .modal-aside-container.show {
+    background: var(--foundation);
+    border-left: 1px solid #3f4247;
+  }
+
+  .ql-editor::placeholder {
+    color: white;
+  }
 }
