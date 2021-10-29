@@ -7,10 +7,7 @@ import { Route, Switch } from 'react-router-dom';
 import { getSessionStorage, setSessionStorage } from './utils/storage';
 
 import { BASE_URL } from './constants/api';
-import Board from './pages/Board/Board';
 import PATH from './constants/path';
-import ViewPost from './pages/ViewPost/ViewPost';
-import WritePost from './pages/WritePost/WritePost';
 import axios from 'axios';
 import { getRandomNickname } from '@woowa-babble/random-nickname';
 import loadable from '@loadable/component';
@@ -22,6 +19,9 @@ const GameList = loadable(() => import('./pages/GameList/GameList'));
 const NotFound = loadable(() => import('./components/NotFound/NotFound'));
 const MakeRoom = loadable(() => import('./pages/MakeRoom/MakeRoom'));
 const RoomList = loadable(() => import('./pages/RoomList/RoomList'));
+const Board = loadable(() => import('./pages/Board/Board'));
+const ViewPost = loadable(() => import('./pages/ViewPost/ViewPost'));
+const WritePost = loadable(() => import('./pages/WritePost/WritePost'));
 const BabbleManagement = loadable(() =>
   import('./pages/BabbleManagement/BabbleManagement')
 );
