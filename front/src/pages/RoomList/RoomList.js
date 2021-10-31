@@ -280,63 +280,79 @@ const RoomList = ({ match }) => {
       const slicedRoomList = roomListCopy.slice(0, newRooms.length);
 
       const isSame = newRooms.every((room, index) => {
-        return slicedRoomList[index]?.roomId === room.roomId;
+        return JSON.stringify(slicedRoomList[index]) === JSON.stringify(room);
       });
 
-      if (isSame && selectedTagList.length === 0) return;
+      if (!isSame) {
+        if (selectedTagList.length) {
+          const roomWithTags = newRooms.filter((room) => room.tags);
 
-      if (!isSame && selectedTagList.length) {
-        const roomWithTags = newRooms.filter((room) => room.tags);
-
-        const answer = new Set();
-        roomWithTags.forEach((room) => {
-          room.tags.forEach((tag) => {
-            selectedTagList.forEach((selectedTag) => {
-              if (selectedTag.id === tag.id) {
-                answer.add(room);
-              }
-            });
-          });
-        });
-
-        setRoomList([...answer]);
-      } else if (!isSame) {
-        setRoomList((prevRooms) => {
-          const copiedPrevRooms = [...prevRooms];
-
-          const updatedRooms = newRooms.filter((prevRoom) => {
-            return !roomList.find((room) => {
-              if (prevRoom.roomId === room.roomId) {
-                return prevRoom;
-              }
+          const answer = new Set();
+          roomWithTags.forEach((room) => {
+            room.tags.forEach((tag) => {
+              selectedTagList.forEach((selectedTag) => {
+                if (selectedTag.id === tag.id) {
+                  answer.add(room);
+                }
+              });
             });
           });
 
-          const deletedRooms = roomList.filter((prevRoom) => {
-            return !newRooms.find((room) => {
-              if (prevRoom.roomId === room.roomId) {
-                return prevRoom;
-              }
-            });
-          });
-
-          const deletedElementIndex = deletedRooms.map((element) =>
-            roomList.indexOf(element)
-          );
-
-          deletedElementIndex.forEach((index) => {
-            copiedPrevRooms.splice(index, 1);
-          });
-
-          copiedPrevRooms.unshift(...updatedRooms);
-
-          return [...copiedPrevRooms.sort((a, b) => b.roomId - a.roomId)].slice(
-            0,
-            16
-          );
-        });
+          setRoomList([...answer]);
+        } else {
+          setRoomList(newRooms);
+        }
       } else {
-        setRoomList(newRooms);
+        if (selectedTagList.length) {
+          const roomWithTags = slicedRoomList.filter((room) => room.tags);
+
+          const answer = new Set();
+          roomWithTags.forEach((room) => {
+            room.tags.forEach((tag) => {
+              selectedTagList.forEach((selectedTag) => {
+                if (selectedTag.id === tag.id) {
+                  answer.add(room);
+                }
+              });
+            });
+          });
+
+          setRoomList([...answer]);
+        } else {
+          setRoomList((prevRooms) => {
+            const copiedPrevRooms = [...prevRooms];
+
+            const updatedRooms = newRooms.filter((prevRoom) => {
+              return !roomList.find((room) => {
+                if (prevRoom.roomId === room.roomId) {
+                  return prevRoom;
+                }
+              });
+            });
+
+            const deletedRooms = roomList.filter((prevRoom) => {
+              return !newRooms.find((room) => {
+                if (prevRoom.roomId === room.roomId) {
+                  return prevRoom;
+                }
+              });
+            });
+
+            const deletedElementIndex = deletedRooms.map((element) =>
+              roomList.indexOf(element)
+            );
+
+            deletedElementIndex.forEach((index) => {
+              copiedPrevRooms.splice(index, 1);
+            });
+
+            copiedPrevRooms.unshift(...updatedRooms);
+
+            return [
+              ...copiedPrevRooms.sort((a, b) => b.roomId - a.roomId),
+            ].slice(0, 16);
+          });
+        }
       }
     } catch (error) {
       <ModalError>{error.response?.data?.message}</ModalError>;

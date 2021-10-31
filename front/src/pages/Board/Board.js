@@ -37,13 +37,13 @@ const Board = () => {
       };
     });
 
-    return parsedPostList.sort((postA, postB) => {
+    const sorted = parsedPostList.sort((postA, postB) => {
       const isPostAHot = postA.like >= LEAST_LIKE_TO_HOT_POST;
       const isPostBHot = postB.like >= LEAST_LIKE_TO_HOT_POST;
 
       if (postA.notice === postB.notice) {
-        if (isPostAHot && isPostBHot) {
-          return postB.createdAt - postA.createdAt;
+        if (isPostAHot === isPostBHot) {
+          return postB.id - postA.id;
         } else {
           return isPostBHot - isPostAHot;
         }
@@ -51,6 +51,8 @@ const Board = () => {
         return postB.notice - postA.notice;
       }
     });
+
+    return sorted;
   };
 
   const getPosts = async () => {
@@ -100,7 +102,7 @@ const Board = () => {
       <PageLayout>
         <div className='board-header'>
           <Link to={PATH.BOARD}>
-            <Headline2>익명 게시판</Headline2>
+            <Headline2>익명 게시판(Beta ver.)</Headline2>
           </Link>
           <Link to={`${PATH.BOARD}${PATH.WRITE_POST}`}>
             <SquareButton>

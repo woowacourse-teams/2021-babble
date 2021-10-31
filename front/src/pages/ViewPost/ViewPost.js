@@ -21,13 +21,14 @@ import PropTypes from 'prop-types';
 import ReactHtmlParser from 'react-html-parser';
 import axios from 'axios';
 import { useDefaultModal } from '../../contexts/DefaultModalProvider';
+import useTheme from '../../hooks/useTheme';
 
 const ViewPost = ({ match }) => {
+  const { darkTheme } = useTheme();
   const { postId } = match.params;
   const history = useHistory();
 
   const { openModal, closeModal } = useDefaultModal();
-
   const [post, setPost] = useState({
     id: 0,
     title: '',
@@ -104,14 +105,14 @@ const ViewPost = ({ match }) => {
 
   // TODO: 만료 기한 1일 쿠키로 1일 1회 제한하기
   const thumbsUp = async () => {
-    const hasThumbsUp = getSessionStorage('hasThumbsUp');
+    const hasThumbsUp = getSessionStorage(`has${post.id}ThumbsUp`);
 
     if (!hasThumbsUp) {
       const response = await axios.patch(
         `${BASE_URL}/api${PATH.VIEW_POST}/${post.id}/like`
       );
 
-      setSessionStorage('hasThumbsUp', true);
+      setSessionStorage(`has${post.id}ThumbsUp`, true);
       setPost(response.data);
     }
   };
@@ -186,7 +187,7 @@ const ViewPost = ({ match }) => {
         </div>
         <Darass
           projectKey={process.env.REACT_APP_DARASS_KEY}
-          darkMode={false}
+          darkMode={darkTheme}
           primaryColor='#FF005C'
           isShowSortOption={true}
           isAllowSocialLogin={false}

@@ -7,12 +7,14 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: 3rem;
+    z-index: 2;
   }
 
   .post-wrapper {
     border-radius: f.border-radius(large-container);
     border: 1px solid f.grey-scale(4);
     padding: 2rem;
+    z-index: 2;
 
     .post-header {
       padding: 0 1rem 1rem 1rem;

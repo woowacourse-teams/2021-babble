@@ -5,7 +5,7 @@ const PATH = {
   BOARD: '/board',
   VIEW_POST: '/post',
   WRITE_POST: '/write',
-  ADMIN: '/GosutalkspaceAdministratorSexyAirManageBackdoor',
+  ADMIN: '/admin',
 };
 
 export default PATH;

@@ -5,6 +5,7 @@
   .board-header {
     display: flex;
     justify-content: space-between;
+    z-index: 2;
   }
 
   .board-search {
@@ -42,6 +43,7 @@
 @include m.media(mobile) {
   .board-container {
     .board-header {
+      z-index: 2;
       flex-direction: column;
       margin-bottom: 1rem;
       margin-top: 12rem;

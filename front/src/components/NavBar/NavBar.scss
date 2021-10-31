@@ -27,6 +27,7 @@
     .nav-menu {
       display: flex;
       color: f.grey-scale(black);
+      position: relative;
     }
   }
 }
@@ -36,7 +37,7 @@
     padding: 1rem 0;
 
     .page-layout {
-      align-items: center;
+      align-items: flex-end;
 
       a {
         svg {

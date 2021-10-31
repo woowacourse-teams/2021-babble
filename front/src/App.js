@@ -7,24 +7,33 @@ import { Route, Switch } from 'react-router-dom';
 import { getSessionStorage, setSessionStorage } from './utils/storage';
 
 import { BASE_URL } from './constants/api';
+import BabbleManagement from './pages/BabbleManagement/BabbleManagement';
 import Board from './pages/Board/Board';
+import GameList from './pages/GameList/GameList';
+import MakeRoom from './pages/MakeRoom/MakeRoom';
+import NotFound from './components/NotFound/NotFound';
 import PATH from './constants/path';
+import RoomList from './pages/RoomList/RoomList';
 import ViewPost from './pages/ViewPost/ViewPost';
 import WritePost from './pages/WritePost/WritePost';
 import axios from 'axios';
 import { getRandomNickname } from '@woowa-babble/random-nickname';
-import loadable from '@loadable/component';
 import { useDefaultModal } from './contexts/DefaultModalProvider';
 import useScript from './hooks/useScript';
 import { useUser } from './contexts/UserProvider';
 
-const GameList = loadable(() => import('./pages/GameList/GameList'));
-const NotFound = loadable(() => import('./components/NotFound/NotFound'));
-const MakeRoom = loadable(() => import('./pages/MakeRoom/MakeRoom'));
-const RoomList = loadable(() => import('./pages/RoomList/RoomList'));
-const BabbleManagement = loadable(() =>
-  import('./pages/BabbleManagement/BabbleManagement')
-);
+// import loadable from '@loadable/component';
+
+// const GameList = loadable(() => import('./pages/GameList/GameList'));
+// const NotFound = loadable(() => import('./components/NotFound/NotFound'));
+// const MakeRoom = loadable(() => import('./pages/MakeRoom/MakeRoom'));
+// const RoomList = loadable(() => import('./pages/RoomList/RoomList'));
+// const Board = loadable(() => import('./pages/Board/Board'));
+// const ViewPost = loadable(() => import('./pages/ViewPost/ViewPost'));
+// const WritePost = loadable(() => import('./pages/WritePost/WritePost'));
+// const BabbleManagement = loadable(() =>
+//   import('./pages/BabbleManagement/BabbleManagement')
+// );
 
 const App = () => {
   const { changeUser } = useUser();

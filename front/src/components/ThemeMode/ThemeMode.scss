@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+
+  .theme-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+
+    button {
+      background-repeat: no-repeat;
+      background-size: 100%;
+      position: absolute;
+      right: 0rem;
+
+      img {
+        width: 2rem;
+        height: 2rem;
+      }
+    }
+  }
+}
