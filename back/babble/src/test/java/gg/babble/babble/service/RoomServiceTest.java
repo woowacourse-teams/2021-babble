@@ -20,11 +20,13 @@ import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.annotation.Rollback;
 
 class RoomServiceTest extends ApplicationTest {
 
@@ -34,6 +36,9 @@ class RoomServiceTest extends ApplicationTest {
 
     @Autowired
     private SessionRepository sessionRepository;
+
+    @Autowired
+    private EntityManager entityManager;
 
     @DisplayName("방을 생성한다")
     @Test
@@ -109,10 +114,15 @@ class RoomServiceTest extends ApplicationTest {
         방_20개_생성(game, Arrays.asList(tag1, tag2));
 
         Pageable pageable = PageRequest.of(0, COUNT_OF_PAGE);
+        entityManager.flush();
+        entityManager.clear();
 
         // when
+        System.out.println("===================");
         List<FoundRoomResponse> roomResponses = roomService.findGamesByGameIdAndTagIds(game.getId(), new ArrayList<>(), pageable);
 
+        roomResponses.forEach(a -> System.out.println(a.getGame().getName()));
+        System.out.println("===================");
         // then
         assertThat(roomResponses).hasSize(16);
     }

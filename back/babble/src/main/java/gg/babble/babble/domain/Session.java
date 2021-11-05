@@ -36,11 +36,11 @@ public class Session {
     @NotNull(message = "세션 Id는 Null 일 수 없습니다.")
     private String sessionId;
     @NotNull(message = "유저는 Null 일 수 없습니다.")
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
     @NotNull(message = "방은 Null 일 수 없습니다.")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "room_id")
     private Room room;
     @CreatedDate

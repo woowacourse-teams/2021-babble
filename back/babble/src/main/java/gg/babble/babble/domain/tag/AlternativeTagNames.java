@@ -8,13 +8,14 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
 @Embeddable
 public class AlternativeTagNames {
 
-    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @NotNull(message = "대안 이름들은 Null 일 수 없습니다.")
     private final List<AlternativeTagName> elements;
 
