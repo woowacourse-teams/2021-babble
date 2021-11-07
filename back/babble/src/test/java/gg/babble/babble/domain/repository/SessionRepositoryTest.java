@@ -45,10 +45,10 @@ class SessionRepositoryTest {
         Session session = 세션_객체를_생성한다();
 
         // when
-        Long id = sessionRepository.save(session).getId();
+        String id = sessionRepository.save(session).getSessionId();
         entityManager.flush();
         entityManager.clear();
-        Session saved = sessionRepository.findById(id).orElseThrow(BabbleNotFoundException::new);
+        Session saved = sessionRepository.findBySessionId(id).orElseThrow(BabbleNotFoundException::new);
 
         // then
         assertThat(saved.getId()).isNotNull();

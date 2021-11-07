@@ -26,7 +26,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.test.annotation.Rollback;
 
 class RoomServiceTest extends ApplicationTest {
 
@@ -118,11 +117,8 @@ class RoomServiceTest extends ApplicationTest {
         entityManager.clear();
 
         // when
-        System.out.println("===================");
         List<FoundRoomResponse> roomResponses = roomService.findGamesByGameIdAndTagIds(game.getId(), new ArrayList<>(), pageable);
 
-        roomResponses.forEach(a -> System.out.println(a.getGame().getName()));
-        System.out.println("===================");
         // then
         assertThat(roomResponses).hasSize(16);
     }
