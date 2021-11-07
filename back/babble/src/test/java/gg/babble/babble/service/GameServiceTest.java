@@ -20,6 +20,7 @@ import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,6 +36,9 @@ class GameServiceTest extends ApplicationTest {
     private Game game1;
     private Game game2;
     private Game game3;
+
+    @Autowired
+    private EntityManager entityManager;
 
     @Autowired
     private GameService gameService;
@@ -79,6 +83,9 @@ class GameServiceTest extends ApplicationTest {
             new GameImageResponse(game2.getId(), game2.getImages()),
             new GameImageResponse(game3.getId(), game3.getImages())
         );
+
+        entityManager.flush();
+        entityManager.clear();
 
         // then
         assertThat(gameService.findAllGameImages()).usingRecursiveComparison()
