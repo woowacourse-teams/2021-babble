@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import lombok.NoArgsConstructor;
 
@@ -13,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class TagRegistrationsOfRoom {
 
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TagRegistration> tagRegistrations;
 
     public TagRegistrationsOfRoom(final Room room, final List<Tag> tags) {
