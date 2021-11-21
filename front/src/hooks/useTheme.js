@@ -1,34 +1,17 @@
-import { useContext, useEffect } from 'react';
+import { getLocalStorage, setLocalStorage } from '../utils/storage';
 
 import { ThemeChangeContext } from '../contexts/ThemeChangeProvider';
+import { useContext } from 'react';
 
 const useTheme = () => {
   const { darkTheme, setDarkTheme } = useContext(ThemeChangeContext);
 
   const toggleDarkTheme = () => {
-    if (document.body.dataset.theme === 'dark-mode') {
-      localStorage.removeItem('theme');
-      document.body.removeAttribute('data-theme');
-      setDarkTheme(false);
-      return;
-    }
-
-    localStorage.setItem('theme', 'dark-mode');
-    document.body.setAttribute('data-theme', 'dark-mode');
-    setDarkTheme(true);
-    return;
+    const isDarkMode = getLocalStorage('darkMode');
+    setLocalStorage('darkMode', !isDarkMode);
+    document.body.classList.toggle('dark-mode');
+    setDarkTheme((wasDarkMode) => !wasDarkMode);
   };
-
-  useEffect(() => {
-    const getDarkModeFromLocalStorage = () => {
-      if (localStorage.getItem('theme') === 'dark-mode') {
-        document.body.setAttribute('data-theme', 'dark-mode');
-        setDarkTheme(true);
-      }
-    };
-
-    getDarkModeFromLocalStorage();
-  }, [setDarkTheme]);
 
   return { darkTheme, toggleDarkTheme };
 };
