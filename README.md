@@ -107,6 +107,12 @@
   - 반드시 develop 로부터 시작되고, develop 브랜치에 머지함
   - **feature/기능이름**
     ex) `feature/new-feature`
+    
+#### `realease`
+
+- 최종 배포전, QA를 진행하는 브랜치
+- 아직 배포되지 않은 공용 브랜치
+- develop 브랜치로부터 merge를 받는다.
 
 #### `hotfix`
 
