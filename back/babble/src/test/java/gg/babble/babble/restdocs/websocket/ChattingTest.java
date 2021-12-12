@@ -16,9 +16,6 @@ import gg.babble.babble.dto.response.SessionsResponse;
 import gg.babble.babble.dto.response.TagResponse;
 import gg.babble.babble.dto.response.UserResponse;
 import gg.babble.babble.restdocs.AcceptanceTest;
-import io.restassured.RestAssured;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,7 +28,6 @@ import java.util.concurrent.TimeoutException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompFrameHandler;
 import org.springframework.messaging.simp.stomp.StompHeaders;
@@ -77,19 +73,6 @@ public class ChattingTest extends AcceptanceTest {
         guest3 = 유저가_생성_됨("현구막");
 
         room = 방이_생성_됨(game.getId(), Collections.singletonList(tag.getId()), 4);
-    }
-
-    @DisplayName("웹 소켓 연결시도에 성공하면, 200 OK 상태코드를 받는다.")
-    @Test
-    void webSocketConnectTest() {
-        ExtractableResponse<Response> response = RestAssured.given().log().all()
-            .when()
-            .get("/connection")
-            .then().log().all()
-            .extract();
-
-        // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
     @DisplayName("1번방에 입장하면, 자신을 포함한 1번방의 유저 정보들을 돌려받는다.")

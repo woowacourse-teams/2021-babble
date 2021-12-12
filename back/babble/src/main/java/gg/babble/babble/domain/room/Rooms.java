@@ -3,12 +3,13 @@ package gg.babble.babble.domain.room;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
 @Embeddable
 public class Rooms {
 
-    @OneToMany(mappedBy = "game")
+    @OneToMany(mappedBy = "game", fetch = FetchType.LAZY)
     private final List<Room> rooms;
 
     public Rooms() {

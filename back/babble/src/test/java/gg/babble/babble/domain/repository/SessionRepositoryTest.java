@@ -8,8 +8,10 @@ import gg.babble.babble.domain.room.MaxHeadCount;
 import gg.babble.babble.domain.room.Room;
 import gg.babble.babble.domain.tag.Tag;
 import gg.babble.babble.domain.user.User;
+import gg.babble.babble.exception.BabbleNotFoundException;
 import java.util.Collections;
 import java.util.List;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,9 @@ class SessionRepositoryTest {
     @Autowired
     private SessionRepository sessionRepository;
 
+    @Autowired
+    private EntityManager entityManager;
+
     @DisplayName("세션 생성을 수행한다.")
     @Test
     void saveSession() {
@@ -40,13 +45,16 @@ class SessionRepositoryTest {
         Session session = 세션_객체를_생성한다();
 
         // when
-        Session savedSession = sessionRepository.save(session);
+        String id = sessionRepository.save(session).getSessionId();
+        entityManager.flush();
+        entityManager.clear();
+        Session saved = sessionRepository.findBySessionId(id).orElseThrow(BabbleNotFoundException::new);
 
         // then
-        assertThat(savedSession.getId()).isNotNull();
-        assertThat(savedSession.getSessionId()).isEqualTo(session.getSessionId());
-        assertThat(savedSession.getRoom()).isEqualTo(session.getRoom());
-        assertThat(savedSession.getUser()).isEqualTo(session.getUser());
+        assertThat(saved.getId()).isNotNull();
+        assertThat(saved.getSessionId()).isEqualTo(session.getSessionId());
+        assertThat(saved.getRoom()).isEqualTo(session.getRoom());
+        assertThat(saved.getUser()).isEqualTo(session.getUser());
     }
 
     @DisplayName("세션 삭제를 수행한다.")
