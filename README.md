@@ -108,7 +108,7 @@
   - **feature/기능이름**
     ex) `feature/new-feature`
     
-#### `realease`
+#### `release`
 
 - 최종 배포전, QA를 진행하는 브랜치
 - 아직 배포되지 않은 공용 브랜치
